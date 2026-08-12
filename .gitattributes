@@ -1,0 +1,9 @@
+# Everything is stored and checked out with LF, on every platform.
+#
+# CI rebuilds the site and fails if the result differs from what is committed. Without this
+# file that check compares Windows CRLF against Linux LF and every line of every generated
+# file looks changed — a determinism gate that can only ever fail is worse than none.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.woff2 binary

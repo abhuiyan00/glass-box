@@ -1,0 +1,24 @@
+# docs/ is NOT ignored. It is the built site and GitHub Pages serves it from the branch,
+# so the output is committed on purpose — the generated artefact lives next to the source
+# that produced it, and a rebuild with no new export produces an empty diff.
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Working files from the private side of the boundary. A publish plan is a list of paths
+# *inside* the wiki — 235 of them, including the sensitive-source review list — and one of
+# these sat untracked in this directory for a while, one `git add -A` away from publishing
+# the private repository's layout from the repository whose entire argument is that it holds
+# no private page. Ignored here, and `tests/test_build.py` fails if one is ever tracked.
+.publish-plan.json
+*-plan.json
+*.private.json

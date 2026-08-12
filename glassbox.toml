@@ -1,0 +1,31 @@
+# glass-box configuration. No absolute paths — this repo is meant to be cloned and built.
+#
+# Nothing measurable belongs in this file. Every figure the site prints comes from
+# content/stats.json, which the private brain computed; a number typed here would be a claim
+# that silently goes false. What lives here is identity, layout and budget — the three things
+# the exporting repository has no opinion about.
+
+[author]
+name = "Alimuzzaman Bhuiyan"
+github = "https://github.com/abhuiyan00"
+# Left empty on purpose rather than filled with something plausible. An empty value renders
+# as nothing; it never renders as a guess.
+role = ""
+location = ""
+
+[site]
+title = "Glass Box"
+# One line under the title. Says what the site is, not what the author is like.
+subtitle = "A working knowledge base over verified projects — and the reasons behind them."
+# Build output. `docs/` because GitHub Pages serves a branch from either the repository root
+# or /docs, and /docs keeps the root clean without needing a second branch or a deploy action.
+out = "docs"
+# Where the exported bundle is read from.
+content = "content"
+
+[budget]
+# Gzipped, and the unit is in the key on purpose: an earlier version of this site measured a
+# 65 KB payload against a gzipped budget using raw bytes, read 248 KB, and looked one page
+# away from a cliff it was nowhere near.
+landing_kb = 120
+index_kb = 250

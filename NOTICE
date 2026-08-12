@@ -1,0 +1,59 @@
+Glass Box — the public reading surface over a private knowledge base
+Copyright (c) 2026 Alimuzzaman Farhan Bhuiyan
+
+This repository contains two kinds of thing under two different terms. The line between
+them is the only reason this file exists.
+
+--------------------------------------------------------------------------------
+1. The software — MIT
+--------------------------------------------------------------------------------
+build.py, src/glassbox/, assets/, tests/ and glassbox.toml are released under the MIT
+License (see LICENSE). Reuse them, including for a knowledge base that is not this one.
+
+They have no third-party code in them. There is no vendored library, no minified bundle,
+no framework and no webfont anywhere in this repository. Everything under those paths was
+written for it.
+
+--------------------------------------------------------------------------------
+2. The written content — all rights reserved
+--------------------------------------------------------------------------------
+content/ and docs/ are NOT covered by the MIT License above.
+
+They are the author's own writing about the author's own projects: what was built, why one
+approach was chosen over another, and what was tried and abandoned. They are published to
+be read and cited, not to be reused as text.
+
+  - Quoting a passage with attribution and a link: fine, and welcome.
+  - Republishing pages, in whole or in bulk, as your own or as a dataset: not granted.
+
+content/ is generated. Its source of truth is a private repository; every file in it opens
+with a banner saying so, and the build refuses to run if one has been edited here.
+
+--------------------------------------------------------------------------------
+3. What the pages describe, and what they do not disclose
+--------------------------------------------------------------------------------
+The pages name fifteen repositories the author built, and quote files inside them. Those
+repositories are separate works with their own licences and their own NOTICE files where
+one applies. A quotation here does not relicense the file it came from.
+
+Three of the source repositories contain coursework in security, business systems and a
+forensic data investigation. Pages resting on those repositories were each read and
+cleared individually before publication, and are recorded as cleared in the private
+repository's configuration rather than waved through. Naming a repository as one of the
+places a pattern was confirmed discloses no material from it.
+
+Nothing published here contains credentials, keys, tokens, personal data, institutional
+identifiers, student numbers, or the names of collaborators. Collaborators are referred to
+by role. An automated scan for secret-shaped strings runs over the content bundle before
+it is written and again in continuous integration, and a match stops the build.
+
+--------------------------------------------------------------------------------
+4. Accuracy
+--------------------------------------------------------------------------------
+Every page states the files it was written from. Where a reason could not be established
+from a repository or from the author, the page says so and is marked low confidence — no
+plausible-sounding explanation was ever invented to fill a gap, because an invented reason
+is indistinguishable from a real one later.
+
+The figures on the site measure coverage, retrieval and process. They do not certify that
+any claim on any page is correct.
