@@ -166,9 +166,9 @@ main { display: block; }
   max-width: 1080px; margin: 0 auto; padding: 0 var(--pad);
 }
 .hero { padding-top: clamp(40px, 7vw, 78px); padding-bottom: 8px; }
-.hero-home { position: relative; isolation: isolate; overflow: hidden; }
+.hero-home { position: relative; isolation: isolate; }
 .hero-home::before {
-  content: ""; position: absolute; z-index: -1; inset: -20%; pointer-events: none;
+  content: ""; position: absolute; z-index: -1; inset: 0; pointer-events: none;
   background: radial-gradient(circle at 20% 35%, var(--accent-soft), transparent 62%);
   animation: hero-drift 18s ease-in-out infinite alternate;
 }

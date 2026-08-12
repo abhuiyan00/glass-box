@@ -470,6 +470,15 @@ def test_shipped_css_keeps_home_motion_optional(built):
     assert "animation: none !important" in reduced.group(1)
 
 
+def test_home_hero_does_not_clip_search_suggestions(built):
+    """The suggestion list extends below the home hero and must stay visible."""
+    css = (built / "assets" / "app.css").read_text(encoding="utf-8")
+
+    hero = re.search(r"\.hero-home\s*\{([^}]*)\}", css)
+    assert hero, "missing home hero rule"
+    assert "overflow" not in hero.group(1), "home hero clips interactive descendants"
+
+
 def test_landing_qualifies_sources_and_links_to_receipts(bundle, built):
     """The landing count is published-source evidence, not a workspace inventory."""
     text = (built / "index.html").read_text(encoding="utf-8")
