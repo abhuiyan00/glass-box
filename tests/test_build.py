@@ -443,6 +443,33 @@ def test_landing_leads_with_the_question_box(bundle, cfg):
     assert 'class="fig"' not in above, "a statistic appears above the question box"
 
 
+def test_landing_marks_only_its_existing_hero_content_for_motion(bundle, cfg):
+    """The home-only sequence must not leak into shared hero content or alter search."""
+    html = views.landing(bundle, cfg)
+
+    assert '<section class="hero hero-home">' in html
+    for pattern in (
+        r'<p class="eyebrow" data-reveal>',
+        r'<h1 data-reveal>',
+        r'<p class="lede" data-reveal>',
+        r'<form class="ask" data-reveal role="search" method="get" action="index\.html">',
+        r'<div class="seeds" data-reveal>',
+    ):
+        assert re.search(pattern, html), f"missing home motion hook: {pattern}"
+    assert html.count("data-reveal") == 5
+
+
+def test_shipped_css_keeps_home_motion_optional(built):
+    """The landing sequence is named, scoped, and disabled by the global a11y preference."""
+    css = (built / "assets" / "app.css").read_text(encoding="utf-8")
+
+    for name in ("hero-drift", "hero-reveal"):
+        assert re.search(rf"@keyframes\s+{name}\s*\{{", css), f"missing {name} keyframes"
+    reduced = re.search(r"@media \(prefers-reduced-motion: reduce\)\s*\{(.*?)\n\}", css, re.S)
+    assert reduced, "missing reduced-motion override"
+    assert "animation: none !important" in reduced.group(1)
+
+
 def test_landing_qualifies_sources_and_links_to_receipts(bundle, built):
     """The landing count is published-source evidence, not a workspace inventory."""
     text = (built / "index.html").read_text(encoding="utf-8")

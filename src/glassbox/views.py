@@ -113,15 +113,15 @@ def landing(bundle, cfg):
         project_summary = (f"{len(projects)} of the {n_repos} verified source repositories have "
                            "a public project page here. The rest stayed private.")
     body = f"""
-<section class="hero">
-  <p class="eyebrow">{esc(cfg["site"]["subtitle"])}</p>
-  <h1>Ask it something.</h1>
-  <p class="lede">{who}{n_repos} verified source repositories, meaning sources named by
+<section class="hero hero-home">
+  <p class="eyebrow" data-reveal>{esc(cfg["site"]["subtitle"])}</p>
+  <h1 data-reveal>Ask it something.</h1>
+  <p class="lede" data-reveal>{who}{n_repos} verified source repositories, meaning sources named by
     published pages, written up as {n_pages} pages that each answer one question. Type below
     and it returns the pages that
     answer yours — or tells you plainly that nothing here does.</p>
 
-  <form class="ask" role="search" method="get" action="index.html">
+  <form class="ask" data-reveal role="search" method="get" action="index.html">
     <label class="vh" for="q">Ask the knowledge base</label>
     <div class="ask-w">
       <input id="q" class="ask-i" name="q" type="search" data-ask autocomplete="off"
@@ -136,7 +136,7 @@ def landing(bundle, cfg):
     completions, then questions this has been measured answering. Everything runs in your
     browser — nothing is sent anywhere, and there is no model in the loop.
     <kbd>/</kbd> focuses the box, <kbd>↑</kbd><kbd>↓</kbd> move, <kbd>Esc</kbd> clears.</p>
-  <div class="seeds">{chips(bundle.questions[:6])}</div>
+  <div class="seeds" data-reveal>{chips(bundle.questions[:6])}</div>
 </section>
 
 <section class="results" data-results aria-live="polite"></section>
