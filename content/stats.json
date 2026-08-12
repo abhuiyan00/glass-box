@@ -1,0 +1,208 @@
+{
+  "budget": {
+    "cap_usd": 20.0,
+    "per_call_usd": 0.5,
+    "spend_to_date_usd": 2.7991
+  },
+  "corpus": {
+    "by_type": {
+      "concept": 111,
+      "decision": 45,
+      "pattern": 41,
+      "project": 28,
+      "session": 18,
+      "tech": 63
+    },
+    "claims_superseded": 11,
+    "concepts_total": 111,
+    "dangling_from_published": 41,
+    "dangling_pages": 34,
+    "decisions_total": 45,
+    "decisions_with_reject": 36,
+    "eligible_now": 281,
+    "low_confidence": 7,
+    "pages_knowledge": 306,
+    "pages_publishable": 288,
+    "pages_total": 310,
+    "pages_without_aliases": 170,
+    "published_by_confidence": {
+      "high": 237,
+      "medium": 44
+    },
+    "published_now": 281,
+    "published_target_max": null,
+    "published_target_min": 40,
+    "published_without_aliases": 146,
+    "repos": 28,
+    "todo_count": 238
+  },
+  "evals": {
+    "changes_vetoed": 2,
+    "golden_set_size": 34,
+    "heldout_floor": 0.3,
+    "heldout_set_size": 31,
+    "hit_at_5_gate": 0.7,
+    "hit_at_5_heldout": 0.577,
+    "hit_at_5_tuned": 1.0,
+    "refuse_cases": 5,
+    "refuse_gate": 0.9,
+    "refuse_measured": null,
+    "self_graded": true
+  },
+  "gaps": {
+    "dangling_from_published": 41,
+    "dangling_pages": 34,
+    "low_confidence": 7,
+    "pages_without_aliases": 170,
+    "published_without_aliases": 146,
+    "todo_count": 238
+  },
+  "gate": {
+    "violations": 0,
+    "warnings": 64
+  },
+  "generated": "2026-08-12",
+  "repos": [
+    {
+      "pages": 2,
+      "repo": "air-quality-public-health-analysis",
+      "stem": "air-quality-public-health-analysis"
+    },
+    {
+      "pages": 2,
+      "repo": "computer-arithmetic-and-number-representation",
+      "stem": "computer-arithmetic-and-number-representation"
+    },
+    {
+      "pages": 2,
+      "repo": "data-structures-and-algorithms",
+      "stem": "data-structures-and-algorithms"
+    },
+    {
+      "pages": 2,
+      "repo": "distributed-systems-protocol-labs",
+      "stem": "distributed-systems-protocol-labs"
+    },
+    {
+      "pages": 2,
+      "repo": "embedded-systems-iot-laboratories",
+      "stem": "embedded-systems-iot-laboratories"
+    },
+    {
+      "pages": 2,
+      "repo": "functional-programming-scala-laboratories",
+      "stem": "functional-programming-scala-laboratories"
+    },
+    {
+      "pages": 2,
+      "repo": "health-awareness-support-platform",
+      "stem": "health-awareness-support-platform"
+    },
+    {
+      "pages": 3,
+      "repo": "logic-for-computer-scientists",
+      "stem": "logic-for-computer-scientists"
+    },
+    {
+      "pages": 3,
+      "repo": "programming-fundamentals-and-oop-laboratories",
+      "stem": "programming-fundamentals-and-oop-laboratories"
+    },
+    {
+      "pages": 3,
+      "repo": "pwr-subject-notes",
+      "stem": "pwr-subject-notes"
+    },
+    {
+      "pages": 5,
+      "repo": "project-management-web-platform",
+      "stem": "project-management-web-platform"
+    },
+    {
+      "pages": 5,
+      "repo": "systems-analysis-and-decision-support",
+      "stem": "systems-analysis-and-decision-support"
+    },
+    {
+      "pages": 8,
+      "repo": "Research Methodologies",
+      "stem": "research-methodologies-open-set-recognition"
+    },
+    {
+      "pages": 9,
+      "repo": "Computer Project Management",
+      "stem": "computer-project-management"
+    },
+    {
+      "pages": 9,
+      "repo": "privacy-policy",
+      "stem": "privacy-policy-template"
+    },
+    {
+      "pages": 15,
+      "repo": "Physics",
+      "stem": "physics-exam-prep"
+    },
+    {
+      "pages": 16,
+      "repo": "vs-llm-orchestrator",
+      "stem": "agent-orchestrator"
+    },
+    {
+      "pages": 19,
+      "repo": "Oracle-Database-Laboratories",
+      "stem": "oracle-database-laboratories"
+    },
+    {
+      "pages": 20,
+      "repo": "IT Applications in Business and Commerce",
+      "stem": "it-applications-in-business-and-commerce"
+    },
+    {
+      "pages": 23,
+      "repo": "Cybersecurity-Engineering-Laboratories",
+      "stem": "cybersecurity-engineering-laboratories"
+    },
+    {
+      "pages": 23,
+      "repo": "Data-Warehousing-and-Business-Intelligence",
+      "stem": "data-warehousing-and-business-intelligence"
+    },
+    {
+      "pages": 23,
+      "repo": "Optimization Methods",
+      "stem": "optimization-methods"
+    },
+    {
+      "pages": 28,
+      "repo": "Information-Systems-Modelling",
+      "stem": "information-systems-modelling"
+    },
+    {
+      "pages": 28,
+      "repo": "Python-Programming-Laboratories",
+      "stem": "python-programming-laboratories"
+    },
+    {
+      "pages": 28,
+      "repo": "labour-fraud-analysis-a-forensic-data-investigation",
+      "stem": "labour-fraud-analysis"
+    },
+    {
+      "pages": 29,
+      "repo": "browser_game_stickfps",
+      "stem": "stickfps"
+    },
+    {
+      "pages": 30,
+      "repo": "Farley",
+      "stem": "farely"
+    },
+    {
+      "pages": 33,
+      "repo": "Discrete-Mathematics-Laboratories",
+      "stem": "discrete-mathematics-laboratories"
+    }
+  ],
+  "schema": 1
+}
