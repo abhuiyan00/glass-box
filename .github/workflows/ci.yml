@@ -1,0 +1,41 @@
+# The site must build from a clean checkout with nothing installed.
+#
+# There is no deploy job. GitHub Pages serves docs/ from the branch directly, so a push is
+# the deployment and a workflow that redeployed it would be a second source of truth for
+# what is live. What CI proves is that the committed docs/ is what the committed content/
+# actually renders to — see the last step, which is the one that matters.
+
+name: ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"   # the floor: tomllib is stdlib from here
+
+      # Deliberately no `pip install -r`. There is no requirements file because there are
+      # no requirements; if this line ever needs one, the zero-dependency claim in the
+      # README has gone false and CI should be the thing that notices.
+      - name: pytest
+        run: pip install pytest && pytest -q
+
+      - name: the site builds and fits its budget
+        run: python build.py --check
+
+      # Determinism is what makes "nothing changed, so nothing was published" a fact. A
+      # rebuild from the committed bundle must reproduce the committed output byte for
+      # byte; if it does not, docs/ was edited by hand or the build has a clock in it.
+      - name: committed output matches a fresh build
+        run: |
+          python build.py
+          git diff --exit-code -- docs/ \
+            || (echo "::error::docs/ is not what content/ renders to — rebuild and commit"; exit 1)
