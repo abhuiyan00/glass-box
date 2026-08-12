@@ -463,6 +463,15 @@ def test_landing_preserves_an_explicit_zero_source_total(bundle, cfg, monkeypatc
     assert "0 verified source repositories" in html
 
 
+def test_landing_falls_back_when_source_total_is_absent(bundle, cfg, monkeypatch):
+    """An absent exported total falls back to repositories named by published pages."""
+    monkeypatch.delitem(bundle.stats["corpus"], "repos")
+
+    html = views.landing(bundle, cfg)
+
+    assert f"{len(bundle.by_repo())} verified source repositories" in html
+
+
 def test_landing_does_not_invent_private_remainder_when_projects_cover_sources(bundle, built):
     """A complete public project set must say it is complete, not imply hidden sources."""
     text = (built / "index.html").read_text(encoding="utf-8")
