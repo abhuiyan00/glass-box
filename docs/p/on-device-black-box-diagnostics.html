@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On-Device Black Box Diagnostics · Glass Box</title>
+<meta name="description" content="When you cannot attach a debugger — the user is driving, the failure is a screen you have never seen, and no telemetry may leave the device — record a bounded local…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="On-Device Black Box Diagnostics · Glass Box">
+<meta property="og:description" content="When you cannot attach a debugger — the user is driving, the failure is a screen you have never seen, and no telemetry may leave the device — record a bounded local…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The design rules that make it a black box rather than a log","What is recorded","As an audit artifact","Limit worth stating","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Farley/apps/tester/src/app/lib/diagStore.ts","Farley/apps/tester/src/app/lib/diagnostics.ts","Farley/docs/SRS.md","Farley/docs/ocr-overlay/CHANGELOG.md"],"dateModified":"2026-07-28","description":"When you cannot attach a debugger — the user is driving, the failure is a screen you have never seen, and no telemetry may leave the device — record a bounded local…","headline":"On-Device Black Box Diagnostics","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["debugging","architecture","privacy"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-12</span>
+    <span class="repos">Farley</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>When you cannot attach a debugger — the user is driving, the failure is a screen you have never seen, and no telemetry may leave the device — record a bounded local…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-design-rules-that-make-it-a-black-box-rather-than-a-log">The design rules that make it a black box rather than a log</a></li><li><a href="#what-is-recorded">What is recorded</a></li><li><a href="#as-an-audit-artifact">As an audit artifact</a></li><li><a href="#limit-worth-stating">Limit worth stating</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="on-device-black-box-diagnostics">On-Device Black Box Diagnostics</h1>
+<p>When you cannot attach a debugger — the user is driving, the failure is a screen you have never seen, and no telemetry may leave the device — record a <strong>bounded local flight recorder</strong> and give the owner a button to export it. It replaces the observability a server would have given you, without becoming a server.</p>
+<p><a class="wl" href="farely.html">farely</a>&#x27;s implementation: <a class="wl" href="indexeddb.html">indexeddb</a> database <code>farely-diag</code>, one <code>events</code> store keyed by <code>id</code> with a <code>ts</code> index, ring-buffered to <code>DIAG_CAP = 2000</code>, manual JSON export to a dated filename.</p>
+<h2 id="the-design-rules-that-make-it-a-black-box-rather-than-a-log" class="h-anch"><a class="hlink" href="#the-design-rules-that-make-it-a-black-box-rather-than-a-log" aria-label="Link to this section">#</a>The design rules that make it a black box rather than a log</h2>
+<ul><li><strong>Bounded, never growing.</strong> A ring buffer means the feature cannot fill a driver&#x27;s phone. Old rows fall off; that is accepted, because the interesting failure is always recent.</li><li><strong>Never throws, never blocks.</strong> Writes are fire-and-forget; a diagnostics failure must not take down the thing it is diagnosing. If IndexedDB is unavailable, an in-memory bounded fallback takes over and the app does not notice.</li><li><strong>Zero dependencies.</strong> <code>diagStore.ts</code> is hand-written against the raw IndexedDB API — the module-level survival of <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> inside a repo with ~40 direct dependencies.</li><li><strong>Export is a user action.</strong> Nothing is uploaded. The data is only useful if the owner chooses to look at it, which is what keeps it compatible with <a class="wl" href="on-device-first-inference.html">on-device-first-inference</a>.</li></ul>
+<h2 id="what-is-recorded" class="h-anch"><a class="hlink" href="#what-is-recorded" aria-label="Link to this section">#</a>What is recorded</h2>
+<p>Eight <code>DiagKind</code>s: <code>error</code>, <code>exception</code>, <code>decision</code>, <code>unknown-case</code>, <code>vision</code>, <code>coord</code>, <code>network</code>, <code>events</code>. The two that carry the design weight are <strong><code>decision</code></strong> — every ACCEPT / MARGINAL / DECLINE with the inputs that produced it, so a wrong verdict can be re-argued afterwards — and <strong><code>unknown-case</code></strong>, the screens the local classifier could not name. The <code>unknown-case</code> stream is the tuning input for <a class="wl" href="taught-selectors-over-guessed-labels.html">taught-selectors-over-guessed-labels</a>: rather than escalating to a model, unknown screens accumulate until the driver teaches the selector.</p>
+<p>A <code>farely:diag</code> <code>CustomEvent</code> mirrors every write to a live in-app view, so the recorder doubles as the debug UI with no second code path.</p>
+<h2 id="as-an-audit-artifact" class="h-anch"><a class="hlink" href="#as-an-audit-artifact" aria-label="Link to this section">#</a>As an audit artifact</h2>
+<p>The exported <code>farely-diagnostics-YYYY-MM-DD.json</code> is a self-generated evidence file about the app&#x27;s own behaviour — a new form of <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a>, where the artifact is produced by the running product rather than by a build step.</p>
+<h2 id="limit-worth-stating" class="h-anch"><a class="hlink" href="#limit-worth-stating" aria-label="Link to this section">#</a>Limit worth stating</h2>
+<p>The store is unencrypted, like everything else in the app&#x27;s local persistence, and <code>decision</code> rows contain the driver&#x27;s earnings inputs. The repo does not state this as a limitation anywhere.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="farely.html">farely</a> · <a class="wl" href="indexeddb.html">indexeddb</a> · <a class="wl" href="opt-in-cloud-fallback.html">opt-in-cloud-fallback</a> · <a class="wl" href="pure-domain-engine-shared-across-hosts.html">pure-domain-engine-shared-across-hosts</a> · <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a></p></div>
+  <div class="tags"><span class="tag">debugging</span><span class="tag">architecture</span><span class="tag">privacy</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Farley</span><span class="src-p">/apps/tester/src/app/lib/diagStore.ts</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/tester/src/app/lib/diagnostics.ts</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/SRS.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/ocr-overlay/CHANGELOG.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="on-device-first-inference.html"><span class="kind k-concept">concept</span><span class="rel-t">On-Device-First Inference</span><span class="rel-g">Do the classification locally with cheap deterministic logic; treat a model call as an upgrade the owner may switch on, never as the default path</span></a><a class="rel" href="opt-in-cloud-fallback.html"><span class="kind k-concept">concept</span><span class="rel-t">Opt-In Cloud Fallback</span><span class="rel-g">A remote model call that is structurally optional: absent a key it does not exist, present a key it fires only for inputs a cheap local gate has already judged novel,…</span></a><a class="rel" href="pure-domain-engine-shared-across-hosts.html"><span class="kind k-concept">concept</span><span class="rel-t">Pure Domain Engine Shared Across Hosts</span><span class="rel-g">Keep the rules of the domain in one UI-free, platform-free module, and let each host — a browser simulator, a phone, a test harness — supply only input and display</span></a><a class="rel" href="taught-selectors-over-guessed-labels.html"><span class="kind k-concept">concept</span><span class="rel-t">Taught Selectors Over Guessed Labels</span><span class="rel-g">Stop trying to infer which UI element is which from its text, and let the user point at it once</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="farely.html"><span class="kind k-project">project</span><span class="rel-t">Farely</span><span class="rel-g">A personal Android rideshare/delivery driver assistant for Wrocław</span></a><a class="rel" href="indexeddb.html"><span class="kind k-tech">tech</span><span class="rel-t">IndexedDB</span><span class="rel-g">The browser&#x27;s transactional object store</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

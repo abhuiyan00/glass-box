@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proximal Policy Optimisation · Glass Box</title>
+<meta name="description" content="A policy-gradient method that improves a policy by repeatedly taking small, bounded steps away from the policy that collected the data">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Proximal Policy Optimisation · Glass Box">
+<meta property="og:description" content="A policy-gradient method that improves a policy by repeatedly taking small, bounded steps away from the policy that collected the data">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["As implemented here","What PPO does and does not solve here","Confidence","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["IT Applications in Business and Commerce/project/code/stable/gym_torcs/rl_agent.py","IT Applications in Business and Commerce/project/code/stable/gym_torcs/train_torcs_rl.py","IT Applications in Business and Commerce/project/code/a.bhuiyan/gym_torcs/rl_agent.py"],"dateModified":"2026-07-28","description":"A policy-gradient method that improves a policy by repeatedly taking small, bounded steps away from the policy that collected the data","headline":"Proximal Policy Optimisation","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["reinforcement-learning","ml","algorithms","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">IT Applications in Business and Commerce</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A policy-gradient method that improves a policy by repeatedly taking small, bounded steps away from the policy that collected the data</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#as-implemented-here">As implemented here</a></li><li><a href="#what-ppo-does-and-does-not-solve-here">What PPO does and does not solve here</a></li><li><a href="#confidence">Confidence</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="proximal-policy-optimisation">Proximal Policy Optimisation</h1>
+<p>A policy-gradient method that improves a policy by repeatedly taking <strong>small, bounded steps</strong> away from the policy that collected the data. The bound is what makes it usable: an unconstrained policy-gradient update can move the policy far enough that the trajectories it was fitted on no longer describe it, and the run collapses.</p>
+<p>PPO enforces the bound with a <strong>clipped surrogate objective</strong> — the probability ratio between the new and old policy is clamped to <code>1 ± ε</code>, so an update that would move a single action&#x27;s probability too far stops contributing gradient. Advantages come from <strong>GAE</strong> (generalised advantage estimation), which trades bias against variance with a single <code>λ</code>.</p>
+<h2 id="as-implemented-here" class="h-anch"><a class="hlink" href="#as-implemented-here" aria-label="Link to this section">#</a>As implemented here</h2>
+<p>Both agent trees in <a class="wl" href="it-applications-in-business-and-commerce.html">it-applications-in-business-and-commerce</a> implement it, twice, with <a class="wl" href="pytorch.html">pytorch</a>:</p>
+<ul><li><strong>Separate actor and critic trunks</strong> — two independent MLPs, 256×2 with Tanh activations, rather than the more common shared backbone. The <code>stable</code> tree carries a shape-tolerant checkpoint migration that maps old <code>backbone.*</code> weights onto the split <code>actor</code>/<code>critic</code> layout, which dates the split: a shared backbone came first and was replaced.</li><li><strong>Target-KL early stopping</strong> — <code>target_kl=0.03</code>. Epochs over a batch stop as soon as the measured KL divergence from the collection policy exceeds the threshold, a second bound on top of the clip.</li><li><code>init_log_std=-1.2</code> and <code>entropy_coef=3e-3</code> — a deliberately narrow initial action distribution with a small entropy bonus holding it open.</li></ul>
+<p>The action space is continuous (steer, throttle, brake), which is why a Gaussian policy with a learned log-standard-deviation is used rather than a categorical one.</p>
+<h2 id="what-ppo-does-and-does-not-solve-here" class="h-anch"><a class="hlink" href="#what-ppo-does-and-does-not-solve-here" aria-label="Link to this section">#</a>What PPO does and does not solve here</h2>
+<p>It solves credit assignment over a long episode: the agent never receives a &quot;you should have braked 200 m earlier&quot; signal, only per-step reward, and GAE spreads the eventual penalty backwards. It does <strong>not</strong> solve reward design — see <a class="wl" href="reward-shaping.html">reward-shaping</a>, where six of eight experiment branches are reward experiments and the algorithm is held constant throughout. Nor does it solve the exploration cost of a physics simulator that must be stepped in real time; the <code>parallel</code> branch attacked that with concurrent environments rather than with a different algorithm.</p>
+<p>The <a class="wl" href="residual-reinforcement-learning.html">residual-reinforcement-learning</a> variant keeps PPO exactly as-is and changes only what the policy&#x27;s output <em>means</em> — a bounded correction to a deterministic controller rather than the control itself.</p>
+<h2 id="confidence" class="h-anch"><a class="hlink" href="#confidence" aria-label="Link to this section">#</a>Confidence</h2>
+<p>Every constant above was read directly from the shipped source and cross-checks against the branch reports. What PPO <em>achieved</em> is a separate question: the headline lap time and the 80 %-consistency figure have no artefact in the repo. <strong>TODO:</strong> no training curve data, no eval transcript and no reward-vs-update series are committed for the <code>stable</code> tree; the nine committed CSVs come from the other branch. <code>confidence: low</code> on any claim about learning performance.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="reward-shaping.html">reward-shaping</a> · <a class="wl" href="residual-reinforcement-learning.html">residual-reinforcement-learning</a> · <a class="wl" href="pytorch.html">pytorch</a> · <a class="wl" href="torcs-scr-protocol.html">torcs-scr-protocol</a> · <a class="wl" href="it-applications-in-business-and-commerce.html">it-applications-in-business-and-commerce</a> · <a class="wl" href="branch-per-experiment.html">branch-per-experiment</a></p></div>
+  <div class="tags"><span class="tag">reinforcement-learning</span><span class="tag">ml</span><span class="tag">algorithms</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/stable/gym_torcs/rl_agent.py</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/stable/gym_torcs/train_torcs_rl.py</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/a.bhuiyan/gym_torcs/rl_agent.py</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="residual-reinforcement-learning.html"><span class="kind k-concept">concept</span><span class="rel-t">Residual Reinforcement Learning</span><span class="rel-g">A deterministic controller does the driving; the learned policy only outputs a bounded correction on top of it</span></a><a class="rel" href="reward-shaping.html"><span class="kind k-concept">concept</span><span class="rel-t">Reward Shaping</span><span class="rel-g">The task in it-applications-in-business-and-commerce is &quot;drive a fast, clean lap&quot;</span></a><a class="rel" href="branch-per-experiment.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Branch per Experiment</span><span class="rel-g">A git branch holds one hypothesis, not one feature</span></a><a class="rel" href="it-applications-in-business-and-commerce.html"><span class="kind k-project">project</span><span class="rel-t">IT Applications in Business and Commerce</span><span class="rel-g">This repository is not business analytics</span></a><a class="rel" href="pytorch.html"><span class="kind k-tech">tech</span><span class="rel-t">PyTorch</span><span class="rel-g">torch==2.11.0</span></a><a class="rel" href="torcs-scr-protocol.html"><span class="kind k-tech">tech</span><span class="rel-t">TORCS and the SCR Protocol</span><span class="rel-g">TORCS is an open-source racing simulator</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

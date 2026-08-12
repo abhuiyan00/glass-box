@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Star Schema · Glass Box</title>
+<meta name="description" content="One fact table of measurements surrounded by denormalised dimension tables that describe them">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Star Schema · Glass Box">
+<meta property="og:description" content="One fact table of measurements surrounded by denormalised dimension tables that describe them">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Two independent instances","The parts that are easy to get wrong","Cost, stated in the source","Gap","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Data-Warehousing-and-Business-Intelligence/sql/02_star_schema/01_create_star_schema.sql","Data-Warehousing-and-Business-Intelligence/project/twtr/sql/02_star_schema.sql","Data-Warehousing-and-Business-Intelligence/docs/star-schema.md"],"dateModified":"2026-07-28","description":"One fact table of measurements surrounded by denormalised dimension tables that describe them","headline":"Star Schema","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["data-modelling","databases","sql"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Data-Warehousing-and-Business-Intelligence</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>One fact table of measurements surrounded by denormalised dimension tables that describe them</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#two-independent-instances">Two independent instances</a></li><li><a href="#the-parts-that-are-easy-to-get-wrong">The parts that are easy to get wrong</a></li><li><a href="#cost-stated-in-the-source">Cost, stated in the source</a></li><li><a href="#gap">Gap</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="star-schema">Star Schema</h1>
+<p>One fact table of measurements surrounded by denormalised dimension tables that describe them. The fact holds numbers and foreign keys; each dimension holds the text you group and filter by, flattened so a query needs one join per dimension and never a chain of them. It is the deliberate opposite of <a class="wl" href="third-normal-form.html">third-normal-form</a>: redundancy is accepted because the workload is read-heavy analytical scans, not transactional updates.</p>
+<h2 id="two-independent-instances" class="h-anch"><a class="hlink" href="#two-independent-instances" aria-label="Link to this section">#</a>Two independent instances</h2>
+<p><a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> builds the model twice, which is what makes it worth a page rather than a paragraph.</p>
+<p><strong>Mart A — retail sales.</strong> <code>FACT_SALES</code> at order-line grain, with <code>DIM_TIME</code>, <code>DIM_PRODUCT</code>, <code>DIM_CUSTOMER</code> and <code>DIM_SALESPERSON</code>. Five foreign keys are declared on the fact and three non-clustered indexes cover the columns queries actually filter on. <code>DIM_PRODUCT</code> <strong>collapses a snowflake</strong>: the source <code>Product → ProductSubcategory → ProductCategory</code> chain becomes one wide dimension with a derived <code>IsPurchased</code> flag.</p>
+<p><strong>Mart B — daily price quotes.</strong> <code>FACT_QUOTES</code> at ticker-day grain over <code>DIM_DATE</code> and <code>DIM_TICKER</code>, with derived columns (<code>DailyRange</code> as a <code>PERSISTED</code> computed column, <code>DailyReturnPct</code>, <code>RSI14</code>) and a view on top that derives the overbought/oversold flags at read time rather than storing them.</p>
+<h2 id="the-parts-that-are-easy-to-get-wrong" class="h-anch"><a class="hlink" href="#the-parts-that-are-easy-to-get-wrong" aria-label="Link to this section">#</a>The parts that are easy to get wrong</h2>
+<ul><li><strong>Grain is declared by the primary key</strong>, not by convention. See <a class="wl" href="fact-grain.html">fact-grain</a>.</li><li><strong>Role-playing dimensions.</strong> <code>DIM_TIME</code> is joined twice from the same fact, as <code>OrderDateKey</code> and <code>ShipDateKey</code>. One physical dimension, two semantic roles — no second calendar table.</li><li><strong>Degenerate keys.</strong> <code>FACT_SALES</code> uses the source order-line identifier as its own primary key rather than inventing a surrogate; <code>DIM_TICKER</code> does the opposite. That contrast is <a class="wl" href="surrogate-vs-natural-keys.html">surrogate-vs-natural-keys</a>.</li><li><strong>What belongs in the fact and what belongs in a dimension</strong> is the argument that produced <a class="wl" href="measure-vs-dimension.html">measure-vs-dimension</a> and <a class="wl" href="rsi-as-measure-not-dimension.html">rsi-as-measure-not-dimension</a>.</li><li><strong>Nullable foreign keys are legitimate</strong> when the business genuinely has none — see <a class="wl" href="nullable-salesperson-key.html">nullable-salesperson-key</a>.</li><li>The dimensions must exist before the fact can reference them, which fixes the load sequence: <a class="wl" href="etl-load-order.html">etl-load-order</a>.</li></ul>
+<h2 id="cost-stated-in-the-source" class="h-anch"><a class="hlink" href="#cost-stated-in-the-source" aria-label="Link to this section">#</a>Cost, stated in the source</h2>
+<p>The repo does not present the star as free. Comments name the price of each choice — a denormalised product dimension repeats category text on every row, and deriving an indicator at query time &quot;takes two joins&quot; rather than a single column read. That habit is <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>.</p>
+<h2 id="gap" class="h-anch"><a class="hlink" href="#gap" aria-label="Link to this section">#</a>Gap</h2>
+<ul><li><strong>TODO:</strong> the README calls the AdventureWorks mart &quot;a Kimball-style star schema — conformed dimensions&quot;, but nothing in the repo defines <em>conformed</em>, and no dimension is shared across two fact tables. Mart A and Mart B live in different databases with different calendar tables, so they do not conform to each other either. <code>confidence: low</code> on the conformance claim specifically; the rest of this page is read directly from the DDL. Do not repeat &quot;conformed dimensions&quot; as verified.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="fact-grain.html">fact-grain</a> · <a class="wl" href="third-normal-form.html">third-normal-form</a> · <a class="wl" href="etl-load-order.html">etl-load-order</a> · <a class="wl" href="measure-vs-dimension.html">measure-vs-dimension</a> · <a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> · <a class="wl" href="ssas.html">ssas</a></p></div>
+  <div class="tags"><span class="tag">data-modelling</span><span class="tag">databases</span><span class="tag">sql</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/sql/02_star_schema/01_create_star_schema.sql</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/sql/02_star_schema.sql</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/docs/star-schema.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="etl-load-order.html"><span class="kind k-concept">concept</span><span class="rel-t">ETL Load Order</span><span class="rel-g">Load order in a star-schema is not a style choice</span></a><a class="rel" href="fact-grain.html"><span class="kind k-concept">concept</span><span class="rel-t">Fact Grain</span><span class="rel-g">The grain of a fact table is the answer to &quot;what does one row mean?&quot;</span></a><a class="rel" href="measure-vs-dimension.html"><span class="kind k-concept">concept</span><span class="rel-t">Measure vs Dimension</span><span class="rel-g">In a star-schema, a measure is a number you aggregate; a dimension is a thing you aggregate by</span></a><a class="rel" href="surrogate-vs-natural-keys.html"><span class="kind k-concept">concept</span><span class="rel-t">Surrogate vs Natural Keys</span><span class="rel-g">A natural key is the identifier the source system already uses — a product id, a customer id, an order-line id</span></a><a class="rel" href="third-normal-form.html"><span class="kind k-concept">concept</span><span class="rel-t">Third Normal Form</span><span class="rel-g">A relation is in 3NF when every non-key attribute depends on the key, the whole key, and nothing but the key</span></a><a class="rel" href="nullable-salesperson-key.html"><span class="kind k-decision">decision</span><span class="rel-t">Nullable Salesperson Key</span><span class="rel-g">Declare mart.FACT_SALES.SalesPersonID as INT NULL with a foreign key to mart.DIM_SALESPERSON, and load every order line regardless of whether a salesperson exists</span></a><a class="rel" href="rsi-as-measure-not-dimension.html"><span class="kind k-decision">decision</span><span class="rel-t">RSI as Measure, Not Dimension</span><span class="rel-g">Store the 14-day relative strength index as a nullable numeric column on the fact table dw.FACT_QUOTES, and push the overbought/oversold interpretation into a view</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="data-warehousing-and-business-intelligence.html"><span class="kind k-project">project</span><span class="rel-t">Data Warehousing and Business Intelligence</span><span class="rel-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span></a><a class="rel" href="ssas.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server Analysis Services</span><span class="rel-g">Microsoft&#x27;s OLAP layer</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

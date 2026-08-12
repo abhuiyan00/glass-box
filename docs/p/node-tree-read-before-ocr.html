@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Node-Tree Read Before OCR · Glass Box</title>
+<meta name="description" content="Read a ride offer&#x27;s fare, distance and duration from the accessibility node tree">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Node-Tree Read Before OCR · Glass Box">
+<meta property="og:description" content="Read a ride offer&#x27;s fare, distance and duration from the accessibility node tree">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The reason, as written","Alternative rejected","The parse bug this design still had","Confirmed drift — OCR was never built","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Farley/docs/ocr-overlay/01-architecture.md","Farley/docs/ocr-overlay/CHANGELOG.md","Farley/apps/android/android/app/src/main/java/com/farely/app/OfferNodeParser.kt","Farley/apps/android/android/app/src/main/java/com/farely/app/OcrReader.kt","Farley/apps/android/android/app/build.gradle","Farley/README.md"],"dateModified":"2026-07-28","description":"Read a ride offer's fare, distance and duration from the accessibility node tree","headline":"Node-Tree Read Before OCR","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["mobile","architecture","performance"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-02</span>
+    <span class="repos">Farley</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Read a ride offer&#x27;s fare, distance and duration from the accessibility node tree</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-reason-as-written">The reason, as written</a></li><li><a href="#alternative-rejected">Alternative rejected</a></li><li><a href="#the-parse-bug-this-design-still-had">The parse bug this design still had</a></li><li><a href="#confirmed-drift-ocr-was-never-built">Confirmed drift — OCR was never built</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="node-tree-read-before-ocr">Node-Tree Read Before OCR</h1>
+<p><strong>Decision.</strong> Read a ride offer&#x27;s fare, distance and duration from the <strong>accessibility node tree</strong>. Treat optical character recognition as a fallback for apps that render offers as images — never as the default path.</p>
+<p><strong>Date.</strong> 2026-07-02, recorded in <code>01-architecture.md</code>, the first chapter of <a class="wl" href="numbered-docs-chapters.html">numbered-docs-chapters</a>.</p>
+<h2 id="the-reason-as-written" class="h-anch"><a class="hlink" href="#the-reason-as-written" aria-label="Link to this section">#</a>The reason, as written</h2>
+<blockquote><p>&quot;<strong>Node tree before OCR.</strong> OCR is the expensive, fragile path. Many Android apps expose offer text as real <code>TextView</code> nodes, readable in microseconds with no image processing. OCR is a fallback, not the default.&quot;</p><cite>Farley/docs/ocr-overlay/01-architecture.md, 2026-07-02</cite></blockquote>
+<p>Three arguments in one paragraph — cost, fragility, and the observation that the data is <em>already structured</em>. Running a recognition model over a rendering of text that the platform will hand you as a string is work done twice, and the second copy is lossier. It is the same instinct as <a class="wl" href="taught-selectors-over-guessed-labels.html">taught-selectors-over-guessed-labels</a>: prefer the value you were given to the value you inferred.</p>
+<p>Latency is the binding constraint. An offer card carries a countdown, and the verdict has to be on screen while it still matters.</p>
+<h2 id="alternative-rejected" class="h-anch"><a class="hlink" href="#alternative-rejected" aria-label="Link to this section">#</a>Alternative rejected</h2>
+<p><strong>OCR-first capture</strong> via <code>MediaProjection</code> + ML Kit. Rejected on the cost and fragility above. Two Android permissions still declared in the manifest — <code>FOREGROUND_SERVICE_MEDIA_PROJECTION</code> and <code>FOREGROUND_SERVICE</code> — are the fossils of that design; no code uses them. See <a class="wl" href="android-accessibility-service.html">android-accessibility-service</a>.</p>
+<h2 id="the-parse-bug-this-design-still-had" class="h-anch"><a class="hlink" href="#the-parse-bug-this-design-still-had" aria-label="Link to this section">#</a>The parse bug this design still had</h2>
+<p>Structured input does not mean unambiguous input. Ride cards list the <strong>pickup leg before the trip leg</strong>, so a naive first-match read scored the wrong journey:</p>
+<blockquote><p>&quot;<code>OfferNodeParser</code> no longer takes the <em>first</em> money/km/min match: ride cards list the pickup leg before the trip leg, so first-match read the deadhead as the trip.&quot;</p><cite>Farley/docs/ocr-overlay/CHANGELOG.md, 2026-07-03</cite></blockquote>
+<p>The fix: fare is the <strong>largest</strong> money token; with two km/min hits the first is the pickup deadhead and the last is the trip. That distinction is precisely what <span class="unpub" title="named in the source wiki; not published">deadhead-adjusted-net-profit</span> depends on — the bug was silently pricing the free leg as the paid one.</p>
+<h2 id="confirmed-drift-ocr-was-never-built" class="h-anch"><a class="hlink" href="#confirmed-drift-ocr-was-never-built" aria-label="Link to this section">#</a>Confirmed drift — OCR was never built</h2>
+<p>The README, VISION and four documents describe <strong>Android ML Kit OCR as the shipped on-device engine</strong>. It is not shipped in any form:</p>
+<ul><li><code>com.google.mlkit:text-recognition</code> appears in <strong>no</strong> <code>build.gradle</code>.</li><li><code>OcrReader.readNow()</code> returns <code>null</code> behind a <code>// TODO(Phase 4)</code>.</li><li><code>OcrReader.instance</code> is never set, so the fallback cannot be reached even if it worked.</li><li><code>vision.ts</code> carries an explicit <code>NB (native)</code> note that ML Kit text still needs wiring into <code>ScreenCapture.hint</code>.</li></ul>
+<p>The working on-device reader is the node-tree parser, and the classifier that supports it runs over the node tree&#x27;s flat text — not over pixels. Confirmed at interview; recorded on <a class="wl" href="farely.html">farely</a> and <a class="wl" href="documentation-drift.html">documentation-drift</a> as this repository&#x27;s sharpest doc-vs-code gap. The decision itself was correct and was simply never revisited by the prose; what drifted is the claim that the <em>rejected</em> path also exists.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="farely.html">farely</a> · <a class="wl" href="accessibility-service-overlay.html">accessibility-service-overlay</a> · <a class="wl" href="android-accessibility-service.html">android-accessibility-service</a> · <a class="wl" href="on-device-first-inference.html">on-device-first-inference</a> · <a class="wl" href="taught-selectors-over-guessed-labels.html">taught-selectors-over-guessed-labels</a></p></div>
+  <div class="tags"><span class="tag">mobile</span><span class="tag">architecture</span><span class="tag">performance</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Farley</span><span class="src-p">/docs/ocr-overlay/01-architecture.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/ocr-overlay/CHANGELOG.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/android/android/app/src/main/java/com/farely/app/OfferNodeParser.kt</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/android/android/app/src/main/java/com/farely/app/OcrReader.kt</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/android/android/app/build.gradle</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="accessibility-service-overlay.html"><span class="kind k-concept">concept</span><span class="rel-t">Accessibility Service Overlay</span><span class="rel-g">Read another app&#x27;s live view hierarchy through the platform accessibility channel, compute something from it, then draw the answer back on top of that same app — without…</span></a><a class="rel" href="on-device-first-inference.html"><span class="kind k-concept">concept</span><span class="rel-t">On-Device-First Inference</span><span class="rel-g">Do the classification locally with cheap deterministic logic; treat a model call as an upgrade the owner may switch on, never as the default path</span></a><a class="rel" href="taught-selectors-over-guessed-labels.html"><span class="kind k-concept">concept</span><span class="rel-t">Taught Selectors Over Guessed Labels</span><span class="rel-g">Stop trying to infer which UI element is which from its text, and let the user point at it once</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="numbered-docs-chapters.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Numbered Docs Chapters</span><span class="rel-g">Prose documentation is organised as a numbered book: 01-architecture.md, 02-roadmap.md, 03-android-permissions-and-legal.md, 04-accessibility-service.md, an index README…</span></a><a class="rel" href="farely.html"><span class="kind k-project">project</span><span class="rel-t">Farely</span><span class="rel-g">A personal Android rideshare/delivery driver assistant for Wrocław</span></a><a class="rel" href="android-accessibility-service.html"><span class="kind k-tech">tech</span><span class="rel-t">Android Accessibility Service</span><span class="rel-g">The platform API that lets an app observe another app&#x27;s view hierarchy and act on it</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

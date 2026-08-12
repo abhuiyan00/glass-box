@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Structures and Algorithms · Glass Box</title>
+<meta name="description" content="A Java 21 library in which every complexity claim is a test rather than a comment">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Data Structures and Algorithms · Glass Box">
+<meta property="og:description" content="A Java 21 library in which every complexity claim is a test rather than a comment">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The one decision everything follows from","Eleven packages","The measurement that names the repository","Two documented claims that the measurement contradicted","Failure modes are tests, not warnings","Verification","Status and provenance"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["data-structures-and-algorithms/README.md","data-structures-and-algorithms/docs/architecture.md","data-structures-and-algorithms/docs/visual-guide.md","data-structures-and-algorithms/docs/visual-guide.svg","data-structures-and-algorithms/NOTICE","data-structures-and-algorithms/src/main/java/dsa/complexity/GrowthFit.java","data-structures-and-algorithms/src/main/java/dsa/complexity/Counter.java","data-structures-and-algorithms/src/main/java/dsa/sorting/QuickSort.java","data-structures-and-algorithms/src/main/java/dsa/hashing/OpenAddressingHashMap.java","data-structures-and-algorithms/src/test/java/dsa/complexity/GrowthFitTest.java","data-structures-and-algorithms/src/test/java/dsa/sorting/SortingTest.java"],"dateModified":"2026-08-12","description":"A Java 21 library in which every complexity claim is a test rather than a comment","headline":"Data Structures and Algorithms","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["algorithms","java","testing","performance","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-12 · in force since 2026-08-02</span>
+    <span class="repos">data-structures-and-algorithms</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A Java 21 library in which every complexity claim is a test rather than a comment</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-one-decision-everything-follows-from">The one decision everything follows from</a></li><li><a href="#eleven-packages">Eleven packages</a></li><li><a href="#the-measurement-that-names-the-repository">The measurement that names the repository</a></li><li><a href="#two-documented-claims-that-the-measurement-contradicted">Two documented claims that the measurement contradicted</a></li><li><a href="#failure-modes-are-tests-not-warnings">Failure modes are tests, not warnings</a></li><li><a href="#verification">Verification</a></li><li><a href="#status-and-provenance">Status and provenance</a></li></ol></nav>
+  <div class="prose"><h1 id="data-structures-and-algorithms">Data Structures and Algorithms</h1>
+<p>A Java 21 library in which <strong>every complexity claim is a test rather than a comment</strong>. Built from the fifteen-lecture syllabus of the sixth-semester DSAA course, clean-room, with no historical source carried across. <strong>224 JUnit 5 tests</strong>, offline Maven build, no runtime dependencies.</p>
+<h2 id="the-one-decision-everything-follows-from" class="h-anch"><a class="hlink" href="#the-one-decision-everything-follows-from" aria-label="Link to this section">#</a>The one decision everything follows from</h2>
+<p>Count operations; never measure wall-clock time. See <a class="wl" href="counted-complexity-assertions.html">counted-complexity-assertions</a> for the general idea and <a class="wl" href="clean-room-rebuild-from-specification.html">clean-room-rebuild-from-specification</a> for why the code is new.</p>
+<p>Every structure takes a <code>Counter</code> and charges itself for each <code>comparison()</code>, <code>move()</code> and <code>probe()</code>. A test then runs the algorithm over a doubling series of sizes, fits the measured counts against seven candidate growth functions after dividing out the best constant, and fails if the fit disagrees with the javadoc. Counts are deterministic for a fixed input, so the same assertion passes identically on a fast machine, a loaded CI runner, and a laptop on battery — which a timing assertion cannot.</p>
+<h2 id="eleven-packages" class="h-anch"><a class="hlink" href="#eleven-packages" aria-label="Link to this section">#</a>Eleven packages</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Package</th>
+<th>Claim under test</th>
+</tr></thead><tbody>
+<tr><td><code>dsa.complexity</code></td><td>the instrument itself, calibrated against sequences of known growth</td></tr>
+<tr><td><code>dsa.collections</code></td><td>array vs linked indexing; appends amortise; the ring buffer&#x27;s <code>n</code> dequeues stay linear</td></tr>
+<tr><td><code>dsa.sorting</code></td><td>seven comparison sorts: which are stable, which have a bad input, which have none</td></tr>
+<tr><td><code>dsa.sorting.integer</code></td><td>the <code>n log n</code> bound is about <em>comparison</em> sorts — counting sort makes zero</td></tr>
+<tr><td><code>dsa.search</code></td><td>when sorting first pays for itself; quickselect is linear where sorting is not</td></tr>
+<tr><td><code>dsa.hashing</code></td><td>amortised constant, and the conditions it is conditional on</td></tr>
+<tr><td><code>dsa.trees</code></td><td>what balancing costs and what it prevents</td></tr>
+<tr><td><code>dsa.sets</code></td><td>union-find with union by rank and path compression</td></tr>
+<tr><td><code>dsa.graphs</code></td><td>which algorithm the weights and the acyclicity permit</td></tr>
+<tr><td><code>dsa.strings</code></td><td>four ideas about what to keep after a mismatch</td></tr>
+<tr><td><code>dsa.techniques</code>, <code>dsa.npc</code></td><td>greedy&#x27;s counterexamples, and what &quot;still exponential&quot; is in numbers</td></tr>
+</tbody></table></div>
+<h2 id="the-measurement-that-names-the-repository" class="h-anch"><a class="hlink" href="#the-measurement-that-names-the-repository" aria-label="Link to this section">#</a>The measurement that names the repository</h2>
+<p>Quicksort, twice, on the same already sorted array:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>n</th>
+<th><code>Pivot.LAST</code></th>
+<th><code>Pivot.MEDIAN_OF_THREE</code></th>
+</tr></thead><tbody>
+<tr><td>128</td><td>8,121</td><td>882</td></tr>
+<tr><td>512</td><td>130,809</td><td>4,548</td></tr>
+<tr><td>2048</td><td>2,096,121</td><td>22,278</td></tr>
+</tbody></table></div>
+<p>×4.0 per doubling against ×2.2 — quadratic against linearithmic, from one line of difference, asserted rather than described. The same pair drives <code>docs/visual-guide.svg</code>.</p>
+<h2 id="two-documented-claims-that-the-measurement-contradicted" class="h-anch"><a class="hlink" href="#two-documented-claims-that-the-measurement-contradicted" aria-label="Link to this section">#</a>Two documented claims that the measurement contradicted</h2>
+<p>Both were corrected in the class comments rather than by loosening the assertion, which is the rule recorded in <code>AGENTS.md</code>.</p>
+<p><strong>Repeated heap insertion is not linearithmic on typical input.</strong> The textbook <code>O(n log n)</code> is a worst-case statement, routinely repeated as though it described the typical case. On shuffled keys the fit comes out <strong>linear</strong>, because a random key lands near the bottom of the heap and sifts up barely one level. The gap appears only on descending keys, where every insertion is a new minimum; the suite now asserts both directions.</p>
+<p><strong>Linear probing does not merely slow down — with the wrong keys it stops being constant per operation.</strong> With keys <code>&quot;key0&quot;..&quot;key8191&quot;</code>, whose hashes are nearly consecutive, its measured total is neither linear nor monotonic in <code>n</code>, while double hashing on the same keys is a clean straight line. Linear probing was removed from the shared amortised-constant test and given a dedicated one, rather than the shared assertion being relaxed for every implementation.</p>
+<p>A third result is about the instrument rather than the algorithms: <code>n/4 + 1000</code> classifies as <strong>constant</strong> at <code>n ≤ 512</code> and <strong>linear</strong> at <code>n ≥ 8192</code>. The fitter is right both times — asymptotic behaviour is a claim about large <code>n</code>, and a measurement at small <code>n</code> is entitled to disagree. The disagreement is a test, not a workaround.</p>
+<h2 id="failure-modes-are-tests-not-warnings" class="h-anch"><a class="hlink" href="#failure-modes-are-tests-not-warnings" aria-label="Link to this section">#</a>Failure modes are tests, not warnings</h2>
+<p>An adversarial hash whose every key collides; a delete that would orphan the rest of a probe run without tombstones; sorted insertion degenerating a search tree to a linked list with extra pointers; greedy change-making on <code>{1, 3, 4}</code> where the optimum is <code>3 + 3</code> and greedy takes <code>4 + 1 + 1</code>. A structure whose guarantee is conditional is measured on the input that breaks the condition — the same habit as <a class="wl" href="document-the-failure-mode-next-to-the-fix.html">document-the-failure-mode-next-to-the-fix</a>, enforced by the suite rather than by prose.</p>
+<p>Making the cost of an operation part of its signature is <a class="wl" href="make-the-formal-object-observable.html">make-the-formal-object-observable</a> applied to complexity: the <code>Counter</code> parameter is intrusive on purpose, because a cost nobody can see is a cost nobody checks.</p>
+<h2 id="verification" class="h-anch"><a class="hlink" href="#verification" aria-label="Link to this section">#</a>Verification</h2>
+<p>A 2026-08-12 local audit passed Maven compilation and all 224 JUnit tests under JDK 21. Maven needed the process-local <code>user.home</code> set to the owner profile because the sandbox reports <code>C:\</code> as Java&#x27;s home; that is environment configuration, not a code change. The existing SVG and its precise README caption were preserved because they carry exact suite measurements rather than decorative estimates.</p>
+<h2 id="status-and-provenance" class="h-anch"><a class="hlink" href="#status-and-provenance" aria-label="Link to this section">#</a>Status and provenance</h2>
+<p>Local repository on <code>main</code>, one commit, <strong>not pushed</strong>. The syllabus supplied the topic list and nothing else; see <code>NOTICE</code> and <a class="wl" href="provenance-notice-file.html">provenance-notice-file</a>. Deliberate next steps in <code>TASKS.md</code> — a red-black tree beside the AVL tree, a B-tree counting node accesses rather than comparisons, an indexed priority queue to measure the constant-factor trade that lazy deletion currently takes on trust in Dijkstra and Prim, and a space counter for the memory claims that are still only prose.</p></div>
+  <div class="tags"><span class="tag">algorithms</span><span class="tag">java</span><span class="tag">testing</span><span class="tag">performance</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">data-structures-and-algorithms</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">data-structures-and-algorithms</span><span class="src-p">/docs/architecture.md</span></code></li><li><code><span class="src-r">data-structures-and-algorithms</span><span class="src-p">/docs/visual-guide.md</span></code></li><li><code><span class="src-r">data-structures-and-algorithms</span><span class="src-p">/docs/visual-guide.svg</span></code></li><li><code><span class="src-r">data-structures-and-algorithms</span><span class="src-p">/NOTICE</span></code></li><li><code><span class="src-r">data-structures-and-algorithms</span><span class="src-p">/src/main/java/dsa/complexity/GrowthFit.java</span></code></li><li><code><span class="src-r">data-structures-and-algorithms</span><span class="src-p">/src/main/java/dsa/complexity/Counter.java</span></code></li><li><code><span class="src-r">data-structures-and-algorithms</span><span class="src-p">/src/main/java/dsa/sorting/QuickSort.java</span></code></li><li><code><span class="src-r">data-structures-and-algorithms</span><span class="src-p">/src/main/java/dsa/hashing/OpenAddressingHashMap.java</span></code></li><li><code><span class="src-r">data-structures-and-algorithms</span><span class="src-p">/src/test/java/dsa/complexity/GrowthFitTest.java</span></code></li><li><code><span class="src-r">data-structures-and-algorithms</span><span class="src-p">/src/test/java/dsa/sorting/SortingTest.java</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="counted-complexity-assertions.html"><span class="kind k-concept">concept</span><span class="rel-t">Counted Complexity Assertions</span><span class="rel-g">Turning an asymptotic claim into an ordinary unit-test assertion by counting operations instead of measuring time</span></a><a class="rel" href="clean-room-rebuild-from-specification.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Clean-Room Rebuild From Specification</span><span class="rel-g">A clean-room rebuild implements a required outcome from independently written requirements and contracts rather than by adapting an existing source tree</span></a><a class="rel" href="document-the-failure-mode-next-to-the-fix.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Document the Failure Mode Next to the Fix</span><span class="rel-g">Almost every note in these two repositories has the same shape: state the wrong-but-plausible alternative, name the concrete input that breaks it, then give the fix</span></a><a class="rel" href="make-the-formal-object-observable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Make the Formal Object Observable</span><span class="rel-g">Take a mathematical definition and build something that lets you watch it behave</span></a><a class="rel" href="provenance-notice-file.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance NOTICE File</span><span class="rel-g">A separate, plain-text NOTICE at the repository root whose only job is to draw the line between what the author made and what the author borrowed</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

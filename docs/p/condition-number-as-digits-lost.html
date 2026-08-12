@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Condition Number as Digits Lost · Glass Box</title>
+<meta name="description" content="&quot;Ill-conditioned&quot; is a word that does no work">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Condition Number as Digits Lost · Glass Box">
+<meta property="og:description" content="&quot;Ill-conditioned&quot; is a word that does no work">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The measurement that makes ridge regression obvious","Polynomial fits are the standard bad case","Solve, do not invert","State the estimate's limits with the estimate","The cost side","Where this appears"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["systems-analysis-and-decision-support/src/decision_support/linalg.py","systems-analysis-and-decision-support/src/decision_support/regression.py","systems-analysis-and-decision-support/tests/test_regression.py","systems-analysis-and-decision-support/tests/test_linalg.py"],"dateModified":"2026-08-04","description":"\"Ill-conditioned\" is a word that does no work","headline":"Condition Number as Digits Lost","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["ml","algorithms","optimization","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-04 · in force since 2026-08-04</span>
+    <span class="repos">systems-analysis-and-decision-support</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>&quot;Ill-conditioned&quot; is a word that does no work</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-measurement-that-makes-ridge-regression-obvious">The measurement that makes ridge regression obvious</a></li><li><a href="#polynomial-fits-are-the-standard-bad-case">Polynomial fits are the standard bad case</a></li><li><a href="#solve-do-not-invert">Solve, do not invert</a></li><li><a href="#state-the-estimates-limits-with-the-estimate">State the estimate&#x27;s limits with the estimate</a></li><li><a href="#the-cost-side">The cost side</a></li><li><a href="#where-this-appears">Where this appears</a></li></ol></nav>
+  <div class="prose"><h1 id="condition-number-as-digits-lost">Condition Number as Digits Lost</h1>
+<p>&quot;Ill-conditioned&quot; is a word that does no work. The condition number turned into <strong>decimal digits of accuracy destroyed by the solve</strong> is a number that does:</p>
+<pre><code>digits lost ≈ log₁₀(condition)</code></pre>
+<p>A double carries about sixteen. A system with condition <code>10¹⁰</code> returns an answer with roughly six correct digits; at <code>10¹⁶</code> it returns none, and it returns them without complaint.</p>
+<h2 id="the-measurement-that-makes-ridge-regression-obvious" class="h-anch"><a class="hlink" href="#the-measurement-that-makes-ridge-regression-obvious" aria-label="Link to this section">#</a>The measurement that makes ridge regression obvious</h2>
+<p>Ridge adds <code>λI</code> to the Gram matrix before solving. That shifts every eigenvalue up by exactly λ, which is why a singular system becomes solvable and a merely bad one becomes good. Measured on a degree-8 polynomial design over eleven points:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>λ</th>
+<th>condition estimate</th>
+<th>digits lost</th>
+</tr></thead><tbody>
+<tr><td>0</td><td>3.32 × 10¹⁰</td><td>10.5</td></tr>
+<tr><td>10⁻⁸</td><td>1.07 × 10⁸</td><td>8.0</td></tr>
+<tr><td>10⁻⁶</td><td>2.71 × 10⁶</td><td>6.4</td></tr>
+<tr><td>10⁻⁴</td><td>4.57 × 10⁴</td><td>4.7</td></tr>
+<tr><td>10⁻²</td><td>7.78 × 10²</td><td>2.9</td></tr>
+<tr><td>1</td><td>1.01 × 10¹</td><td>1.0</td></tr>
+</tbody></table></div>
+<p>Ten of sixteen digits gone before any regularisation. The λ that a model-selection sweep picks on validation error is usually somewhere in the middle of that table, which means the stability gain is real and not an artefact of a value nobody would choose.</p>
+<h2 id="polynomial-fits-are-the-standard-bad-case" class="h-anch"><a class="hlink" href="#polynomial-fits-are-the-standard-bad-case" aria-label="Link to this section">#</a>Polynomial fits are the standard bad case</h2>
+<p>A polynomial design matrix is a Vandermonde matrix, and Vandermonde matrices are the textbook example of ill-conditioning. Anyone fitting a high-degree polynomial to closely spaced points is in this regime by default, not by misfortune.</p>
+<p>That is worth knowing because the symptom is not an error. The solve succeeds, the coefficients come back finite, and they are wrong in the digits nobody prints.</p>
+<h2 id="solve-do-not-invert" class="h-anch"><a class="hlink" href="#solve-do-not-invert" aria-label="Link to this section">#</a>Solve, do not invert</h2>
+<p><code>(ΦᵀΦ)⁻¹Φᵀy</code> is how the formula is written and <code>solve(ΦᵀΦ, Φᵀy)</code> is how it should be computed. The two are algebraically identical; the explicit inverse does more arithmetic and keeps less of it. On a Vandermonde system the difference is measurable rather than theoretical, which is why both routes exist in the implementation and a test compares them.</p>
+<h2 id="state-the-estimates-limits-with-the-estimate" class="h-anch"><a class="hlink" href="#state-the-estimates-limits-with-the-estimate" aria-label="Link to this section">#</a>State the estimate&#x27;s limits with the estimate</h2>
+<p>The implementation&#x27;s <code>condition_estimate</code> is the ratio of largest to smallest pivot in the elimination, not the true 2-norm condition number, which needs singular values. It tracks the same thing closely enough to demonstrate the effect and it is named <code>condition_estimate</code> for exactly that reason — <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>.</p>
+<p>An approximation labelled as the real thing is a claim that will be relied on past its accuracy.</p>
+<h2 id="the-cost-side" class="h-anch"><a class="hlink" href="#the-cost-side" aria-label="Link to this section">#</a>The cost side</h2>
+<p>Regularisation buys stability with bias. On data an unregularised fit handles well, ridge makes the training error strictly worse, and that is asserted rather than mentioned. λ is not a free improvement; it is a dial between two failures, which is the same shape as <a class="wl" href="held-out-error-over-training-error.html">held-out-error-over-training-error</a> — a metric that only improves is a metric that is not measuring the trade.</p>
+<h2 id="where-this-appears" class="h-anch"><a class="hlink" href="#where-this-appears" aria-label="Link to this section">#</a>Where this appears</h2>
+<p>Implemented and measured in <a class="wl" href="systems-analysis-and-decision-support.html">systems-analysis-and-decision-support</a>. The singular case raises rather than returning an arbitrary member of the solution set, which is the <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a> argument applied to numerics: an arbitrary answer is indistinguishable from a real one once it leaves the function.</p></div>
+  <div class="tags"><span class="tag">ml</span><span class="tag">algorithms</span><span class="tag">optimization</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/src/decision_support/linalg.py</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/src/decision_support/regression.py</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/tests/test_regression.py</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/tests/test_linalg.py</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="held-out-error-over-training-error.html"><span class="kind k-concept">concept</span><span class="rel-t">Held-Out Error over Training Error</span><span class="rel-g">Training error cannot select a model, and the reason is structural rather than statistical: for nested model families it is monotonically non-increasing in complexity by…</span></a><a class="rel" href="tests-that-pass-for-the-wrong-reason.html"><span class="kind k-concept">concept</span><span class="rel-t">Tests That Pass for the Wrong Reason</span><span class="rel-g">A failing test tells you something is broken</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="systems-analysis-and-decision-support.html"><span class="kind k-project">project</span><span class="rel-t">Systems Analysis and Decision Support</span><span class="rel-g">Least squares and ridge regression, κ-NN, Bernoulli naive Bayes, and logistic regression fitted by both gradient ascent and IRLS — in pure Python with no NumPy</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

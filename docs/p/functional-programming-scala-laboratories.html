@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Functional Programming Scala Laboratories · Glass Box</title>
+<meta name="description" content="A fragmented set of Scala exercises rebuilt as one coherent laboratory">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Functional Programming Scala Laboratories · Glass Box">
+<meta property="og:description" content="A fragmented set of Scala exercises rebuilt as one coherent laboratory">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why a rewrite rather than a cleanup","The seven stops","Guarantees, and why each is a guarantee","Verification","Open gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["functional-programming-scala-laboratories/README.md","functional-programming-scala-laboratories/docs/CONCEPT_MAP.md","functional-programming-scala-laboratories/docs/DESIGN_NOTES.md","functional-programming-scala-laboratories/docs/CLEAN_ROOM_PROVENANCE.md","functional-programming-scala-laboratories/src/main/scala/fplab/FunctionalList.scala","functional-programming-scala-laboratories/src/main/scala/fplab/Expressions.scala","functional-programming-scala-laboratories/src/main/scala/fplab/Concurrency.scala","functional-programming-scala-laboratories/project.scala","functional-programming-scala-laboratories/docs/visual-guide.svg"],"dateModified":"2026-08-12","description":"A fragmented set of Scala exercises rebuilt as one coherent laboratory","headline":"Functional Programming Scala Laboratories","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["architecture","testing","refactoring","algorithms","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-12 · in force since 2026-08-02</span>
+    <span class="repos">functional-programming-scala-laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A fragmented set of Scala exercises rebuilt as one coherent laboratory</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why-a-rewrite-rather-than-a-cleanup">Why a rewrite rather than a cleanup</a></li><li><a href="#the-seven-stops">The seven stops</a></li><li><a href="#guarantees-and-why-each-is-a-guarantee">Guarantees, and why each is a guarantee</a></li><li><a href="#verification">Verification</a></li><li><a href="#open-gaps">Open gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="functional-programming-scala-laboratories">Functional Programming Scala Laboratories</h1>
+<p>A fragmented set of Scala exercises rebuilt as one coherent laboratory. Scala <strong>3.3.8 LTS</strong> on <strong>JVM 21</strong>, production code on the standard library alone, <strong>33 deterministic MUnit tests</strong>.</p>
+<p>Seven modules, each answering one question, mapped to their implementation and their test evidence in <code>docs/CONCEPT_MAP.md</code>.</p>
+<h2 id="why-a-rewrite-rather-than-a-cleanup" class="h-anch"><a class="hlink" href="#why-a-rewrite-rather-than-a-cleanup" aria-label="Link to this section">#</a>Why a rewrite rather than a cleanup</h2>
+<p>The archive contains repeated downloads, committed build output, partial solutions, Scala 2-era application patterns, unchecked casts, and actor examples whose correctness depends on <code>sleep</code> and console timing. Copying it forward would have preserved the ambiguity rather than resolved it — see <a class="wl" href="clean-room-rebuild-from-specification.html">clean-room-rebuild-from-specification</a> for the general rule, though here it is a quality decision rather than a provenance one: the material is the author&#x27;s own.</p>
+<p>What carried across is the list of learning goals. Everything else was written anew.</p>
+<h2 id="the-seven-stops" class="h-anch"><a class="hlink" href="#the-seven-stops" aria-label="Link to this section">#</a>The seven stops</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Module</th>
+<th>What it demonstrates</th>
+</tr></thead><tbody>
+<tr><td><code>Recursion</code></td><td>total APIs, tail recursion, <code>BigInt</code>, Euclid&#x27;s algorithm</td></tr>
+<tr><td><code>FunctionalList</code></td><td>a recursive ADT with folds, maps, filters, type-safe sorting</td></tr>
+<tr><td><code>ImmutableCollections</code></td><td>order-preserving transformations over standard collections</td></tr>
+<tr><td><code>Expr</code></td><td>an expression ADT with an <code>Either</code> evaluation boundary</td></tr>
+<tr><td><code>Tree</code></td><td>structural recursion, folds, mapping, mirroring, traversal</td></tr>
+<tr><td><code>TeamMember</code></td><td>accumulating validation without exceptions or partial objects</td></tr>
+<tr><td><code>DeterministicConcurrency</code></td><td>parallel execution with input-ordered results</td></tr>
+</tbody></table></div>
+<p><code>TeamMember</code> is the one worth reading. Validation that <strong>accumulates</strong> returns every failure at once instead of the first, and never constructs a half-valid object to carry the errors — which is the failure mode of the exception-based version, where the object exists before anyone has checked whether it should.</p>
+<h2 id="guarantees-and-why-each-is-a-guarantee" class="h-anch"><a class="hlink" href="#guarantees-and-why-each-is-a-guarantee" aria-label="Link to this section">#</a>Guarantees, and why each is a guarantee</h2>
+<p><strong>Expected failures are <code>Either</code> or a validated result</strong> — never <code>null</code>, an unchecked cast, or a sentinel number. The archive contained all three, and each one is a failure the type system was offering to catch for free.</p>
+<p><strong>Collection APIs preserve input order</strong> unless the name says <code>sort</code> or <code>reverse</code>. An ordering that happens to hold is an ordering callers will depend on and maintainers will break.</p>
+<p><strong>Concurrent results line up with input positions</strong> even though tasks finish in any order. This is the direct answer to the archived actor examples: their correctness depended on timing, so the tests could only be flaky or vacuous. Making completion order irrelevant to the result is what makes a deterministic test possible at all.</p>
+<p><strong>No wall-clock timing, randomness, network, or shared global execution context in tests.</strong> A test that sleeps is a test that is slow when it passes and wrong when it fails.</p>
+<h2 id="verification" class="h-anch"><a class="hlink" href="#verification" aria-label="Link to this section">#</a>Verification</h2>
+<pre><code class="lang-bash">scala-cli test .
+scala-cli run . --main-class fplab.runLaboratories</code></pre>
+<p><code>scripts/verify-toolchain.ps1</code> checks the pins are the pins actually installed, and <code>scripts/verify-layout.ps1</code> checks the structure — both run in CI on a clean Java 21 runner alongside compile, test and demo. Pinning a version in a build file and never asserting it is how a project comes to require a toolchain nobody documented.</p>
+<h3 id="2026-08-12-reference-audit" class="h-anch"><a class="hlink" href="#2026-08-12-reference-audit" aria-label="Link to this section">#</a>2026-08-12 reference audit</h3>
+<p>The layout verifier passed with <strong>16 Scala files</strong>, no archived artifacts, and no exact duplicate sources on Java 21. The local runner did not expose <code>scala-cli</code>, so no compile, test, or demo result is claimed from this environment. The existing transit-map visual is kept as a guide to the documented seven modules and 33 declared deterministic MUnit tests; the unverified count remains explicitly attributed to the repository, not this audit.</p>
+<h2 id="open-gaps" class="h-anch"><a class="hlink" href="#open-gaps" aria-label="Link to this section">#</a>Open gaps</h2>
+<ul><li><strong>TODO:</strong> no property-based testing. <code>FunctionalList</code> and <code>Tree</code> have algebraic laws (fold/map fusion, mirror-of-mirror identity) that example-based tests only sample.</li><li><strong>TODO:</strong> <code>DeterministicConcurrency</code> uses the standard execution context and proves ordering, not throughput or cancellation. No effect system, deliberately — adding one would demonstrate a library rather than the ideas.</li><li><strong>TODO:</strong> exercises, not an application. There is nothing to deploy, and the test suite is the deliverable.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="programming-fundamentals-and-oop-laboratories.html">programming-fundamentals-and-oop-laboratories</a> · <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> · <a class="wl" href="ackermann-and-primitive-recursion.html">ackermann-and-primitive-recursion</a> · <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> · <a class="wl" href="extract-the-shared-core.html">extract-the-shared-core</a> · <a class="wl" href="provenance-notice-file.html">provenance-notice-file</a></p></div>
+  <div class="tags"><span class="tag">architecture</span><span class="tag">testing</span><span class="tag">refactoring</span><span class="tag">algorithms</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">functional-programming-scala-laboratories</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">functional-programming-scala-laboratories</span><span class="src-p">/docs/CONCEPT_MAP.md</span></code></li><li><code><span class="src-r">functional-programming-scala-laboratories</span><span class="src-p">/docs/DESIGN_NOTES.md</span></code></li><li><code><span class="src-r">functional-programming-scala-laboratories</span><span class="src-p">/docs/CLEAN_ROOM_PROVENANCE.md</span></code></li><li><code><span class="src-r">functional-programming-scala-laboratories</span><span class="src-p">/src/main/scala/fplab/FunctionalList.scala</span></code></li><li><code><span class="src-r">functional-programming-scala-laboratories</span><span class="src-p">/src/main/scala/fplab/Expressions.scala</span></code></li><li><code><span class="src-r">functional-programming-scala-laboratories</span><span class="src-p">/src/main/scala/fplab/Concurrency.scala</span></code></li><li><code><span class="src-r">functional-programming-scala-laboratories</span><span class="src-p">/project.scala</span></code></li><li><code><span class="src-r">functional-programming-scala-laboratories</span><span class="src-p">/docs/visual-guide.svg</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="ackermann-and-primitive-recursion.html"><span class="kind k-concept">concept</span><span class="rel-t">Ackermann and Primitive Recursion</span><span class="rel-g">The Ackermann function is the standard witness that total computable is strictly larger than primitive recursive</span></a><a class="rel" href="tests-that-pass-for-the-wrong-reason.html"><span class="kind k-concept">concept</span><span class="rel-t">Tests That Pass for the Wrong Reason</span><span class="rel-g">A failing test tells you something is broken</span></a><a class="rel" href="clean-room-rebuild-from-specification.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Clean-Room Rebuild From Specification</span><span class="rel-g">A clean-room rebuild implements a required outcome from independently written requirements and contracts rather than by adapting an existing source tree</span></a><a class="rel" href="extract-the-shared-core.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Extract the Shared Core</span><span class="rel-g">When several deliverables consume the same input, make the shared part a real package with tests and reduce each deliverable to a thin script over it — instead of twelve…</span></a><a class="rel" href="provenance-notice-file.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance NOTICE File</span><span class="rel-g">A separate, plain-text NOTICE at the repository root whose only job is to draw the line between what the author made and what the author borrowed</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="programming-fundamentals-and-oop-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Programming Fundamentals and OOP Laboratories</span><span class="rel-g">Compact laboratory modules for object-oriented modelling in Java 21 and explicit ownership in C++20</span></a><a class="rel" href="python-programming-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Python Programming Laboratories</span><span class="rel-g">Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Computer Arithmetic and Number Representation · Glass Box</title>
+<meta name="description" content="Positional systems, the four conversion methods, the binary codes for decimal digits, sign-magnitude and both complements, arithmetic performed inside a code, and…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Computer Arithmetic and Number Representation · Glass Box">
+<meta property="og:description" content="Positional systems, the four conversion methods, the binary codes for decimal digits, sign-magnitude and both complements, arithmetic performed inside a code, and…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why rebuild what `int()` and `struct` already do","Closed forms, not ratio bands","A property that classifies, rather than a table to memorise","Two defects the range tests caught","The error is a number","Provenance","Verification","Status","Branch status - a contradiction, both claims recorded"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["computer-arithmetic-and-number-representation/README.md","computer-arithmetic-and-number-representation/NOTICE","computer-arithmetic-and-number-representation/src/computer_arithmetic/positional.py","computer-arithmetic-and-number-representation/src/computer_arithmetic/conversion.py","computer-arithmetic-and-number-representation/src/computer_arithmetic/codes.py","computer-arithmetic-and-number-representation/src/computer_arithmetic/complements.py","computer-arithmetic-and-number-representation/src/computer_arithmetic/fixed_point.py","computer-arithmetic-and-number-representation/src/computer_arithmetic/floating_point.py","computer-arithmetic-and-number-representation/tests/test_complements.py","computer-arithmetic-and-number-representation/tests/test_floating_point.py","computer-arithmetic-and-number-representation/docs/visual-guide.svg"],"dateModified":"2026-08-12","description":"Positional systems, the four conversion methods, the binary codes for decimal digits, sign-magnitude and both complements, arithmetic performed inside a code, and…","headline":"Computer Arithmetic and Number Representation","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["algorithms","discrete-math","python","testing","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-12 · in force since 2026-08-04</span>
+    <span class="repos">computer-arithmetic-and-number-representation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Positional systems, the four conversion methods, the binary codes for decimal digits, sign-magnitude and both complements, arithmetic performed inside a code, and…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why-rebuild-what-int-and-struct-already-do">Why rebuild what `int()` and `struct` already do</a></li><li><a href="#closed-forms-not-ratio-bands">Closed forms, not ratio bands</a></li><li><a href="#a-property-that-classifies-rather-than-a-table-to-memorise">A property that classifies, rather than a table to memorise</a></li><li><a href="#two-defects-the-range-tests-caught">Two defects the range tests caught</a></li><li><a href="#the-error-is-a-number">The error is a number</a></li><li><a href="#provenance">Provenance</a></li><li><a href="#verification">Verification</a></li><li><a href="#status">Status</a></li><li><a href="#branch-status-a-contradiction-both-claims-recorded">Branch status - a contradiction, both claims recorded</a></li></ol></nav>
+  <div class="prose"><h1 id="computer-arithmetic-and-number-representation">Computer Arithmetic and Number Representation</h1>
+<p>Positional systems, the four conversion methods, the binary codes for decimal digits, sign-magnitude and both complements, arithmetic performed inside a code, and IEEE-754 — built from the field definitions rather than from the platform. Python 3.11+, no dependencies, <strong>1,844 tests</strong>. A <a class="wl" href="clean-room-rebuild-from-specification.html">clean-room-rebuild-from-specification</a> of the first-semester Computer System Organization syllabus.</p>
+<h2 id="why-rebuild-what-int-and-struct-already-do" class="h-anch"><a class="hlink" href="#why-rebuild-what-int-and-struct-already-do" aria-label="Link to this section">#</a>Why rebuild what <code>int()</code> and <code>struct</code> already do</h2>
+<p>Because neither answers the question the material asks. <code>int(&quot;1010&quot;, 2)</code> returns ten without saying whether it used Horner&#x27;s scheme or formed the weights, and <code>struct.pack(&quot;&gt;f&quot;, 0.1)</code> returns four bytes without saying what was lost.</p>
+<p>Both facts are recoverable only by writing the method out, which is <a class="wl" href="make-the-formal-object-observable.html">make-the-formal-object-observable</a> applied to arithmetic: every conversion returns a <code>Trace</code> holding the intermediate quotients and subtractions an exercise expects to see in the margin, and the tests check the trace as well as the answer. A method that reaches the right result by the wrong route has not been implemented.</p>
+<h2 id="closed-forms-not-ratio-bands" class="h-anch"><a class="hlink" href="#closed-forms-not-ratio-bands" aria-label="Link to this section">#</a>Closed forms, not ratio bands</h2>
+<p><a class="wl" href="counted-complexity-assertions.html">counted-complexity-assertions</a> taken one step further than the DSAA repository needed. Direct method I forms every weight and costs <code>w(w−1)/2 + 2w</code>; Horner forms none and costs <code>2w</code>. Both closed forms are asserted at five widths.</p>
+<p>A ratio test was written first and discarded. The measured ratios are 3.14, 3.45 and 3.68 — all short of the 4 a purely quadratic term would give, because the linear part still dominates at these widths. A tolerance band loose enough to accept 3.14 would also accept a genuinely linear implementation, which is <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a> in its most tempting form: the test would have passed, and it would have been measuring nothing.</p>
+<h2 id="a-property-that-classifies-rather-than-a-table-to-memorise" class="h-anch"><a class="hlink" href="#a-property-that-classifies-rather-than-a-table-to-memorise" aria-label="Link to this section">#</a>A property that classifies, rather than a table to memorise</h2>
+<p>Four decimal codes are usually taught as four tables. Three share a property the fourth lacks — see <a class="wl" href="self-complementing-codes.html">self-complementing-codes</a> — and <code>is_self_complementing</code> computes it rather than declaring it, so a code added later classifies correctly without a flag anyone has to remember to set.</p>
+<p>The correction counts follow from it and are measured over all 100 single-digit pairs per code: BCD 8421 needs its plus-six on 45 of them, Aiken on 25 in <strong>both directions</strong>, Excess-3 on all 100 but unconditionally, with only the sign varying. The exercise sheet prints two examples.</p>
+<h2 id="two-defects-the-range-tests-caught" class="h-anch"><a class="hlink" href="#two-defects-the-range-tests-caught" aria-label="Link to this section">#</a>Two defects the range tests caught</h2>
+<p>Both passed the exercise sheet&#x27;s own examples, which is the point.</p>
+<p><strong>The p&#x27;s complement of zero overflows its width.</strong> Complementing <code>000</code> gives <code>1000</code>; the leading digit falls off the fixed width and the carry it stood for went with it, so every <code>a − 0</code> came back negative. The sheets contain no subtraction by zero. The 121-pair grid does.</p>
+<p><strong>Aiken&#x27;s code words were self-complementing and still wrong.</strong> Two patterns satisfy the constraint for digits 5 to 7 and the published code takes the higher one; taking the first found produced a real self-complementing code that was not Aiken&#x27;s — passing every round-trip test and disagreeing with the textbook table.</p>
+<p>Both are written up beside their fixes, following <a class="wl" href="document-the-failure-mode-next-to-the-fix.html">document-the-failure-mode-next-to-the-fix</a>.</p>
+<h2 id="the-error-is-a-number" class="h-anch"><a class="hlink" href="#the-error-is-a-number" aria-label="Link to this section">#</a>The error is a number</h2>
+<p>Every figure is computed in <code>fractions.Fraction</code>, so the arithmetic that measures floating-point error is not itself floating point. <code>0.1</code> encodes to <code>13421773 / 2²⁷</code> in binary32 and the shortfall is stated exactly; <code>0.1 + 0.2 − 0.3</code> is exactly <code>2⁻⁵⁵</code>.</p>
+<p>The IEEE-754 encoder is checked against <code>struct</code> in the useful direction only — an independent implementation agreeing with the platform is evidence, whereas wrapping the platform and comparing against itself would prove nothing. That is <span class="unpub" title="named in the source wiki; not published">reference-implementation-as-specification</span> used as a cross-check rather than as a source.</p>
+<h2 id="provenance" class="h-anch"><a class="hlink" href="#provenance" aria-label="Link to this section">#</a>Provenance</h2>
+<p>The lecture slides are credited to Dr inż. Krzysztof Billewicz and the exercise lists carry <code>2019 © Marcin Stachowiak</code>. Neither author&#x27;s material is reproduced; what was taken is the list of topics, which is standard curriculum rather than anyone&#x27;s expression. The <code>NOTICE</code> states this in full and names the three copyright textbooks in the same archive that were not opened — <a class="wl" href="provenance-notice-file.html">provenance-notice-file</a>.</p>
+<p><code>docs/visual-guide.svg</code> is generated by importing the library and measuring it at draw time, so the picture cannot drift from the code — <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a>, <a class="wl" href="offline-first-static-deliverable.html">offline-first-static-deliverable</a>.</p>
+<h2 id="verification" class="h-anch"><a class="hlink" href="#verification" aria-label="Link to this section">#</a>Verification</h2>
+<p>A 2026-08-12 local audit passed all 1,844 pytest cases. The audit set <code>PYTEST_DEBUG_TEMPROOT</code> to an external writable temporary root because this sandbox cannot access the owner&#x27;s Temp directory; that is an execution-host constraint, not a repository defect. The existing README image was preserved: its figure is generated by importing and measuring the library rather than by typing results into SVG.</p>
+<h2 id="status" class="h-anch"><a class="hlink" href="#status" aria-label="Link to this section">#</a>Status</h2>
+<p>Complete and committed locally on <code>main</code>. No remote. Coverage of the source subject is recorded in <a class="wl" href="pwr-subject-notes.html">pwr-subject-notes</a>.</p>
+<h2 id="branch-status-a-contradiction-both-claims-recorded" class="h-anch"><a class="hlink" href="#branch-status-a-contradiction-both-claims-recorded" aria-label="Link to this section">#</a>Branch status - a contradiction, both claims recorded</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>#</th>
+<th>Claim</th>
+<th>Source</th>
+<th><code>valid_from</code></th>
+<th><code>valid_to</code></th>
+</tr></thead><tbody>
+<tr><td>1</td><td>Local branch was <code>master</code>.</td><td><code>git reflog</code></td><td>2026-08-04</td><td>2026-08-12</td></tr>
+<tr><td>2</td><td>Local branch is <code>main</code>.</td><td><code>git branch --show-current</code></td><td>2026-08-12</td><td>null</td></tr>
+</tbody></table></div>
+<p>The reflog records the local <code>master</code> -&gt; <code>main</code> rename; the current branch command reports <code>main</code>.</p></div>
+  <div class="tags"><span class="tag">algorithms</span><span class="tag">discrete-math</span><span class="tag">python</span><span class="tag">testing</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">computer-arithmetic-and-number-representation</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">computer-arithmetic-and-number-representation</span><span class="src-p">/NOTICE</span></code></li><li><code><span class="src-r">computer-arithmetic-and-number-representation</span><span class="src-p">/src/computer_arithmetic/positional.py</span></code></li><li><code><span class="src-r">computer-arithmetic-and-number-representation</span><span class="src-p">/src/computer_arithmetic/conversion.py</span></code></li><li><code><span class="src-r">computer-arithmetic-and-number-representation</span><span class="src-p">/src/computer_arithmetic/codes.py</span></code></li><li><code><span class="src-r">computer-arithmetic-and-number-representation</span><span class="src-p">/src/computer_arithmetic/complements.py</span></code></li><li><code><span class="src-r">computer-arithmetic-and-number-representation</span><span class="src-p">/src/computer_arithmetic/fixed_point.py</span></code></li><li><code><span class="src-r">computer-arithmetic-and-number-representation</span><span class="src-p">/src/computer_arithmetic/floating_point.py</span></code></li><li><code><span class="src-r">computer-arithmetic-and-number-representation</span><span class="src-p">/tests/test_complements.py</span></code></li><li><code><span class="src-r">computer-arithmetic-and-number-representation</span><span class="src-p">/tests/test_floating_point.py</span></code></li><li><code><span class="src-r">computer-arithmetic-and-number-representation</span><span class="src-p">/docs/visual-guide.svg</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="counted-complexity-assertions.html"><span class="kind k-concept">concept</span><span class="rel-t">Counted Complexity Assertions</span><span class="rel-g">Turning an asymptotic claim into an ordinary unit-test assertion by counting operations instead of measuring time</span></a><a class="rel" href="self-complementing-codes.html"><span class="kind k-concept">concept</span><span class="rel-t">Self-Complementing Codes</span><span class="rel-g">A binary code for decimal digits is self-complementing when inverting every bit of a code word yields the code word for the nine&#x27;s complement of that digit:</span></a><a class="rel" href="tests-that-pass-for-the-wrong-reason.html"><span class="kind k-concept">concept</span><span class="rel-t">Tests That Pass for the Wrong Reason</span><span class="rel-g">A failing test tells you something is broken</span></a><a class="rel" href="clean-room-rebuild-from-specification.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Clean-Room Rebuild From Specification</span><span class="rel-g">A clean-room rebuild implements a required outcome from independently written requirements and contracts rather than by adapting an existing source tree</span></a><a class="rel" href="document-the-failure-mode-next-to-the-fix.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Document the Failure Mode Next to the Fix</span><span class="rel-g">Almost every note in these two repositories has the same shape: state the wrong-but-plausible alternative, name the concrete input that breaks it, then give the fix</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="make-the-formal-object-observable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Make the Formal Object Observable</span><span class="rel-g">Take a mathematical definition and build something that lets you watch it behave</span></a><a class="rel" href="offline-first-static-deliverable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Offline-First Static Deliverable</span><span class="rel-g">The deliverable must work by double-clicking a file: no server, no install, no network</span></a><a class="rel" href="provenance-notice-file.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance NOTICE File</span><span class="rel-g">A separate, plain-text NOTICE at the repository root whose only job is to draw the line between what the author made and what the author borrowed</span></a><a class="rel" href="pwr-subject-notes.html"><span class="kind k-project">project</span><span class="rel-t">PWR Subject Notes</span><span class="rel-g">The knowledge in the coursework archive that has no repository, written down — plus the census that proves nothing was quietly left out</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

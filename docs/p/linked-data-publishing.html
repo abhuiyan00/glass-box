@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Linked Data Publishing · Glass Box</title>
+<meta name="description" content="Publishing linked data means shipping a web page that is simultaneously readable by a person and parseable as a graph by a machine, with every entity identified by an…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linked Data Publishing · Glass Box">
+<meta property="og:description" content="Publishing linked data means shipping a web page that is simultaneously readable by a person and parseable as a graph by a machine, with every entity identified by an…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["1. The same facts in two syntaxes, from one source","2. Dereferenceable IRIs — 303 plus content negotiation","3. A shared vocabulary first, a private one only where needed","Verification is a script that prints, not a test that fails","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Information-Systems-Modelling/lab6/app/src/","Information-Systems-Modelling/lab6/app/data/","Information-Systems-Modelling/lab6/vocabulary/","Information-Systems-Modelling/lab6/README.md","Information-Systems-Modelling/lab6/app/README.md"],"dateModified":"2026-07-28","description":"Publishing linked data means shipping a web page that is simultaneously readable by a person and parseable as a graph by a machine, with every entity identified by an…","headline":"Linked Data Publishing","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["semantic-web","web-dev","javascript"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-09</span>
+    <span class="repos">Information-Systems-Modelling</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Publishing linked data means shipping a web page that is simultaneously readable by a person and parseable as a graph by a machine, with every entity identified by an…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#1-the-same-facts-in-two-syntaxes-from-one-source">1. The same facts in two syntaxes, from one source</a></li><li><a href="#2-dereferenceable-iris-303-plus-content-negotiation">2. Dereferenceable IRIs — 303 plus content negotiation</a></li><li><a href="#3-a-shared-vocabulary-first-a-private-one-only-where-needed">3. A shared vocabulary first, a private one only where needed</a></li><li><a href="#verification-is-a-script-that-prints-not-a-test-that-fails">Verification is a script that prints, not a test that fails</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="linked-data-publishing">Linked Data Publishing</h1>
+<p>Publishing linked data means shipping a web page that is simultaneously readable by a person and parseable as a graph by a machine, with every entity identified by an IRI that can actually be fetched. Three obligations follow, and <code>Information-Systems-Modelling</code> lab 6 meets all three.</p>
+<h2 id="1-the-same-facts-in-two-syntaxes-from-one-source" class="h-anch"><a class="hlink" href="#1-the-same-facts-in-two-syntaxes-from-one-source" aria-label="Link to this section">#</a>1. The same facts in two syntaxes, from one source</h2>
+<p>Every page carries <strong>RDFa 1.1</strong> attributes inline in the body markup <em>and</em> a <strong>JSON-LD</strong> block in the head. Both are emitted by one renderer from the JSON files in <code>lab6/app/data/</code> — <code>builds.json</code>, <code>communities.json</code>, <code>marketplace.json</code>, <code>testruns.json</code>, <code>users.json</code>, <code>site.json</code>. The data is the ABox; the vocabulary comes from <code>lab6/vocabulary/ontology.ttl</code> and <code>mc-context.jsonld</code>.</p>
+<p>This is the whole point of the lab and the subject of <a class="wl" href="generate-markup-instead-of-hand-writing-it.html">generate-markup-instead-of-hand-writing-it</a>: the previous version hand-wrote both syntaxes into six HTML files, so each fact existed in two to four places and could drift.</p>
+<h2 id="2-dereferenceable-iris-303-plus-content-negotiation" class="h-anch"><a class="hlink" href="#2-dereferenceable-iris-303-plus-content-negotiation" aria-label="Link to this section">#</a>2. Dereferenceable IRIs — 303 plus content negotiation</h2>
+<p>An IRI that names a <em>thing</em> (a build) must not be confused with the IRI of a <em>document about</em> that thing. <code>lab6/app/src/server.js</code> implements the W3C recommendation directly:</p>
+<ul><li>request <code>/resource/build-falcon</code> with <code>Accept: text/html</code> → <strong>303 See Other</strong> to the human page</li><li>request it with <code>Accept: application/ld+json</code> → the data graph</li></ul>
+<blockquote><p>&quot;every resource IRI is dereferenceable with content negotiation (W3C Linked Data best practice): a browser (Accept: text/html) is redirected to the human page, while an RDF client (Accept: application/ld+json) gets the data graph at the same /resource/&lt;id&gt; URL.&quot;</p><cite>Information-Systems-Modelling/lab6/app/src/server.js, 2026-07-09</cite></blockquote>
+<p>The server is <code>node:http</code> and nothing else — see <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a>. The same source tree runs as a live SSR server (<code>npm run dev</code>) or emits a static site into <code>dist/</code>.</p>
+<h2 id="3-a-shared-vocabulary-first-a-private-one-only-where-needed" class="h-anch"><a class="hlink" href="#3-a-shared-vocabulary-first-a-private-one-only-where-needed" aria-label="Link to this section">#</a>3. A shared vocabulary first, a private one only where needed</h2>
+<p>Terms come from <strong>schema.org</strong> wherever schema.org has them, and from the <code>mc:</code> namespace of the lab 5 TBox where it does not — see <a class="wl" href="schema-org-first-custom-vocab-fallback.html">schema-org-first-custom-vocab-fallback</a> and <a class="wl" href="ontology-modelling-tbox-abox.html">ontology-modelling-tbox-abox</a>. <code>src/rdf/vocabmap.js</code> applies the rule programmatically rather than by hand, and writes a <code>VOCAB MAP</code> provenance comment into every generated page by walking that page&#x27;s own graph, so the comment cannot go stale the way a hand-maintained one would. That is <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> applied to machine-readable output.</p>
+<h2 id="verification-is-a-script-that-prints-not-a-test-that-fails" class="h-anch"><a class="hlink" href="#verification-is-a-script-that-prints-not-a-test-that-fails" aria-label="Link to this section">#</a>Verification is a script that prints, not a test that fails</h2>
+<p><code>lab6/app/scripts/validate.py</code> uses <code>rdflib</code> to count triples per page and site-wide. The README reports 333 triples across the site and 76 for <code>build-falcon.html</code>.</p>
+<ul><li><strong>TODO:</strong> <code>validate.py</code> <strong>prints counts and asserts nothing</strong>, so any edit to <code>data/*.json</code> silently invalidates those numbers without failing anything. <code>confidence: low</code> on the counts as stated. Converting the script to assertions would fix it.</li><li><strong>TODO:</strong> <code>lab6/README.md</code> describes <code>dist/</code> as the generated deliverable to inspect, but <code>dist/</code> is gitignored and untracked — a reader cloning the repo does not get it. Recorded as <a class="wl" href="documentation-drift.html">documentation-drift</a>, not as a defect in the concept.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="ontology-modelling-tbox-abox.html">ontology-modelling-tbox-abox</a> · <a class="wl" href="schema-org-first-custom-vocab-fallback.html">schema-org-first-custom-vocab-fallback</a> · <a class="wl" href="generate-markup-instead-of-hand-writing-it.html">generate-markup-instead-of-hand-writing-it</a> · <a class="wl" href="single-source-of-truth-generators.html">single-source-of-truth-generators</a> · <a class="wl" href="information-systems-modelling.html">information-systems-modelling</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a></p></div>
+  <div class="tags"><span class="tag">semantic-web</span><span class="tag">web-dev</span><span class="tag">javascript</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab6/app/src/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab6/app/data/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab6/vocabulary/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab6/README.md</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab6/app/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="ontology-modelling-tbox-abox.html"><span class="kind k-concept">concept</span><span class="rel-t">Ontology Modelling TBox and ABox</span><span class="rel-g">An RDF knowledge base splits into two halves that live in the same triple store but answer different questions:</span></a><a class="rel" href="generate-markup-instead-of-hand-writing-it.html"><span class="kind k-decision">decision</span><span class="rel-t">Generate Markup Instead of Hand-Writing It</span><span class="rel-g">Delete six hand-written HTML pages carrying RDFa and JSON-LD, and generate both syntaxes from a single JSON dataset instead</span></a><a class="rel" href="schema-org-first-custom-vocab-fallback.html"><span class="kind k-decision">decision</span><span class="rel-t">schema.org First, Custom Vocabulary as Fallback</span><span class="rel-g">Describe every entity with schema.org terms wherever schema.org has one, and reach for the project&#x27;s own mc: vocabulary only where it does not</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="single-source-of-truth-generators.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Single-Source-of-Truth Generators</span><span class="rel-g">Hold the facts once, in a plain data structure, and emit every deliverable from it — including deliverables in different formats and for different audiences</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="information-systems-modelling.html"><span class="kind k-project">project</span><span class="rel-t">Information Systems Modelling</span><span class="rel-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

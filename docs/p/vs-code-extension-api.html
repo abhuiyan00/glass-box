@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VS Code Extension API · Glass Box</title>
+<meta name="description" content="The TypeScript surface an editor extension is written against: contribution points declared in package.json, an activate(ctx) entry point, and a vscode module available…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VS Code Extension API · Glass Box">
+<meta property="og:description" content="The TypeScript surface an editor extension is written against: contribution points declared in package.json, an activate(ctx) entry point, and a vscode module available…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The parts that carry weight","The constraint that shapes everything else","What is deliberately not used"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["vs-llm-orchestrator/agent-orchestrator/extension/src/extension.ts","vs-llm-orchestrator/agent-orchestrator/extension/package.json","vs-llm-orchestrator/docs/ARCHITECTURE.md"],"dateModified":"2026-08-08","description":"The TypeScript surface an editor extension is written against: contribution points declared in package.json, an activate(ctx) entry point, and a vscode module available…","headline":"VS Code Extension API","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["typescript","architecture"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-08 · in force since 2026-08-08</span>
+    <span class="repos">vs-llm-orchestrator</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The TypeScript surface an editor extension is written against: contribution points declared in package.json, an activate(ctx) entry point, and a vscode module available…</p></aside>
+  
+  
+  <div class="prose"><h1 id="vs-code-extension-api">VS Code Extension API</h1>
+<p>The TypeScript surface an editor extension is written against: contribution points declared in <code>package.json</code>, an <code>activate(ctx)</code> entry point, and a <code>vscode</code> module available only inside the extension host. In <a class="wl" href="agent-orchestrator.html">agent-orchestrator</a> it is 573 lines whose entire job is to spawn a Python subprocess, forward JSON, and host a webview.</p>
+<h2 id="the-parts-that-carry-weight" class="h-anch"><a class="hlink" href="#the-parts-that-carry-weight" aria-label="Link to this section">#</a>The parts that carry weight</h2>
+<ul><li><strong><code>registerWebviewViewProvider</code> and <code>createWebviewPanel</code></strong> — the sidebar view and the wide Activity panel are two hosts for <strong>one</strong> HTML file, so both surfaces are registered against the same set of live webviews and every event is broadcast to all of them (<a class="wl" href="self-contained-single-file-html.html">self-contained-single-file-html</a>).</li><li><strong><code>ctx.secrets</code></strong> — encrypted SecretStorage, which is where an <a class="wl" href="openrouter.html">openrouter</a> key belongs. Reached first, with the plaintext settings field as a fallback the panel offers to migrate (<a class="wl" href="secrets-from-environment-only.html">secrets-from-environment-only</a>).</li><li><strong><code>workspace.getConfiguration</code> / <code>ConfigurationTarget.Global</code></strong> — settings are read per run, and the autonomy toggle in the panel writes back through the same API rather than keeping its own copy.</li><li><strong><code>workspace.workspaceFolders</code></strong> — the open folder is what the backend and both CLIs are given as their working directory. No folder open is a real state, not an assertion failure.</li><li><strong><code>localResourceRoots</code></strong> — the webview may load from <code>media/</code> and nowhere else.</li></ul>
+<h2 id="the-constraint-that-shapes-everything-else" class="h-anch"><a class="hlink" href="#the-constraint-that-shapes-everything-else" aria-label="Link to this section">#</a>The constraint that shapes everything else</h2>
+<p><strong>A <code>WebviewView</code> is destroyed whenever the user switches to another view container</strong> — Explorer, Source Control — and rebuilt with an empty DOM on return. Nothing in the DOM survives; anything the panel wants back it must be re-sent. That single fact produced <a class="wl" href="replay-a-recorded-run.html">replay-a-recorded-run</a>, and it is worth knowing before designing a sidebar rather than after a bug report.</p>
+<h2 id="what-is-deliberately-not-used" class="h-anch"><a class="hlink" href="#what-is-deliberately-not-used" aria-label="Link to this section">#</a>What is deliberately not used</h2>
+<p>No <code>LanguageModel</code> API, no chat participant, no task provider. The extension owns no orchestration logic at all — it is a shell around a subprocess (<a class="wl" href="drive-the-clis-not-the-apis.html">drive-the-clis-not-the-apis</a>), and it ships with <strong>zero runtime dependencies</strong> and no bundler (<a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a>).</p>
+<p>Packaging is <code>vsce</code> producing a <code>.vsix</code>; the manifest&#x27;s <code>contributes</code> block is the only place commands, settings and views exist, which is why a test asserts every contributed command is actually registered — <a class="wl" href="tests-that-guard-the-repository.html">tests-that-guard-the-repository</a>.</p></div>
+  <div class="tags"><span class="tag">typescript</span><span class="tag">architecture</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/agent-orchestrator/extension/src/extension.ts</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/agent-orchestrator/extension/package.json</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/docs/ARCHITECTURE.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="drive-the-clis-not-the-apis.html"><span class="kind k-decision">decision</span><span class="rel-t">Drive the CLIs, Not the APIs</span><span class="rel-g">agent-orchestrator spawns claude and codex as subprocesses in structured streaming mode and treats their output as the authoritative answer</span></a><a class="rel" href="replay-a-recorded-run.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Replay a Recorded Run</span><span class="rel-g">Record every event of one real run to a JSONL file</span></a><a class="rel" href="secrets-from-environment-only.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Secrets from Environment Only</span><span class="rel-g">Credentials are read from environment variables and from nowhere else, and .gitignore is written so that the lazy path and the safe path are the same path</span></a><a class="rel" href="self-contained-single-file-html.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Self-Contained Single-File HTML</span><span class="rel-g">One .html file that renders completely with zero outbound requests — styles inline in a &lt;style&gt; block, no scripts, no images, no fonts, no CDN</span></a><a class="rel" href="tests-that-guard-the-repository.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Tests That Guard the Repository</span><span class="rel-g">Put the promises the repository makes into the same suite as the code, so they fail on the same command</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="agent-orchestrator.html"><span class="kind k-project">project</span><span class="rel-t">Agent Orchestrator</span><span class="rel-g">A VS Code extension that turns one request into a plan and runs it across the coding CLIs the author already pays for</span></a><a class="rel" href="openrouter.html"><span class="kind k-tech">tech</span><span class="rel-t">OpenRouter</span><span class="rel-g">A single OpenAI-compatible HTTP endpoint in front of many vendors&#x27; models, billed per token against one account</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

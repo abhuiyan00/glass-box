@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Work Breakdown Structure · Glass Box</title>
+<meta name="description" content="Hierarchical decomposition of a project&#x27;s total scope into progressively smaller deliverables, until the leaves are units small enough to estimate, assign and schedule">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Work Breakdown Structure · Glass Box">
+<meta property="og:description" content="Hierarchical decomposition of a project&#x27;s total scope into progressively smaller deliverables, until the leaves are units small enough to estimate, assign and schedule">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The shape used","Two properties worth naming","Practised on a throwaway first","What the repo does not do","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Computer Project Management/README.md","Computer Project Management/lab1_WBS_Practice/README.md","Computer Project Management/lab2_Task_Dependencies/README.md","Computer Project Management/lab7-8_Summary_Report/README.md"],"dateModified":"2026-07-28","description":"Hierarchical decomposition of a project's total scope into progressively smaller deliverables, until the leaves are units small enough to estimate, assign and schedule","headline":"Work Breakdown Structure","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["project-management","requirements"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">Computer Project Management</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Hierarchical decomposition of a project&#x27;s total scope into progressively smaller deliverables, until the leaves are units small enough to estimate, assign and schedule</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-shape-used">The shape used</a></li><li><a href="#two-properties-worth-naming">Two properties worth naming</a></li><li><a href="#practised-on-a-throwaway-first">Practised on a throwaway first</a></li><li><a href="#what-the-repo-does-not-do">What the repo does not do</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="work-breakdown-structure">Work Breakdown Structure</h1>
+<p>Hierarchical decomposition of a project&#x27;s total scope into progressively smaller deliverables, until the leaves are units small enough to estimate, assign and schedule. Everything else in <a class="wl" href="computer-project-management.html">computer-project-management</a> — dependencies, resourcing, <a class="wl" href="critical-path-method.html">critical path</a>, cost — hangs off this one structure. It is the spine, not a diagram.</p>
+<h2 id="the-shape-used" class="h-anch"><a class="hlink" href="#the-shape-used" aria-label="Link to this section">#</a>The shape used</h2>
+<p>Three levels plus a milestone layer, held constant across all five lab stages:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Level</th>
+<th>Count</th>
+<th>Example</th>
+</tr></thead><tbody>
+<tr><td>Phases (level 1)</td><td>3</td><td>Preparatory · Execution · Finalization</td></tr>
+<tr><td>Task groups (level 2)</td><td>9</td><td><em>System requirements analysis</em>, <em>Platform development</em>, <em>Testing phase</em></td></tr>
+<tr><td>Working tasks (level 3)</td><td>26</td><td><em>Market research Europe–Asia routes</em>, <em>Backend API development</em>, <em>User acceptance testing</em></td></tr>
+<tr><td>Control-point milestones</td><td>7</td><td>one 0-day checkpoint closing each main block of work</td></tr>
+</tbody></table></div>
+<p>Milestones are not a fourth level of work — they are zero-duration markers attached to the outline so that completion becomes a reportable event. That is what makes <a class="wl" href="schedule-baseline-and-variance.html">schedule-baseline-and-variance</a> readable per phase rather than only in aggregate.</p>
+<h2 id="two-properties-worth-naming" class="h-anch"><a class="hlink" href="#two-properties-worth-naming" aria-label="Link to this section">#</a>Two properties worth naming</h2>
+<p><strong>The outline is built before it is linked.</strong> <code>docs/images/wbs-initial.png</code> shows the lab-2 task list with every task still starting on day one — decomposition first, sequencing second. Only once the leaves exist do FS/SS/FF dependencies get drawn between them.</p>
+<p><strong>The structure survives every later change.</strong> Task counts move (29 practice → 38 → 45) as milestones and re-decomposition arrive, but the 3/9/26 skeleton is the same object in lab 7–8&#x27;s report as in lab 2&#x27;s plan. A WBS that had to be rebuilt each lab would not be a baseline for anything.</p>
+<h2 id="practised-on-a-throwaway-first" class="h-anch"><a class="hlink" href="#practised-on-a-throwaway-first" aria-label="Link to this section">#</a>Practised on a throwaway first</h2>
+<p>Lab 1 exists only to learn the mechanics — indenting, durations, the first Finish-to-Start links — on a plan that is explicitly discarded:</p>
+<blockquote><p>&quot;This file is a throwaway sandbox, not the Export/Import project. It exists to practise the&quot;</p><cite>Computer Project Management/lab1_WBS_Practice/README.md, 2026-07-10</cite></blockquote>
+<p>The same separation shows up as directory names in <a class="wl" href="numbered-stages-in-directory-names.html">numbered-stages-in-directory-names</a>: the sandbox and the real artefact live in different folders and are never merged.</p>
+<h2 id="what-the-repo-does-not-do" class="h-anch"><a class="hlink" href="#what-the-repo-does-not-do" aria-label="Link to this section">#</a>What the repo does not do</h2>
+<ul><li><strong>No 100 % rule stated.</strong> The principle that a parent&#x27;s children must sum to exactly the parent&#x27;s scope is never named, though the rolled-up durations in the lab 7–8 report behave as if it holds.</li><li><strong>No WBS dictionary.</strong> Tasks are named but not defined; there are no entry/exit criteria, no acceptance criteria, no owner per work package outside the resource assignment.</li><li><strong>No decomposition rule.</strong> Nothing records why 26 leaves rather than 15 or 60, or what stopping criterion ended the breakdown. <code>TODO:</code> unrecorded, not asked at interview — <code>confidence: low</code> on the rationale, <code>medium</code> on the counts, which come from README tables over unread <code>.mpp</code> files.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="computer-project-management.html">computer-project-management</a> · <a class="wl" href="microsoft-project.html">microsoft-project</a> · <a class="wl" href="critical-path-method.html">critical-path-method</a> · <a class="wl" href="resource-leveling.html">resource-leveling</a> · <a class="wl" href="schedule-baseline-and-variance.html">schedule-baseline-and-variance</a> · <a class="wl" href="project-environment-factors.html">project-environment-factors</a></p></div>
+  <div class="tags"><span class="tag">project-management</span><span class="tag">requirements</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Computer Project Management</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Computer Project Management</span><span class="src-p">/lab1_WBS_Practice/README.md</span></code></li><li><code><span class="src-r">Computer Project Management</span><span class="src-p">/lab2_Task_Dependencies/README.md</span></code></li><li><code><span class="src-r">Computer Project Management</span><span class="src-p">/lab7-8_Summary_Report/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="critical-path-method.html"><span class="kind k-concept">concept</span><span class="rel-t">Critical Path Method</span><span class="rel-g">The longest chain of dependent tasks through a network, and therefore the shortest possible project duration</span></a><a class="rel" href="project-environment-factors.html"><span class="kind k-concept">concept</span><span class="rel-t">Project Environment Factors</span><span class="rel-g">The forces surrounding a project that determine whether it succeeds, independent of how good the engineering is</span></a><a class="rel" href="resource-leveling.html"><span class="kind k-concept">concept</span><span class="rel-t">Resource Leveling</span><span class="rel-g">Resolving over-allocation by moving tasks in time rather than by adding capacity</span></a><a class="rel" href="schedule-baseline-and-variance.html"><span class="kind k-concept">concept</span><span class="rel-t">Schedule Baseline and Variance</span><span class="rel-g">A baseline is a frozen copy of the plan, taken before tracking starts, that later reality is measured against</span></a><a class="rel" href="numbered-stages-in-directory-names.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Numbered Stages in Directory Names</span><span class="rel-g">Order is encoded in filenames and directory names, not in a table of contents</span></a><a class="rel" href="computer-project-management.html"><span class="kind k-project">project</span><span class="rel-t">Computer Project Management</span><span class="rel-g">Coursework for the Computer Project Management course at Wrocław University of Science and Technology, 2026</span></a><a class="rel" href="microsoft-project.html"><span class="kind k-tech">tech</span><span class="rel-t">Microsoft Project</span><span class="rel-g">Desktop scheduling tool; the primary artefact format of computer-project-management and the only piece of proprietary tooling in the source set</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One Repository at the Workspace Folder · Glass Box</title>
+<meta name="description" content="git init went at vs-llm-orchestrator/, one level above the product folder agent-orchestrator/, and one repository holds the product, the documentation set and the tooling">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="One Repository at the Workspace Folder · Glass Box">
+<meta property="og:description" content="git init went at vs-llm-orchestrator/, one level above the product folder agent-orchestrator/, and one repository holds the product, the documentation set and the tooling">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why not at the product folder","What that makes the root","The side effect that mattered here","Rejected","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["vs-llm-orchestrator/docs/adr/ADR-0009-one-repository-at-the-workspace-folder.md","vs-llm-orchestrator/.gitignore","vs-llm-orchestrator/README.md"],"dateModified":"2026-08-08","description":"git init went at vs-llm-orchestrator/, one level above the product folder agent-orchestrator/, and one repository holds the product, the documentation set and the tooling","headline":"One Repository at the Workspace Folder","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["devops","documentation","product"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-08 · in force since 2026-08-08</span>
+    <span class="repos">vs-llm-orchestrator</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>git init went at vs-llm-orchestrator/, one level above the product folder agent-orchestrator/, and one repository holds the product, the documentation set and the tooling</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why-not-at-the-product-folder">Why not at the product folder</a></li><li><a href="#what-that-makes-the-root">What that makes the root</a></li><li><a href="#the-side-effect-that-mattered-here">The side effect that mattered here</a></li><li><a href="#rejected">Rejected</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="one-repository-at-the-workspace-folder">One Repository at the Workspace Folder</h1>
+<p><code>git init</code> went at <code>vs-llm-orchestrator/</code>, one level <strong>above</strong> the product folder <code>agent-orchestrator/</code>, and one repository holds the product, the documentation set and the tooling.</p>
+<h2 id="why-not-at-the-product-folder" class="h-anch"><a class="hlink" href="#why-not-at-the-product-folder" aria-label="Link to this section">#</a>Why not at the product folder</h2>
+<p>Because the documentation set is not part of the product. The SRS, architecture document, security model, test plan, risk register, release procedure and nine ADRs describe the product but do not ship inside the <code>.vsix</code>; the <code>Makefile</code>, the PowerShell runner and the CI workflow build it from outside. Rooting the repository at <code>agent-orchestrator/</code> would either strand all of that outside version control or force it into the packaged artifact.</p>
+<p>The cost is one confusing sentence that has to be said on the front page: <strong>the repository folder is <code>vs-llm-orchestrator</code>, the product inside it is <code>agent-orchestrator</code>.</strong> Saying it once beats a rename that breaks every path in a working install.</p>
+<h2 id="what-that-makes-the-root" class="h-anch"><a class="hlink" href="#what-that-makes-the-root" aria-label="Link to this section">#</a>What that makes the root</h2>
+<p>The root is a workspace, and it is where the reader arrives — so it carries the front-door README, and the extension has its own text-only one for the Marketplace listing. It also means <code>.gitignore</code> decisions are made at the workspace level, and two of them are worth recording:</p>
+<ul><li><strong><code>harness/shots/</code> is ignored</strong> — regenerated output of the screenshot matrix, one command away.</li><li><strong><code>docs/img/</code> is not</strong> — the twelve curated figures the documentation embeds. A reader cloning the repository must see them, and a reader browsing on the web must be served them.</li></ul>
+<p>Same file type, opposite decisions, because one is a build artifact and the other is content (<a class="wl" href="generated-artifact-with-pristine-source.html">generated-artifact-with-pristine-source</a>).</p>
+<p>Also excluded deliberately: four built <code>.vsix</code> files, and <code>.vscode/settings.json</code> — which is exactly where an <a class="wl" href="openrouter.html">openrouter</a> key ends up when someone skips the secure command (<a class="wl" href="secrets-from-environment-only.html">secrets-from-environment-only</a>).</p>
+<h2 id="the-side-effect-that-mattered-here" class="h-anch"><a class="hlink" href="#the-side-effect-that-mattered-here" aria-label="Link to this section">#</a>The side effect that mattered here</h2>
+<p>This wiki&#x27;s <code>verify-sources</code> gate had <code>vs-llm-orchestrator</code> marked <em>&quot;not a git repo — cannot be verified either way&quot;</em>. Initialising it closed that gate — 164 files, 27,434 insertions, one commit (<a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a>).</p>
+<h2 id="rejected" class="h-anch"><a class="hlink" href="#rejected" aria-label="Link to this section">#</a>Rejected</h2>
+<p><strong>A monorepo of several products.</strong> There is one product. <strong>Submodules for the skill bundle.</strong> Vendored with provenance instead — <a class="wl" href="agent-skills-checked-into-the-repo.html">agent-skills-checked-into-the-repo</a>, <a class="wl" href="provenance-notice-file.html">provenance-notice-file</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="agent-orchestrator.html">agent-orchestrator</a> · <a class="wl" href="tests-that-guard-the-repository.html">tests-that-guard-the-repository</a> · <a class="wl" href="host-on-github-pages.html">host-on-github-pages</a></p></div>
+  <div class="tags"><span class="tag">devops</span><span class="tag">documentation</span><span class="tag">product</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/docs/adr/ADR-0009-one-repository-at-the-workspace-folder.md</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/.gitignore</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="host-on-github-pages.html"><span class="kind k-decision">decision</span><span class="rel-t">Host on GitHub Pages</span><span class="rel-g">Publish privacy-policy-template as a static site on GitHub Pages, served from index.html at the repository root — and name that provider inside the legal text, not only…</span></a><a class="rel" href="agent-skills-checked-into-the-repo.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Agent Skills Checked Into the Repo</span><span class="rel-g">The tooling that builds the product is committed alongside the product, versioned with it and reviewed like it</span></a><a class="rel" href="generated-artifact-with-pristine-source.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Artifact with a Pristine Source</span><span class="rel-g">The file the application loads is generated, carries a DO-NOT-EDIT banner naming its generator, and its input is committed beside it</span></a><a class="rel" href="import-finished-work-into-git.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Import Finished Work Into Git</span><span class="rel-g">Work is built to completion outside version control, then imported in a burst</span></a><a class="rel" href="provenance-notice-file.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance NOTICE File</span><span class="rel-g">A separate, plain-text NOTICE at the repository root whose only job is to draw the line between what the author made and what the author borrowed</span></a><a class="rel" href="secrets-from-environment-only.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Secrets from Environment Only</span><span class="rel-g">Credentials are read from environment variables and from nowhere else, and .gitignore is written so that the lazy path and the safe path are the same path</span></a><a class="rel" href="tests-that-guard-the-repository.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Tests That Guard the Repository</span><span class="rel-g">Put the promises the repository makes into the same suite as the code, so they fail on the same command</span></a><a class="rel" href="agent-orchestrator.html"><span class="kind k-project">project</span><span class="rel-t">Agent Orchestrator</span><span class="rel-g">A VS Code extension that turns one request into a plan and runs it across the coding CLIs the author already pays for</span></a><a class="rel" href="openrouter.html"><span class="kind k-tech">tech</span><span class="rel-t">OpenRouter</span><span class="rel-g">A single OpenAI-compatible HTTP endpoint in front of many vendors&#x27; models, billed per token against one account</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

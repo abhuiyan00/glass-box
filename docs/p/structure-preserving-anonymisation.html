@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Structure-Preserving Anonymisation · Glass Box</title>
+<meta name="description" content="Redaction destroys the thing being studied">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Structure-Preserving Anonymisation · Glass Box">
+<meta property="og:description" content="Redaction destroys the thing being studied">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["What \"preserve every relationship\" means concretely","Free text is the hard part","Stated limitation — residual source signalling","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["labour-fraud-analysis-a-forensic-data-investigation/src/anonymize.py","labour-fraud-analysis-a-forensic-data-investigation/src/fiction.py","labour-fraud-analysis-a-forensic-data-investigation/docs/methodology.md"],"dateModified":"2026-07-28","description":"Redaction destroys the thing being studied","headline":"Structure-Preserving Anonymisation","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["privacy","forensics","data-engineering","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">labour-fraud-analysis-a-forensic-data-investigation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Redaction destroys the thing being studied</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#what-preserve-every-relationship-means-concretely">What &quot;preserve every relationship&quot; means concretely</a></li><li><a href="#free-text-is-the-hard-part">Free text is the hard part</a></li><li><a href="#stated-limitation-residual-source-signalling">Stated limitation — residual source signalling</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="structure-preserving-anonymisation">Structure-Preserving Anonymisation</h1>
+<p>Redaction destroys the thing being studied. If the finding <em>is</em> that many nominally independent people share one contact address, blacking out the address deletes the finding. Structure-preserving anonymisation is the alternative: replace every value, keep every relationship.</p>
+<blockquote><p>&quot;Reconciling those is the whole trick: replace every <em>value</em>, preserve every <em>relationship</em>.&quot;</p><cite>labour-fraud-analysis-a-forensic-data-investigation/docs/methodology.md, 2026-07-11</cite></blockquote>
+<h2 id="what-preserve-every-relationship-means-concretely" class="h-anch"><a class="hlink" href="#what-preserve-every-relationship-means-concretely" aria-label="Link to this section">#</a>What &quot;preserve every relationship&quot; means concretely</h2>
+<p>In <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> the properties the analysis depends on are enumerated and each is carried across deliberately:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Property in the source</th>
+<th>Why it must survive</th>
+<th>How</th>
+</tr></thead><tbody>
+<tr><td>The same person appears in six tables</td><td>joins, and the graph</td><td><a class="wl" href="deterministic-seeded-substitution.html">deterministic-seeded-substitution</a> — same input maps to the same output everywhere</td></tr>
+<tr><td>A batch of documents has consecutive serial numbers</td><td>the bulk-filing signal</td><td>the batch is offset by a constant, so contiguity is preserved</td></tr>
+<tr><td>Many people share one contact point</td><td><a class="wl" href="shared-identifier-clustering.html">shared-identifier-clustering</a></td><td>the sharing is a join key, so it maps identically</td></tr>
+<tr><td>Identifiers have a recognisable shape</td><td>parsers, regexes and the eye</td><td><a class="wl" href="format-preserving-invalid-identifiers.html">format-preserving-invalid-identifiers</a></td></tr>
+<tr><td>Some dates are wrong, from OCR</td><td>the dataset must exercise the same cleaning problems</td><td>errors are copied, not fixed</td></tr>
+</tbody></table></div>
+<blockquote><p>&quot;Data-quality artifacts — wrong dates from OCR are preserved so the dataset exercises the same cleaning problems as the original.&quot;</p><cite>labour-fraud-analysis-a-forensic-data-investigation/docs/methodology.md, 2026-07-11</cite></blockquote>
+<p>Two of these preserved properties are <strong>regression-tested</strong> — the shared-contact concentration and the bulk-filing batch each have a test asserting the pattern still exists after anonymisation. Testing that a finding survived the privacy pipeline is the part most implementations skip. See <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a>.</p>
+<h2 id="free-text-is-the-hard-part" class="h-anch"><a class="hlink" href="#free-text-is-the-hard-part" aria-label="Link to this section">#</a>Free text is the hard part</h2>
+<p>Structured columns are easy: you know which column holds what. Prose does not announce its identifiers. The pipeline makes three passes — a length-sorted, boundary-aware replacement (with the word boundary deliberately widened so that an identifier glued to a filename by an underscore is still caught), a glossary pass that also cleans up orphaned grammatical particles left behind by substitution, and a residual regex sweep. Each pass exists because the previous one demonstrably missed something. The <a class="wl" href="disclosure-gate.html">disclosure-gate</a> is what proves the passes worked.</p>
+<p>The module that does this holds no source strings in its own text:</p>
+<blockquote><p>&quot;This script may reference real strings <em>at run time</em> because it reads them from the private source; it contains none in its own text.&quot;</p><cite>labour-fraud-analysis-a-forensic-data-investigation/src/anonymize.py, 2026-07-11</cite></blockquote>
+<h2 id="stated-limitation-residual-source-signalling" class="h-anch"><a class="hlink" href="#stated-limitation-residual-source-signalling" aria-label="Link to this section">#</a>Stated limitation — residual source signalling</h2>
+<p><code>docs/methodology.md</code> §4 claims the world is relocated and that no origin-signalling scrap survives. <strong>That claim is not fully borne out by the committed code.</strong> Column names retain the source jurisdiction&#x27;s identifier registers (<code>pesel</code>, <code>nip</code>, <code>regon</code>, <code>krs</code>) and carry through the DDL, the CSV headers, the dashboard and the generated data dictionary; the validator&#x27;s allow-list contains the source country&#x27;s name and adjective; one PII pattern is a country-specific phone prefix; the viewer still formats numbers with that jurisdiction&#x27;s locale; and one generator comment names a jurisdiction-specific company form.</p>
+<p>None of these is a person-like value, and none re-identifies anyone. But <strong>together they narrow both the host jurisdiction and the worker-origin corridor</strong>, which is exactly the class of inference the methodology says it removed. Recorded here as a limitation of the implementation, not of the technique. It is one of the reasons every page for this repo is <code>publish: false</code>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="deterministic-seeded-substitution.html">deterministic-seeded-substitution</a> · <a class="wl" href="format-preserving-invalid-identifiers.html">format-preserving-invalid-identifiers</a> · <a class="wl" href="disclosure-gate.html">disclosure-gate</a> · <a class="wl" href="synthesise-rather-than-redact.html">synthesise-rather-than-redact</a> · <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> · <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a></p></div>
+  <div class="tags"><span class="tag">privacy</span><span class="tag">forensics</span><span class="tag">data-engineering</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/anonymize.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/fiction.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/docs/methodology.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="deterministic-seeded-substitution.html"><span class="kind k-concept">concept</span><span class="rel-t">Deterministic Seeded Substitution</span><span class="rel-g">The mechanism that makes structure-preserving-anonymisation work</span></a><a class="rel" href="disclosure-gate.html"><span class="kind k-concept">concept</span><span class="rel-t">Disclosure Gate</span><span class="rel-g">A build step that must pass before anything derived from sensitive input may be published</span></a><a class="rel" href="format-preserving-invalid-identifiers.html"><span class="kind k-concept">concept</span><span class="rel-t">Format-Preserving Invalid Identifiers</span><span class="rel-g">A replacement identifier has two jobs that pull against each other</span></a><a class="rel" href="reproducible-analysis.html"><span class="kind k-concept">concept</span><span class="rel-t">Reproducible Analysis</span><span class="rel-g">An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose</span></a><a class="rel" href="shared-identifier-clustering.html"><span class="kind k-concept">concept</span><span class="rel-t">Shared-Identifier Clustering</span><span class="rel-g">When records that are supposed to be independent share a contact point — one inbox, one phone, one address, one bank account — the sharing is a claim about control</span></a><a class="rel" href="synthesise-rather-than-redact.html"><span class="kind k-decision">decision</span><span class="rel-t">Synthesise Rather Than Redact</span><span class="rel-g">Do not publish the sensitive corpus with identifying values blacked out</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

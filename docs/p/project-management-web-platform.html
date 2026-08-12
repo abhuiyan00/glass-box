@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Management Web Platform · Glass Box</title>
+<meta name="description" content="A TypeScript API for projects, tasks, accounts, and session-based access control">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Project Management Web Platform · Glass Box">
+<meta property="og:description" content="A TypeScript API for projects, tasks, accounts, and session-based access control">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Policy before persistence","Storage as a port","Verification","Boundaries","Related"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["project-management-web-platform/README.md","project-management-web-platform/NOTICE","project-management-web-platform/src/domain/authz.ts","project-management-web-platform/src/store/store.ts","project-management-web-platform/tools/mutation-check.mjs","project-management-web-platform/.github/workflows/ci.yml"],"dateModified":"2026-08-12","description":"A TypeScript API for projects, tasks, accounts, and session-based access control","headline":"Project Management Web Platform","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["typescript","security","architecture","testing","web-dev","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-12 · in force since 2026-08-02</span>
+    <span class="repos">project-management-web-platform</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A TypeScript API for projects, tasks, accounts, and session-based access control</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#policy-before-persistence">Policy before persistence</a></li><li><a href="#storage-as-a-port">Storage as a port</a></li><li><a href="#verification">Verification</a></li><li><a href="#boundaries">Boundaries</a></li><li><a href="#related">Related</a></li></ol></nav>
+  <div class="prose"><h1 id="project-management-web-platform">Project Management Web Platform</h1>
+<p>A TypeScript API for projects, tasks, accounts, and session-based access control. It is a clean-room implementation of a fifth-semester Web Systems Programming specification: 116 real-socket tests run without a database, and the repository keeps one runtime dependency with no build output to commit.</p>
+<h2 id="policy-before-persistence" class="h-anch"><a class="hlink" href="#policy-before-persistence" aria-label="Link to this section">#</a>Policy before persistence</h2>
+<p>Authorization lives in pure functions over already-loaded entities in <code>src/domain/authz.ts</code>. Use cases load a resource, make an explicit access decision, then write. The <code>Actor</code> type carries only the authenticated user id and role needed for a policy decision, and the helpers make the difference between visibility, modification, deletion, and administration explicit.</p>
+<p>The policy also handles information boundaries deliberately. A caller who cannot see a resource gets the response appropriate to that visibility boundary, while an assignee who already knows a task exists receives a direct denial if they try to delete it. Session authentication re-reads the user record, so a current role or block status remains authoritative.</p>
+<h2 id="storage-as-a-port" class="h-anch"><a class="hlink" href="#storage-as-a-port" aria-label="Link to this section">#</a>Storage as a port</h2>
+<p>The service layer depends on the <code>Store</code> boundary rather than a database implementation. <code>MemoryStore</code> and <code>JsonFileStore</code> share the same repository contract, including normalised email addresses and task cleanup when a parent project is removed. That makes the HTTP API testable against real local servers while keeping persistence adapters interchangeable.</p>
+<p>Configuration is fail-closed: the service requires its session secret from the environment rather than using a default. Password hashing uses <code>node:crypto.scrypt</code>, tokens use <code>createHmac</code>, and Node runs the typed source directly for development.</p>
+<h2 id="verification" class="h-anch"><a class="hlink" href="#verification" aria-label="Link to this section">#</a>Verification</h2>
+<p><code>npm run check</code> runs TypeScript checking and 116 tests against a real server and socket. On 2026-08-12 it passed unchanged. <code>node tools/mutation-check.mjs</code> copies the tree to a temporary directory, applies 12 controlled policy mutations one at a time, and confirms that each makes at least one selected test fail: 12/12 were caught in the local audit.</p>
+<h2 id="boundaries" class="h-anch"><a class="hlink" href="#boundaries" aria-label="Link to this section">#</a>Boundaries</h2>
+<p>The repository concentrates on the server contract. It has no browser front end, no Mongo adapter, and no multi-process JSON-file adapter. Those are deliberate limits rather than features implied by the API surface. The published <code>NOTICE</code> records the clean-room provenance and course-material boundary.</p>
+<h2 id="related" class="h-anch"><a class="hlink" href="#related" aria-label="Link to this section">#</a>Related</h2>
+<p><a class="wl" href="clean-room-rebuild-from-specification.html">clean-room-rebuild-from-specification</a>, <a class="wl" href="contract-first-api-design.html">contract-first-api-design</a>, and <a class="wl" href="layered-architecture.html">layered-architecture</a> describe the repository&#x27;s scope and composition.</p>
+<p><a class="wl" href="secrets-from-environment-only.html">secrets-from-environment-only</a> and <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> capture the security and delivery choices that keep the local service inspectable.</p></div>
+  <div class="tags"><span class="tag">typescript</span><span class="tag">security</span><span class="tag">architecture</span><span class="tag">testing</span><span class="tag">web-dev</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">project-management-web-platform</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">project-management-web-platform</span><span class="src-p">/NOTICE</span></code></li><li><code><span class="src-r">project-management-web-platform</span><span class="src-p">/src/domain/authz.ts</span></code></li><li><code><span class="src-r">project-management-web-platform</span><span class="src-p">/src/store/store.ts</span></code></li><li><code><span class="src-r">project-management-web-platform</span><span class="src-p">/tools/mutation-check.mjs</span></code></li><li><code><span class="src-r">project-management-web-platform</span><span class="src-p">/.github/workflows/ci.yml</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="contract-first-api-design.html"><span class="kind k-concept">concept</span><span class="rel-t">Contract-First API Design</span><span class="rel-g">Write the API specification first; generate the code from it</span></a><a class="rel" href="layered-architecture.html"><span class="kind k-concept">concept</span><span class="rel-t">Layered Architecture</span><span class="rel-g">Split the application into horizontal tiers where each layer may only call the one below it: api/ handles HTTP and nothing else, service/ holds the domain rules and…</span></a><a class="rel" href="clean-room-rebuild-from-specification.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Clean-Room Rebuild From Specification</span><span class="rel-g">A clean-room rebuild implements a required outcome from independently written requirements and contracts rather than by adapting an existing source tree</span></a><a class="rel" href="secrets-from-environment-only.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Secrets from Environment Only</span><span class="rel-g">Credentials are read from environment variables and from nowhere else, and .gitignore is written so that the lazy path and the safe path are the same path</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

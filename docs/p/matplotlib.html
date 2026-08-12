@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>matplotlib · Glass Box</title>
+<meta name="description" content="Python&#x27;s plotting library">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="matplotlib · Glass Box">
+<meta property="og:description" content="Python&#x27;s plotting library">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Mode 1 — interactive explorer (Discrete Maths)","Mode 2 — headless figure generation (Python labs)","Note","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Discrete-Mathematics-Laboratories/lab2_Crypt/","Discrete-Mathematics-Laboratories/lab4_Complexity/part1/","Python-Programming-Laboratories/labs/11_report_pipeline/"],"dateModified":"2026-07-28","description":"Python's plotting library","headline":"matplotlib","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["python","data-analysis","discrete-math"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-04-21</span>
+    <span class="repos">Discrete-Mathematics-Laboratories · Python-Programming-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Python&#x27;s plotting library</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#mode-1-interactive-explorer-discrete-maths">Mode 1 — interactive explorer (Discrete Maths)</a></li><li><a href="#mode-2-headless-figure-generation-python-labs">Mode 2 — headless figure generation (Python labs)</a></li><li><a href="#note">Note</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="matplotlib">matplotlib</h1>
+<p>Python&#x27;s plotting library. It appears in both lab repositories in two clearly different modes, and the split is the interesting part.</p>
+<h2 id="mode-1-interactive-explorer-discrete-maths" class="h-anch"><a class="hlink" href="#mode-1-interactive-explorer-discrete-maths" aria-label="Link to this section">#</a>Mode 1 — interactive explorer (Discrete Maths)</h2>
+<p>In <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> matplotlib is the <em>interface</em>, not the output format:</p>
+<ul><li><strong><code>GridSpec</code></strong> dashboards — several linked panels in one figure rather than separate plots, so a value and its cost are read together.</li><li><strong><code>Slider</code></strong> widgets over the parameters, in labs 2 and 4. Changing <code>m</code> and <code>n</code> and watching the recursive call count move is the deliverable — see <a class="wl" href="ackermann-and-primitive-recursion.html">ackermann-and-primitive-recursion</a>.</li><li><strong><code>LogNorm</code></strong> colour scaling on heatmaps, which is mandatory rather than cosmetic here: Ackermann values and factorization timings span so many orders of magnitude that a linear scale shows a single hot cell and nothing else.</li><li>Benchmark curves for RSA attack runtime and success rate against key size — <a class="wl" href="rsa-and-integer-factorization.html">rsa-and-integer-factorization</a>.</li></ul>
+<p>This is <a class="wl" href="make-the-formal-object-observable.html">make-the-formal-object-observable</a> in library form.</p>
+<h2 id="mode-2-headless-figure-generation-python-labs" class="h-anch"><a class="hlink" href="#mode-2-headless-figure-generation-python-labs" aria-label="Link to this section">#</a>Mode 2 — headless figure generation (Python labs)</h2>
+<p>In <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> lab 11 it is a batch renderer inside a document pipeline:</p>
+<ul><li>The <strong><code>Agg</code></strong> backend — no display, no GUI event loop, correct for a script that produces files.</li><li><strong><code>plt.close()</code> per figure</strong>, across 41 chapters. Without it the figure manager retains every figure and memory climbs until the run dies; this is the standard matplotlib leak and the pipeline handles it explicitly.</li><li>Output goes to a gitignored <code>charts/</code> directory, reproducible from source rather than committed.</li></ul>
+<p>Alongside <a class="wl" href="pillow.html">pillow</a> for cover images and BeautifulSoup for the source text, see <a class="wl" href="beautifulsoup.html">beautifulsoup</a>.</p>
+<h2 id="note" class="h-anch"><a class="hlink" href="#note" aria-label="Link to this section">#</a>Note</h2>
+<p>Neither repo pins a matplotlib version. In Discrete Maths it arrives with numpy as an ambient scientific-Python assumption; in the Python labs it lives in the optional <code>labs</code> extra, keeping the core package dependency-free — <a class="wl" href="setuptools-and-pyproject.html">setuptools-and-pyproject</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="ackermann-and-primitive-recursion.html">ackermann-and-primitive-recursion</a> · <a class="wl" href="rsa-and-integer-factorization.html">rsa-and-integer-factorization</a> · <a class="wl" href="pillow.html">pillow</a> · <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> · <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a></p></div>
+  <div class="tags"><span class="tag">python</span><span class="tag">data-analysis</span><span class="tag">discrete-math</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab2_Crypt/</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab4_Complexity/part1/</span></code></li><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/labs/11_report_pipeline/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="ackermann-and-primitive-recursion.html"><span class="kind k-concept">concept</span><span class="rel-t">Ackermann and Primitive Recursion</span><span class="rel-g">The Ackermann function is the standard witness that total computable is strictly larger than primitive recursive</span></a><a class="rel" href="rsa-and-integer-factorization.html"><span class="kind k-concept">concept</span><span class="rel-t">RSA and Integer Factorization</span><span class="rel-g">RSA&#x27;s security rests on one asymmetry: multiplying two large primes is cheap, recovering them from the product is not</span></a><a class="rel" href="make-the-formal-object-observable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Make the Formal Object Observable</span><span class="rel-g">Take a mathematical definition and build something that lets you watch it behave</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="python-programming-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Python Programming Laboratories</span><span class="rel-g">Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…</span></a><a class="rel" href="beautifulsoup.html"><span class="kind k-tech">tech</span><span class="rel-t">BeautifulSoup</span><span class="rel-g">HTML/XML parsing library, used in labs 10 and 11 of python-programming-laboratories for scraping and for a document pipeline that extracts 41 chapters of text</span></a><a class="rel" href="pillow.html"><span class="kind k-tech">tech</span><span class="rel-t">Pillow</span><span class="rel-g">Python&#x27;s imaging library</span></a><a class="rel" href="setuptools-and-pyproject.html"><span class="kind k-tech">tech</span><span class="rel-t">setuptools and pyproject.toml</span><span class="rel-g">The packaging layer that turns twelve lab scripts into one installable project in python-programming-laboratories</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

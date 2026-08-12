@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Never Automate The Accept Tap · Glass Box</title>
+<meta name="description" content="farely advises; the driver taps">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Never Automate The Accept Tap · Glass Box">
+<meta property="og:description" content="farely advises; the driver taps">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The reason, as written","What is still automated","Alternative rejected","How the boundary is enforced","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Farley/docs/VISION.md","Farley/docs/SRS.md","Farley/CONTRIBUTING.md","Farley/apps/tester/src/app/lib/coordinator.ts","Farley/apps/android/android/app/src/main/java/com/farely/app/MultiAppCoordinator.kt","Farley/apps/tester/src/app/lib/vision.ts"],"dateModified":"2026-07-28","description":"farely advises; the driver taps","headline":"Never Automate The Accept Tap","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["mobile","privacy","product"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-02</span>
+    <span class="repos">Farley</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>farely advises; the driver taps</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-reason-as-written">The reason, as written</a></li><li><a href="#what-is-still-automated">What is still automated</a></li><li><a href="#alternative-rejected">Alternative rejected</a></li><li><a href="#how-the-boundary-is-enforced">How the boundary is enforced</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="never-automate-the-accept-tap">Never Automate The Accept Tap</h1>
+<p><strong>Decision.</strong> <a class="wl" href="farely.html">farely</a> advises; the driver taps. The app may read offers, score them and display a verdict, but it may never dispatch the gesture that accepts or declines a ride.</p>
+<p><strong>Date.</strong> 2026-07-02, VISION §7. Restated in SRS NFR-R-3, CONTRIBUTING, and the header comments of the coordinator in both TypeScript and Kotlin.</p>
+<h2 id="the-reason-as-written" class="h-anch"><a class="hlink" href="#the-reason-as-written" aria-label="Link to this section">#</a>The reason, as written</h2>
+<blockquote><p>&quot;❌ No auto-accept/auto-decline <strong>of ride offers</strong>. The money decision stays human — Farely advises, the driver taps Accept. Automating <em>that</em> tap raises ban and safety stakes far higher and is out of scope.&quot;</p><cite>Farley/docs/VISION.md, 2026-07-02</cite></blockquote>
+<p>Two distinct stakes, deliberately not collapsed. <strong>Ban risk</strong>: an automated accept is the behaviour platform anti-fraud systems are built to detect, and it would put the driver&#x27;s livelihood on the correctness of a heuristic parser. <strong>Safety</strong>: the accept happens while driving, and an app that can commit the driver to a journey has taken over a decision with physical consequences.</p>
+<p>The scope line is drawn at the <em>money decision</em>, not at automation in general.</p>
+<h2 id="what-is-still-automated" class="h-anch"><a class="hlink" href="#what-is-still-automated" aria-label="Link to this section">#</a>What is still automated</h2>
+<p>Multi-app &quot;chore&quot; automation was accepted on 2026-07-12 — housekeeping in the other driver apps: online/offline toggles, &quot;stop new requests&quot;, trip and marker state. The rule that keeps these apart is that chore controls must be <strong>taught</strong> by the driver rather than guessed, and the teaching surface is restricted to chore controls only. An Accept button cannot become a taught selector. See <a class="wl" href="taught-selectors-over-guessed-labels.html">taught-selectors-over-guessed-labels</a>.</p>
+<h2 id="alternative-rejected" class="h-anch"><a class="hlink" href="#alternative-rejected" aria-label="Link to this section">#</a>Alternative rejected</h2>
+<p><strong>Full autopilot</strong> — score, then accept above a threshold. This is the obvious product, and it is what the rest of the architecture would support for free: the parser already reads the offer and the service already holds gesture-dispatch capability. Rejected on the ban and safety grounds above, not on technical difficulty.</p>
+<h2 id="how-the-boundary-is-enforced" class="h-anch"><a class="hlink" href="#how-the-boundary-is-enforced" aria-label="Link to this section">#</a>How the boundary is enforced</h2>
+<p>Structurally rather than by convention, which is what distinguishes it from <a class="wl" href="privacy-documented-beside-the-feature.html">privacy-documented-beside-the-feature</a>&#x27;s softer guarantees:</p>
+<ul><li>Coordinator roles are enumerated — online/offline, stopRequests, markers — and no offer action exists in the enum.</li><li>The classifier&#x27;s <code>action</code> vocabulary is closed: <code>freeze | note | map-control | none</code>.</li><li>The instruction is repeated <strong>to the model</strong> in the <a class="wl" href="anthropic-messages-api.html">anthropic-messages-api</a> system prompt (&quot;Never propose tapping accept&quot;), so a cloud response cannot introduce an action the local code would honour.</li></ul>
+<p>The same restraint governs the sibling invariant — never come between the driver and an identity check:</p>
+<blockquote><p>&quot;Deliberately excludes verification/selfie terms: identity checks are detected on-device by the coordinator and NEVER routed to cloud vision.&quot;</p><cite>Farley/apps/android/.../FarelyAccessibilityService.kt, 2026-07-13</cite></blockquote>
+<p>That one is a keyword heuristic and therefore weaker; the Accept boundary is stronger because there is no code path to abuse. Worth keeping the distinction — see <a class="wl" href="opt-in-cloud-fallback.html">opt-in-cloud-fallback</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="farely.html">farely</a> · <a class="wl" href="accessibility-service-overlay.html">accessibility-service-overlay</a> · <a class="wl" href="privacy-documented-beside-the-feature.html">privacy-documented-beside-the-feature</a> · <span class="unpub" title="named in the source wiki; not published">deadhead-adjusted-net-profit</span> · <a class="wl" href="android-accessibility-service.html">android-accessibility-service</a></p></div>
+  <div class="tags"><span class="tag">mobile</span><span class="tag">privacy</span><span class="tag">product</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Farley</span><span class="src-p">/docs/VISION.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/SRS.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/CONTRIBUTING.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/tester/src/app/lib/coordinator.ts</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/android/android/app/src/main/java/com/farely/app/MultiAppCoordinator.kt</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/tester/src/app/lib/vision.ts</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="accessibility-service-overlay.html"><span class="kind k-concept">concept</span><span class="rel-t">Accessibility Service Overlay</span><span class="rel-g">Read another app&#x27;s live view hierarchy through the platform accessibility channel, compute something from it, then draw the answer back on top of that same app — without…</span></a><a class="rel" href="opt-in-cloud-fallback.html"><span class="kind k-concept">concept</span><span class="rel-t">Opt-In Cloud Fallback</span><span class="rel-g">A remote model call that is structurally optional: absent a key it does not exist, present a key it fires only for inputs a cheap local gate has already judged novel,…</span></a><a class="rel" href="taught-selectors-over-guessed-labels.html"><span class="kind k-concept">concept</span><span class="rel-t">Taught Selectors Over Guessed Labels</span><span class="rel-g">Stop trying to infer which UI element is which from its text, and let the user point at it once</span></a><a class="rel" href="privacy-documented-beside-the-feature.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Privacy Documented Beside The Feature</span><span class="rel-g">The privacy argument is not filed in one policy document — it is restated at every site where the sensitive thing happens: in the vision doc, in the legal chapter, in…</span></a><a class="rel" href="farely.html"><span class="kind k-project">project</span><span class="rel-t">Farely</span><span class="rel-g">A personal Android rideshare/delivery driver assistant for Wrocław</span></a><a class="rel" href="android-accessibility-service.html"><span class="kind k-tech">tech</span><span class="rel-t">Android Accessibility Service</span><span class="rel-g">The platform API that lets an app observe another app&#x27;s view hierarchy and act on it</span></a><a class="rel" href="anthropic-messages-api.html"><span class="kind k-tech">tech</span><span class="rel-t">Anthropic Messages API</span><span class="rel-g">The only path in farely by which content leaves the phone</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

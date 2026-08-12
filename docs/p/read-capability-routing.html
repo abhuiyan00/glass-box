@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Read-Capability Routing · Glass Box</title>
+<meta name="description" content="The planner picks an executor because it thinks one is better suited">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Read-Capability Routing · Glass Box">
+<meta property="og:description" content="The planner picks an executor because it thinks one is better suited">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The two tables","The bug this shape hides","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["vs-llm-orchestrator/agent-orchestrator/backend/graph.py","vs-llm-orchestrator/docs/SRS.md","vs-llm-orchestrator/agent-orchestrator/extension/CHANGELOG.md"],"dateModified":"2026-08-08","description":"The planner picks an executor because it thinks one is better suited","headline":"Read-Capability Routing","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["architecture","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-08 · in force since 2026-08-08</span>
+    <span class="repos">vs-llm-orchestrator</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The planner picks an executor because it thinks one is better suited</p></aside>
+  
+  
+  <div class="prose"><h1 id="read-capability-routing">Read-Capability Routing</h1>
+<p>The planner picks an executor because it thinks one is better suited. That preference is overridden whenever the subtask must read something the chosen executor cannot open. <strong>Capability beats preference</strong>, and it is checked before the run rather than discovered by it — sending a PDF to something that cannot open one costs a full CLI round-trip and comes back as an apology.</p>
+<h2 id="the-two-tables" class="h-anch"><a class="hlink" href="#the-two-tables" aria-label="Link to this section">#</a>The two tables</h2>
+<p>Files are classified into read classes by extension, and each executor declares the classes it can handle:</p>
+<pre><code class="lang-python">READ_CLASSES = (&quot;text&quot;, &quot;extract&quot;, &quot;vision&quot;)
+
+AGENT_READS = {
+    &quot;claude&quot;: {&quot;text&quot;, &quot;extract&quot;, &quot;vision&quot;},
+    &quot;codex&quot;:  {&quot;text&quot;},
+    ROUTER_AGENT: set(),
+}</code></pre>
+<p>A fourth class, <code>opaque</code>, is what nothing can read — a binary, a compiled artifact — and naming it is useful precisely because it routes to no one and should be reported, not attempted.</p>
+<p><a class="wl" href="codex-cli.html">codex-cli</a>&#x27;s entry is conservative on purpose: text is what it is established to handle here, and anything else is a guess whose wrong answer costs a whole attempt. The router&#x27;s empty set is not a limitation to fix — it is <a class="wl" href="openrouter.html">openrouter</a> being a bare chat completion with no file access, which is the same fact the security model leans on.</p>
+<h2 id="the-bug-this-shape-hides" class="h-anch"><a class="hlink" href="#the-bug-this-shape-hides" aria-label="Link to this section">#</a>The bug this shape hides</h2>
+<p><code>_sanitize</code> computes <code>need ⊄ AGENT_READS[agent]</code> and reroutes to the first fallback candidate that can cover <code>need</code>. Since <code>reads</code> defaults to <code>[&quot;text&quot;]</code> and the router&#x27;s capability is <code>set()</code>, the condition is true for <em>every</em> router-assigned subtask — including the pure-reasoning ones the planner deliberately kept on the router because they read nothing at all. Every one of them was silently moved to a CLI.</p>
+<p>That made the last entry of the fallback order dead code, and the visible symptom appeared only in the worst case: with both CLI subscriptions spent, a run reported that every capable agent had failed while the router sat there, tool-free and perfectly able to answer. Fixed in 0.7.1 — a subtask that declares no file reads stays where it was put. See <a class="wl" href="agent-orchestrator.html">agent-orchestrator</a>.</p>
+<p>The general lesson is narrower than &quot;test your predicates&quot;: a default value (<code>[&quot;text&quot;]</code>) and an empty capability set produce a rule that is <em>always</em> true, and a rule that is always true reads exactly like a rule that works.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="dag-scheduling-in-waves.html">dag-scheduling-in-waves</a> · <a class="wl" href="reasoning-effort-as-a-portable-label.html">reasoning-effort-as-a-portable-label</a> — the other place a router&#x27;s label is translated against what a product can actually do · <a class="wl" href="claude-code-cli.html">claude-code-cli</a></p></div>
+  <div class="tags"><span class="tag">architecture</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/agent-orchestrator/backend/graph.py</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/docs/SRS.md</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/agent-orchestrator/extension/CHANGELOG.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="dag-scheduling-in-waves.html"><span class="kind k-concept">concept</span><span class="rel-t">DAG Scheduling in Waves</span><span class="rel-g">Given a plan whose subtasks declare depends_on, release every subtask whose dependencies are already finished, all at once, as one parallel wave</span></a><a class="rel" href="reasoning-effort-as-a-portable-label.html"><span class="kind k-concept">concept</span><span class="rel-t">Reasoning Effort as a Portable Label</span><span class="rel-g">Every vendor exposes &quot;think harder&quot; differently: a token on a ladder, a numeric budget, a flag that does not exist</span></a><a class="rel" href="agent-orchestrator.html"><span class="kind k-project">project</span><span class="rel-t">Agent Orchestrator</span><span class="rel-g">A VS Code extension that turns one request into a plan and runs it across the coding CLIs the author already pays for</span></a><a class="rel" href="claude-code-cli.html"><span class="kind k-tech">tech</span><span class="rel-t">Claude Code CLI</span><span class="rel-g">Anthropic&#x27;s terminal coding agent</span></a><a class="rel" href="codex-cli.html"><span class="kind k-tech">tech</span><span class="rel-t">Codex CLI</span><span class="rel-g">OpenAI&#x27;s terminal coding agent, and the second executor in agent-orchestrator</span></a><a class="rel" href="openrouter.html"><span class="kind k-tech">tech</span><span class="rel-t">OpenRouter</span><span class="rel-g">A single OpenAI-compatible HTTP endpoint in front of many vendors&#x27; models, billed per token against one account</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

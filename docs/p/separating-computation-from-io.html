@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Separating Computation from I/O · Glass Box</title>
+<meta name="description" content="A function that computes and prints can only be tested by capturing stdout">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Separating Computation from I/O · Glass Box">
+<meta property="og:description" content="A function that computes and prints can only be tested by capturing stdout">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The three applications in `weblog`","Why it compounds","The general shape","Related","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Python-Programming-Laboratories/src/weblog/stats.py","Python-Programming-Laboratories/labs/06_configuration/"],"dateModified":"2026-07-28","description":"A function that computes and prints can only be tested by capturing stdout","headline":"Separating Computation from I/O","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["architecture","testing","python","refactoring"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Python-Programming-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A function that computes and prints can only be tested by capturing stdout</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-three-applications-in-weblog">The three applications in `weblog`</a></li><li><a href="#why-it-compounds">Why it compounds</a></li><li><a href="#the-general-shape">The general shape</a></li><li><a href="#related">Related</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="separating-computation-from-io">Separating Computation from I/O</h1>
+<p>A function that computes <em>and</em> prints can only be tested by capturing stdout. A function that returns a value can be tested by comparing it. That is the entire argument, and <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> applies it as a rule rather than a preference.</p>
+<h2 id="the-three-applications-in-weblog" class="h-anch"><a class="hlink" href="#the-three-applications-in-weblog" aria-label="Link to this section">#</a>The three applications in <code>weblog</code></h2>
+<p><strong><code>stats</code> never prints.</strong> Every aggregation returns a data structure; the CLI layer decides how to render it. The stated reason is testability, and the test suite is the proof — the stats tests assert on returned values with no capsys anywhere.</p>
+<p><strong>Config is read inside <code>main()</code>, never at import time.</strong> Import-time config reading means importing the module has a side effect: it touches the filesystem, can raise, and pins the config path before any caller gets a say. Deferring it to <code>main()</code> keeps import pure, so tests can import the module and inject their own config. <code>Config</code> fronts both JSON and INI behind one interface, and a <code>ConfigError</code> is raised at load rather than at first use — failing where the mistake is, not three call frames later.</p>
+<p><strong>Paging checks <code>isatty()</code>.</strong> The program pages output when a human is watching and streams plainly when piped. The computation is identical either way; only the presentation layer inspects the environment. This is the same separation pushed all the way to the terminal boundary.</p>
+<h2 id="why-it-compounds" class="h-anch"><a class="hlink" href="#why-it-compounds" aria-label="Link to this section">#</a>Why it compounds</h2>
+<p>The nine labs that read the same access log are thin scripts precisely <em>because</em> the computation has no I/O baked in — see <a class="wl" href="extract-the-shared-core.html">extract-the-shared-core</a>. Had <code>stats</code> printed, every lab would have needed its own copy with different formatting, and the shared core would never have been extractable.</p>
+<p>The same discipline is what makes <a class="wl" href="common-log-format-parsing.html">common-log-format-parsing</a> testable: <code>iter_entries</code> yields objects, <code>ParseReport</code> accumulates counts, and nothing in the parsing path writes to a stream.</p>
+<h2 id="the-general-shape" class="h-anch"><a class="hlink" href="#the-general-shape" aria-label="Link to this section">#</a>The general shape</h2>
+<ul><li><strong>Pure core, imperative shell.</strong> Decisions and calculations in functions that take data and return data; reading, writing, printing and clock-checking at the edges.</li><li><strong>Return, don&#x27;t render.</strong> <code>image_ratio</code> in lab 11 returns <code>None</code> rather than printing a zero — the caller decides what &quot;no data&quot; looks like.</li><li><strong>Fail at the boundary.</strong> Validate on load, so the pure core can assume well-formed input.</li></ul>
+<h2 id="related" class="h-anch"><a class="hlink" href="#related" aria-label="Link to this section">#</a>Related</h2>
+<p>The same instinct at a different scale appears in <a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a>, where transformation logic is separated from load mechanics, and in <a class="wl" href="farely.html">farely</a>, whose domain engine is pure and shared across hosts.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="extract-the-shared-core.html">extract-the-shared-core</a> · <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> · <a class="wl" href="common-log-format-parsing.html">common-log-format-parsing</a> · <a class="wl" href="pytest.html">pytest</a> · <a class="wl" href="pythons-data-model.html">pythons-data-model</a></p></div>
+  <div class="tags"><span class="tag">architecture</span><span class="tag">testing</span><span class="tag">python</span><span class="tag">refactoring</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/src/weblog/stats.py</span></code></li><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/labs/06_configuration/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="common-log-format-parsing.html"><span class="kind k-concept">concept</span><span class="rel-t">Common Log Format Parsing</span><span class="rel-g">Apache&#x27;s Common Log Format (CLF) and its Combined extension look space-separated and are not:</span></a><a class="rel" href="pythons-data-model.html"><span class="kind k-concept">concept</span><span class="rel-t">Python&#x27;s Data Model</span><span class="rel-g">Python&#x27;s protocols are duck typing with a contract: implement the right dunder methods and your class participates in ==, &lt;, in, len(), for, [], hashing and printing as…</span></a><a class="rel" href="extract-the-shared-core.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Extract the Shared Core</span><span class="rel-g">When several deliverables consume the same input, make the shared part a real package with tests and reduce each deliverable to a thin script over it — instead of twelve…</span></a><a class="rel" href="data-warehousing-and-business-intelligence.html"><span class="kind k-project">project</span><span class="rel-t">Data Warehousing and Business Intelligence</span><span class="rel-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span></a><a class="rel" href="farely.html"><span class="kind k-project">project</span><span class="rel-t">Farely</span><span class="rel-g">A personal Android rideshare/delivery driver assistant for Wrocław</span></a><a class="rel" href="python-programming-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Python Programming Laboratories</span><span class="rel-g">Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…</span></a><a class="rel" href="pytest.html"><span class="kind k-tech">tech</span><span class="rel-t">pytest</span><span class="rel-g">The test runner for python-programming-laboratories — and the only real test framework anywhere in the two lab repositories</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

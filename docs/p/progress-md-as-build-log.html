@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROGRESS.md as Build Log · Glass Box</title>
+<meta name="description" content="An append-only narrative log of the build, kept in the repo, written per round of work">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PROGRESS.md as Build Log · Glass Box">
+<meta property="og:description" content="An append-only narrative log of the build, kept in the repo, written per round of work">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Dead ends are the payload","Honesty markers","Cost","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["browser_game_stickfps/PROGRESS.md","browser_game_stickfps/TASKS.md","browser_game_stickfps/.tooling/commands/game-loop.md","browser_game_stickfps/files/PROGRESS.md"],"dateModified":"2026-07-28","description":"An append-only narrative log of the build, kept in the repo, written per round of work","headline":"PROGRESS.md as Build Log","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["documentation","debugging","project-management"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-14</span>
+    <span class="repos">browser_game_stickfps</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>An append-only narrative log of the build, kept in the repo, written per round of work</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#dead-ends-are-the-payload">Dead ends are the payload</a></li><li><a href="#honesty-markers">Honesty markers</a></li><li><a href="#cost">Cost</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="progressmd-as-build-log">PROGRESS.md as Build Log</h1>
+<p>An append-only narrative log of the build, kept in the repo, written per round of work. In <a class="wl" href="stickfps.html">stickfps</a> it is 40.5 KB across eleven rounds and it is <strong>the real working record</strong> — the git history is a nine-commit import that says nothing about how the thing was made (<a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a>).</p>
+<p>Its structure has three parts worth copying: an append-only round-by-round narrative, a <strong>rewritten</strong> state summary at the top (the only mutable section, kept short deliberately — see <a class="wl" href="architect-coder-tester-loop.html">architect-coder-tester-loop</a>), and strikethrough on items as they are resolved, so a fixed problem stays visible as history instead of vanishing.</p>
+<h2 id="dead-ends-are-the-payload" class="h-anch"><a class="hlink" href="#dead-ends-are-the-payload" aria-label="Link to this section">#</a>Dead ends are the payload</h2>
+<p>This is the one artefact in the entire source set that records what did <strong>not</strong> work. Nothing else does — code shows the final state, specs show the intent, git shows a squashed import. From <a class="wl" href="stickfps.html">stickfps</a>:</p>
+<ul><li><strong>No <code>reload-request</code> message existed on the wire at all.</strong> Client-side reload was purely cosmetic, so every weapon was permanently empty server-side after its first magazine and every later shot was silently rejected while the HUD showed full ammo. Two systems each individually correct.</li><li><strong><code>WeaponRig</code> never rendered a mesh for two rounds</strong> — a <code>return null</code> hiding a real <a class="wl" href="three-js.html">three-js</a> gotcha about camera-parented meshes.</li><li><strong>Nothing tracked round wins</strong>, so the match winner was undeterminable; elimination also advanced the round on the very next tick, making the death moment last ~16 ms.</li><li><strong>Five authority loopholes in one round</strong> — dead players firing, firing accepted in lobby and buy phase, no server-side equipped-weapon tracking, <code>joinRoom</code> leaving immortal zombie players holding 60 Hz loops alive, and movement with no bounds at all. See <a class="wl" href="server-authoritative-netcode.html">server-authoritative-netcode</a>.</li><li><strong>A real vulnerability</strong>: the client-reported shot origin passed straight into the server raycast.</li><li><strong>The ±π yaw seam</strong> spinning remote players 360° (<a class="wl" href="entity-interpolation.html">entity-interpolation</a>); <strong>lighting broke twice</strong>; a <strong>whole transport replaced</strong> (<a class="wl" href="websocket-tcp-over-geckos-udp.html">websocket-tcp-over-geckos-udp</a>); the <strong>grayscale art identity retired</strong> after being a mandatory constraint in three documents.</li></ul>
+<p>A code reviewer can find none of these from the tree. That is the argument for the file.</p>
+<h2 id="honesty-markers" class="h-anch"><a class="hlink" href="#honesty-markers" aria-label="Link to this section">#</a>Honesty markers</h2>
+<p>The log states its own limits where they occur (<a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>), including that one round was reconstructed after the fact:</p>
+<blockquote><p>&quot;Full input-replay reconciliation (re-simulating unacknowledged inputs after a server correction) is not implemented — v1 uses a simpler blend-toward-snapshot approach... Fine at low latency, will feel soft under real internet jitter.&quot;</p><cite>browser_game_stickfps/PROGRESS.md, 2026-07-25</cite></blockquote>
+<blockquote><p>&quot;No commit made (user hasn&#x27;t asked).&quot;</p><cite>browser_game_stickfps/PROGRESS.md, 2026-07-25</cite></blockquote>
+<p>The second line, recorded twice, is why the git history and the work history diverge — and it is itself logged rather than left to be inferred.</p>
+<h2 id="cost" class="h-anch"><a class="hlink" href="#cost" aria-label="Link to this section">#</a>Cost</h2>
+<p>The log is the only source for several load-bearing claims — the 108/52 test counts among them — with no CI and no coverage artefact to corroborate, so those inherit <code>confidence: medium</code>. A self-reported log is evidence of intent and sequence, not of a passing suite.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="architect-coder-tester-loop.html">architect-coder-tester-loop</a> · <a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a> · <a class="wl" href="superseded-in-place-documentation.html">superseded-in-place-documentation</a> · <a class="wl" href="spec-driven-development.html">spec-driven-development</a> · <a class="wl" href="stickfps.html">stickfps</a></p></div>
+  <div class="tags"><span class="tag">documentation</span><span class="tag">debugging</span><span class="tag">project-management</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/PROGRESS.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/TASKS.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/.tooling/commands/game-loop.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/files/PROGRESS.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="entity-interpolation.html"><span class="kind k-concept">concept</span><span class="rel-t">Entity Interpolation</span><span class="rel-g">Snapshots arrive at the tick rate and at the mercy of the network; frames render at whatever the monitor does</span></a><a class="rel" href="server-authoritative-netcode.html"><span class="kind k-concept">concept</span><span class="rel-t">Server-Authoritative Netcode</span><span class="rel-g">The client is an input device and a renderer</span></a><a class="rel" href="spec-driven-development.html"><span class="kind k-concept">concept</span><span class="rel-t">Spec-Driven Development</span><span class="rel-g">Write the specification before the code, at two levels: one document for the whole system, one document per unit of work</span></a><a class="rel" href="websocket-tcp-over-geckos-udp.html"><span class="kind k-decision">decision</span><span class="rel-t">WebSocket Over TCP Instead of Geckos.io UDP</span><span class="rel-g">Decision (2026-07-24, round 11): replace geckos.io — UDP over WebRTC data channels — with plain WebSocket over TCP (ws), across the whole of stickfps</span></a><a class="rel" href="architect-coder-tester-loop.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Architect / Coder / Tester Loop</span><span class="rel-g">Three roles, one task at a time: architect writes the spec, coder implements it, tester verifies it independently</span></a><a class="rel" href="import-finished-work-into-git.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Import Finished Work Into Git</span><span class="rel-g">Work is built to completion outside version control, then imported in a burst</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="superseded-in-place-documentation.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Superseded-in-Place Documentation</span><span class="rel-g">When a decision is reversed, the document is not rewritten</span></a><a class="rel" href="stickfps.html"><span class="kind k-project">project</span><span class="rel-t">Stickfps</span><span class="rel-g">A 5v5 round-based browser tactical FPS: Counter-Strike round/economy structure, Krunker-style movement feel, procedurally-generated low-poly stickmen</span></a><a class="rel" href="three-js.html"><span class="kind k-tech">tech</span><span class="rel-t">Three.js</span><span class="rel-g">WebGL scene-graph library</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

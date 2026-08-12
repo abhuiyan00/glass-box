@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stateless JWT Authentication · Glass Box</title>
+<meta name="description" content="The server keeps no session">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Stateless JWT Authentication · Glass Box">
+<meta property="og:description" content="The server keeps no session">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["⚠ It exists in lab 4. It does **not** exist in lab 3.","Lab 4 is the real implementation","The dev-key hazard, documented rather than hidden","What statelessness costs, and what is untested","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Information-Systems-Modelling/lab4/StudentService/src/main/java/pl/edu/pwr/tkubik/ism/security/","Information-Systems-Modelling/lab4/StudentService/src/main/java/pl/edu/pwr/tkubik/ism/api/AuthController.java","Information-Systems-Modelling/lab3/StudentService_vlab3/src/main/java/pl/edu/pwr/tkubik/ism/","Information-Systems-Modelling/lab3/StudentService_vlab3/src/main/resources/openapi/openapi.yaml","Information-Systems-Modelling/lab4/StudentService/pom.xml"],"dateModified":"2026-07-28","description":"The server keeps no session","headline":"Stateless JWT Authentication","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["security","architecture","java"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-05-28</span>
+    <span class="repos">Information-Systems-Modelling</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The server keeps no session</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#it-exists-in-lab-4-it-does-not-exist-in-lab-3">⚠ It exists in lab 4. It does **not** exist in lab 3.</a></li><li><a href="#lab-4-is-the-real-implementation">Lab 4 is the real implementation</a></li><li><a href="#the-dev-key-hazard-documented-rather-than-hidden">The dev-key hazard, documented rather than hidden</a></li><li><a href="#what-statelessness-costs-and-what-is-untested">What statelessness costs, and what is untested</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="stateless-jwt-authentication">Stateless JWT Authentication</h1>
+<p>The server keeps no session. A client registers, logs in once, receives a signed <strong>JSON Web Token</strong>, and sends it on every subsequent request as <code>Authorization: Bearer &lt;token&gt;</code>. The server verifies the signature and reads the claims — user id, role, expiry — and that is the entire authentication state. Nothing is stored between requests, so any instance can serve any request and a restart logs nobody out, provided the signing key is stable.</p>
+<h2 id="it-exists-in-lab-4-it-does-not-exist-in-lab-3" class="h-anch"><a class="hlink" href="#it-exists-in-lab-4-it-does-not-exist-in-lab-3" aria-label="Link to this section">#</a>⚠ It exists in lab 4. It does <strong>not</strong> exist in lab 3.</h2>
+<p>This is the sharpest contract-versus-implementation gap in the source set, and both the lab 3 README and the lab 3 OpenAPI document assert the opposite of what the lab 3 code does.</p>
+<p><strong>The lab 3 contract specifies it:</strong></p>
+<blockquote><p>&quot;UC-02: Login – issues HttpOnly JWT session cookie (bcrypt verify)&quot;</p><cite>Information-Systems-Modelling/lab3/StudentService_vlab3/src/main/resources/openapi/openapi.yaml, 2026-04-14</cite></blockquote>
+<p><strong>The lab 3 README repeats it:</strong></p>
+<blockquote><p>&quot;The skeleton becomes a real backend. <code>StudentService_vlab3</code> (Spring Boot 3.5.6 / Java 21) adds <strong>stateless JWT authentication</strong> — register, log in for a token, then send <code>Authorization: Bearer &lt;token&gt;</code> on protected endpoints&quot;</p><cite>Information-Systems-Modelling/lab3/README.md, 2026-07-09</cite></blockquote>
+<p><strong>The lab 3 code implements none of it.</strong> Verified at HEAD:</p>
+<ul><li><code>lab3/.../pom.xml</code> contains <strong>no jjwt and no <code>spring-security-crypto</code></strong> — the dependencies first appear in lab 4.</li><li>There is <strong>no <code>security/</code> package</strong> in lab 3 — no <code>JwtService</code>, no <code>AuthInterceptor</code>, no <code>CurrentUser</code>. <code>grep</code> for <code>Jwts</code>, <code>BCrypt</code> or <code>Bearer</code> across <code>lab3/.../src/main/java</code> returns nothing.</li><li><code>UserServiceImpl.register</code> passes <code>request.getPassword()</code> straight into the <code>UserEntity</code> constructor, which assigns it to the <code>password</code> column. <strong>Passwords are stored in the clear.</strong></li><li><code>AuthController.authLoginPost</code> calls <code>userService.findByEmail(...)</code> and returns the profile if a row exists. <strong>The submitted password is never compared to anything</strong> — any known email logs in.</li></ul>
+<p>Recorded as a finding, not repaired: the wiki does not edit source repos. This goes beyond <a class="wl" href="documentation-drift.html">documentation-drift</a> — the drift is between a <em>contract</em> and its <em>implementation</em>, which is the exact failure <a class="wl" href="contract-first-api-design.html">contract-first-api-design</a> is supposed to make visible.</p>
+<h2 id="lab-4-is-the-real-implementation" class="h-anch"><a class="hlink" href="#lab-4-is-the-real-implementation" aria-label="Link to this section">#</a>Lab 4 is the real implementation</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Class</th>
+<th>Role</th>
+</tr></thead><tbody>
+<tr><td><code>JwtService</code></td><td>issues and verifies tokens (jjwt 0.12.6, HMAC-SHA, 24 h TTL)</td></tr>
+<tr><td><code>AuthInterceptor</code></td><td>Spring MVC interceptor, registered in <code>WebMvcConfig.addInterceptors</code></td></tr>
+<tr><td><code>CurrentUser</code></td><td>the resolved principal handed to controllers</td></tr>
+</tbody></table></div>
+<p><code>AuthController.authLoginPost</code> calls <code>userService.verifyCredentials(email, password)</code>, returns 401 on failure, and on success issues a token via <code>jwtService.issue(id, role)</code> inside a <code>LoginResponse</code>. <code>register</code> hashes with <code>passwordEncoder.encode(...)</code> — BCrypt from <code>spring-security-crypto</code>, which is the <em>only</em> piece of Spring Security in the build. See <a class="wl" href="bcrypt-crypto-only-no-spring-security.html">bcrypt-crypto-only-no-spring-security</a>.</p>
+<p>The <a class="wl" href="angular.html">angular</a> SPA in lab 4 is the consuming client: it stores the token, attaches it to REST calls and guards routes on its presence.</p>
+<h2 id="the-dev-key-hazard-documented-rather-than-hidden" class="h-anch"><a class="hlink" href="#the-dev-key-hazard-documented-rather-than-hidden" aria-label="Link to this section">#</a>The dev-key hazard, documented rather than hidden</h2>
+<p><code>JwtService</code> reads <code>jwt.secret</code> from configuration. If it is blank it generates a random 256-bit key per JVM start and logs a warning — every issued token dies on restart. The javadoc states the condition and the fix:</p>
+<blockquote><p>&quot;If blank, a random key is generated per JVM start (dev mode only — all issued tokens are invalidated on restart).&quot;</p><cite>Information-Systems-Modelling/lab4/.../security/JwtService.java, 2026-05-28</cite></blockquote>
+<p><a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> applied to a security control: the insecure default is allowed, but it announces itself in the logs and in the source. <strong>No key, secret or demo credential from this repository is reproduced in this wiki.</strong></p>
+<h2 id="what-statelessness-costs-and-what-is-untested" class="h-anch"><a class="hlink" href="#what-statelessness-costs-and-what-is-untested" aria-label="Link to this section">#</a>What statelessness costs, and what is untested</h2>
+<p>Statelessness buys horizontal scaling and costs revocation: a token is valid until it expires, so logout is client-side only and a compromised token cannot be recalled inside its 24-hour TTL. Nothing implements a deny-list or a refresh-token scheme, and no README raises the question.</p>
+<p><code>BuildsControllerIntegrationTest</code> exists in <strong>both</strong> labs with one <code>@Test</code> each, driving register → login → <code>POST /builds</code> through MockMvc. In lab 3 that flow passes precisely <em>because</em> nothing is enforced — a test that passes for the wrong reason. <strong>No test covers token expiry, tampering, a missing header, a wrong role, or the interceptor&#x27;s exclusion list.</strong></p>
+<ul><li><strong>TODO:</strong> whether lab 3&#x27;s auth was descoped deliberately (the contract written ahead of the implementation, per <a class="wl" href="contract-first-api-design.html">contract-first-api-design</a>) or simply never finished is unrecorded, and the interview did not cover it. <code>confidence: low</code> — do not assert a reason.</li><li><strong>TODO:</strong> the ISM project page currently lists lab 3 as &quot;Secure backend — stateless-jwt-authentication&quot;. That line needs the correction above propagated into it.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="bcrypt-crypto-only-no-spring-security.html">bcrypt-crypto-only-no-spring-security</a> · <a class="wl" href="spring-boot.html">spring-boot</a> · <a class="wl" href="layered-architecture.html">layered-architecture</a> · <a class="wl" href="information-systems-modelling.html">information-systems-modelling</a> · <a class="wl" href="angular.html">angular</a> · <a class="wl" href="forward-copy-lab-progression.html">forward-copy-lab-progression</a> · <a class="wl" href="contract-first-api-design.html">contract-first-api-design</a> · <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a></p></div>
+  <div class="tags"><span class="tag">security</span><span class="tag">architecture</span><span class="tag">java</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab4/StudentService/src/main/java/pl/edu/pwr/tkubik/ism/security/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab4/StudentService/src/main/java/pl/edu/pwr/tkubik/ism/api/AuthController.java</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab3/StudentService_vlab3/src/main/java/pl/edu/pwr/tkubik/ism/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab3/StudentService_vlab3/src/main/resources/openapi/openapi.yaml</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab4/StudentService/pom.xml</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="contract-first-api-design.html"><span class="kind k-concept">concept</span><span class="rel-t">Contract-First API Design</span><span class="rel-g">Write the API specification first; generate the code from it</span></a><a class="rel" href="layered-architecture.html"><span class="kind k-concept">concept</span><span class="rel-t">Layered Architecture</span><span class="rel-g">Split the application into horizontal tiers where each layer may only call the one below it: api/ handles HTTP and nothing else, service/ holds the domain rules and…</span></a><a class="rel" href="tests-that-pass-for-the-wrong-reason.html"><span class="kind k-concept">concept</span><span class="rel-t">Tests That Pass for the Wrong Reason</span><span class="rel-g">A failing test tells you something is broken</span></a><a class="rel" href="bcrypt-crypto-only-no-spring-security.html"><span class="kind k-decision">decision</span><span class="rel-t">BCrypt Crypto Only, No Spring Security</span><span class="rel-g">Take spring-security-crypto for its BCrypt password encoder and nothing else from Spring Security</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="forward-copy-lab-progression.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Forward-Copy Lab Progression</span><span class="rel-g">Each lab is a whole copy of the previous lab plus one new capability, committed as a new directory</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="information-systems-modelling.html"><span class="kind k-project">project</span><span class="rel-t">Information Systems Modelling</span><span class="rel-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span></a><a class="rel" href="angular.html"><span class="kind k-tech">tech</span><span class="rel-t">Angular</span><span class="rel-g">21.2, standalone components, in exactly one place: the lab 4 SPA of information-systems-modelling</span></a><a class="rel" href="spring-boot.html"><span class="kind k-tech">tech</span><span class="rel-t">Spring Boot</span><span class="rel-g">3.5.6 on Java 21, via spring-boot-starter-parent</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Network Reconnaissance · Glass Box</title>
+<meta name="description" content="The information-gathering phase that precedes any assessment">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Network Reconnaissance · Glass Box">
+<meta property="og:description" content="The information-gathering phase that precedes any assessment">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Passive versus active — a real distinction with a real consequence","What passive collection yields","What active enumeration adds","Recon is the input to everything after it","Legality is part of the technique","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Cybersecurity-Engineering-Laboratories/labs/10_osint/lab-10-report.pdf","Cybersecurity-Engineering-Laboratories/labs/11_network_reconnaissance/lab-11-report.pdf","Cybersecurity-Engineering-Laboratories/labs/12_reverse_shells/lab-12-report.pdf"],"dateModified":"2026-07-28","description":"The information-gathering phase that precedes any assessment","headline":"Network Reconnaissance","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["security","networking","investigation"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Cybersecurity-Engineering-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The information-gathering phase that precedes any assessment</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#passive-versus-active-a-real-distinction-with-a-real-consequence">Passive versus active — a real distinction with a real consequence</a></li><li><a href="#what-passive-collection-yields">What passive collection yields</a></li><li><a href="#what-active-enumeration-adds">What active enumeration adds</a></li><li><a href="#recon-is-the-input-to-everything-after-it">Recon is the input to everything after it</a></li><li><a href="#legality-is-part-of-the-technique">Legality is part of the technique</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="network-reconnaissance">Network Reconnaissance</h1>
+<p>The information-gathering phase that precedes any assessment. Labs 10–12 of <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a> walk it in the order it is actually performed: passive collection first, active enumeration second, and only then anything that touches a service.</p>
+<h2 id="passive-versus-active-a-real-distinction-with-a-real-consequence" class="h-anch"><a class="hlink" href="#passive-versus-active-a-real-distinction-with-a-real-consequence" aria-label="Link to this section">#</a>Passive versus active — a real distinction with a real consequence</h2>
+<p><strong>Passive</strong> collection introduces no traffic to the target. It queries third parties: <code>whois</code>, DNS (<code>dig</code>, <code>host</code>, <code>dnsenum</code>, <code>fierce</code>), search-engine operators, certificate transparency, breach corpora, and the internet-wide scanners (Shodan, Censys, ZoomEye) that already scanned everything. Because the traffic goes to a third party, <strong>nothing appears in the target&#x27;s logs.</strong></p>
+<p><strong>Active</strong> enumeration sends packets to the target and gets both better data and a record of your presence. Everything <a class="wl" href="nmap.html">nmap</a> does is active.</p>
+<p>The consequence is a sequencing rule rather than a preference: exhaust passive sources first, because each active probe spends detectability you cannot get back.</p>
+<h2 id="what-passive-collection-yields" class="h-anch"><a class="hlink" href="#what-passive-collection-yields" aria-label="Link to this section">#</a>What passive collection yields</h2>
+<p>Hostnames and subdomains, IP ranges and hosting provider, mail and nameserver configuration, DNSSEC presence, exposed documents and their metadata, staff names and email format, technology stack from public fingerprints, and known CVEs for anything identified (via NVD).</p>
+<p>The lab&#x27;s framing of <em>why</em> the people-oriented half matters is the durable point: OSINT is used to optimise attacks against specific users. Dates, workplaces, schools and relatives feed password guessing and pretexting, because human-chosen secrets correlate with human-knowable facts. The report quotes Kaufman/Perlman/Speciner — &quot;Humans are incapable of securely storing high-quality cryptographic keys&quot; — which is the honest statement of the problem: recon against people is effective because the credential <em>is</em> a person-shaped secret.</p>
+<p>DNS delegation tracing is the clean technical example — walking from the root servers down through each delegation to the target&#x27;s own nameservers, reading DS and RRSIG records along the way to see where DNSSEC is in force. Entirely public infrastructure, zero contact with the target.</p>
+<h2 id="what-active-enumeration-adds" class="h-anch"><a class="hlink" href="#what-active-enumeration-adds" aria-label="Link to this section">#</a>What active enumeration adds</h2>
+<p>Host discovery, open/closed/filtered port state, service and version identification, OS fingerprinting and network path. <a class="wl" href="nmap.html">nmap</a> recognises six port states, and the three ambiguous ones — <code>filtered</code>, <code>open|filtered</code>, <code>closed|filtered</code> — carry most of the information: they tell you a <strong>packet filter</strong> is present, which is a finding about the defence rather than about the service.</p>
+<p>Two trade-offs the lab records:</p>
+<ul><li><strong>Speed against stealth.</strong> Timing templates run from paranoid to insane. Results in seconds generate traffic that is trivial to notice; results that are practically undetectable take weeks.</li><li><strong>Scan type against what you learn.</strong> Different TCP flag combinations (connect, SYN, null, FIN, ACK, window) elicit different responses from different stacks and filters — the point of running several is that the <em>differences</em> between their answers characterise the firewall.</li></ul>
+<p>Fragmentation, decoys and timing manipulation are covered as firewall/IDS evasion. Described here as a category only.</p>
+<h2 id="recon-is-the-input-to-everything-after-it" class="h-anch"><a class="hlink" href="#recon-is-the-input-to-everything-after-it" aria-label="Link to this section">#</a>Recon is the input to everything after it</h2>
+<p>Lab 12 makes the pipeline explicit: enumerate services and versions, look up known vulnerabilities for the exact versions found, then attempt exploitation with <a class="wl" href="metasploit.html">metasploit</a> against deliberately vulnerable hosts. This wiki records that the chain <strong>was attempted and partly failed</strong> — the report ends with an exploit that connects but yields nothing — and describes no exploitation step, payload or privilege-escalation procedure. See <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a>.</p>
+<p>The defensive reading of the same material is the more useful one: every version string an active scan can read is a version string an attacker can look up. Suppressing service banners, filtering aggressively, and monitoring for scan patterns are all direct responses to what this phase collects.</p>
+<h2 id="legality-is-part-of-the-technique" class="h-anch"><a class="hlink" href="#legality-is-part-of-the-technique" aria-label="Link to this section">#</a>Legality is part of the technique</h2>
+<p>The lab material states it plainly: scanning is regulated differently in different jurisdictions, and in some, running a scanner against infrastructure you do not own is an offence regardless of intent. All work here was 2022 coursework against lab targets provided for the purpose.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="nmap.html">nmap</a> · <a class="wl" href="metasploit.html">metasploit</a> · <a class="wl" href="kali-linux.html">kali-linux</a> · <a class="wl" href="man-in-the-middle-attack.html">man-in-the-middle-attack</a> · <a class="wl" href="web-application-injection.html">web-application-injection</a> · <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a></p></div>
+  <div class="tags"><span class="tag">security</span><span class="tag">networking</span><span class="tag">investigation</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/10_osint/lab-10-report.pdf</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/11_network_reconnaissance/lab-11-report.pdf</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/12_reverse_shells/lab-12-report.pdf</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="man-in-the-middle-attack.html"><span class="kind k-concept">concept</span><span class="rel-t">Man-in-the-Middle Attack</span><span class="rel-g">A class of attack in which the attacker sits between two communicating parties, relaying traffic while both believe they are talking directly to each other</span></a><a class="rel" href="web-application-injection.html"><span class="kind k-concept">concept</span><span class="rel-t">Web Application Injection</span><span class="rel-g">One root cause, many names</span></a><a class="rel" href="cybersecurity-engineering-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Cybersecurity Engineering Laboratories</span><span class="rel-g">Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026</span></a><a class="rel" href="kali-linux.html"><span class="kind k-tech">tech</span><span class="rel-t">Kali Linux</span><span class="rel-g">A Debian-derived distribution that ships several hundred security tools preinstalled and preconfigured</span></a><a class="rel" href="metasploit.html"><span class="kind k-tech">tech</span><span class="rel-t">Metasploit Framework</span><span class="rel-g">An exploitation framework: a catalogued library of exploit modules, payloads, encoders and auxiliary tools behind a common console (msfconsole)</span></a><a class="rel" href="nmap.html"><span class="kind k-tech">tech</span><span class="rel-t">Nmap</span><span class="rel-g">The network mapper: send crafted packets to a target and characterise it from the responses</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

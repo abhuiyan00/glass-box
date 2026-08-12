@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keep the Superseded Version in Tree · Glass Box</title>
+<meta name="description" content="When something is replaced, the replaced thing is not deleted">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Keep the Superseded Version in Tree · Glass Box">
+<meta property="og:description" content="When something is replaced, the replaced thing is not deleted">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Motive 1 — pedagogical, on purpose","Motive 2 — a generated artefact with its pristine source","Motive 3 — the rejected design, still shipped","Motive 4 — inertia, and it costs something","The instructive counter-example","Why it matters for retrieval","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Data-Warehousing-and-Business-Intelligence/docs/lab-1-notes.txt","Data-Warehousing-and-Business-Intelligence/project/twtr/ssas/","Information-Systems-Modelling/lab4/angular-rest-client-student-crud/","IT Applications in Business and Commerce/lecture/exam_prep/chapters.backup.js","Oracle-Database-Laboratories/sql/03_plsql/04_triggers.sql","browser_game_stickfps/files/","labour-fraud-analysis-a-forensic-data-investigation/interactive/i18n.js"],"dateModified":"2026-07-28","description":"When something is replaced, the replaced thing is not deleted","headline":"Keep the Superseded Version in Tree","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["documentation","refactoring"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-06-09</span>
+    <span class="repos">Data-Warehousing-and-Business-Intelligence · IT Applications in Business and Commerce · Information-Systems-Modelling · Oracle-Database-Laboratories · browser_game_stickfps · labour-fraud-analysis-a-forensic-data-investigation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>When something is replaced, the replaced thing is not deleted</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#motive-1-pedagogical-on-purpose">Motive 1 — pedagogical, on purpose</a></li><li><a href="#motive-2-a-generated-artefact-with-its-pristine-source">Motive 2 — a generated artefact with its pristine source</a></li><li><a href="#motive-3-the-rejected-design-still-shipped">Motive 3 — the rejected design, still shipped</a></li><li><a href="#motive-4-inertia-and-it-costs-something">Motive 4 — inertia, and it costs something</a></li><li><a href="#the-instructive-counter-example">The instructive counter-example</a></li><li><a href="#why-it-matters-for-retrieval">Why it matters for retrieval</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="keep-the-superseded-version-in-tree">Keep the Superseded Version in Tree</h1>
+<p>When something is replaced, the replaced thing is not deleted. It stays beside its successor. Confirmed in seven repositories, in four distinct motives — which is what makes it a pattern rather than untidiness.</p>
+<h2 id="motive-1-pedagogical-on-purpose" class="h-anch"><a class="hlink" href="#motive-1-pedagogical-on-purpose" aria-label="Link to this section">#</a>Motive 1 — pedagogical, on purpose</h2>
+<p><code>Oracle-Database-Laboratories</code> keeps a three-trigger-plus-package-state implementation next to the compound trigger that replaced it, and labels the loser:</p>
+<blockquote><p>&quot;This works, but it is fragile in a way worth naming ... The guard flag below is what stops that recursion. Version (b) has no such problem and is the one to prefer.&quot;</p><cite>Oracle-Database-Laboratories/sql/03_plsql/04_triggers.sql, 2026-07-25</cite></blockquote>
+<p>Same instinct in <code>Data-Warehousing-and-Business-Intelligence</code>: <code>docs/lab-1-notes.txt</code> and <code>lab-2-notes.txt</code> hold the <strong>as-submitted</strong> coursework SQL, bugs and all, while <code>sql/01_analytics/</code> rewrites each query with a comment explaining what was wrong. A before/after record, deliberately kept. See <a class="wl" href="multiple-solutions-side-by-side.html">multiple-solutions-side-by-side</a> for the same habit applied to alternatives that are all correct.</p>
+<h2 id="motive-2-a-generated-artefact-with-its-pristine-source" class="h-anch"><a class="hlink" href="#motive-2-a-generated-artefact-with-its-pristine-source" aria-label="Link to this section">#</a>Motive 2 — a generated artefact with its pristine source</h2>
+<p><code>IT Applications in Business and Commerce</code> keeps <code>chapters.backup.js</code> (454 lines, hand-written) beside the generated <code>chapters.js</code> (567 lines, <code>DO-NOT-EDIT</code> banner, deterministic seed 1337). The &quot;backup&quot; is in fact the source of truth. Covered on <a class="wl" href="generated-artifact-with-pristine-source.html">generated-artifact-with-pristine-source</a>.</p>
+<h2 id="motive-3-the-rejected-design-still-shipped" class="h-anch"><a class="hlink" href="#motive-3-the-rejected-design-still-shipped" aria-label="Link to this section">#</a>Motive 3 — the rejected design, still shipped</h2>
+<p><code>Data-Warehousing-and-Business-Intelligence</code> argues at length that a technical indicator must be a measure, not a dimension — and then ships <code>project/twtr/ssas/Dim RSI.dim</code> with <code>RSIKey</code>, <code>IsOverbought</code>, <code>IsOversold</code> attributes, i.e. exactly the rejected model. The SQL side ships the winner; the SSAS side ships the loser. See <a class="wl" href="rsi-as-measure-not-dimension.html">rsi-as-measure-not-dimension</a>.</p>
+<h2 id="motive-4-inertia-and-it-costs-something" class="h-anch"><a class="hlink" href="#motive-4-inertia-and-it-costs-something" aria-label="Link to this section">#</a>Motive 4 — inertia, and it costs something</h2>
+<ul><li><code>Information-Systems-Modelling</code> carries a <strong>39-file nested duplicate</strong> Angular project — the pre-rewrite student-CRUD scaffold — inside the real app, plus a 557-line <code>instances.ttl</code> referenced by no code, README or pom, plus two byte-identical copies of <code>ontology.ttl</code> in different labs.</li><li><code>IT Applications in Business and Commerce</code> keeps two complete <code>gym_torcs/</code> trees with <code>snakeoil3_gym.py</code> (605 lines) duplicated between them, upstream leftovers neither agent uses, and a <code>commands.txt</code> that is an exact stale copy naming the wrong checkpoint files.</li><li><code>labour-fraud-analysis</code> wrote <code>build_viewer.py::strip_locale()</code> to remove a second locale, and <code>interactive/i18n.js</code> still advertises &quot;i18n (EN / PL)&quot; while <code>app.js</code> still branches on <code>&#x27;pl&#x27;</code>.</li><li><code>browser_game_stickfps/files/</code> holds pristine 2026-07-14 seed copies of <code>TASKS.md</code>, an empty <code>PROGRESS.md</code> skeleton and the four agent files — a bootstrap kit left in place.</li></ul>
+<h2 id="the-instructive-counter-example" class="h-anch"><a class="hlink" href="#the-instructive-counter-example" aria-label="Link to this section">#</a>The instructive counter-example</h2>
+<p><code>Information-Systems-Modelling</code> <code>98fac45 refactor(lab6): drop hand-written snapshot pages, generate from the app</code> <strong>deleted</strong> six hand-written HTML pages, −1268 lines. It is the only place in the whole source set where a superseded version was removed rather than kept — and it is also the only commit in that repo that reads like a working log rather than an import. See <a class="wl" href="generate-markup-instead-of-hand-writing-it.html">generate-markup-instead-of-hand-writing-it</a>.</p>
+<h2 id="why-it-matters-for-retrieval" class="h-anch"><a class="hlink" href="#why-it-matters-for-retrieval" aria-label="Link to this section">#</a>Why it matters for retrieval</h2>
+<p>A reader cannot tell motive 1 from motive 4 by looking at the tree. Both leave two versions side by side. The distinguishing evidence is whether a comment names the loser as inferior — which is the same discipline as <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>. Where no such comment exists, this wiki treats the duplicate as inertia and says so.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="multiple-solutions-side-by-side.html">multiple-solutions-side-by-side</a> · <a class="wl" href="documentation-drift.html">documentation-drift</a> · <a class="wl" href="superseded-in-place-documentation.html">superseded-in-place-documentation</a> · <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> · <a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a></p></div>
+  <div class="tags"><span class="tag">documentation</span><span class="tag">refactoring</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/docs/lab-1-notes.txt</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/ssas/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab4/angular-rest-client-student-crud/</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/lecture/exam_prep/chapters.backup.js</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/03_plsql/04_triggers.sql</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/files/</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/interactive/i18n.js</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="generate-markup-instead-of-hand-writing-it.html"><span class="kind k-decision">decision</span><span class="rel-t">Generate Markup Instead of Hand-Writing It</span><span class="rel-g">Delete six hand-written HTML pages carrying RDFa and JSON-LD, and generate both syntaxes from a single JSON dataset instead</span></a><a class="rel" href="rsi-as-measure-not-dimension.html"><span class="kind k-decision">decision</span><span class="rel-t">RSI as Measure, Not Dimension</span><span class="rel-g">Store the 14-day relative strength index as a nullable numeric column on the fact table dw.FACT_QUOTES, and push the overbought/oversold interpretation into a view</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="generated-artifact-with-pristine-source.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Artifact with a Pristine Source</span><span class="rel-g">The file the application loads is generated, carries a DO-NOT-EDIT banner naming its generator, and its input is committed beside it</span></a><a class="rel" href="import-finished-work-into-git.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Import Finished Work Into Git</span><span class="rel-g">Work is built to completion outside version control, then imported in a burst</span></a><a class="rel" href="multiple-solutions-side-by-side.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Multiple Solutions Side by Side</span><span class="rel-g">The same problem is solved two or three ways in one deliverable, and the trade-off between them is the point</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="superseded-in-place-documentation.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Superseded-in-Place Documentation</span><span class="rel-g">When a decision is reversed, the document is not rewritten</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

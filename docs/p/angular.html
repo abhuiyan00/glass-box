@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Angular · Glass Box</title>
+<meta name="description" content="21.2, standalone components, in exactly one place: the lab 4 SPA of information-systems-modelling">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Angular · Glass Box">
+<meta property="og:description" content="21.2, standalone components, in exactly one place: the lab 4 SPA of information-systems-modelling">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The stack as pinned","Two Angular apps, one directory inside the other","Why Angular at all","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Information-Systems-Modelling/lab4/angular-rest-client-student-crud/","Information-Systems-Modelling/lab4/angular-rest-client-student-crud/package.json","Information-Systems-Modelling/lab4/README.md"],"dateModified":"2026-07-28","description":"21.2, standalone components, in exactly one place: the lab 4 SPA of information-systems-modelling","headline":"Angular","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["typescript","web-dev","testing"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-05-28</span>
+    <span class="repos">Information-Systems-Modelling</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>21.2, standalone components, in exactly one place: the lab 4 SPA of information-systems-modelling</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-stack-as-pinned">The stack as pinned</a></li><li><a href="#two-angular-apps-one-directory-inside-the-other">Two Angular apps, one directory inside the other</a></li><li><a href="#why-angular-at-all">Why Angular at all</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="angular">Angular</h1>
+<p><strong>21.2, standalone components</strong>, in exactly one place: the lab 4 SPA of <a class="wl" href="information-systems-modelling.html">information-systems-modelling</a>. It is the only Angular in the source set — every other frontend in the corpus is either <a class="wl" href="react.html">react</a> or hand-written vanilla JS.</p>
+<h2 id="the-stack-as-pinned" class="h-anch"><a class="hlink" href="#the-stack-as-pinned" aria-label="Link to this section">#</a>The stack as pinned</h2>
+<p><code>dependencies</code>: <code>@angular/{common,compiler,core,forms,platform-browser,platform-server,router}</code> ^21.2, <strong><code>@angular/ssr</code> ^21.2.7</strong>, <code>express</code> ^5.1.0, <code>rxjs</code> ~7.8, <code>tslib</code>. <code>devDependencies</code>: <code>@angular/build</code>, <code>@angular/cli</code>, <code>@angular/compiler-cli</code>, <code>@types/express</code>, <code>@types/node</code>, <code>jsdom</code>, <strong><code>json-server</code></strong>, <code>prettier</code> ^3.8.1, <code>typescript</code> ~5.9.2, <strong><code>vitest</code> ^4.0.8</strong>. <code>packageManager: npm@11.11.0</code>.</p>
+<p>Three of those are worth stopping on.</p>
+<p><strong><code>vitest</code>, not Karma/Jasmine.</strong> The Angular default test runner is absent; <code>jsdom</code> plus vitest 4 replaces it. This matches the corpus habit of preferring the lighter runner, but it is the only Angular project available to compare against.</p>
+<p><strong><code>@angular/ssr</code> + express in an SPA.</strong> The app is documented as a browser client talking to Spring Boot on port 8080, and server-side rendering is lab <strong>6&#x27;s</strong> stated topic, not lab 4&#x27;s. The <code>serve:ssr:*</code> script exists and the server entry point is generated.</p>
+<p><strong><code>json-server</code> as a devDependency.</strong> A leftover from the pre-rewrite scaffold below; nothing in the live app uses it.</p>
+<h2 id="two-angular-apps-one-directory-inside-the-other" class="h-anch"><a class="hlink" href="#two-angular-apps-one-directory-inside-the-other" aria-label="Link to this section">#</a>Two Angular apps, one directory inside the other</h2>
+<p><code>lab4/angular-rest-client-student-crud/</code> is the real ModellingClub SPA — components and feature routing, a REST client against the Spring API, views guarded on the presence of a JWT (see <a class="wl" href="stateless-jwt-authentication.html">stateless-jwt-authentication</a>).</p>
+<p>Nested <strong>inside</strong> it sits <code>angular-rest-client-student-crud/angular-rest-client-student-crud/</code> — a 39-file copy of the original assignment&#x27;s <em>student</em> CRUD scaffold, complete with its own <code>db.json</code> for <code>json-server</code>. It is dead: nothing imports it, nothing builds it. It survives as one of four instances of <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> in this repo.</p>
+<p>⚠ The nested duplicate is also where all the <code>.spec.ts</code> files live. <strong>The live SPA has one <code>app.spec.ts</code> and no feature tests</strong> — so the test files a reader finds by globbing belong to the dead app.</p>
+<h2 id="why-angular-at-all" class="h-anch"><a class="hlink" href="#why-angular-at-all" aria-label="Link to this section">#</a>Why Angular at all</h2>
+<p>Not a free choice: lab 1&#x27;s own requirements document proposes a Linux / Python / PostgreSQL / Nginx stack, and the labs answer the same requirements on Java + Angular instead. That is recorded as <a class="wl" href="java-angular-over-the-specs-python-stack.html">java-angular-over-the-specs-python-stack</a> — the requirements are treated as the contract and the technology as a choice, stated in those words in the root README.</p>
+<ul><li><strong>TODO:</strong> why SSR was added to lab 4 when SSR is lab 6&#x27;s topic is unrecorded, and the interview did not cover it. <code>confidence: low</code> — do not assert a reason.</li><li><strong>TODO:</strong> the nested duplicate&#x27;s status (accidental <code>ng new</code> inside the project, or an intentional keep) is likewise unrecorded. Do not assert; it can be checked by asking before any cleanup.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="information-systems-modelling.html">information-systems-modelling</a> · <a class="wl" href="spring-boot.html">spring-boot</a> · <a class="wl" href="stateless-jwt-authentication.html">stateless-jwt-authentication</a> · <a class="wl" href="java-angular-over-the-specs-python-stack.html">java-angular-over-the-specs-python-stack</a> · <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> · <a class="wl" href="react.html">react</a></p></div>
+  <div class="tags"><span class="tag">typescript</span><span class="tag">web-dev</span><span class="tag">testing</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab4/angular-rest-client-student-crud/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab4/angular-rest-client-student-crud/package.json</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab4/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="stateless-jwt-authentication.html"><span class="kind k-concept">concept</span><span class="rel-t">Stateless JWT Authentication</span><span class="rel-g">The server keeps no session</span></a><a class="rel" href="java-angular-over-the-specs-python-stack.html"><span class="kind k-decision">decision</span><span class="rel-t">Java and Angular over the Spec&#x27;s Python Stack</span><span class="rel-g">Build the ModellingClub platform on Java 21 + Spring Boot + Angular, even though lab 1&#x27;s own requirements specification proposes Linux / Python / PostgreSQL / Nginx</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="information-systems-modelling.html"><span class="kind k-project">project</span><span class="rel-t">Information Systems Modelling</span><span class="rel-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span></a><a class="rel" href="react.html"><span class="kind k-tech">tech</span><span class="rel-t">React</span><span class="rel-g">Component library for building UIs from declarative state-to-markup functions</span></a><a class="rel" href="spring-boot.html"><span class="kind k-tech">tech</span><span class="rel-t">Spring Boot</span><span class="rel-g">3.5.6 on Java 21, via spring-boot-starter-parent</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

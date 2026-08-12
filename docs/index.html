@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glass Box</title>
+<meta name="description" content="281 pages on how Alimuzzaman Bhuiyan builds software, searchable in the browser.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Glass Box">
+<meta property="og:description" content="281 pages on how Alimuzzaman Bhuiyan builds software, searchable in the browser.">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","author":{"@type":"Person","name":"Alimuzzaman Bhuiyan","sameAs":["https://github.com/abhuiyan00"],"url":"https://github.com/abhuiyan00"},"description":"A working knowledge base over verified projects — and the reasons behind them.","inLanguage":"en","name":"Glass Box"}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="index.html" aria-current="page">Ask</a><a href="browse.html">Browse</a><a href="map.html">Map</a><a href="receipts.html">Receipts</a><a href="gaps.html">Gaps</a><a href="how.html">How it works</a></nav>
+  <div class="top-r">
+    
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<section class="hero">
+  <p class="eyebrow">A working knowledge base over verified projects — and the reasons behind them.</p>
+  <h1>Ask it something.</h1>
+  <p class="lede"><strong>Alimuzzaman Bhuiyan</strong> — 28 repositories, read once and written up as
+    281 pages that each answer one question. Type below and it returns the pages that
+    answer yours — or tells you plainly that nothing here does.</p>
+
+  <form class="ask" role="search" method="get" action="index.html">
+    <label class="vh" for="q">Ask the knowledge base</label>
+    <div class="ask-w">
+      <input id="q" class="ask-i" name="q" type="search" data-ask autocomplete="off"
+        spellcheck="false" role="combobox" aria-expanded="false" aria-controls="sg"
+        aria-autocomplete="list" placeholder="walk me through a project you built end to end">
+      <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+        data-suggest hidden></ul>
+    </div>
+    <button class="primary" type="submit">Search</button>
+  </form>
+  <p class="ask-note">Suggestions appear as you type: matching pages first, then word
+    completions, then questions this has been measured answering. Everything runs in your
+    browser — nothing is sent anywhere, and there is no model in the loop.
+    <kbd>/</kbd> focuses the box, <kbd>↑</kbd><kbd>↓</kbd> move, <kbd>Esc</kbd> clears.</p>
+  <div class="seeds"><button type="button" data-seed="walk me through a project you built end to end">walk me through a project you built end to end</button><button type="button" data-seed="what is a technical decision you made and why">what is a technical decision you made and why</button><button type="button" data-seed="tell me about a decision you later reversed">tell me about a decision you later reversed</button><button type="button" data-seed="how do you decide what to test">how do you decide what to test</button><button type="button" data-seed="how do you handle secrets and credentials">how do you handle secrets and credentials</button><button type="button" data-seed="why not just load it from a cdn">why not just load it from a cdn</button></div>
+</section>
+
+<section class="results" data-results aria-live="polite"></section>
+
+<section class="band">
+  <h2>Browse instead</h2>
+  <div class="tiles"><a class="tile" href="browse.html#project">
+      <span class="tile-n">28</span>
+      <span class="tile-t">Projects</span>
+      <span class="tile-b">One per repository — what it is, how it is built, where it stands.</span></a><a class="tile" href="browse.html#decision">
+      <span class="tile-n">45</span>
+      <span class="tile-t">Decisions</span>
+      <span class="tile-b">One choice each, dated, with the alternative that lost and why.</span></a><a class="tile" href="browse.html#pattern">
+      <span class="tile-n">41</span>
+      <span class="tile-t">Patterns</span>
+      <span class="tile-b">How this author builds, confirmed across repositories.</span></a><a class="tile" href="browse.html#concept">
+      <span class="tile-n">105</span>
+      <span class="tile-t">Concepts</span>
+      <span class="tile-b">A transferable idea, explained once.</span></a><a class="tile" href="browse.html#tech">
+      <span class="tile-n">62</span>
+      <span class="tile-t">Tech</span>
+      <span class="tile-b">A named tool or library, and what it was actually used for.</span></a></div>
+</section>
+
+<section class="band">
+  <h2>The projects</h2>
+  <p class="band-b">28 of the 28 repositories have a public page here.
+    Each says what the thing is, what it runs on, and what state it is honestly in — the
+    rest stayed private. Every page names the files it was written from.</p>
+  <div class="cards"><a class="card" href="p/agent-orchestrator.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Agent Orchestrator</span>
+  <span class="card-g">A VS Code extension that turns one request into a plan and runs it across the coding CLIs the author already pays for</span>
+  <span class="from">vs-llm-orchestrator</span>
+</a><a class="card" href="p/air-quality-public-health-analysis.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Air Quality and Public Health Analysis</span>
+  <span class="card-g">A dependency-free Python pipeline that asks one narrow question honestly: at the area-day level, how does the linear association between air-quality exposure and newly…</span>
+  <span class="from">air-quality-public-health-analysis</span>
+</a><a class="card" href="p/computer-arithmetic-and-number-representation.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Computer Arithmetic and Number Representation</span>
+  <span class="card-g">Positional systems, the four conversion methods, the binary codes for decimal digits, sign-magnitude and both complements, arithmetic performed inside a code, and…</span>
+  <span class="from">computer-arithmetic-and-number-representation</span>
+</a><a class="card" href="p/computer-project-management.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Computer Project Management</span>
+  <span class="card-g">Coursework for the Computer Project Management course at Wrocław University of Science and Technology, 2026</span>
+  <span class="from">Computer Project Management</span>
+</a><a class="card" href="p/cybersecurity-engineering-laboratories.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Cybersecurity Engineering Laboratories</span>
+  <span class="card-g">Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026</span>
+  <span class="from">Cybersecurity-Engineering-Laboratories</span>
+</a><a class="card" href="p/data-structures-and-algorithms.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Data Structures and Algorithms</span>
+  <span class="card-g">A Java 21 library in which every complexity claim is a test rather than a comment</span>
+  <span class="from">data-structures-and-algorithms</span>
+</a><a class="card" href="p/data-warehousing-and-business-intelligence.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Data Warehousing and Business Intelligence</span>
+  <span class="card-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span>
+  <span class="from">Data-Warehousing-and-Business-Intelligence</span>
+</a><a class="card" href="p/discrete-mathematics-laboratories.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Discrete Mathematics Laboratories</span>
+  <span class="card-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span>
+  <span class="from">Discrete-Mathematics-Laboratories</span>
+</a><a class="card" href="p/distributed-systems-protocol-labs.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Distributed Systems Protocol Labs</span>
+  <span class="card-g">One service contract, executed over two real transports — length-prefixed TCP JSON and HTTP/1.1 JSON — with a third, gRPC, expressed as a schema and deliberately left…</span>
+  <span class="from">distributed-systems-protocol-labs</span>
+</a><a class="card" href="p/embedded-systems-iot-laboratories.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Embedded Systems and IoT Laboratories</span>
+  <span class="card-g">Four Arduino exercises rebuilt as one testable C++17 project</span>
+  <span class="from">embedded-systems-iot-laboratories</span>
+</a><a class="card" href="p/farely.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Farely</span>
+  <span class="card-g">A personal Android rideshare/delivery driver assistant for Wrocław</span>
+  <span class="from">Farley</span>
+</a><a class="card" href="p/functional-programming-scala-laboratories.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Functional Programming Scala Laboratories</span>
+  <span class="card-g">A fragmented set of Scala exercises rebuilt as one coherent laboratory</span>
+  <span class="from">functional-programming-scala-laboratories</span>
+</a><a class="card" href="p/health-awareness-support-platform.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Health Awareness Support Platform</span>
+  <span class="card-g">Clearpath — a Django health-education product rebuilt from a bachelor capstone by the same author</span>
+  <span class="from">health-awareness-support-platform</span>
+</a><a class="card" href="p/it-applications-in-business-and-commerce.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">IT Applications in Business and Commerce</span>
+  <span class="card-g">This repository is not business analytics</span>
+  <span class="from">IT Applications in Business and Commerce</span>
+</a><a class="card" href="p/information-systems-modelling.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Information Systems Modelling</span>
+  <span class="card-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span>
+  <span class="from">Information-Systems-Modelling</span>
+</a><a class="card" href="p/labour-fraud-analysis.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Labour Fraud Analysis</span>
+  <span class="card-g">A portfolio case file</span>
+  <span class="from">labour-fraud-analysis-a-forensic-data-investigation</span>
+</a><a class="card" href="p/logic-for-computer-scientists.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Logic for Computer Scientists</span>
+  <span class="card-g">Four machines decide the same question — does this follow from that — and the test suite makes them agree</span>
+  <span class="from">logic-for-computer-scientists</span>
+</a><a class="card" href="p/optimization-methods.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Optimization Methods</span>
+  <span class="card-g">Master&#x27;s Optimization Methods course at Wrocław University of Science and Technology (FICT, lectures by M. Przewoźniczek)</span>
+  <span class="from">Optimization Methods</span>
+</a><a class="card" href="p/oracle-database-laboratories.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Oracle Database Laboratories</span>
+  <span class="card-g">Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite</span>
+  <span class="from">Oracle-Database-Laboratories</span>
+</a><a class="card" href="p/pwr-subject-notes.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">PWR Subject Notes</span>
+  <span class="card-g">The knowledge in the coursework archive that has no repository, written down — plus the census that proves nothing was quietly left out</span>
+  <span class="from">pwr-subject-notes</span>
+</a><a class="card" href="p/physics-exam-prep.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Physics Exam Prep</span>
+  <span class="card-g">Not a generated static site and not an asset dump: a hand-written, zero-dependency, offline-first single-page web app — an installable PWA — built from one Physics…</span>
+  <span class="from">Physics</span>
+</a><a class="card" href="p/privacy-policy-template.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Privacy Policy Template</span>
+  <span class="card-g">Six files, ~25 KB</span>
+  <span class="from">privacy-policy</span>
+</a><a class="card" href="p/programming-fundamentals-and-oop-laboratories.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Programming Fundamentals and OOP Laboratories</span>
+  <span class="card-g">Compact laboratory modules for object-oriented modelling in Java 21 and explicit ownership in C++20</span>
+  <span class="from">programming-fundamentals-and-oop-laboratories</span>
+</a><a class="card" href="p/project-management-web-platform.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Project Management Web Platform</span>
+  <span class="card-g">A TypeScript API for projects, tasks, accounts, and session-based access control</span>
+  <span class="from">project-management-web-platform</span>
+</a><a class="card" href="p/python-programming-laboratories.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Python Programming Laboratories</span>
+  <span class="card-g">Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…</span>
+  <span class="from">Python-Programming-Laboratories</span>
+</a><a class="card" href="p/research-methodologies-open-set-recognition.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Research Methodologies — Open-Set Recognition</span>
+  <span class="card-g">Despite the course name, this repo does not teach research methods — it applies one</span>
+  <span class="from">Research Methodologies</span>
+</a><a class="card" href="p/stickfps.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Stickfps</span>
+  <span class="card-g">A 5v5 round-based browser tactical FPS: Counter-Strike round/economy structure, Krunker-style movement feel, procedurally-generated low-poly stickmen</span>
+  <span class="from">browser_game_stickfps</span>
+</a><a class="card" href="p/systems-analysis-and-decision-support.html">
+  <span class="kind k-project">project</span>
+  <span class="card-t">Systems Analysis and Decision Support</span>
+  <span class="card-g">Least squares and ridge regression, κ-NN, Bernoulli naive Bayes, and logistic regression fitted by both gradient ascent and IRLS — in pure Python with no NumPy</span>
+  <span class="from">systems-analysis-and-decision-support</span>
+</a></div>
+</section>
+
+<section class="band closing">
+  <h2>Why you can check any of this</h2>
+  <div class="three">
+    <div><h3>Sources, not assertions</h3><p>Every page names the files it was written from,
+      and quotes them. A claim with nothing behind it is marked as such rather than
+      smoothed over.</p></div>
+    <div><h3>It publishes its own misses</h3><p>The
+      <a href="gaps.html">gaps page</a> counts what this knowledge base cannot answer, and
+      the count is computed, not written.</p></div>
+    <div><h3>Nothing here is hand-typed</h3><p>Every number comes from the build. See
+      <a href="receipts.html">receipts</a> for what each one counts and how.</p></div>
+  </div>
+</section>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="browse.html">Browse everything</a>
+    <a href="receipts.html">The numbers, and how each is counted</a>
+    <a href="gaps.html">What it does not know</a>
+    <a href="how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

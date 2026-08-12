@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Layered Architecture · Glass Box</title>
+<meta name="description" content="Split the application into horizontal tiers where each layer may only call the one below it: api/ handles HTTP and nothing else, service/ holds the domain rules and…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Layered Architecture · Glass Box">
+<meta property="og:description" content="Split the application into horizontal tiers where each layer may only call the one below it: api/ handles HTTP and nothing else, service/ holds the domain rules and…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["As implemented","The observation that complicates it","Limits observed","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Information-Systems-Modelling/lab2/StudentService/","Information-Systems-Modelling/lab3/StudentService_vlab3/","Information-Systems-Modelling/lab4/StudentService/"],"dateModified":"2026-07-28","description":"Split the application into horizontal tiers where each layer may only call the one below it: api/ handles HTTP and nothing else, service/ holds the domain rules and…","headline":"Layered Architecture","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["architecture","java","data-modelling"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-04-14</span>
+    <span class="repos">Information-Systems-Modelling</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Split the application into horizontal tiers where each layer may only call the one below it: api/ handles HTTP and nothing else, service/ holds the domain rules and…</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#as-implemented">As implemented</a></li><li><a href="#the-observation-that-complicates-it">The observation that complicates it</a></li><li><a href="#limits-observed">Limits observed</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="layered-architecture">Layered Architecture</h1>
+<p>Split the application into horizontal tiers where <strong>each layer may only call the one below it</strong>: <code>api/</code> handles HTTP and nothing else, <code>service/</code> holds the domain rules and knows nothing about HTTP, <code>repository/</code> talks to the database, <code>entity/</code> is the persistent shape. The constraint is the architecture — without the &quot;only downward&quot; rule it is just four packages.</p>
+<p>The payoff is substitution: swapping <a class="wl" href="sqlite.html">sqlite</a> for <a class="wl" href="h2-database.html">h2-database</a> between lab 2 and lab 3 touches <code>repository/</code>, configuration and nothing else, because no controller ever held a query.</p>
+<h2 id="as-implemented" class="h-anch"><a class="hlink" href="#as-implemented" aria-label="Link to this section">#</a>As implemented</h2>
+<p>All three Java backends in <a class="wl" href="information-systems-modelling.html">information-systems-modelling</a> use the <strong>identical</strong> split under <code>pl.edu.pwr.tkubik.ism</code> — same packages, same artifactId, same names, across 11 → 41 → 76 Java files. That repetition is not accidental; it is <a class="wl" href="forward-copy-lab-progression.html">forward-copy-lab-progression</a> preserving the skeleton while each lab adds one capability to it.</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Lab</th>
+<th>Java files</th>
+<th>What the layering absorbed</th>
+</tr></thead><tbody>
+<tr><td>2</td><td>11</td><td>generated API interfaces from <a class="wl" href="contract-first-api-design.html">contract-first-api-design</a></td></tr>
+<tr><td>3</td><td>41</td><td><a class="wl" href="stateless-jwt-authentication.html">stateless-jwt-authentication</a> added at the <code>config/</code> seam, not inside handlers</td></tr>
+<tr><td>4</td><td>76</td><td><a class="wl" href="aspect-oriented-programming.html">aspect-oriented-programming</a>, validation, uploads, dev/prod profiles</td></tr>
+</tbody></table></div>
+<p>Lab 4 is where the layering earns its keep. <code>GlobalExceptionHandler</code> converts anything thrown below into an RFC 9457 <code>ProblemDetail</code> at the <code>api/</code> boundary, so no service needs to know it is being called over HTTP, and no stack trace reaches a client. Aspects attach to pointcuts over the service layer without any service method being edited.</p>
+<h2 id="the-observation-that-complicates-it" class="h-anch"><a class="hlink" href="#the-observation-that-complicates-it" aria-label="Link to this section">#</a>The observation that complicates it</h2>
+<p>Layering is a <em>static</em> decomposition. Everything this repo added after lab 2 that was genuinely cross-cutting — logging, timing, statistics, security auditing — <strong>could not be placed in a layer</strong>, which is precisely why lab 4 reaches for aspects. Layers handle the vertical slice; they have no answer for the horizontal one. Recording both in the same codebase is what makes the pair legible.</p>
+<h2 id="limits-observed" class="h-anch"><a class="hlink" href="#limits-observed" aria-label="Link to this section">#</a>Limits observed</h2>
+<ul><li><strong>Zero tests exist for any service implementation.</strong> The two integration tests in the repo drive the full stack end-to-end through MockMvc; nothing tests a layer in isolation, which is the usual argument for having layers at all. The testability benefit is claimed by structure, not demonstrated.</li><li><strong>TODO:</strong> <code>MessageController</code>, <code>TelemetryController</code> and <code>AnalyticsController</code> exist in lab 4 but appear in no README feature list. Whether they are finished, stubs, or abandoned mid-feature is unrecorded. <code>confidence: low</code> — do not assert lab 4 is feature-complete.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="contract-first-api-design.html">contract-first-api-design</a> · <a class="wl" href="aspect-oriented-programming.html">aspect-oriented-programming</a> · <a class="wl" href="stateless-jwt-authentication.html">stateless-jwt-authentication</a> · <a class="wl" href="spring-boot.html">spring-boot</a> · <a class="wl" href="forward-copy-lab-progression.html">forward-copy-lab-progression</a> · <a class="wl" href="information-systems-modelling.html">information-systems-modelling</a></p></div>
+  <div class="tags"><span class="tag">architecture</span><span class="tag">java</span><span class="tag">data-modelling</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab2/StudentService/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab3/StudentService_vlab3/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab4/StudentService/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="aspect-oriented-programming.html"><span class="kind k-concept">concept</span><span class="rel-t">Aspect Oriented Programming</span><span class="rel-g">A cross-cutting concern — logging, timing, auditing, usage counting — is one that would otherwise be copy-pasted into every method that needs it</span></a><a class="rel" href="contract-first-api-design.html"><span class="kind k-concept">concept</span><span class="rel-t">Contract-First API Design</span><span class="rel-g">Write the API specification first; generate the code from it</span></a><a class="rel" href="stateless-jwt-authentication.html"><span class="kind k-concept">concept</span><span class="rel-t">Stateless JWT Authentication</span><span class="rel-g">The server keeps no session</span></a><a class="rel" href="forward-copy-lab-progression.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Forward-Copy Lab Progression</span><span class="rel-g">Each lab is a whole copy of the previous lab plus one new capability, committed as a new directory</span></a><a class="rel" href="information-systems-modelling.html"><span class="kind k-project">project</span><span class="rel-t">Information Systems Modelling</span><span class="rel-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span></a><a class="rel" href="h2-database.html"><span class="kind k-tech">tech</span><span class="rel-t">H2 Database</span><span class="rel-g">An embedded Java SQL database that runs inside the application process</span></a><a class="rel" href="spring-boot.html"><span class="kind k-tech">tech</span><span class="rel-t">Spring Boot</span><span class="rel-g">3.5.6 on Java 21, via spring-boot-starter-parent</span></a><a class="rel" href="sqlite.html"><span class="kind k-tech">tech</span><span class="rel-t">SQLite</span><span class="rel-g">An embedded SQL database: one file, no server, no configuration, and a driver in Python&#x27;s standard library as sqlite3</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CrypTool · Glass Box</title>
+<meta name="description" content="A free cryptography teaching application developed by German universities, built to make cryptographic mechanisms visible rather than merely available">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CrypTool · Glass Box">
+<meta property="og:description" content="A free cryptography teaching application developed by German universities, built to make cryptographic mechanisms visible rather than merely available">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["What it provides","What it demonstrates well","Its limits, as the labs found them","Why a teaching tool earns a wiki page","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Cybersecurity-Engineering-Laboratories/README.md","Cybersecurity-Engineering-Laboratories/labs/01-02_classical_ciphers_and_entropy/","Cybersecurity-Engineering-Laboratories/labs/03_symmetric_ciphers/lab-03-report.pdf","Cybersecurity-Engineering-Laboratories/labs/05_attacks_on_modern_ciphers/lab-05-report.pdf"],"dateModified":"2026-07-28","description":"A free cryptography teaching application developed by German universities, built to make cryptographic mechanisms visible rather than merely available","headline":"CrypTool","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["cryptography","security","documentation"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Cybersecurity-Engineering-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A free cryptography teaching application developed by German universities, built to make cryptographic mechanisms visible rather than merely available</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#what-it-provides">What it provides</a></li><li><a href="#what-it-demonstrates-well">What it demonstrates well</a></li><li><a href="#its-limits-as-the-labs-found-them">Its limits, as the labs found them</a></li><li><a href="#why-a-teaching-tool-earns-a-wiki-page">Why a teaching tool earns a wiki page</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="cryptool">CrypTool</h1>
+<p>A free cryptography teaching application developed by German universities, built to make cryptographic mechanisms <strong>visible</strong> rather than merely available. Version <strong>1</strong> carries labs 01–06 of <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a> — the entire cryptography half of the course.</p>
+<h2 id="what-it-provides" class="h-anch"><a class="hlink" href="#what-it-provides" aria-label="Link to this section">#</a>What it provides</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Menu area</th>
+<th>Used for</th>
+</tr></thead><tbody>
+<tr><td>Encrypt/Decrypt → Symmetric (Classic)</td><td>Caesar, substitution, Playfair, Vigenère, Hill, ADFGVX, homophonic</td></tr>
+<tr><td>Encrypt/Decrypt → Symmetric (Modern)</td><td>DES, 3DES, AES, RC4</td></tr>
+<tr><td>Analysis → Tools for analysis</td><td>entropy, ASCII frequency histograms, autocorrelation, periodicity, n-grams, floating frequency</td></tr>
+<tr><td>Analysis → Symmetric (Classic) → Ciphertext-only</td><td>automatic cipher-breaking</td></tr>
+<tr><td>Analysis → Asymmetric</td><td>prime generation, RSA factorisation, lattice attacks on RSA</td></tr>
+<tr><td>Indiv. Procedures → RSA Cryptosystem</td><td>keygen, factorisation of a supplied modulus</td></tr>
+<tr><td>Demonstrations</td><td>Diffie–Hellman, hash collisions, digital signature workflow</td></tr>
+</tbody></table></div>
+<p>The analysis menu is why the tool is worth a page: it turns <a class="wl" href="cryptanalysis-by-measurement.html">cryptanalysis-by-measurement</a> from an idea into a two-click experiment. Encrypt a text, measure its entropy, plot its histogram, compare against the plaintext — the comparison <em>is</em> the lesson, and it happens in seconds.</p>
+<h2 id="what-it-demonstrates-well" class="h-anch"><a class="hlink" href="#what-it-demonstrates-well" aria-label="Link to this section">#</a>What it demonstrates well</h2>
+<ul><li><strong>Entropy and histograms side by side</strong> across six languages and every classical cipher, producing the ranking on <a class="wl" href="cryptanalysis-by-measurement.html">cryptanalysis-by-measurement</a>.</li><li><strong>Autocorrelation recovering a key length</strong> for polyalphabetic ciphers — a parameter recovered by measurement, not by guessing.</li><li><strong>A hash collision breaking a signature</strong>, which is the clearest possible statement of why collision resistance is the load-bearing hash property. See <a class="wl" href="digital-signatures.html">digital-signatures</a>.</li><li><strong>The Diffie–Hellman exchange as a walkthrough</strong>, with each participant&#x27;s values shown at each step.</li></ul>
+<h2 id="its-limits-as-the-labs-found-them" class="h-anch"><a class="hlink" href="#its-limits-as-the-labs-found-them" aria-label="Link to this section">#</a>Its limits, as the labs found them</h2>
+<ul><li><strong>Only CBC and ECB</strong> among block cipher modes. The lab reached OFB and CFB through an online encryption service instead — see <a class="wl" href="block-cipher-modes.html">block-cipher-modes</a>. That is a real gap in a tool being used to teach modes of operation, and pushing key material through a third-party web page to fill it is a practice hazard whatever the pedagogy.</li><li><strong>Stability.</strong> The lab-02 report records the application crashing when asked for a histogram after homophonic encryption.</li><li><strong>Automatic breaking is not reliable on modern ciphers</strong>, which is the correct result: the lab-05 brute-force exercises against AES recovered a direction rather than a key, and the report says so.</li><li><strong>CrypTool 1 is the oldest of the family</strong> (CrypTool 2, JCrypTool and CrypTool-Online all exist). <strong>TODO:</strong> why version 1 was used is not recorded in the repository. Do not infer a preference — <code>confidence: low</code> on the motivation, <code>confidence: high</code> on the fact.</li></ul>
+<h2 id="why-a-teaching-tool-earns-a-wiki-page" class="h-anch"><a class="hlink" href="#why-a-teaching-tool-earns-a-wiki-page" aria-label="Link to this section">#</a>Why a teaching tool earns a wiki page</h2>
+<p>Because the alternative shapes the learning. Writing the same experiments against OpenSSL or a Python library gives real artefacts and no visualisation; CrypTool gives visualisation and leaves nothing reviewable behind — every result is a screenshot in a report rather than a script someone could re-run. That trade shows up directly in this repository: the crypto labs are PDFs of observations, while the one thing that <em>is</em> reproducible is a 50-line Python fixture generator. See <a class="wl" href="generate-fixtures-not-commit.html">generate-fixtures-not-commit</a> and, for the contrast, <a class="wl" href="openssl.html">openssl</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="cryptanalysis-by-measurement.html">cryptanalysis-by-measurement</a> · <a class="wl" href="block-cipher-modes.html">block-cipher-modes</a> · <a class="wl" href="symmetric-vs-asymmetric-cryptography.html">symmetric-vs-asymmetric-cryptography</a> · <a class="wl" href="openssl.html">openssl</a> · <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a></p></div>
+  <div class="tags"><span class="tag">cryptography</span><span class="tag">security</span><span class="tag">documentation</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/01-02_classical_ciphers_and_entropy/</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/03_symmetric_ciphers/lab-03-report.pdf</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/05_attacks_on_modern_ciphers/lab-05-report.pdf</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="block-cipher-modes.html"><span class="kind k-concept">concept</span><span class="rel-t">Block Cipher Modes</span><span class="rel-g">A block cipher encrypts one fixed-size block</span></a><a class="rel" href="cryptanalysis-by-measurement.html"><span class="kind k-concept">concept</span><span class="rel-t">Cryptanalysis by Measurement</span><span class="rel-g">Identifying and attacking a cipher by measuring statistical properties of its output rather than by reasoning about its construction</span></a><a class="rel" href="digital-signatures.html"><span class="kind k-concept">concept</span><span class="rel-t">Digital Signatures</span><span class="rel-g">Sign with the private key, verify with the public one — the reverse of encryption&#x27;s key usage, and the source of three properties encryption alone does not provide</span></a><a class="rel" href="symmetric-vs-asymmetric-cryptography.html"><span class="kind k-concept">concept</span><span class="rel-t">Symmetric vs Asymmetric Cryptography</span><span class="rel-g">Two families with different guarantees and wildly different costs</span></a><a class="rel" href="generate-fixtures-not-commit.html"><span class="kind k-decision">decision</span><span class="rel-t">Generate Fixtures Rather Than Commit Them</span><span class="rel-g">Ship a four-line generator for the 1 MB / 5 MB / 10 MB inputs used to time RSA, and .gitignore the outputs — rather than committing 16 MB of filler</span></a><a class="rel" href="cybersecurity-engineering-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Cybersecurity Engineering Laboratories</span><span class="rel-g">Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026</span></a><a class="rel" href="openssl.html"><span class="kind k-tech">tech</span><span class="rel-t">OpenSSL</span><span class="rel-g">The general-purpose cryptography toolkit — a library that most of the internet links against, plus a command-line front end that is the standard way to do PKI work by…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

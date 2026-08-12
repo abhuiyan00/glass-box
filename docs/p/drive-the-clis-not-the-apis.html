@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drive the CLIs, Not the APIs · Glass Box</title>
+<meta name="description" content="agent-orchestrator spawns claude and codex as subprocesses in structured streaming mode and treats their output as the authoritative answer">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Drive the CLIs, Not the APIs · Glass Box">
+<meta property="og:description" content="agent-orchestrator spawns claude and codex as subprocesses in structured streaming mode and treats their output as the authoritative answer">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why","What it costs","Rejected","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["vs-llm-orchestrator/docs/adr/ADR-0002-drive-the-clis-not-the-apis.md","vs-llm-orchestrator/agent-orchestrator/backend/graph.py","vs-llm-orchestrator/docs/RISK_REGISTER.md"],"dateModified":"2026-08-08","description":"agent-orchestrator spawns claude and codex as subprocesses in structured streaming mode and treats their output as the authoritative answer","headline":"Drive the CLIs, Not the APIs","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["architecture","product","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-08 · in force since 2026-08-07</span>
+    <span class="repos">vs-llm-orchestrator</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>agent-orchestrator spawns claude and codex as subprocesses in structured streaming mode and treats their output as the authoritative answer</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why">Why</a></li><li><a href="#what-it-costs">What it costs</a></li><li><a href="#rejected">Rejected</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="drive-the-clis-not-the-apis">Drive the CLIs, Not the APIs</h1>
+<p><a class="wl" href="agent-orchestrator.html">agent-orchestrator</a> spawns <code>claude</code> and <code>codex</code> as subprocesses in structured streaming mode and treats their output as the authoritative answer. It does not call Anthropic&#x27;s or OpenAI&#x27;s APIs.</p>
+<h2 id="why" class="h-anch"><a class="hlink" href="#why" aria-label="Link to this section">#</a>Why</h2>
+<p>The executors need an agent loop — read files, edit them, run tests, iterate. Two ways to get one: write it here against the APIs (tool definitions, file and edit and shell tools, permission handling, retry, context management, sandboxing), or spawn a binary that already is one.</p>
+<p>The deciding argument is not effort, it is <strong>money</strong>. The author already pays a monthly subscription for both CLIs, and those subscriptions are consumed by the CLIs. API access is billed separately, per token. Writing the agent loop here would mean paying twice for something already owned — and paying the expensive way. It is why a two-subtask run costs about $0.002: only the <a class="wl" href="openrouter.html">openrouter</a> planning calls are metered, and the actual work runs on subscriptions.</p>
+<p>The second argument is that the vendors&#x27; loops are better than the one that would get written here, and they improve without this project doing anything.</p>
+<h2 id="what-it-costs" class="h-anch"><a class="hlink" href="#what-it-costs" aria-label="Link to this section">#</a>What it costs</h2>
+<p>Every flag is an interface owned by someone else and versioned on their schedule. The test suite can assert the argv sent but not the behaviour obtained, so a renamed permission flag passes every test and fails on first contact — the standing top risk, and the reason each flag records the CLI version it was verified against.</p>
+<p>It also forces the shape of everything downstream: no interactive permission prompt exists in a non-interactive process, so autonomy has to be decided up front (<a class="wl" href="autonomy-decided-before-the-run.html">autonomy-decided-before-the-run</a>); capability differences between binaries become routing rules (<a class="wl" href="read-capability-routing.html">read-capability-routing</a>); vendor reasoning parameters have to be normalised (<a class="wl" href="reasoning-effort-as-a-portable-label.html">reasoning-effort-as-a-portable-label</a>).</p>
+<h2 id="rejected" class="h-anch"><a class="hlink" href="#rejected" aria-label="Link to this section">#</a>Rejected</h2>
+<p><strong>Call the APIs and write the loop.</strong> Rejected on cost — double billing for a worse loop. <strong>A hybrid</strong> — CLIs when logged in, APIs otherwise. Rejected as two code paths where only one is exercised daily; the untested path is the one that runs on the bad day.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="agent-orchestrator.html">agent-orchestrator</a> · <a class="wl" href="claude-code-cli.html">claude-code-cli</a> · <a class="wl" href="codex-cli.html">codex-cli</a> · <a class="wl" href="opt-in-cloud-fallback.html">opt-in-cloud-fallback</a> — the same tension resolved the other way in a project where the local option was the weaker one</p></div>
+  <div class="tags"><span class="tag">architecture</span><span class="tag">product</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/docs/adr/ADR-0002-drive-the-clis-not-the-apis.md</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/agent-orchestrator/backend/graph.py</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/docs/RISK_REGISTER.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="opt-in-cloud-fallback.html"><span class="kind k-concept">concept</span><span class="rel-t">Opt-In Cloud Fallback</span><span class="rel-g">A remote model call that is structurally optional: absent a key it does not exist, present a key it fires only for inputs a cheap local gate has already judged novel,…</span></a><a class="rel" href="read-capability-routing.html"><span class="kind k-concept">concept</span><span class="rel-t">Read-Capability Routing</span><span class="rel-g">The planner picks an executor because it thinks one is better suited</span></a><a class="rel" href="reasoning-effort-as-a-portable-label.html"><span class="kind k-concept">concept</span><span class="rel-t">Reasoning Effort as a Portable Label</span><span class="rel-g">Every vendor exposes &quot;think harder&quot; differently: a token on a ladder, a numeric budget, a flag that does not exist</span></a><a class="rel" href="autonomy-decided-before-the-run.html"><span class="kind k-decision">decision</span><span class="rel-t">Autonomy Decided Before the Run</span><span class="rel-g">Three levels — readonly, auto (default), full — chosen in settings or from the panel before a task starts, and passed to both executors as flags</span></a><a class="rel" href="agent-orchestrator.html"><span class="kind k-project">project</span><span class="rel-t">Agent Orchestrator</span><span class="rel-g">A VS Code extension that turns one request into a plan and runs it across the coding CLIs the author already pays for</span></a><a class="rel" href="claude-code-cli.html"><span class="kind k-tech">tech</span><span class="rel-t">Claude Code CLI</span><span class="rel-g">Anthropic&#x27;s terminal coding agent</span></a><a class="rel" href="codex-cli.html"><span class="kind k-tech">tech</span><span class="rel-t">Codex CLI</span><span class="rel-g">OpenAI&#x27;s terminal coding agent, and the second executor in agent-orchestrator</span></a><a class="rel" href="openrouter.html"><span class="kind k-tech">tech</span><span class="rel-t">OpenRouter</span><span class="rel-g">A single OpenAI-compatible HTTP endpoint in front of many vendors&#x27; models, billed per token against one account</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

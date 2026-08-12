@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>factory_boy and Faker · Glass Box</title>
+<meta name="description" content="Faker generates plausible fake values — names, dates, text">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="factory_boy and Faker · Glass Box">
+<meta property="og:description" content="Faker generates plausible fake values — names, dates, text">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The discipline that makes them safe","The undeclared dependency — a §10 contradiction, both claims recorded","What the fix found that the finding did not","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Python-Programming-Laboratories/labs/09_dataset_reports/","Python-Programming-Laboratories/tests/test_lab09_insults.py","Python-Programming-Laboratories/pyproject.toml"],"dateModified":"2026-08-05","description":"Faker generates plausible fake values — names, dates, text","headline":"factory_boy and Faker","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["testing","python","data-analysis"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-05 · in force since 2026-07-25</span>
+    <span class="repos">Python-Programming-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Faker generates plausible fake values — names, dates, text</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-discipline-that-makes-them-safe">The discipline that makes them safe</a></li><li><a href="#the-undeclared-dependency-a-10-contradiction-both-claims-recorded">The undeclared dependency — a §10 contradiction, both claims recorded</a></li><li><a href="#what-the-fix-found-that-the-finding-did-not">What the fix found that the finding did not</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="factoryboy-and-faker">factory_boy and Faker</h1>
+<p><strong>Faker</strong> generates plausible fake values — names, dates, text. <strong>factory_boy</strong> wraps that in declarative factories that build whole model instances, so a test asks for an object instead of writing out every field.</p>
+<p>Used in lab 09 of <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> to generate fixtures for a CSV reporting exercise over a 10,360-row dataset.</p>
+<h2 id="the-discipline-that-makes-them-safe" class="h-anch"><a class="hlink" href="#the-discipline-that-makes-them-safe" aria-label="Link to this section">#</a>The discipline that makes them safe</h2>
+<p>Generated fixtures are a trap if the generator decides the value under test. The lab&#x27;s rule:</p>
+<p><strong>Factories fill the irrelevant fields; each test sets the field under test explicitly.</strong></p>
+<p>The concrete motivating bug is the <code>&quot;no&quot;</code>-is-truthy trap — a string field whose value is <code>&quot;no&quot;</code> evaluates true, so a test whose fixture happened to populate it can pass against a filter that does nothing. Full treatment on <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a>.</p>
+<p>Stated positively: a fixture makes the <em>setup</em> cheap; it must never make the <em>assertion</em> implicit.</p>
+<h2 id="the-undeclared-dependency-a-10-contradiction-both-claims-recorded" class="h-anch"><a class="hlink" href="#the-undeclared-dependency-a-10-contradiction-both-claims-recorded" aria-label="Link to this section">#</a>The undeclared dependency — a §10 contradiction, both claims recorded</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>#</th>
+<th>Claim</th>
+<th>Source</th>
+<th><code>valid_from</code></th>
+<th><code>valid_to</code></th>
+</tr></thead><tbody>
+<tr><td>1</td><td><code>factory_boy</code> and <code>Faker</code> are imported by the suite and declared <strong>nowhere</strong>; a clean install cannot collect</td><td><code>pyproject.toml</code>, <code>tests/test_lab09_insults.py</code></td><td>2026-07-25</td><td>2026-08-01</td></tr>
+<tr><td>2</td><td>Both are declared in the <code>dev</code> extra, <strong>with <code>click</code> beside them</strong>; a clean install collects</td><td><code>git show 385d0fd</code>, read 2026-08-05</td><td>2026-08-01</td><td>null</td></tr>
+</tbody></table></div>
+<p><code>tests/test_lab09_insults.py</code> does:</p>
+<pre><code class="lang-python">import factory
+... factory.Faker(...)</code></pre>
+<p>and <code>pyproject.toml</code>&#x27;s <code>dev</code> extra listed only <code>pytest</code> and <code>pytest-cov</code>. <code>factory_boy</code> and <code>Faker</code> appeared in the README&#x27;s Technology section and in the test imports, and <strong>in no dependency declaration</strong>.</p>
+<p>Consequence: the README&#x27;s own quick start — <code>pip install -e &quot;.[labs,dev]&quot;</code> then <code>pytest</code> — <strong>failed at collection in a clean virtualenv</strong>, because pytest imports every test module before running anything. It worked only on a machine where the packages were installed for some other reason. <code>confidence: high</code>; both files read directly.</p>
+<p>This was the sharpest instance of <a class="wl" href="documentation-drift.html">documentation-drift</a> in the repo: the documentation and the code each internally consistent and mutually incompatible, with no CI to catch it.</p>
+<h2 id="what-the-fix-found-that-the-finding-did-not" class="h-anch"><a class="hlink" href="#what-the-fix-found-that-the-finding-did-not" aria-label="Link to this section">#</a>What the fix found that the finding did not</h2>
+<p>Declaring the two named packages was <strong>not sufficient</strong>, and that is the part worth keeping. The same test imports <code>labs/09_dataset_reports/insults.py</code>, which reaches <a class="wl" href="click.html">click</a> at module scope — so collection still died on a clean install with <code>factory-boy</code> and <code>faker</code> present. <code>click</code> was already declared, but in the <code>labs</code> extra, for <em>running</em> the exercise. The test path needed it too:</p>
+<blockquote><p>Python-Programming-Laboratories, git commit 385d0fd &quot;Declare the test dependencies a clean install was missing&quot;, 2026-08-01</p></blockquote>
+<p>The general shape: <strong>an import-time dependency of a module a test imports is a test dependency</strong>, no matter which extra it logically belongs to. Reading the failing import gives you the first name; only running the clean install gives you the rest. The commit records reproducing in an empty virtualenv before and after, which is the only evidence that settles it — a declaration you cannot install into a clean environment is a guess.</p>
+<p>Measured after the fix: <strong>89 tests collected, 88 passed and 1 skipped</strong> on a clean <code>[dev]</code> install, the skip being <code>pytest.importorskip(&quot;openpyxl&quot;)</code>, which belongs to <code>labs</code> on purpose.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="pytest.html">pytest</a> · <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a> · <a class="wl" href="setuptools-and-pyproject.html">setuptools-and-pyproject</a> · <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> · <a class="wl" href="click.html">click</a></p></div>
+  <div class="tags"><span class="tag">testing</span><span class="tag">python</span><span class="tag">data-analysis</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/labs/09_dataset_reports/</span></code></li><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/tests/test_lab09_insults.py</span></code></li><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/pyproject.toml</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="tests-that-pass-for-the-wrong-reason.html"><span class="kind k-concept">concept</span><span class="rel-t">Tests That Pass for the Wrong Reason</span><span class="rel-g">A failing test tells you something is broken</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="python-programming-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Python Programming Laboratories</span><span class="rel-g">Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…</span></a><a class="rel" href="click.html"><span class="kind k-tech">tech</span><span class="rel-t">click</span><span class="rel-g">Third-party CLI framework for Python</span></a><a class="rel" href="pytest.html"><span class="kind k-tech">tech</span><span class="rel-t">pytest</span><span class="rel-g">The test runner for python-programming-laboratories — and the only real test framework anywhere in the two lab repositories</span></a><a class="rel" href="setuptools-and-pyproject.html"><span class="kind k-tech">tech</span><span class="rel-t">setuptools and pyproject.toml</span><span class="rel-g">The packaging layer that turns twelve lab scripts into one installable project in python-programming-laboratories</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

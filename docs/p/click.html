@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>click · Glass Box</title>
+<meta name="description" content="Third-party CLI framework for Python">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="click · Glass Box">
+<meta property="og:description" content="Third-party CLI framework for Python">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Where it is used","Why it is here at all","What the decorator style buys","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Python-Programming-Laboratories/labs/09_dataset_reports/"],"dateModified":"2026-07-28","description":"Third-party CLI framework for Python","headline":"click","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["python","architecture"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Python-Programming-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Third-party CLI framework for Python</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#where-it-is-used">Where it is used</a></li><li><a href="#why-it-is-here-at-all">Why it is here at all</a></li><li><a href="#what-the-decorator-style-buys">What the decorator style buys</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="click">click</h1>
+<p>Third-party CLI framework for Python. Commands and options are declared as <strong>decorators</strong> on the function that implements them, so the parser definition sits directly above the code it feeds.</p>
+<h2 id="where-it-is-used" class="h-anch"><a class="hlink" href="#where-it-is-used" aria-label="Link to this section">#</a>Where it is used</h2>
+<p>Lab 09 of <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> — a CSV reporting CLI over a 10,360-row dataset, producing spreadsheet output via openpyxl and using <a class="wl" href="factory-boy-and-faker.html">factory-boy-and-faker</a> for its test fixtures.</p>
+<h2 id="why-it-is-here-at-all" class="h-anch"><a class="hlink" href="#why-it-is-here-at-all" aria-label="Link to this section">#</a>Why it is here at all</h2>
+<p>Not because it was the best available option, but because the repo runs an explicit A/B: the core <code>weblog</code> CLI uses <a class="wl" href="argparse.html">argparse</a> and this lab uses click, on comparable problems, on purpose. The comparison and its verdict are recorded on <a class="wl" href="click-versus-argparse.html">click-versus-argparse</a>.</p>
+<p>The short version of the trade-off as the repo states it: click&#x27;s decorators are terser when a command has a lot of flags; argparse&#x27;s subparsers give more control over a command <em>hierarchy</em>.</p>
+<h2 id="what-the-decorator-style-buys" class="h-anch"><a class="hlink" href="#what-the-decorator-style-buys" aria-label="Link to this section">#</a>What the decorator style buys</h2>
+<ul><li><strong><code>@click.option</code> / <code>@click.argument</code></strong> attach directly to the handler — no separate parser-building block to keep in sync with the signature.</li><li><strong>Type conversion and validation are declarative</strong>, including <code>click.Path(exists=True)</code>, so &quot;this file must exist&quot; is a parser concern rather than a first-line-of-the-function concern.</li><li>Help text is derived from the same declaration, so it cannot drift from the parsing.</li></ul>
+<p>The cost is a dependency and a layer of magic between <code>sys.argv</code> and the function — which is exactly why it lives in the optional <code>labs</code> extra rather than the dependency-free core. See <a class="wl" href="setuptools-and-pyproject.html">setuptools-and-pyproject</a> and <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="click-versus-argparse.html">click-versus-argparse</a> · <a class="wl" href="argparse.html">argparse</a> · <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> · <a class="wl" href="factory-boy-and-faker.html">factory-boy-and-faker</a> · <a class="wl" href="setuptools-and-pyproject.html">setuptools-and-pyproject</a></p></div>
+  <div class="tags"><span class="tag">python</span><span class="tag">architecture</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/labs/09_dataset_reports/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="click-versus-argparse.html"><span class="kind k-decision">decision</span><span class="rel-t">click Versus argparse</span><span class="rel-g">Ship both, on comparable problems, in the same repository — and say that the comparison is the point</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="python-programming-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Python Programming Laboratories</span><span class="rel-g">Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…</span></a><a class="rel" href="argparse.html"><span class="kind k-tech">tech</span><span class="rel-t">argparse</span><span class="rel-g">Python&#x27;s standard-library command-line parser</span></a><a class="rel" href="factory-boy-and-faker.html"><span class="kind k-tech">tech</span><span class="rel-t">factory_boy and Faker</span><span class="rel-g">Faker generates plausible fake values — names, dates, text</span></a><a class="rel" href="setuptools-and-pyproject.html"><span class="kind k-tech">tech</span><span class="rel-t">setuptools and pyproject.toml</span><span class="rel-g">The packaging layer that turns twelve lab scripts into one installable project in python-programming-laboratories</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

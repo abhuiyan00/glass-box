@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Idempotent Teardown Scripts · Glass Box</title>
+<meta name="description" content="Every script in the set can be run again, from any state, without editing it first">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Idempotent Teardown Scripts · Glass Box">
+<meta property="og:description" content="Every script in the set can be run again, from any state, without editing it first">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The three mechanisms","Why it matters more here than a framework would","The same instinct elsewhere in the source set","Cost","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Oracle-Database-Laboratories/README.md","Oracle-Database-Laboratories/sql/01_schema/01_drop_all.sql","Oracle-Database-Laboratories/sql/04_object_relational/00_drop_all.sql","Oracle-Database-Laboratories/sql/03_plsql/04_triggers.sql"],"dateModified":"2026-07-28","description":"Every script in the set can be run again, from any state, without editing it first","headline":"Idempotent Teardown Scripts","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["databases","sql","plsql","testing"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Oracle-Database-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Every script in the set can be run again, from any state, without editing it first</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-three-mechanisms">The three mechanisms</a></li><li><a href="#why-it-matters-more-here-than-a-framework-would">Why it matters more here than a framework would</a></li><li><a href="#the-same-instinct-elsewhere-in-the-source-set">The same instinct elsewhere in the source set</a></li><li><a href="#cost">Cost</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="idempotent-teardown-scripts">Idempotent Teardown Scripts</h1>
+<p>Every script in the set can be run again, from any state, without editing it first. Not achieved by a migration framework or a test harness — achieved by two rules applied by hand: <strong>teardown swallows &quot;does not exist&quot;, and anything that writes data ends in <code>ROLLBACK</code>.</strong></p>
+<p>The property is stated as a guarantee in the README, which is what makes it a pattern rather than an accident:</p>
+<blockquote><p>&quot;Each script is idempotent: the teardown scripts swallow \&quot;does not exist\&quot;, and every block that modifies data ends in <code>ROLLBACK</code>.&quot;</p><cite>Oracle-Database-Laboratories/README.md, 2026-07-25</cite></blockquote>
+<h2 id="the-three-mechanisms" class="h-anch"><a class="hlink" href="#the-three-mechanisms" aria-label="Link to this section">#</a>The three mechanisms</h2>
+<p><strong>1. Drop child-first, in a declared order.</strong> Both teardown scripts hold the object names in a nested table in dependency order and loop over it, so no foreign key ever blocks a <code>DROP</code>. The object-relational teardown has a second ordering rule on top, and states why the obvious shortcut is wrong:</p>
+<blockquote><p>&quot;Object tables go before the types they are built on -- a type with a table depending on it cannot be dropped, and FORCE would leave the table invalid rather than removing the dependency.&quot;</p><cite>Oracle-Database-Laboratories/sql/04_object_relational/00_drop_all.sql, 2026-07-25</cite></blockquote>
+<p><strong>2. Swallow exactly two error codes, re-raise everything else.</strong> The local <code>drop_object</code> procedure catches <code>WHEN OTHERS</code>, allows <code>SQLCODE IN (-942, -4043)</code> — table/view does not exist, object does not exist — and calls <code>RAISE</code> otherwise. That narrowness is the whole point: a blanket <code>WHEN OTHERS THEN NULL</code> would make the script idempotent <em>and</em> blind. See <a class="wl" href="plsql-exception-handling.html">plsql-exception-handling</a>.</p>
+<p><strong>3. Never commit.</strong> Every exercise block that inserts, updates or fires a trigger ends in <code>ROLLBACK</code>, and every trigger script drops the trigger and any scratch table it created before moving on. The demonstration leaves the schema exactly as it found it, so the next script&#x27;s assumptions still hold.</p>
+<h2 id="why-it-matters-more-here-than-a-framework-would" class="h-anch"><a class="hlink" href="#why-it-matters-more-here-than-a-framework-would" aria-label="Link to this section">#</a>Why it matters more here than a framework would</h2>
+<p>There is no test runner, no migration tool and no CI in <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a>. Re-runnable scripts are the <em>entire</em> reproducibility story: a reader can execute the suite top to bottom, get the documented result, and execute it again immediately. The property is structural rather than asserted — it holds because of how the code is written, not because something checks it.</p>
+<p>It also makes <a class="wl" href="numbered-stages-in-directory-names.html">numbered-stages-in-directory-names</a> safe. Numbered run order only helps if starting over is cheap; if step 3 leaves committed rows behind, re-running step 1 is not a reset.</p>
+<h2 id="the-same-instinct-elsewhere-in-the-source-set" class="h-anch"><a class="hlink" href="#the-same-instinct-elsewhere-in-the-source-set" aria-label="Link to this section">#</a>The same instinct elsewhere in the source set</h2>
+<ul><li><a class="wl" href="idempotent-loading.html">idempotent-loading</a> — <code>MERGE</code>-based Cypher import in the discrete-maths repo, re-runnable for the same reason and fixed by re-reading rather than rebuilding.</li><li><a class="wl" href="etl-load-order.html">etl-load-order</a> — warehouse loads that must create before they load; the ordering half of the same problem, without the teardown half.</li></ul>
+<p>The distinctive move here is the <strong>exception-code allow-list</strong>. Both other instances get idempotency from an upsert primitive the engine provides; this one gets it from deciding, explicitly, which two failures mean &quot;already in the desired state&quot;.</p>
+<h2 id="cost" class="h-anch"><a class="hlink" href="#cost" aria-label="Link to this section">#</a>Cost</h2>
+<p>The <code>ROLLBACK</code> discipline means the scripts can never be used to actually populate a working schema — running <code>03_plsql/</code> leaves no data behind by design. Seeding is a separate step (<code>01_schema/03_seed_data.sql</code>), and the split is invisible until someone runs the PL/SQL scripts expecting persistence. Worth knowing before adapting any of it.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a> · <a class="wl" href="plsql-exception-handling.html">plsql-exception-handling</a> · <a class="wl" href="idempotent-loading.html">idempotent-loading</a> · <a class="wl" href="etl-load-order.html">etl-load-order</a> · <a class="wl" href="sql-plus.html">sql-plus</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a></p></div>
+  <div class="tags"><span class="tag">databases</span><span class="tag">sql</span><span class="tag">plsql</span><span class="tag">testing</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/01_schema/01_drop_all.sql</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/04_object_relational/00_drop_all.sql</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/03_plsql/04_triggers.sql</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="etl-load-order.html"><span class="kind k-concept">concept</span><span class="rel-t">ETL Load Order</span><span class="rel-g">Load order in a star-schema is not a style choice</span></a><a class="rel" href="idempotent-loading.html"><span class="kind k-concept">concept</span><span class="rel-t">Idempotent Loading</span><span class="rel-g">A load script is idempotent when running it twice leaves the store exactly as running it once did</span></a><a class="rel" href="plsql-exception-handling.html"><span class="kind k-concept">concept</span><span class="rel-t">PL/SQL Exception Handling</span><span class="rel-g">PL/SQL reports failure by raising, not by returning</span></a><a class="rel" href="numbered-stages-in-directory-names.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Numbered Stages in Directory Names</span><span class="rel-g">Order is encoded in filenames and directory names, not in a table of contents</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="oracle-database-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Oracle Database Laboratories</span><span class="rel-g">Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite</span></a><a class="rel" href="sql-plus.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL*Plus</span><span class="rel-g">Oracle&#x27;s command-line client, and the execution model the whole of oracle-database-laboratories is written against</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

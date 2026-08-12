@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cryptanalysis by Measurement · Glass Box</title>
+<meta name="description" content="Identifying and attacking a cipher by measuring statistical properties of its output rather than by reasoning about its construction">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cryptanalysis by Measurement · Glass Box">
+<meta property="og:description" content="Identifying and attacking a cipher by measuring statistical properties of its output rather than by reasoning about its construction">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The five measurements","What the measurements actually showed","The limits, recorded honestly","Scope note","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Cybersecurity-Engineering-Laboratories/labs/01-02_classical_ciphers_and_entropy/lab-02-report.pdf","Cybersecurity-Engineering-Laboratories/labs/03_symmetric_ciphers/lab-03-report.pdf","Cybersecurity-Engineering-Laboratories/labs/05_attacks_on_modern_ciphers/lab-05-report.pdf"],"dateModified":"2026-07-28","description":"Identifying and attacking a cipher by measuring statistical properties of its output rather than by reasoning about its construction","headline":"Cryptanalysis by Measurement","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["cryptography","security","data-analysis"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Cybersecurity-Engineering-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Identifying and attacking a cipher by measuring statistical properties of its output rather than by reasoning about its construction</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-five-measurements">The five measurements</a></li><li><a href="#what-the-measurements-actually-showed">What the measurements actually showed</a></li><li><a href="#the-limits-recorded-honestly">The limits, recorded honestly</a></li><li><a href="#scope-note">Scope note</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="cryptanalysis-by-measurement">Cryptanalysis by Measurement</h1>
+<p>Identifying and attacking a cipher by <strong>measuring statistical properties of its output</strong> rather than by reasoning about its construction. You do not need the algorithm&#x27;s specification to learn a great deal from a ciphertext — you need a distribution to compare against.</p>
+<p>This is the organising idea of labs 02–05 in <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a>, and the one skill in that repository backed by numbers rather than by prose.</p>
+<h2 id="the-five-measurements" class="h-anch"><a class="hlink" href="#the-five-measurements" aria-label="Link to this section">#</a>The five measurements</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Measurement</th>
+<th>What it exposes</th>
+</tr></thead><tbody>
+<tr><td><strong>Entropy</strong> (bits/symbol)</td><td>how close the output is to uniform — a strong cipher&#x27;s output is near-maximal regardless of its input</td></tr>
+<tr><td><strong>Character frequency histogram</strong></td><td>whether the output preserves the source language&#x27;s letter distribution</td></tr>
+<tr><td><strong>Autocorrelation</strong> (coincidence index)</td><td>text against a shifted copy of itself; peaks at multiples of the key length</td></tr>
+<tr><td><strong>Periodicity</strong></td><td>repeated fixed patterns, with an offset and a period</td></tr>
+<tr><td><strong>N-grams</strong> (bi/tri/…)</td><td>block-level structure that single-character frequency misses</td></tr>
+</tbody></table></div>
+<p>Autocorrelation is the sharpest of the five because it recovers a <em>parameter</em> — the key length — not just a classification. Once the period of a polyalphabetic cipher is known, the problem collapses into that many independent monoalphabetic substitutions, each of which frequency analysis solves.</p>
+<h2 id="what-the-measurements-actually-showed" class="h-anch"><a class="hlink" href="#what-the-measurements-actually-showed" aria-label="Link to this section">#</a>What the measurements actually showed</h2>
+<p>The lab-02 entropy figures over one fixed English plaintext are the clearest single result in the repository, because they rank the classical ciphers without any attack being run:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Cipher</th>
+<th>Ciphertext entropy (bits/symbol)</th>
+</tr></thead><tbody>
+<tr><td>ADFGVX</td><td>2.26</td></tr>
+<tr><td>Caesar</td><td>4.15</td></tr>
+<tr><td>Playfair</td><td>4.47</td></tr>
+<tr><td>Vigenère (short key)</td><td>4.54</td></tr>
+<tr><td>Vigenère (longer key)</td><td>4.62</td></tr>
+<tr><td>Hill (2×2 / 5×5)</td><td>4.63 / 4.68</td></tr>
+<tr><td>Homophonic substitution</td><td>7.77 (of a maximum 8.00)</td></tr>
+</tbody></table></div>
+<p>Substitution ciphers barely move entropy at all — they permute symbols without flattening the distribution, which is precisely why frequency analysis defeats them. Homophonic substitution, which maps one plaintext letter onto many ciphertext symbols, nearly reaches maximum entropy and defeats the same tool. <strong>Entropy is measuring the defence, not the secrecy.</strong></p>
+<p>Lab 03 repeats the experiment against modern block ciphers with three plaintexts of deliberately different diversity — homogeneous, medium, highly diversified. Under AES and DES in CBC, plaintext entropies of 0.00, 4.04 and 3.97 all produce ciphertext entropy around 7.80–7.83. <strong>A modern cipher&#x27;s output entropy is independent of its input&#x27;s.</strong> That single observation is the boundary between the two halves of the course: the measurements that break classical ciphers stop working exactly here.</p>
+<h2 id="the-limits-recorded-honestly" class="h-anch"><a class="hlink" href="#the-limits-recorded-honestly" aria-label="Link to this section">#</a>The limits, recorded honestly</h2>
+<p>The lab-05 exercises apply the same instinct to modern algorithms — brute force against AES at 128/192/256 bits, varying how many key bits are unknown and where — and the report states plainly that no exact key was recovered, only a direction. That is the correct outcome and the report does not dress it up. Compare the theory answers in the same labs, several of which are generic filler; the measured work is the part this page cites.</p>
+<p>The classical attack models the labs enumerate — ciphertext-only, known-plaintext, chosen-plaintext, differential, linear, replay, and <a class="wl" href="man-in-the-middle-attack.html">man-in-the-middle-attack</a> — are the framework these measurements sit inside. Two get their own treatment elsewhere: <a class="wl" href="symmetric-vs-asymmetric-cryptography.html">symmetric-vs-asymmetric-cryptography</a> for why bulk data is not encrypted with a public-key primitive, and <a class="wl" href="rsa-and-integer-factorization.html">rsa-and-integer-factorization</a> for the number-theoretic attacks that replace statistics entirely once the cipher is asymmetric.</p>
+<h2 id="scope-note" class="h-anch"><a class="hlink" href="#scope-note" aria-label="Link to this section">#</a>Scope note</h2>
+<p>Every technique here is described as a class of measurement. No ciphertext, key material, or identifier-derived factorisation input from the labs appears in this wiki — see <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a> for the redaction rule.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="block-cipher-modes.html">block-cipher-modes</a> · <a class="wl" href="symmetric-vs-asymmetric-cryptography.html">symmetric-vs-asymmetric-cryptography</a> · <a class="wl" href="rsa-and-integer-factorization.html">rsa-and-integer-factorization</a> · <a class="wl" href="cryptool.html">cryptool</a> · <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a></p></div>
+  <div class="tags"><span class="tag">cryptography</span><span class="tag">security</span><span class="tag">data-analysis</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/01-02_classical_ciphers_and_entropy/lab-02-report.pdf</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/03_symmetric_ciphers/lab-03-report.pdf</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/05_attacks_on_modern_ciphers/lab-05-report.pdf</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="block-cipher-modes.html"><span class="kind k-concept">concept</span><span class="rel-t">Block Cipher Modes</span><span class="rel-g">A block cipher encrypts one fixed-size block</span></a><a class="rel" href="man-in-the-middle-attack.html"><span class="kind k-concept">concept</span><span class="rel-t">Man-in-the-Middle Attack</span><span class="rel-g">A class of attack in which the attacker sits between two communicating parties, relaying traffic while both believe they are talking directly to each other</span></a><a class="rel" href="rsa-and-integer-factorization.html"><span class="kind k-concept">concept</span><span class="rel-t">RSA and Integer Factorization</span><span class="rel-g">RSA&#x27;s security rests on one asymmetry: multiplying two large primes is cheap, recovering them from the product is not</span></a><a class="rel" href="symmetric-vs-asymmetric-cryptography.html"><span class="kind k-concept">concept</span><span class="rel-t">Symmetric vs Asymmetric Cryptography</span><span class="rel-g">Two families with different guarantees and wildly different costs</span></a><a class="rel" href="cybersecurity-engineering-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Cybersecurity Engineering Laboratories</span><span class="rel-g">Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026</span></a><a class="rel" href="cryptool.html"><span class="kind k-tech">tech</span><span class="rel-t">CrypTool</span><span class="rel-g">A free cryptography teaching application developed by German universities, built to make cryptographic mechanisms visible rather than merely available</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

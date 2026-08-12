@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forward-Copy Lab Progression · Glass Box</title>
+<meta name="description" content="Each lab is a whole copy of the previous lab plus one new capability, committed as a new directory">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Forward-Copy Lab Progression · Glass Box">
+<meta property="og:description" content="Each lab is a whole copy of the previous lab plus one new capability, committed as a new directory">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The chain","What this buys","What it costs, measured","Scope","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Information-Systems-Modelling/README.md","Information-Systems-Modelling/lab2/StudentService/","Information-Systems-Modelling/lab3/StudentService_vlab3/","Information-Systems-Modelling/lab3/README.md","Information-Systems-Modelling/lab4/StudentService/","Information-Systems-Modelling/lab4/README.md"],"dateModified":"2026-07-28","description":"Each lab is a whole copy of the previous lab plus one new capability, committed as a new directory","headline":"Forward-Copy Lab Progression","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["architecture","coursework","java"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-04-14</span>
+    <span class="repos">Information-Systems-Modelling</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Each lab is a whole copy of the previous lab plus one new capability, committed as a new directory</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-chain">The chain</a></li><li><a href="#what-this-buys">What this buys</a></li><li><a href="#what-it-costs-measured">What it costs, measured</a></li><li><a href="#scope">Scope</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="forward-copy-lab-progression">Forward-Copy Lab Progression</h1>
+<p>Each lab is a <strong>whole copy of the previous lab plus one new capability</strong>, committed as a new directory. Nothing is refactored into a shared module, nothing is deleted, and every intermediate version stays runnable side by side. The repository is not a project with a history — it is a project with <strong>all its history checked out at once</strong>.</p>
+<p>Confirmed in <code>Information-Systems-Modelling</code>, which states the intent in its own words:</p>
+<blockquote><p>&quot;Read top to bottom and it reads like a build diary: each lab picks up exactly where the last one left off.&quot;</p><cite>Information-Systems-Modelling/README.md, 2026-07-25</cite></blockquote>
+<h2 id="the-chain" class="h-anch"><a class="hlink" href="#the-chain" aria-label="Link to this section">#</a>The chain</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Lab</th>
+<th>Directory</th>
+<th>= previous lab, plus</th>
+</tr></thead><tbody>
+<tr><td>2</td><td><code>lab2/StudentService/</code></td><td>(baseline) OpenAPI contract, generated interfaces, SQLite</td></tr>
+<tr><td>3</td><td><code>lab3/StudentService_vlab3/</code></td><td><a class="wl" href="h2-database.html">h2-database</a> in file mode, an auth <em>contract</em></td></tr>
+<tr><td>4</td><td><code>lab4/StudentService/</code></td><td>AOP, validation, actuator, jjwt + BCrypt, uploads, profiles, an <a class="wl" href="angular.html">angular</a> SPA</td></tr>
+</tbody></table></div>
+<p>Same package <code>pl.edu.pwr.tkubik.ism</code>, same artifactId, same <code>api → service → repository → entity</code> split every time — see <a class="wl" href="layered-architecture.html">layered-architecture</a>. The Java source count tells the story on its own: <strong>11 → 41 → 76</strong> files, strictly additive.</p>
+<p>Lab 3&#x27;s README announces its one delta in its first sentence:</p>
+<blockquote><p>&quot;The skeleton becomes a real backend.&quot;</p><cite>Information-Systems-Modelling/lab3/README.md, 2026-07-09</cite></blockquote>
+<h2 id="what-this-buys" class="h-anch"><a class="hlink" href="#what-this-buys" aria-label="Link to this section">#</a>What this buys</h2>
+<p>A grader — or a reader — can open lab 2 and lab 4 next to each other and see exactly what authentication or AOP <em>cost</em>, because nothing else moved. Extracting a shared parent module would destroy that: the diff would become a config change instead of a visible delta. For coursework whose deliverable is <em>the demonstration of a technique</em>, keeping the ancestors is the correct call, and it is the same reasoning as <a class="wl" href="multiple-solutions-side-by-side.html">multiple-solutions-side-by-side</a>.</p>
+<p>The numbering carries the order in the directory names rather than in a table of contents — see <a class="wl" href="numbered-stages-in-directory-names.html">numbered-stages-in-directory-names</a>.</p>
+<h2 id="what-it-costs-measured" class="h-anch"><a class="hlink" href="#what-it-costs-measured" aria-label="Link to this section">#</a>What it costs, measured</h2>
+<p>Copy-forward makes every earlier lab a fossil that nobody maintains, and this repo shows all three consequences:</p>
+<ol><li><strong>Divergence goes unnoticed.</strong> Lab 3&#x27;s OpenAPI contract and README both promise stateless JWT auth; the lab 3 <em>code</em> has no jjwt, no BCrypt and no password check. The capability only becomes real in the lab 4 copy. See <a class="wl" href="stateless-jwt-authentication.html">stateless-jwt-authentication</a>.</li><li><strong>Duplicates accumulate.</strong> A 39-file pre-rewrite Angular scaffold sits nested inside the real lab 4 SPA; <code>ontology.ttl</code> exists as byte-identical copies in labs 5 and 6; <code>instances.ttl</code> (557 lines) and <code>cardinalityTest.owl</code> are tracked and referenced by nothing. This repository is the corpus&#x27;s four-way instance of <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a>.</li><li><strong>Fixes do not propagate backwards.</strong> Nothing that was learned in lab 4 was ever applied to labs 2 and 3, because they are finished artefacts, not living code. Per the interview the whole repo is &quot;All finished and frozen&quot; (2026-07-28), so that is a description rather than a complaint.</li></ol>
+<h2 id="scope" class="h-anch"><a class="hlink" href="#scope" aria-label="Link to this section">#</a>Scope</h2>
+<p>Evidenced in <strong>one repository</strong>. The corpus-wide relative is the family of repos that keep alternatives visible rather than replacing them — <a class="wl" href="multiple-solutions-side-by-side.html">multiple-solutions-side-by-side</a> and <a class="wl" href="numbered-stages-in-directory-names.html">numbered-stages-in-directory-names</a> — but the specific move of copying a whole working application forward and adding to it is, so far, particular to this coursework.</p>
+<ul><li><strong>TODO:</strong> whether the lab briefs mandated a fresh directory per lab, or the copy-forward was the user&#x27;s choice, is unrecorded. <code>confidence: low</code> on intent. Do not assert one.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="information-systems-modelling.html">information-systems-modelling</a> · <a class="wl" href="layered-architecture.html">layered-architecture</a> · <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> · <a class="wl" href="numbered-stages-in-directory-names.html">numbered-stages-in-directory-names</a> · <a class="wl" href="stateless-jwt-authentication.html">stateless-jwt-authentication</a> · <a class="wl" href="h2-database.html">h2-database</a> · <a class="wl" href="multiple-solutions-side-by-side.html">multiple-solutions-side-by-side</a></p></div>
+  <div class="tags"><span class="tag">architecture</span><span class="tag">coursework</span><span class="tag">java</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab2/StudentService/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab3/StudentService_vlab3/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab3/README.md</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab4/StudentService/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab4/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="layered-architecture.html"><span class="kind k-concept">concept</span><span class="rel-t">Layered Architecture</span><span class="rel-g">Split the application into horizontal tiers where each layer may only call the one below it: api/ handles HTTP and nothing else, service/ holds the domain rules and…</span></a><a class="rel" href="stateless-jwt-authentication.html"><span class="kind k-concept">concept</span><span class="rel-t">Stateless JWT Authentication</span><span class="rel-g">The server keeps no session</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="multiple-solutions-side-by-side.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Multiple Solutions Side by Side</span><span class="rel-g">The same problem is solved two or three ways in one deliverable, and the trade-off between them is the point</span></a><a class="rel" href="numbered-stages-in-directory-names.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Numbered Stages in Directory Names</span><span class="rel-g">Order is encoded in filenames and directory names, not in a table of contents</span></a><a class="rel" href="information-systems-modelling.html"><span class="kind k-project">project</span><span class="rel-t">Information Systems Modelling</span><span class="rel-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span></a><a class="rel" href="angular.html"><span class="kind k-tech">tech</span><span class="rel-t">Angular</span><span class="rel-g">21.2, standalone components, in exactly one place: the lab 4 SPA of information-systems-modelling</span></a><a class="rel" href="h2-database.html"><span class="kind k-tech">tech</span><span class="rel-t">H2 Database</span><span class="rel-g">An embedded Java SQL database that runs inside the application process</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

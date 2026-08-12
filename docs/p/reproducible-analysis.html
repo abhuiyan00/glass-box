@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reproducible Analysis · Glass Box</title>
+<meta name="description" content="An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reproducible Analysis · Glass Box">
+<meta property="og:description" content="An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The five mechanisms","Reproducibility of the analysis, not of the environment","The unusual part: testing that a finding survived","The contrast case","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["labour-fraud-analysis-a-forensic-data-investigation/Makefile","labour-fraud-analysis-a-forensic-data-investigation/.github/workflows/ci.yml","labour-fraud-analysis-a-forensic-data-investigation/src/fiction.py","labour-fraud-analysis-a-forensic-data-investigation/src/build_docs.py","labour-fraud-analysis-a-forensic-data-investigation/src/app.py","labour-fraud-analysis-a-forensic-data-investigation/notebooks/01_investigation_analysis.ipynb","labour-fraud-analysis-a-forensic-data-investigation/requirements.txt"],"dateModified":"2026-07-28","description":"An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose","headline":"Reproducible Analysis","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["data-analysis","testing","ci-cd","documentation","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">labour-fraud-analysis-a-forensic-data-investigation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-five-mechanisms">The five mechanisms</a></li><li><a href="#reproducibility-of-the-analysis-not-of-the-environment">Reproducibility of the analysis, not of the environment</a></li><li><a href="#the-unusual-part-testing-that-a-finding-survived">The unusual part: testing that a finding survived</a></li><li><a href="#the-contrast-case">The contrast case</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="reproducible-analysis">Reproducible Analysis</h1>
+<p>An analysis is reproducible when <strong>every number a reader can see was produced by a command they can re-run</strong>, and nothing was typed by hand into prose. <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> is the most complete instance in the source set, and it gets there through five separate mechanisms rather than one.</p>
+<h2 id="the-five-mechanisms" class="h-anch"><a class="hlink" href="#the-five-mechanisms" aria-label="Link to this section">#</a>The five mechanisms</h2>
+<p><strong>1. One seed for the whole world.</strong> Every generated value in the synthetic dataset descends from a single committed string, hashed per namespace and key — <a class="wl" href="deterministic-seeded-substitution.html">deterministic-seeded-substitution</a>.</p>
+<blockquote><p>&quot;Global seed — flip this and re-run to regenerate a completely different (but internally consistent) fictional world. Committed value gives the published data.&quot;</p><cite>labour-fraud-analysis-a-forensic-data-investigation/src/fiction.py, 2026-07-11</cite></blockquote>
+<p><strong>2. A seed for anything else that samples.</strong> The entity graph&#x27;s force-directed layout is pinned in both the dashboard and the notebook, so the same picture comes out twice — see <a class="wl" href="networkx.html">networkx</a>.</p>
+<p><strong>3. No hard-coded numbers, stated as a rule in both directions.</strong> The generators say it:</p>
+<blockquote><p>&quot;Run after anonymize.py so the numbers always match data/. No hard-coded counts.&quot;</p><cite>labour-fraud-analysis-a-forensic-data-investigation/src/build_docs.py, 2026-07-11</cite></blockquote>
+<p>and so does the presentation layer — &quot;All figures compute live from the CSVs — nothing is hard-coded&quot; (<code>src/app.py</code>).</p>
+<p><strong>4. Generated artefacts committed and then diff-gated.</strong> The schema, data dictionary, coverage report and a row-count manifest are regenerated and compared byte-for-byte in CI: <a class="wl" href="generated-docs-checked-by-ci-diff.html">generated-docs-checked-by-ci-diff</a> and <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a>.</p>
+<p><strong>5. The notebook is executed, not just stored.</strong> CI runs it end-to-end headless through <code>nbconvert</code> with a timeout. A notebook that is only ever read is a screenshot; a notebook that must execute on a clean runner is a test. See <a class="wl" href="github-actions.html">github-actions</a>.</p>
+<h2 id="reproducibility-of-the-analysis-not-of-the-environment" class="h-anch"><a class="hlink" href="#reproducibility-of-the-analysis-not-of-the-environment" aria-label="Link to this section">#</a>Reproducibility of the analysis, not of the environment</h2>
+<p>This is the honest boundary, and it is worth stating because the two are routinely confused.</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Reproducible</th>
+<th>Enforced by</th>
+</tr></thead><tbody>
+<tr><td>the dataset from a seed</td><td><code>fiction.py</code>, <code>anonymize.py</code></td></tr>
+<tr><td>every derived doc and count</td><td><a class="wl" href="make.html">make</a> <code>docs</code> + CI <code>git diff --exit-code</code></td></tr>
+<tr><td>every figure in the notebook</td><td>CI notebook execution</td></tr>
+<tr><td>structural integrity of the data</td><td><code>build_db.py</code> with foreign keys on, plus the test suite</td></tr>
+</tbody></table></div>
+<div class="tw"><table>
+<thead><tr>
+<th><strong>Not</strong> reproducible</th>
+<th>Why</th>
+</tr></thead><tbody>
+<tr><td>the Python environment</td><td>all twelve dependencies are floor-pinned with <code>&gt;=</code>, no upper bound, no lockfile — under a comment claiming reproducibility</td></tr>
+<tr><td>the declared version floor</td><td>the project declares support from 3.10; CI runs 3.12 only, so the floor is never exercised. See <a class="wl" href="setuptools-and-pyproject.html">setuptools-and-pyproject</a></td></tr>
+<tr><td>the pipeline end-to-end</td><td><code>make all</code> needs the private source corpus, which exists on one machine</td></tr>
+</tbody></table></div>
+<p>A pinned seed makes the <em>output</em> deterministic given an environment. It says nothing about the environment. Both halves are needed and only one is present here.</p>
+<h2 id="the-unusual-part-testing-that-a-finding-survived" class="h-anch"><a class="hlink" href="#the-unusual-part-testing-that-a-finding-survived" aria-label="Link to this section">#</a>The unusual part: testing that a finding survived</h2>
+<p>Two of the tests assert that the <strong>analytical signals themselves</strong> still exist in the published data after anonymisation — the shared-contact concentration and the bulk-permit batching. Most pipelines test that the data is well-formed; this one tests that the data is still <em>interesting</em>. See <a class="wl" href="shared-identifier-clustering.html">shared-identifier-clustering</a> and <a class="wl" href="structure-preserving-anonymisation.html">structure-preserving-anonymisation</a>.</p>
+<p>The floors are deliberately loose — the shared-inbox test passes at five, where the dataset actually shows twenty-three. A regression test with a loose floor catches catastrophic loss of signal without freezing an exact number into the suite. That is the right trade for a generated dataset and the wrong one for a claim about magnitude.</p>
+<h2 id="the-contrast-case" class="h-anch"><a class="hlink" href="#the-contrast-case" aria-label="Link to this section">#</a>The contrast case</h2>
+<p><a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> writes verification queries into its load scripts — <a class="wl" href="verify-the-load-dont-declare-it.html">verify-the-load-dont-declare-it</a> — but commits <strong>no output, no log, no expected-count file</strong>, and has no Makefile and no CI. Its one genuinely reproducible artefact is the standalone Python reference script, seeded for exactly this reason: <span class="unpub" title="named in the source wiki; not published">reference-implementation-as-specification</span>. The discipline is present as prose there and as machinery here.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="generated-docs-checked-by-ci-diff.html">generated-docs-checked-by-ci-diff</a> · <a class="wl" href="disclosure-gate.html">disclosure-gate</a> · <a class="wl" href="make.html">make</a> · <a class="wl" href="github-actions.html">github-actions</a> · <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> · <a class="wl" href="deterministic-seeded-substitution.html">deterministic-seeded-substitution</a> · <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a></p></div>
+  <div class="tags"><span class="tag">data-analysis</span><span class="tag">testing</span><span class="tag">ci-cd</span><span class="tag">documentation</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/Makefile</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/.github/workflows/ci.yml</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/fiction.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/build_docs.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/app.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/notebooks/01_investigation_analysis.ipynb</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/requirements.txt</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="deterministic-seeded-substitution.html"><span class="kind k-concept">concept</span><span class="rel-t">Deterministic Seeded Substitution</span><span class="rel-g">The mechanism that makes structure-preserving-anonymisation work</span></a><a class="rel" href="disclosure-gate.html"><span class="kind k-concept">concept</span><span class="rel-t">Disclosure Gate</span><span class="rel-g">A build step that must pass before anything derived from sensitive input may be published</span></a><a class="rel" href="shared-identifier-clustering.html"><span class="kind k-concept">concept</span><span class="rel-t">Shared-Identifier Clustering</span><span class="rel-g">When records that are supposed to be independent share a contact point — one inbox, one phone, one address, one bank account — the sharing is a claim about control</span></a><a class="rel" href="structure-preserving-anonymisation.html"><span class="kind k-concept">concept</span><span class="rel-t">Structure-Preserving Anonymisation</span><span class="rel-g">Redaction destroys the thing being studied</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="generated-docs-checked-by-ci-diff.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Docs Checked by CI Diff</span><span class="rel-g">Generate documentation from the data, commit the output, and then have CI regenerate it and fail the build if the result differs</span></a><a class="rel" href="verify-the-load-dont-declare-it.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Verify the Load, Don&#x27;t Declare It</span><span class="rel-g">A data pipeline ends with a query whose result can be wrong, not with a status row saying it went fine</span></a><a class="rel" href="data-warehousing-and-business-intelligence.html"><span class="kind k-project">project</span><span class="rel-t">Data Warehousing and Business Intelligence</span><span class="rel-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a><a class="rel" href="github-actions.html"><span class="kind k-tech">tech</span><span class="rel-t">GitHub Actions</span><span class="rel-g">GitHub&#x27;s hosted CI</span></a><a class="rel" href="make.html"><span class="kind k-tech">tech</span><span class="rel-t">Make</span><span class="rel-g">The old dependency-graph task runner, used here purely as a named-command registry rather than for incremental rebuilds</span></a><a class="rel" href="networkx.html"><span class="kind k-tech">tech</span><span class="rel-t">NetworkX</span><span class="rel-g">Pure-Python graph library</span></a><a class="rel" href="setuptools-and-pyproject.html"><span class="kind k-tech">tech</span><span class="rel-t">setuptools and pyproject.toml</span><span class="rel-g">The packaging layer that turns twelve lab scripts into one installable project in python-programming-laboratories</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

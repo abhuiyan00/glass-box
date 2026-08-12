@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log-Domain Arithmetic for Probability Products · Glass Box</title>
+<meta name="description" content="Multiplying many probabilities underflows to zero, and when it does, every candidate ties at zero and the answer becomes whichever one was checked first">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Log-Domain Arithmetic for Probability Products · Glass Box">
+<meta property="og:description" content="Multiplying many probabilities underflows to zero, and when it does, every candidate ties at zero and the answer becomes whichever one was checked first">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The measured cliff","Three reformulations that cost nothing","The general shape","How to catch it","Where this appears"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["systems-analysis-and-decision-support/src/decision_support/classification.py","systems-analysis-and-decision-support/src/decision_support/logistic.py","systems-analysis-and-decision-support/tests/test_classification.py","systems-analysis-and-decision-support/tests/test_logistic.py"],"dateModified":"2026-08-04","description":"Multiplying many probabilities underflows to zero, and when it does, every candidate ties at zero and the answer becomes whichever one was checked first","headline":"Log-Domain Arithmetic for Probability Products","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["ml","algorithms","debugging","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-04 · in force since 2026-08-04</span>
+    <span class="repos">systems-analysis-and-decision-support</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Multiplying many probabilities underflows to zero, and when it does, every candidate ties at zero and the answer becomes whichever one was checked first</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-measured-cliff">The measured cliff</a></li><li><a href="#three-reformulations-that-cost-nothing">Three reformulations that cost nothing</a></li><li><a href="#the-general-shape">The general shape</a></li><li><a href="#how-to-catch-it">How to catch it</a></li><li><a href="#where-this-appears">Where this appears</a></li></ol></nav>
+  <div class="prose"><h1 id="log-domain-arithmetic-for-probability-products">Log-Domain Arithmetic for Probability Products</h1>
+<p>Multiplying many probabilities underflows to zero, and when it does, every candidate ties at zero and the answer becomes whichever one was checked first. Working in logs turns the product into a sum and the floor disappears.</p>
+<p>That is usually presented as an optimisation. It is not — it is the difference between a classifier that works and one that silently returns a constant.</p>
+<h2 id="the-measured-cliff" class="h-anch"><a class="hlink" href="#the-measured-cliff" aria-label="Link to this section">#</a>The measured cliff</h2>
+<p>Bernoulli naive Bayes contributes one factor per word. Measured on a four-document corpus at four vocabulary sizes:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>vocabulary</th>
+<th>log-posterior</th>
+<th>as a product</th>
+</tr></thead><tbody>
+<tr><td>400</td><td>−115.8</td><td>5.29 × 10⁻⁵¹</td></tr>
+<tr><td>900</td><td>−259.6</td><td>1.80 × 10⁻¹¹³</td></tr>
+<tr><td>1,600</td><td>−461.0</td><td>6.27 × 10⁻²⁰¹</td></tr>
+<tr><td><strong>2,600</strong></td><td><strong>−748.7</strong></td><td><strong>0.0 — dead</strong></td></tr>
+</tbody></table></div>
+<p>The threshold is about −745, where the smallest subnormal double runs out. A 2,600-word vocabulary is small for text classification, which makes this a routine operating condition rather than an edge case.</p>
+<p>The log form is finite at every row and keeps counting past the last one.</p>
+<h2 id="three-reformulations-that-cost-nothing" class="h-anch"><a class="hlink" href="#three-reformulations-that-cost-nothing" aria-label="Link to this section">#</a>Three reformulations that cost nothing</h2>
+<p>The same discipline appears three times in one repository, and in each case the stable form is no more expensive than the naive one:</p>
+<p><strong>The sigmoid.</strong> <code>1/(1+exp(-a))</code> raises <code>OverflowError</code> at about <code>a = -746</code>. Splitting on the sign moves the large exponent into the numerator, where it underflows harmlessly to zero:</p>
+<pre><code class="lang-python">if a &gt;= 0:  return 1 / (1 + exp(-a))
+exp_a = exp(a)
+return exp_a / (1 + exp_a)</code></pre>
+<p>An unscaled feature reaches that magnitude within a few hundred gradient steps, so this is a crash waiting on iteration count, not on unusual input.</p>
+<p><strong>The log-likelihood.</strong> The textbook form <code>y·log σ + (1−y)·log(1−σ)</code> evaluates <code>log(0)</code> exactly when the model is confident and <em>right</em> — the best case triggers the failure. Folding the sign in and using <code>-log1p(exp(-|a|)) + min(a, 0)</code> never does.</p>
+<p><strong><code>log1p</code> itself</strong> exists because <code>log(1 + x)</code> loses all significance for small <code>x</code>, where the <code>1</code> swamps the <code>x</code> before the logarithm sees it.</p>
+<h2 id="the-general-shape" class="h-anch"><a class="hlink" href="#the-general-shape" aria-label="Link to this section">#</a>The general shape</h2>
+<p>Each of these is the same move: <strong>the mathematically obvious expression and the numerically usable expression are different expressions of the same function.</strong> Choosing between them is not premature optimisation, because they do not compute the same thing in floating point.</p>
+<p>Related, from the other end of the same subject: <a class="wl" href="condition-number-as-digits-lost.html">condition-number-as-digits-lost</a> is what happens when the reformulation is not available and accuracy simply has to be paid for.</p>
+<h2 id="how-to-catch-it" class="h-anch"><a class="hlink" href="#how-to-catch-it" aria-label="Link to this section">#</a>How to catch it</h2>
+<p>Not by inspection. The tests here assert the failure and the fix side by side — <code>naive_sigmoid</code> is kept in the module purely so a test can watch it raise, and the underflow table above is a parametrised assertion at four widths rather than a comment.</p>
+<p>Keeping the broken version next to the working one is <a class="wl" href="document-the-failure-mode-next-to-the-fix.html">document-the-failure-mode-next-to-the-fix</a>: the stable form looks like pointless complexity until the naive form is standing beside it, failing.</p>
+<h2 id="where-this-appears" class="h-anch"><a class="hlink" href="#where-this-appears" aria-label="Link to this section">#</a>Where this appears</h2>
+<p><a class="wl" href="systems-analysis-and-decision-support.html">systems-analysis-and-decision-support</a>. The exact-arithmetic counterpart —measuring floating-point error in <code>Fraction</code> so the measurement is not itself floating point — is in <a class="wl" href="computer-arithmetic-and-number-representation.html">computer-arithmetic-and-number-representation</a>.</p></div>
+  <div class="tags"><span class="tag">ml</span><span class="tag">algorithms</span><span class="tag">debugging</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/src/decision_support/classification.py</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/src/decision_support/logistic.py</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/tests/test_classification.py</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/tests/test_logistic.py</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="condition-number-as-digits-lost.html"><span class="kind k-concept">concept</span><span class="rel-t">Condition Number as Digits Lost</span><span class="rel-g">&quot;Ill-conditioned&quot; is a word that does no work</span></a><a class="rel" href="document-the-failure-mode-next-to-the-fix.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Document the Failure Mode Next to the Fix</span><span class="rel-g">Almost every note in these two repositories has the same shape: state the wrong-but-plausible alternative, name the concrete input that breaks it, then give the fix</span></a><a class="rel" href="computer-arithmetic-and-number-representation.html"><span class="kind k-project">project</span><span class="rel-t">Computer Arithmetic and Number Representation</span><span class="rel-g">Positional systems, the four conversion methods, the binary codes for decimal digits, sign-magnitude and both complements, arithmetic performed inside a code, and…</span></a><a class="rel" href="systems-analysis-and-decision-support.html"><span class="kind k-project">project</span><span class="rel-t">Systems Analysis and Decision Support</span><span class="rel-g">Least squares and ridge regression, κ-NN, Bernoulli naive Bayes, and logistic regression fitted by both gradient ascent and IRLS — in pure Python with no NumPy</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

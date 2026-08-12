@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pnpm · Glass Box</title>
+<meta name="description" content="Content-addressed package manager whose defining property is that it does not flatten node_modules">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pnpm · Glass Box">
+<meta property="og:description" content="Content-addressed package manager whose defining property is that it does not flatten node_modules">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["What the repo declares","The contradiction","Consequence for the APK","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Farley/pnpm-workspace.yaml","Farley/package.json","Farley/package-lock.json","Farley/CONTRIBUTING.md","Farley/README.md"],"dateModified":"2026-07-28","description":"Content-addressed package manager whose defining property is that it does not flatten node_modules","headline":"pnpm","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["devops","javascript","mobile"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-13</span>
+    <span class="repos">Farley</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Content-addressed package manager whose defining property is that it does not flatten node_modules</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#what-the-repo-declares">What the repo declares</a></li><li><a href="#the-contradiction">The contradiction</a></li><li><a href="#consequence-for-the-apk">Consequence for the APK</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="pnpm">pnpm</h1>
+<p>Content-addressed package manager whose defining property is that it does <strong>not</strong> flatten <code>node_modules</code>. In <a class="wl" href="farely.html">farely</a> that non-hoisting behaviour is not a preference — it is the reason the Android build finds its dependency. See <a class="wl" href="pnpm-over-npm-for-capacitor-gradle-path.html">pnpm-over-npm-for-capacitor-gradle-path</a> for the decision.</p>
+<h2 id="what-the-repo-declares" class="h-anch"><a class="hlink" href="#what-the-repo-declares" aria-label="Link to this section">#</a>What the repo declares</h2>
+<p><code>pnpm-workspace.yaml</code>:</p>
+<ul><li><code>packages: apps/*</code></li><li><code>minimumReleaseAge: 10080</code> — refuse any package version published less than <strong>7 days</strong> ago</li><li><code>supportedArchitectures: linux/x64 + arm64/glibc</code></li></ul>
+<p>Plus a pnpm <code>overrides</code> entry pinning Vite to 6.3.5, and <strong>every dependency exact-pinned</strong> across both workspace packages — no <code>^</code>, no <code>~</code>, anywhere.</p>
+<p><code>minimumReleaseAge</code> is a supply-chain control: it blackholes the window in which a compromised release does most of its damage, at the cost of never being on the newest patch. Combined with exact pins and an architecture allowlist, this is the most security-conscious dependency configuration in the source set.</p>
+<ul><li><code>TODO:</code> no incident or policy is recorded anywhere in the repo explaining why that rule exists here and in no sibling project. Not asked at interview — <code>confidence: low</code> on the reason.</li></ul>
+<h2 id="the-contradiction" class="h-anch"><a class="hlink" href="#the-contradiction" aria-label="Link to this section">#</a>The contradiction</h2>
+<p>The repo declares a pnpm workspace, CONTRIBUTING and README both instruct <code>pnpm install</code>, and the gradle path argument depends on pnpm&#x27;s layout. But:</p>
+<ul><li>the <strong>only committed lockfile is <code>package-lock.json</code></strong> — there is no <code>pnpm-lock.yaml</code> in the tree;</li><li><code>package.json</code> also declares npm <code>workspaces: [&quot;apps/*&quot;]</code>;</li><li><strong>every root script is <code>npm --prefix …</code></strong> — <code>dev</code>, <code>build</code>, <code>sync</code>, <code>apk</code>, <code>cap:open</code>.</li></ul>
+<p>So the documented package manager and the committed one disagree, and the committed one is the manager whose hoisting the docs warn about. Anyone following the README gets a lockfile the repo does not track; anyone running the scripts gets npm. Recorded as a finding, not resolved — an instance of <a class="wl" href="documentation-drift.html">documentation-drift</a> in the build layer rather than the prose layer.</p>
+<h2 id="consequence-for-the-apk" class="h-anch"><a class="hlink" href="#consequence-for-the-apk" aria-label="Link to this section">#</a>Consequence for the APK</h2>
+<p>Under npm&#x27;s hoisting, <code>@capacitor/android</code> may land at the root rather than under <code>apps/android/node_modules</code>, where the gradle project&#x27;s relative <code>../node_modules</code> reference expects it. The failure surfaces at <code>gradlew assembleDebug</code>, far from its cause. Since the APK was never validated on a live shift, this path has been exercised on exactly one machine — the debug build did succeed there.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="farely.html">farely</a> · <a class="wl" href="capacitor.html">capacitor</a> · <a class="wl" href="pnpm-over-npm-for-capacitor-gradle-path.html">pnpm-over-npm-for-capacitor-gradle-path</a> · <a class="wl" href="documentation-drift.html">documentation-drift</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a></p></div>
+  <div class="tags"><span class="tag">devops</span><span class="tag">javascript</span><span class="tag">mobile</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Farley</span><span class="src-p">/pnpm-workspace.yaml</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/package.json</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/package-lock.json</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/CONTRIBUTING.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="pnpm-over-npm-for-capacitor-gradle-path.html"><span class="kind k-decision">decision</span><span class="rel-t">pnpm Over npm For The Capacitor Gradle Path</span><span class="rel-g">Declare the farely monorepo as a pnpm workspace so that @capacitor/android resolves to apps/android/node_modules, where the gradle project&#x27;s relative ../node_modules…</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="farely.html"><span class="kind k-project">project</span><span class="rel-t">Farely</span><span class="rel-g">A personal Android rideshare/delivery driver assistant for Wrocław</span></a><a class="rel" href="capacitor.html"><span class="kind k-tech">tech</span><span class="rel-t">Capacitor</span><span class="rel-g">Native runtime that wraps a web build in a WebView and exposes native capability through plugins</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

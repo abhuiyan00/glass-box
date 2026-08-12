@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RSA and Integer Factorization · Glass Box</title>
+<meta name="description" content="RSA&#x27;s security rests on one asymmetry: multiplying two large primes is cheap, recovering them from the product is not">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RSA and Integer Factorization · Glass Box">
+<meta property="og:description" content="RSA&#x27;s security rests on one asymmetry: multiplying two large primes is cheap, recovering them from the product is not">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Building the key","The four attacks, in order of sophistication","The finding the lab is actually about","Form","Gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Discrete-Mathematics-Laboratories/lab2_Crypt/"],"dateModified":"2026-07-28","description":"RSA's security rests on one asymmetry: multiplying two large primes is cheap, recovering them from the product is not","headline":"RSA and Integer Factorization","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["cryptography","algorithms","discrete-math","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-04-21</span>
+    <span class="repos">Discrete-Mathematics-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>RSA&#x27;s security rests on one asymmetry: multiplying two large primes is cheap, recovering them from the product is not</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#building-the-key">Building the key</a></li><li><a href="#the-four-attacks-in-order-of-sophistication">The four attacks, in order of sophistication</a></li><li><a href="#the-finding-the-lab-is-actually-about">The finding the lab is actually about</a></li><li><a href="#form">Form</a></li><li><a href="#gaps">Gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="rsa-and-integer-factorization">RSA and Integer Factorization</h1>
+<p>RSA&#x27;s security rests on one asymmetry: multiplying two large primes is cheap, recovering them from the product is not. Lab 2 of <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> builds both halves — a working keygen and four attacks against it — and then measures where the attacks stop working.</p>
+<h2 id="building-the-key" class="h-anch"><a class="hlink" href="#building-the-key" aria-label="Link to this section">#</a>Building the key</h2>
+<ul><li><strong>Miller–Rabin</strong> probabilistic primality testing to find <code>p</code> and <code>q</code>.</li><li><code>n = p·q</code>, <code>φ(n) = (p−1)(q−1)</code>, public exponent <code>e</code> coprime to <code>φ(n)</code>.</li><li><strong>Extended Euclidean algorithm</strong> for the private exponent <code>d ≡ e⁻¹ (mod φ(n))</code>.</li><li><strong>Modular exponentiation</strong> (square-and-multiply) for encrypt and decrypt.</li></ul>
+<h2 id="the-four-attacks-in-order-of-sophistication" class="h-anch"><a class="hlink" href="#the-four-attacks-in-order-of-sophistication" aria-label="Link to this section">#</a>The four attacks, in order of sophistication</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Attack</th>
+<th>Idea</th>
+<th>Where it dies</th>
+</tr></thead><tbody>
+<tr><td><strong>Trial division</strong></td><td>try every candidate divisor up to <code>√n</code></td><td>immediately, for any realistic key size</td></tr>
+<tr><td><strong>Fermat factorization</strong></td><td>write <code>n = a² − b²</code>; search <code>a</code> upward from <code>⌈√n⌉</code></td><td>fast <strong>only</strong> when <code>p</code> and <code>q</code> are close</td></tr>
+<tr><td><strong>Pollard&#x27;s ρ</strong></td><td>cycle detection on a pseudo-random sequence mod <code>n</code></td><td>roughly <code>O(n^¼)</code> — a real improvement, still exponential in bit length</td></tr>
+<tr><td><strong>Quadratic sieve</strong> (simplified)</td><td>collect smooth relations, combine into a congruence of squares</td><td>the sub-exponential frontier; the lab&#x27;s version is a teaching reduction</td></tr>
+</tbody></table></div>
+<h2 id="the-finding-the-lab-is-actually-about" class="h-anch"><a class="hlink" href="#the-finding-the-lab-is-actually-about" aria-label="Link to this section">#</a>The finding the lab is actually about</h2>
+<p>Two measured relationships, plotted rather than asserted:</p>
+<ol><li><strong>Runtime and success rate against key size</strong> — the curve that turns &quot;RSA is hard&quot; from a claim into an observation.</li><li><strong>Sensitivity to <code>|p − q|</code></strong> — Fermat&#x27;s method collapses the problem when the primes are close together. This is why real keygen enforces a minimum distance between <code>p</code> and <code>q</code>, and it is the most transferable result in the lab: the parameter you would not think to check is the one that breaks the scheme.</li></ol>
+<h2 id="form" class="h-anch"><a class="hlink" href="#form" aria-label="Link to this section">#</a>Form</h2>
+<p>A single Jupyter notebook, 21 cells, written for Colab with <code>#@title</code> / <code>#@param</code> form widgets so parameters are set through a UI rather than by editing code — the notebook equivalent of <a class="wl" href="make-the-formal-object-observable.html">make-the-formal-object-observable</a>. Plots via numpy and <a class="wl" href="matplotlib.html">matplotlib</a>.</p>
+<h2 id="gaps" class="h-anch"><a class="hlink" href="#gaps" aria-label="Link to this section">#</a>Gaps</h2>
+<ul><li><strong>TODO:</strong> the benchmark curves exist as notebook output and screenshots only. No saved results file, no fixed seed, no machine recorded — the numbers cannot be reproduced or compared. <code>confidence: low</code> on any specific timing figure.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> · <a class="wl" href="matplotlib.html">matplotlib</a> · <a class="wl" href="make-the-formal-object-observable.html">make-the-formal-object-observable</a> · <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a></p></div>
+  <div class="tags"><span class="tag">cryptography</span><span class="tag">algorithms</span><span class="tag">discrete-math</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab2_Crypt/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="make-the-formal-object-observable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Make the Formal Object Observable</span><span class="rel-g">Take a mathematical definition and build something that lets you watch it behave</span></a><a class="rel" href="cybersecurity-engineering-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Cybersecurity Engineering Laboratories</span><span class="rel-g">Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="matplotlib.html"><span class="kind k-tech">tech</span><span class="rel-t">matplotlib</span><span class="rel-g">Python&#x27;s plotting library</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

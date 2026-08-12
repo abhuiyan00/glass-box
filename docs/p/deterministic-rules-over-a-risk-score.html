@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deterministic Rules Over a Risk Score · Glass Box</title>
+<meta name="description" content="health-awareness-support-platform selects an educational route with a pure function over three broad self-ratings">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Deterministic Rules Over a Risk Score · Glass Box">
+<meta property="og:description" content="health-awareness-support-platform selects an educational route with a pure function over three broad self-ratings">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why not a score","What determinism buys","What it costs","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["health-awareness-support-platform/learning/services.py","health-awareness-support-platform/docs/product-decisions.md","health-awareness-support-platform/docs/privacy-threat-model.md","health-awareness-support-platform/learning/tests.py"],"dateModified":"2026-08-02","description":"health-awareness-support-platform selects an educational route with a pure function over three broad self-ratings","headline":"Deterministic Rules Over a Risk Score","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["python","privacy","architecture","testing","requirements"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-02 · in force since 2026-08-02</span>
+    <span class="repos">health-awareness-support-platform</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>health-awareness-support-platform selects an educational route with a pure function over three broad self-ratings</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why-not-a-score">Why not a score</a></li><li><a href="#what-determinism-buys">What determinism buys</a></li><li><a href="#what-it-costs">What it costs</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="deterministic-rules-over-a-risk-score">Deterministic Rules Over a Risk Score</h1>
+<p><strong>Decision.</strong> <a class="wl" href="health-awareness-support-platform.html">health-awareness-support-platform</a> selects an educational route with a pure function over three broad self-ratings. No model, no learned weights, no numeric risk score. The rule set is small enough to read and its output is predictable from its input.</p>
+<p>The student-era design pointed the other way. This is the reversal, and the reasons are recorded in <code>docs/product-decisions.md</code> rather than left as an unbuilt feature.</p>
+<h2 id="why-not-a-score" class="h-anch"><a class="hlink" href="#why-not-a-score" aria-label="Link to this section">#</a>Why not a score</h2>
+<p><strong>A number implies a measurement.</strong> &quot;Risk: 72&quot; is read as a fact about a person&#x27;s body, and nothing in the system entitles it to be one — the inputs are three coarse self-reports from a user who may be guessing. Presenting a derived number without the standing to support it is the failure mode here, and it is worse in health than almost anywhere else, because the user cannot easily tell that the confidence is manufactured.</p>
+<p><strong>It changes the regulatory character of the product.</strong> Software that scores health status is arguing to be a medical device. Software that routes to source-labelled educational material is not. The decision keeps the product on the side of that line it can actually defend, which is also what makes the disclaimer honest instead of decorative.</p>
+<p><strong>It requires data the product refuses to hold.</strong> A useful score wants history, free text, demographics and ideally a diagnosis — precisely the corpus that makes a breach serious. Declining the score is what makes <a class="wl" href="data-minimisation.html">data-minimisation</a> enforceable rather than aspirational: there is no downstream consumer arguing for one more field.</p>
+<h2 id="what-determinism-buys" class="h-anch"><a class="hlink" href="#what-determinism-buys" aria-label="Link to this section">#</a>What determinism buys</h2>
+<p><strong>It is testable.</strong> A pure function with three enumerated inputs has an enumerable output space, so <code>learning/tests.py</code> pins the rules exhaustively rather than sampling them. A model would need an evaluation set, a threshold, and a judgement about acceptable error — none of which a portfolio reconstruction can honestly supply.</p>
+<p><strong>It is explainable by construction.</strong> The rule that fired <em>is</em> the explanation. No post-hoc attribution, no feature importances that describe the explainer more than the model.</p>
+<p><strong>It cannot drift.</strong> Nothing retrains, so behaviour on a given input is fixed for the life of the deployment and any change is a diff. See <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a> for the same property valued in an analysis pipeline.</p>
+<p>Structurally this is <a class="wl" href="separating-computation-from-io.html">separating-computation-from-io</a>: the deciding part touches no database, no request and no response, which is exactly why it can be a pure function at all.</p>
+<h2 id="what-it-costs" class="h-anch"><a class="hlink" href="#what-it-costs" aria-label="Link to this section">#</a>What it costs</h2>
+<p>Personalisation, genuinely. The prompt cannot adapt to an individual over time, cannot notice a trend across check-ins, and cannot improve from usage. For a product whose stated purpose is <em>awareness</em> rather than <em>advice</em>, that ceiling is acceptable — and it is a ceiling, not a gap: the function <strong>cannot</strong> infer a condition, compute a risk, contact a third party, or turn free text into a profile, and those limits are the feature.</p>
+<p>If a future version needed adaptation, the correct move is a different decision made with evidence attached — an evaluation set, a clinical reviewer, a stated error tolerance — not this decision made less carefully.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="health-awareness-support-platform.html">health-awareness-support-platform</a> · <a class="wl" href="data-minimisation.html">data-minimisation</a> · <a class="wl" href="privacy-documented-beside-the-feature.html">privacy-documented-beside-the-feature</a> · <a class="wl" href="separating-computation-from-io.html">separating-computation-from-io</a> · <a class="wl" href="taught-selectors-over-guessed-labels.html">taught-selectors-over-guessed-labels</a> · <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a> · <a class="wl" href="on-device-first-inference.html">on-device-first-inference</a></p></div>
+  <div class="tags"><span class="tag">python</span><span class="tag">privacy</span><span class="tag">architecture</span><span class="tag">testing</span><span class="tag">requirements</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">health-awareness-support-platform</span><span class="src-p">/learning/services.py</span></code></li><li><code><span class="src-r">health-awareness-support-platform</span><span class="src-p">/docs/product-decisions.md</span></code></li><li><code><span class="src-r">health-awareness-support-platform</span><span class="src-p">/docs/privacy-threat-model.md</span></code></li><li><code><span class="src-r">health-awareness-support-platform</span><span class="src-p">/learning/tests.py</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="data-minimisation.html"><span class="kind k-concept">concept</span><span class="rel-t">Data Minimisation</span><span class="rel-g">GDPR Art</span></a><a class="rel" href="on-device-first-inference.html"><span class="kind k-concept">concept</span><span class="rel-t">On-Device-First Inference</span><span class="rel-g">Do the classification locally with cheap deterministic logic; treat a model call as an upgrade the owner may switch on, never as the default path</span></a><a class="rel" href="reproducible-analysis.html"><span class="kind k-concept">concept</span><span class="rel-t">Reproducible Analysis</span><span class="rel-g">An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose</span></a><a class="rel" href="separating-computation-from-io.html"><span class="kind k-concept">concept</span><span class="rel-t">Separating Computation from I/O</span><span class="rel-g">A function that computes and prints can only be tested by capturing stdout</span></a><a class="rel" href="taught-selectors-over-guessed-labels.html"><span class="kind k-concept">concept</span><span class="rel-t">Taught Selectors Over Guessed Labels</span><span class="rel-g">Stop trying to infer which UI element is which from its text, and let the user point at it once</span></a><a class="rel" href="privacy-documented-beside-the-feature.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Privacy Documented Beside The Feature</span><span class="rel-g">The privacy argument is not filed in one policy document — it is restated at every site where the sensitive thing happens: in the vision doc, in the legal chapter, in…</span></a><a class="rel" href="health-awareness-support-platform.html"><span class="kind k-project">project</span><span class="rel-t">Health Awareness Support Platform</span><span class="rel-g">Clearpath — a Django health-education product rebuilt from a bachelor capstone by the same author</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

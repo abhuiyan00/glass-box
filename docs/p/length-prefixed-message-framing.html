@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Length-Prefixed Message Framing · Glass Box</title>
+<meta name="description" content="TCP is a byte stream, not a message stream">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Length-Prefixed Message Framing · Glass Box">
+<meta property="og:description" content="TCP is a byte stream, not a message stream">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The bug this replaces","Why the length must be bounded","What HTTP does instead","Read timeouts belong here too","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["distributed-systems-protocol-labs/protocol_lab/framing.py","distributed-systems-protocol-labs/protocol_lab/tcp_transport.py","distributed-systems-protocol-labs/docs/architecture.md","distributed-systems-protocol-labs/README.md"],"dateModified":"2026-08-02","description":"TCP is a byte stream, not a message stream","headline":"Length-Prefixed Message Framing","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["networking","architecture","security","debugging"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-02 · in force since 2026-08-02</span>
+    <span class="repos">distributed-systems-protocol-labs</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>TCP is a byte stream, not a message stream</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-bug-this-replaces">The bug this replaces</a></li><li><a href="#why-the-length-must-be-bounded">Why the length must be bounded</a></li><li><a href="#what-http-does-instead">What HTTP does instead</a></li><li><a href="#read-timeouts-belong-here-too">Read timeouts belong here too</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="length-prefixed-message-framing">Length-Prefixed Message Framing</h1>
+<p>TCP is a <strong>byte stream</strong>, not a message stream. It guarantees order and delivery and guarantees nothing about boundaries: one <code>send</code> can arrive as three reads, and three sends can arrive as one. Any application that exchanges messages over it must define where each message ends.</p>
+<p>The standard answer is to say so up front:</p>
+<pre><code>4-byte unsigned big-endian length || UTF-8 payload</code></pre>
+<p>Read exactly four bytes, decode the length, then read exactly that many. One connection carries many frames.</p>
+<h2 id="the-bug-this-replaces" class="h-anch"><a class="hlink" href="#the-bug-this-replaces" aria-label="Link to this section">#</a>The bug this replaces</h2>
+<p><code>sock.recv(4096)</code> and hope. It works perfectly on loopback, where messages are small and arrive whole, and it fails in production under three conditions the developer never reproduced: a message larger than the buffer, two messages coalesced by Nagle&#x27;s algorithm, and a message split across TCP segments by a smaller path MTU.</p>
+<p>The variants are no better. Reading until the buffer &quot;looks like valid JSON&quot; makes the parser the framer and breaks on any payload containing a nested structure. Delimiter framing — newline, <code>\0</code> — requires escaping the delimiter in the payload, and the escaping is what gets forgotten.</p>
+<h2 id="why-the-length-must-be-bounded" class="h-anch"><a class="hlink" href="#why-the-length-must-be-bounded" aria-label="Link to this section">#</a>Why the length must be bounded</h2>
+<p>An attacker-supplied length prefix is an allocation instruction. <code>0xFFFFFFFF</code> asks the server to allocate 4 GiB before a single byte of payload arrives, and a handful of connections doing that is a denial of service that costs the attacker twelve bytes.</p>
+<p>So the cap comes first — 64 KiB in the implementation this is written from — and it is checked <strong>before</strong> allocating, not after reading. An invalid size gets a framed error response where that is still possible, then the connection closes, because a stream whose framing is in doubt cannot be resynchronised: there is no way to tell payload bytes from a length prefix once you have lost your place.</p>
+<p>This is the same ordering discipline as verify-then-parse in <a class="wl" href="hmac-session-tokens-over-jwt.html">hmac-session-tokens-over-jwt</a>. Everything after the boundary is attacker-controlled until something trusted says otherwise.</p>
+<h2 id="what-http-does-instead" class="h-anch"><a class="hlink" href="#what-http-does-instead" aria-label="Link to this section">#</a>What HTTP does instead</h2>
+<p>HTTP solves the identical problem twice — <code>Content-Length</code>, or chunked transfer encoding — which is why an HTTP adapter needs no framing code of its own. That is not the framing disappearing; it is the framing living in a library. Disagreement between two implementations about <em>which</em> of those two mechanisms applies to a request is the entire basis of request-smuggling attacks, so &quot;the library handles it&quot; is a statement about where the complexity lives, not whether it exists.</p>
+<p>Building both transports against one contract is what makes the distinction visible: see <a class="wl" href="distributed-systems-protocol-labs.html">distributed-systems-protocol-labs</a> and <a class="wl" href="dual-implementation-as-cross-check.html">dual-implementation-as-cross-check</a>.</p>
+<h2 id="read-timeouts-belong-here-too" class="h-anch"><a class="hlink" href="#read-timeouts-belong-here-too" aria-label="Link to this section">#</a>Read timeouts belong here too</h2>
+<p>A peer that sends a length prefix and then nothing holds a server thread forever. Framing code needs an idle read timeout as much as it needs a size cap — both are limits on what a single unauthenticated connection can consume.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="distributed-systems-protocol-labs.html">distributed-systems-protocol-labs</a> · <a class="wl" href="contract-first-api-design.html">contract-first-api-design</a> · <a class="wl" href="dual-implementation-as-cross-check.html">dual-implementation-as-cross-check</a> · <a class="wl" href="hmac-session-tokens-over-jwt.html">hmac-session-tokens-over-jwt</a> · <a class="wl" href="layered-architecture.html">layered-architecture</a> · <a class="wl" href="web-application-injection.html">web-application-injection</a></p></div>
+  <div class="tags"><span class="tag">networking</span><span class="tag">architecture</span><span class="tag">security</span><span class="tag">debugging</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">distributed-systems-protocol-labs</span><span class="src-p">/protocol_lab/framing.py</span></code></li><li><code><span class="src-r">distributed-systems-protocol-labs</span><span class="src-p">/protocol_lab/tcp_transport.py</span></code></li><li><code><span class="src-r">distributed-systems-protocol-labs</span><span class="src-p">/docs/architecture.md</span></code></li><li><code><span class="src-r">distributed-systems-protocol-labs</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="contract-first-api-design.html"><span class="kind k-concept">concept</span><span class="rel-t">Contract-First API Design</span><span class="rel-g">Write the API specification first; generate the code from it</span></a><a class="rel" href="layered-architecture.html"><span class="kind k-concept">concept</span><span class="rel-t">Layered Architecture</span><span class="rel-g">Split the application into horizontal tiers where each layer may only call the one below it: api/ handles HTTP and nothing else, service/ holds the domain rules and…</span></a><a class="rel" href="web-application-injection.html"><span class="kind k-concept">concept</span><span class="rel-t">Web Application Injection</span><span class="rel-g">One root cause, many names</span></a><a class="rel" href="hmac-session-tokens-over-jwt.html"><span class="kind k-decision">decision</span><span class="rel-t">HMAC Session Tokens Over JWT</span><span class="rel-g">project-management-web-platform issues session credentials as a base64url JSON payload and an HMAC-SHA256 tag, using node:crypto rather than a JWT library</span></a><a class="rel" href="dual-implementation-as-cross-check.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Dual Implementation as Cross-Check</span><span class="rel-g">Build the same thing twice, in two different stacks, and keep both</span></a><a class="rel" href="distributed-systems-protocol-labs.html"><span class="kind k-project">project</span><span class="rel-t">Distributed Systems Protocol Labs</span><span class="rel-g">One service contract, executed over two real transports — length-prefixed TCP JSON and HTTP/1.1 JSON — with a third, gRPC, expressed as a schema and deliberately left…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

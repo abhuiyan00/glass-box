@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PL/SQL Exception Handling · Glass Box</title>
+<meta name="description" content="PL/SQL reports failure by raising, not by returning">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PL/SQL Exception Handling · Glass Box">
+<meta property="og:description" content="PL/SQL reports failure by raising, not by returning">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["`SELECT INTO` is all-or-nothing","Three sources of exception","Reporting failure across a boundary","Two failures that look like a working handler","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Oracle-Database-Laboratories/sql/03_plsql/01_blocks_and_exceptions.sql","Oracle-Database-Laboratories/sql/03_plsql/03_procedures_and_packages.sql","Oracle-Database-Laboratories/sql/01_schema/01_drop_all.sql"],"dateModified":"2026-07-28","description":"PL/SQL reports failure by raising, not by returning","headline":"PL/SQL Exception Handling","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["databases","plsql","debugging"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Oracle-Database-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>PL/SQL reports failure by raising, not by returning</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#select-into-is-all-or-nothing">`SELECT INTO` is all-or-nothing</a></li><li><a href="#three-sources-of-exception">Three sources of exception</a></li><li><a href="#reporting-failure-across-a-boundary">Reporting failure across a boundary</a></li><li><a href="#two-failures-that-look-like-a-working-handler">Two failures that look like a working handler</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="plsql-exception-handling">PL/SQL Exception Handling</h1>
+<p>PL/SQL reports failure by raising, not by returning. That single fact reshapes how blocks are written, because the most common statement in the language — <code>SELECT INTO</code> — has <strong>three</strong> outcomes and only one of them is a value.</p>
+<h2 id="select-into-is-all-or-nothing" class="h-anch"><a class="hlink" href="#select-into-is-all-or-nothing" aria-label="Link to this section">#</a><code>SELECT INTO</code> is all-or-nothing</h2>
+<blockquote><p>&quot;SELECT INTO is all-or-nothing. Exactly one row satisfies it; zero rows raise NO_DATA_FOUND and two or more raise TOO_MANY_ROWS. Both are exceptions, not return values, so every block below that uses it handles them explicitly.&quot;</p><cite>Oracle-Database-Laboratories/sql/03_plsql/01_blocks_and_exceptions.sql, 2026-07-25</cite></blockquote>
+<p>A consequence that bites: <strong>when <code>SELECT INTO</code> raises, its <code>INTO</code> target is left unassigned.</strong> The lookup block in <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a> therefore prints the <em>searched-for</em> variable in its handlers, not the target — reporting the target would print an empty string exactly where the diagnostic is needed. Handlers must read from state that was valid before the failure.</p>
+<h2 id="three-sources-of-exception" class="h-anch"><a class="hlink" href="#three-sources-of-exception" aria-label="Link to this section">#</a>Three sources of exception</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Source</th>
+<th>Example here</th>
+</tr></thead><tbody>
+<tr><td><strong>Predefined</strong></td><td><code>NO_DATA_FOUND</code>, <code>TOO_MANY_ROWS</code> around <code>SELECT INTO</code></td></tr>
+<tr><td><strong>User-defined</strong></td><td><code>already_exists</code>, <code>invalid_band_no</code> — declared <code>EXCEPTION</code>, raised by <code>RAISE</code>, caught by name</td></tr>
+<tr><td><strong><code>SQLCODE</code> inspection</strong></td><td>the teardown script catches <code>WHEN OTHERS</code>, allows ORA-00942 and ORA-04043, re-raises everything else</td></tr>
+</tbody></table></div>
+<p>The third pattern is worth isolating. A bare <code>WHEN OTHERS THEN NULL</code> swallows everything and is the single most damaging idiom in the language. The teardown script&#x27;s version tests <code>SQLCODE IN (-942, -4043)</code> and calls <code>RAISE</code> in the <code>ELSE</code> — so &quot;the object was already gone&quot; is tolerated and a genuine failure still propagates. That narrow, deliberate swallow is what makes <a class="wl" href="idempotent-teardown-scripts.html">idempotent-teardown-scripts</a> safe rather than reckless.</p>
+<h2 id="reporting-failure-across-a-boundary" class="h-anch"><a class="hlink" href="#reporting-failure-across-a-boundary" aria-label="Link to this section">#</a>Reporting failure across a boundary</h2>
+<p>A stored procedure that catches its own exception and prints a message returns normally, leaving the caller unable to distinguish success from rejection. <code>herd_admin.add_band</code> instead raises through <code>RAISE_APPLICATION_ERROR</code> in the <strong>-20000 to -20999</strong> range Oracle reserves for application errors — any other code produces ORA-21000 in place of the intended message. See <a class="wl" href="plsql.html">plsql</a>.</p>
+<p>The caller&#x27;s side of the same contract is visible in the exercise loop: each call is wrapped in its own inner <code>BEGIN … EXCEPTION WHEN OTHERS THEN</code> that prints <code>SQLERRM</code> and continues, so one rejection does not abort the batch. Raise at the boundary, decide at the call site.</p>
+<h2 id="two-failures-that-look-like-a-working-handler" class="h-anch"><a class="hlink" href="#two-failures-that-look-like-a-working-handler" aria-label="Link to this section">#</a>Two failures that look like a working handler</h2>
+<p>Both are recorded in the same file, and both produce a <em>wrong answer</em> rather than an error:</p>
+<ul><li><strong>Name collision.</strong> Where a PL/SQL variable or parameter shares a name with a column, PL/SQL resolves in favour of the PL/SQL identifier. <code>WHERE name = name_band</code> becomes a tautology, the duplicate check silently passes on everything, and nothing raises. The fix is to qualify every predicate with the table name. The procedure version in <code>03_procedures_and_packages.sql</code> documents exactly this collision at the point where it would occur.</li><li><strong>Buffer overflow inside the handler.</strong> The clash-message buffer is <code>VARCHAR2(200)</code>, not 50, because three appended clashes overflow a 50-character buffer and ORA-06502 replaces the diagnostic the handler existed to produce. A handler that can itself raise is not a handler.</li></ul>
+<p>Both are instances of <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a> expressed in a language with no tests — the check runs, reports success, and checks nothing.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="plsql.html">plsql</a> · <a class="wl" href="plsql-cursors.html">plsql-cursors</a> · <a class="wl" href="database-triggers.html">database-triggers</a> · <a class="wl" href="idempotent-teardown-scripts.html">idempotent-teardown-scripts</a> · <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a></p></div>
+  <div class="tags"><span class="tag">databases</span><span class="tag">plsql</span><span class="tag">debugging</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/03_plsql/01_blocks_and_exceptions.sql</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/03_plsql/03_procedures_and_packages.sql</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/01_schema/01_drop_all.sql</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="database-triggers.html"><span class="kind k-concept">concept</span><span class="rel-t">Database Triggers</span><span class="rel-g">Procedural code the database runs on your behalf when a table changes</span></a><a class="rel" href="plsql-cursors.html"><span class="kind k-concept">concept</span><span class="rel-t">PL/SQL Cursors</span><span class="rel-g">A cursor is a named handle over a result set that procedural code walks a row at a time</span></a><a class="rel" href="tests-that-pass-for-the-wrong-reason.html"><span class="kind k-concept">concept</span><span class="rel-t">Tests That Pass for the Wrong Reason</span><span class="rel-g">A failing test tells you something is broken</span></a><a class="rel" href="idempotent-teardown-scripts.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Idempotent Teardown Scripts</span><span class="rel-g">Every script in the set can be run again, from any state, without editing it first</span></a><a class="rel" href="oracle-database-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Oracle Database Laboratories</span><span class="rel-g">Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite</span></a><a class="rel" href="plsql.html"><span class="kind k-tech">tech</span><span class="rel-t">PL/SQL</span><span class="rel-g">Oracle&#x27;s procedural extension to SQL: block-structured, statically typed against the schema, and executed inside the database rather than in a client</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

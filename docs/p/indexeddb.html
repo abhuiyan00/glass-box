@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IndexedDB · Glass Box</title>
+<meta name="description" content="The browser&#x27;s transactional object store">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IndexedDB · Glass Box">
+<meta property="og:description" content="The browser&#x27;s transactional object store">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Schema in Farely","Why IndexedDB and not `localStorage`","Written against the raw API","Limits worth stating","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Farley/apps/tester/src/app/lib/diagStore.ts","Farley/apps/tester/src/app/lib/session.ts","Farley/docs/SRS.md"],"dateModified":"2026-07-28","description":"The browser's transactional object store","headline":"IndexedDB","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["javascript","databases","mobile"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-12</span>
+    <span class="repos">Farley</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The browser&#x27;s transactional object store</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#schema-in-farely">Schema in Farely</a></li><li><a href="#why-indexeddb-and-not-localstorage">Why IndexedDB and not `localStorage`</a></li><li><a href="#written-against-the-raw-api">Written against the raw API</a></li><li><a href="#limits-worth-stating">Limits worth stating</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="indexeddb">IndexedDB</h1>
+<p>The browser&#x27;s transactional object store. In <a class="wl" href="farely.html">farely</a> it holds the diagnostics flight recorder — the only structured persistence in an app that otherwise uses <code>localStorage</code>, and the storage layer under <a class="wl" href="on-device-black-box-diagnostics.html">on-device-black-box-diagnostics</a>.</p>
+<h2 id="schema-in-farely" class="h-anch"><a class="hlink" href="#schema-in-farely" aria-label="Link to this section">#</a>Schema in Farely</h2>
+<p>Database <code>farely-diag</code>, a single object store <code>events</code> keyed by <code>id</code>, with a <code>ts</code> index for time-ordered reads. Ring-buffered to <code>DIAG_CAP = 2000</code> rows.</p>
+<h2 id="why-indexeddb-and-not-localstorage" class="h-anch"><a class="hlink" href="#why-indexeddb-and-not-localstorage" aria-label="Link to this section">#</a>Why IndexedDB and not <code>localStorage</code></h2>
+<p>Farely uses both, split by shape of data:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Data</th>
+<th>Store</th>
+<th>Why</th>
+</tr></thead><tbody>
+<tr><td>Session, settings, API keys</td><td><code>localStorage</code></td><td>small, synchronous, read at boot</td></tr>
+<tr><td>Diagnostics event stream</td><td>IndexedDB</td><td>thousands of rows, needs an index, must not block</td></tr>
+</tbody></table></div>
+<p><code>localStorage</code> is synchronous and string-only with a few-megabyte ceiling — writing an 8-kind event stream through it would stall the UI thread during exactly the moments worth recording. IndexedDB is asynchronous, indexed, and comfortably larger. Both survive inside the <a class="wl" href="capacitor.html">capacitor</a> WebView with no native storage plugin, which is what keeps the persistence layer inside <a class="wl" href="pure-domain-engine-shared-across-hosts.html">pure-domain-engine-shared-across-hosts</a> rather than in Kotlin.</p>
+<h2 id="written-against-the-raw-api" class="h-anch"><a class="hlink" href="#written-against-the-raw-api" aria-label="Link to this section">#</a>Written against the raw API</h2>
+<p><code>diagStore.ts</code> uses <strong>no wrapper library</strong> — no Dexie, no idb. It is an explicit &quot;zero-dep IndexedDB&quot; module in a repo carrying ~40 direct dependencies, one of several places where <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> survives at module level inside a heavyweight shell.</p>
+<p>Three defensive properties come with that hand-rolling:</p>
+<ul><li><strong>Writes are fire-and-forget and never throw.</strong> A diagnostics failure cannot break the feature being diagnosed.</li><li><strong>In-memory bounded fallback</strong> when IndexedDB is absent or blocked, so the API surface never changes for callers.</li><li><strong>A <code>farely:diag</code> <code>CustomEvent</code></strong> is dispatched on every write, giving the live in-app view its data without a polling loop or a second read path.</li></ul>
+<p>Export is a manual JSON dump to a dated filename — the user-triggered edge of <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a>.</p>
+<h2 id="limits-worth-stating" class="h-anch"><a class="hlink" href="#limits-worth-stating" aria-label="Link to this section">#</a>Limits worth stating</h2>
+<p>Unencrypted at rest, like all WebView storage, and the <code>decision</code> rows contain the driver&#x27;s earnings inputs. Also evictable — a browser or WebView under storage pressure may clear the whole database, so the ring buffer is a <em>recent-history</em> tool and never a ledger. Neither limit is documented in the repo.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="farely.html">farely</a> · <a class="wl" href="on-device-black-box-diagnostics.html">on-device-black-box-diagnostics</a> · <a class="wl" href="capacitor.html">capacitor</a> · <a class="wl" href="pure-domain-engine-shared-across-hosts.html">pure-domain-engine-shared-across-hosts</a> · <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a></p></div>
+  <div class="tags"><span class="tag">javascript</span><span class="tag">databases</span><span class="tag">mobile</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Farley</span><span class="src-p">/apps/tester/src/app/lib/diagStore.ts</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/tester/src/app/lib/session.ts</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/SRS.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="on-device-black-box-diagnostics.html"><span class="kind k-concept">concept</span><span class="rel-t">On-Device Black Box Diagnostics</span><span class="rel-g">When you cannot attach a debugger — the user is driving, the failure is a screen you have never seen, and no telemetry may leave the device — record a bounded local…</span></a><a class="rel" href="pure-domain-engine-shared-across-hosts.html"><span class="kind k-concept">concept</span><span class="rel-t">Pure Domain Engine Shared Across Hosts</span><span class="rel-g">Keep the rules of the domain in one UI-free, platform-free module, and let each host — a browser simulator, a phone, a test harness — supply only input and display</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="farely.html"><span class="kind k-project">project</span><span class="rel-t">Farely</span><span class="rel-g">A personal Android rideshare/delivery driver assistant for Wrocław</span></a><a class="rel" href="capacitor.html"><span class="kind k-tech">tech</span><span class="rel-t">Capacitor</span><span class="rel-g">Native runtime that wraps a web build in a WebView and exposes native capability through plugins</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

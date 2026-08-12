@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Generated Artifact with a Pristine Source · Glass Box</title>
+<meta name="description" content="The file the application loads is generated, carries a DO-NOT-EDIT banner naming its generator, and its input is committed beside it">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Generated Artifact with a Pristine Source · Glass Box">
+<meta property="og:description" content="The file the application loads is generated, carries a DO-NOT-EDIT banner naming its generator, and its input is committed beside it">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The three instances","What the generators actually do","Why the source is \"pristine\" and not just \"the input\"","Where it sits","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["IT Applications in Business and Commerce/lecture/exam_prep/chapters.js","IT Applications in Business and Commerce/lecture/exam_prep/chapters.backup.js","IT Applications in Business and Commerce/lecture/exam_prep/_build_bank.js","Physics/exam_prep/js/quizsets.js","Physics/exam_prep/tools/build_sets.mjs","Discrete-Mathematics-Laboratories/lab6_Neo4j/viewer/js/data.js"],"dateModified":"2026-07-28","description":"The file the application loads is generated, carries a DO-NOT-EDIT banner naming its generator, and its input is committed beside it","headline":"Generated Artifact with a Pristine Source","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["documentation","javascript","architecture"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">Discrete-Mathematics-Laboratories · IT Applications in Business and Commerce · Physics</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The file the application loads is generated, carries a DO-NOT-EDIT banner naming its generator, and its input is committed beside it</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-three-instances">The three instances</a></li><li><a href="#what-the-generators-actually-do">What the generators actually do</a></li><li><a href="#why-the-source-is-pristine-and-not-just-the-input">Why the source is &quot;pristine&quot; and not just &quot;the input&quot;</a></li><li><a href="#where-it-sits">Where it sits</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="generated-artifact-with-a-pristine-source">Generated Artifact with a Pristine Source</h1>
+<p>The file the application loads is <strong>generated</strong>, carries a DO-NOT-EDIT banner naming its generator, and its <strong>input is committed beside it</strong>. Three things must all be true, and it is the third that distinguishes this from ordinary code generation: in a normal build the source is the only thing in the repo and the artifact is gitignored. Here <strong>both are tracked</strong>, because the artifact must load from <code>file://</code> with no build step available — see <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a>.</p>
+<p>Confirmed in three repositories.</p>
+<h2 id="the-three-instances" class="h-anch"><a class="hlink" href="#the-three-instances" aria-label="Link to this section">#</a>The three instances</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Repo</th>
+<th>Generated</th>
+<th>Pristine source</th>
+<th>Generator</th>
+</tr></thead><tbody>
+<tr><td><code>IT Applications in Business and Commerce</code></td><td><code>lecture/exam_prep/chapters.js</code> (567 lines, 497 questions)</td><td><code>chapters.backup.js</code> (454 lines)</td><td><code>_build_bank.js</code></td></tr>
+<tr><td><code>Physics</code></td><td><code>exam_prep/js/quizsets.js</code></td><td><code>exam_prep/js/data.js</code></td><td><code>tools/build_sets.mjs</code></td></tr>
+<tr><td><code>Discrete-Mathematics-Laboratories</code></td><td><code>lab6_Neo4j/viewer/js/data.js</code></td><td><code>lab6_Neo4j/global_finance.csv</code></td><td><em>not committed</em></td></tr>
+</tbody></table></div>
+<p>The banner is the tell, and it says the same thing in two repos five weeks apart:</p>
+<blockquote><p>&quot;// GENERATED by _build_bank.js — DO NOT hand-edit. Edit chapters.backup.js (study) or the&quot;</p><cite>IT Applications in Business and Commerce/lecture/exam_prep/chapters.js, 2026-07-10</cite></blockquote>
+<blockquote><p>&quot;/* AUTO-GENERATED by tools/build_sets.mjs — do not hand-edit.&quot;</p><cite>Physics/exam_prep/js/quizsets.js, 2026-07-10</cite></blockquote>
+<p>Both banners go further than forbidding edits: they name the file to edit <em>instead</em>, and the exact command to regenerate. A banner without those two facts sends the reader hunting.</p>
+<h2 id="what-the-generators-actually-do" class="h-anch"><a class="hlink" href="#what-the-generators-actually-do" aria-label="Link to this section">#</a>What the generators actually do</h2>
+<p>Not templating. In each case the generator performs a transformation that would be error-prone or tedious by hand, and each one is deterministic so re-runs are stable:</p>
+<ul><li><strong><code>_build_bank.js</code></strong> merges a synthetic study bank with a dirty past-exam dump, <strong>de-duplicates</strong> (~169 raw items where concepts repeated up to six times, collapsed to one well-formed question each), <strong>de-biases option order</strong> so the answer is not guessable by position, reassigns global ids, and applies four documented answer-key corrections. Determinism comes from an LCG seeded <code>1337</code>.</li><li><strong><code>build_sets.mjs</code></strong> partitions a question bank by <strong>Jaccard similarity</strong> to a provided set — set 2 is the 16 most similar, set 3 the 59 least similar, i.e. the coverage gaps — and writes an audit report alongside.</li><li>The Discrete-Maths viewer converts a CSV into the <code>PAWLAK</code> object of a <a class="wl" href="pawlak-information-system.html">pawlak-information-system</a>, so an offline viewer can reproduce the Neo4j lab without a database.</li></ul>
+<p>The one asymmetry: only the first two commit their generator. The Neo4j viewer&#x27;s <code>data.js</code> states its input (<code>global_finance.csv</code>, which <em>is</em> in the tree) but the converting script is absent, so that instance is regenerable in principle and not in practice.</p>
+<h2 id="why-the-source-is-pristine-and-not-just-the-input" class="h-anch"><a class="hlink" href="#why-the-source-is-pristine-and-not-just-the-input" aria-label="Link to this section">#</a>Why the source is &quot;pristine&quot; and not just &quot;the input&quot;</h2>
+<p><code>_build_bank.js</code> reloads the backup rather than the generated file on every run — deliberately, and it says so:</p>
+<blockquote><p>&quot;// ---- load synthetic bank (ALWAYS from the pristine backup, never the generated file) ----&quot;</p><cite>IT Applications in Business and Commerce/lecture/exam_prep/_build_bank.js, 2026-07-10</cite></blockquote>
+<p>That single line is what prevents the classic failure: regenerate from the output once and the de-biasing, de-duplication and id reassignment compound on already-processed data. The word &quot;backup&quot; in the filename is misleading — <code>chapters.backup.js</code> is not a backup, it is the source of truth, and the file that <em>looks</em> authoritative is the derived one.</p>
+<h2 id="where-it-sits" class="h-anch"><a class="hlink" href="#where-it-sits" aria-label="Link to this section">#</a>Where it sits</h2>
+<p>Three of the instances are exam-prep apps, so this is a component of <a class="wl" href="course-as-runnable-study-tool.html">course-as-runnable-study-tool</a>. The broader form — one dataset, many outputs, generator owns all of them — is <a class="wl" href="single-source-of-truth-generators.html">single-source-of-truth-generators</a>. Keeping both files in the tree is also a mild case of <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a>, though here the retained copy is load-bearing rather than vestigial.</p>
+<ul><li><strong>TODO:</strong> <code>chapters.backup.js</code> names <code>uploads/ITABC.md</code> as <em>its</em> source of truth, and <code>_build_bank.js</code> names <code>uploads/Quiz_Question_Bank.md</code>. <strong>Neither file is in the repo</strong>, so the chain stops one link short of the actual origin and the claimed answer-key verification is unauditable. <code>confidence: low</code> on any provenance claim beyond the committed pair. <strong>No quiz item is reproduced in this wiki.</strong></li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="course-as-runnable-study-tool.html">course-as-runnable-study-tool</a> · <a class="wl" href="single-source-of-truth-generators.html">single-source-of-truth-generators</a> · <a class="wl" href="it-applications-in-business-and-commerce.html">it-applications-in-business-and-commerce</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> · <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> · <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> · <a class="wl" href="physics-exam-prep.html">physics-exam-prep</a> · <a class="wl" href="pawlak-information-system.html">pawlak-information-system</a></p></div>
+  <div class="tags"><span class="tag">documentation</span><span class="tag">javascript</span><span class="tag">architecture</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/lecture/exam_prep/chapters.js</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/lecture/exam_prep/chapters.backup.js</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/lecture/exam_prep/_build_bank.js</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/js/quizsets.js</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/tools/build_sets.mjs</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab6_Neo4j/viewer/js/data.js</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="pawlak-information-system.html"><span class="kind k-concept">concept</span><span class="rel-t">Pawlak Information System</span><span class="rel-g">A Pawlak information system is the pair S = (U, A): a universe U of objects, a set A of attributes, and for each attribute a ∈ A a function a: U → V_a assigning every…</span></a><a class="rel" href="course-as-runnable-study-tool.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Course as Runnable Study Tool</span><span class="rel-g">Four separate courses were revised by building the syllabus into a program rather than by reading notes</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="single-source-of-truth-generators.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Single-Source-of-Truth Generators</span><span class="rel-g">Hold the facts once, in a plain data structure, and emit every deliverable from it — including deliverables in different formats and for different audiences</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="it-applications-in-business-and-commerce.html"><span class="kind k-project">project</span><span class="rel-t">IT Applications in Business and Commerce</span><span class="rel-g">This repository is not business analytics</span></a><a class="rel" href="physics-exam-prep.html"><span class="kind k-project">project</span><span class="rel-t">Physics Exam Prep</span><span class="rel-g">Not a generated static site and not an asset dump: a hand-written, zero-dependency, offline-first single-page web app — an installable PWA — built from one Physics…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

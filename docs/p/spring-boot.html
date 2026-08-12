@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spring Boot · Glass Box</title>
+<meta name="description" content="3.5.6 on Java 21, via spring-boot-starter-parent">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot · Glass Box">
+<meta property="og:description" content="3.5.6 on Java 21, via spring-boot-starter-parent">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Starters actually used, lab by lab","Which Spring features carry weight","Two documented contradictions","What is not proven","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Information-Systems-Modelling/lab2/StudentService/","Information-Systems-Modelling/lab3/StudentService_vlab3/","Information-Systems-Modelling/lab4/StudentService/","Information-Systems-Modelling/lab4/StudentService/pom.xml","Information-Systems-Modelling/README.md"],"dateModified":"2026-07-28","description":"3.5.6 on Java 21, via spring-boot-starter-parent","headline":"Spring Boot","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["java","architecture","web-dev"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-04-14</span>
+    <span class="repos">Information-Systems-Modelling</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>3.5.6 on Java 21, via spring-boot-starter-parent</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#starters-actually-used-lab-by-lab">Starters actually used, lab by lab</a></li><li><a href="#which-spring-features-carry-weight">Which Spring features carry weight</a></li><li><a href="#two-documented-contradictions">Two documented contradictions</a></li><li><a href="#what-is-not-proven">What is not proven</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="spring-boot">Spring Boot</h1>
+<p><strong>3.5.6 on Java 21</strong>, via <code>spring-boot-starter-parent</code>. Three separate backends in <code>Information-Systems-Modelling</code> — labs 2, 3 and 4 — each a forward copy of the last, all sharing the package <code>pl.edu.pwr.tkubik.ism</code> and the same artifactId. It is the only Java web framework in the source set.</p>
+<h2 id="starters-actually-used-lab-by-lab" class="h-anch"><a class="hlink" href="#starters-actually-used-lab-by-lab" aria-label="Link to this section">#</a>Starters actually used, lab by lab</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Starter / dependency</th>
+<th>lab 2</th>
+<th>lab 3</th>
+<th>lab 4</th>
+</tr></thead><tbody>
+<tr><td><code>spring-boot-starter-web</code></td><td>✓</td><td>✓</td><td>✓</td></tr>
+<tr><td><code>spring-boot-starter-data-jpa</code></td><td>✓</td><td>✓</td><td>✓</td></tr>
+<tr><td><code>springdoc-openapi-starter-webmvc-ui</code></td><td>✓</td><td>✓</td><td>✓</td></tr>
+<tr><td><code>build-helper-maven-plugin</code></td><td></td><td>✓</td><td>✓</td></tr>
+<tr><td><code>spring-boot-starter-aop</code></td><td></td><td></td><td>✓</td></tr>
+<tr><td><code>spring-boot-starter-validation</code></td><td></td><td></td><td>✓</td></tr>
+<tr><td><code>spring-boot-starter-actuator</code></td><td></td><td></td><td>✓</td></tr>
+<tr><td><code>spring-security-crypto</code> (BCrypt only)</td><td></td><td></td><td>✓</td></tr>
+<tr><td>jjwt 0.12.6</td><td></td><td></td><td>✓</td></tr>
+<tr><td>database</td><td>SQLite</td><td><a class="wl" href="h2-database.html">h2-database</a></td><td><a class="wl" href="h2-database.html">h2-database</a></td></tr>
+</tbody></table></div>
+<p>The additive shape of that table <em>is</em> <a class="wl" href="forward-copy-lab-progression.html">forward-copy-lab-progression</a>: nothing is ever removed, each lab adds a row.</p>
+<p>⚠ Note the two blank cells that a reader would not expect: <strong>lab 3 has neither jjwt nor <code>spring-security-crypto</code></strong>, despite its README and its OpenAPI contract both promising JWT auth with bcrypt. See <a class="wl" href="stateless-jwt-authentication.html">stateless-jwt-authentication</a> for the verified detail.</p>
+<h2 id="which-spring-features-carry-weight" class="h-anch"><a class="hlink" href="#which-spring-features-carry-weight" aria-label="Link to this section">#</a>Which Spring features carry weight</h2>
+<ul><li><strong>Generated controllers.</strong> <code>openapi-generator-maven-plugin</code> 7.20.0 emits the API interfaces from the OpenAPI document with <code>interfaceOnly</code> + <code>delegatePattern</code>; the hand-written controllers implement them. See <a class="wl" href="contract-first-api-design.html">contract-first-api-design</a> and <a class="wl" href="maven.html">maven</a>.</li><li><strong>AOP as the extension point.</strong> Because the controllers implement generated interfaces, lab 4 puts logging, timing, audit and usage counting into aspects rather than into the controllers — see <a class="wl" href="aspect-oriented-programming.html">aspect-oriented-programming</a>.</li><li><strong>RFC 9457 <code>ProblemDetail</code>.</strong> A <code>@RestControllerAdvice</code> converts unhandled exceptions into structured error bodies specifically so stack traces do not reach clients.</li><li><strong>Profiles.</strong> <code>application.properties</code> (dev) and <code>application-prod.properties</code> (prod) differ in more than credentials: the H2 console is disabled in prod, upload limits are tightened, and a fully commented-out PostgreSQL/HikariCP/Flyway block sits in the prod file as a migration sketch.</li><li><strong>Actuator</strong>, dev seed data and file uploads round out lab 4.</li></ul>
+<p><strong>Security is deliberately <em>not</em> a starter.</strong> No <code>spring-boot-starter-security</code>, no <code>SecurityFilterChain</code>; lab 4&#x27;s authentication is a hand-rolled Spring MVC interceptor over jjwt with BCrypt borrowed from <code>spring-security-crypto</code>. See <a class="wl" href="bcrypt-crypto-only-no-spring-security.html">bcrypt-crypto-only-no-spring-security</a> and <a class="wl" href="stateless-jwt-authentication.html">stateless-jwt-authentication</a>.</p>
+<h2 id="two-documented-contradictions" class="h-anch"><a class="hlink" href="#two-documented-contradictions" aria-label="Link to this section">#</a>Two documented contradictions</h2>
+<ol><li>The root README says lab 4 returns <strong>RFC-7807</strong> <code>ProblemDetail</code>; <code>GlobalExceptionHandler</code>&#x27;s own javadoc says <strong>RFC 9457</strong>, which obsoletes 7807. The code is right.</li><li>The root README caps uploads at &quot;20 MB/file and 50 files/build&quot; — true in dev, but <code>application-prod.properties</code> tightens to 10 MB / 30 MB, <em>below</em> <code>MediaController</code>&#x27;s own constants, and the README never mentions prod.</li></ol>
+<p>Both are <a class="wl" href="documentation-drift.html">documentation-drift</a>.</p>
+<h2 id="what-is-not-proven" class="h-anch"><a class="hlink" href="#what-is-not-proven" aria-label="Link to this section">#</a>What is not proven</h2>
+<p>Three of the five Java test files assert only <code>contextLoads()</code>. Nothing tests a service implementation, an aspect, the exception handler, the upload limits or the JWT path beyond one end-to-end MockMvc flow. Spring Boot&#x27;s testing support is present and essentially unused.</p>
+<ul><li><strong>TODO:</strong> no deployment, no CI, no container image, no <code>Dockerfile</code> anywhere. The prod profile exists but there is no evidence it was ever run. <code>confidence: low</code> on any production claim.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="information-systems-modelling.html">information-systems-modelling</a> · <a class="wl" href="maven.html">maven</a> · <a class="wl" href="h2-database.html">h2-database</a> · <a class="wl" href="layered-architecture.html">layered-architecture</a> · <a class="wl" href="contract-first-api-design.html">contract-first-api-design</a> · <a class="wl" href="aspect-oriented-programming.html">aspect-oriented-programming</a> · <a class="wl" href="stateless-jwt-authentication.html">stateless-jwt-authentication</a></p></div>
+  <div class="tags"><span class="tag">java</span><span class="tag">architecture</span><span class="tag">web-dev</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab2/StudentService/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab3/StudentService_vlab3/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab4/StudentService/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab4/StudentService/pom.xml</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="aspect-oriented-programming.html"><span class="kind k-concept">concept</span><span class="rel-t">Aspect Oriented Programming</span><span class="rel-g">A cross-cutting concern — logging, timing, auditing, usage counting — is one that would otherwise be copy-pasted into every method that needs it</span></a><a class="rel" href="contract-first-api-design.html"><span class="kind k-concept">concept</span><span class="rel-t">Contract-First API Design</span><span class="rel-g">Write the API specification first; generate the code from it</span></a><a class="rel" href="layered-architecture.html"><span class="kind k-concept">concept</span><span class="rel-t">Layered Architecture</span><span class="rel-g">Split the application into horizontal tiers where each layer may only call the one below it: api/ handles HTTP and nothing else, service/ holds the domain rules and…</span></a><a class="rel" href="stateless-jwt-authentication.html"><span class="kind k-concept">concept</span><span class="rel-t">Stateless JWT Authentication</span><span class="rel-g">The server keeps no session</span></a><a class="rel" href="bcrypt-crypto-only-no-spring-security.html"><span class="kind k-decision">decision</span><span class="rel-t">BCrypt Crypto Only, No Spring Security</span><span class="rel-g">Take spring-security-crypto for its BCrypt password encoder and nothing else from Spring Security</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="forward-copy-lab-progression.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Forward-Copy Lab Progression</span><span class="rel-g">Each lab is a whole copy of the previous lab plus one new capability, committed as a new directory</span></a><a class="rel" href="information-systems-modelling.html"><span class="kind k-project">project</span><span class="rel-t">Information Systems Modelling</span><span class="rel-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span></a><a class="rel" href="h2-database.html"><span class="kind k-tech">tech</span><span class="rel-t">H2 Database</span><span class="rel-g">An embedded Java SQL database that runs inside the application process</span></a><a class="rel" href="maven.html"><span class="kind k-tech">tech</span><span class="rel-t">Maven</span><span class="rel-g">Four pom.xml files, all in Information-Systems-Modelling — labs 2, 3, 4 and 5</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

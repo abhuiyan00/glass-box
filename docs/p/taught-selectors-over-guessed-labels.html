@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taught Selectors Over Guessed Labels · Glass Box</title>
+<meta name="description" content="Stop trying to infer which UI element is which from its text, and let the user point at it once">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Taught Selectors Over Guessed Labels · Glass Box">
+<meta property="og:description" content="Stop trying to infer which UI element is which from its text, and let the user point at it once">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The failure that produced it","The replacement — Learn-controls","Boundaries","Where else it applies","Cost","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Farley/apps/tester/src/app/lib/controls.ts","Farley/apps/android/android/app/src/main/java/com/farely/app/MultiAppCoordinator.kt","Farley/docs/ocr-overlay/CHANGELOG.md","Farley/docs/ocr-overlay/04-accessibility-service.md"],"dateModified":"2026-07-28","description":"Stop trying to infer which UI element is which from its text, and let the user point at it once","headline":"Taught Selectors Over Guessed Labels","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["mobile","architecture","refactoring"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-12</span>
+    <span class="repos">Farley</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Stop trying to infer which UI element is which from its text, and let the user point at it once</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-failure-that-produced-it">The failure that produced it</a></li><li><a href="#the-replacement-learn-controls">The replacement — Learn-controls</a></li><li><a href="#boundaries">Boundaries</a></li><li><a href="#where-else-it-applies">Where else it applies</a></li><li><a href="#cost">Cost</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="taught-selectors-over-guessed-labels">Taught Selectors Over Guessed Labels</h1>
+<p>Stop trying to <em>infer</em> which UI element is which from its text, and let the user <strong>point at it once</strong>. Store the stable identifier — a view ID — and match on that afterwards. Text guessing is a bet on someone else&#x27;s copywriting and locale; a taught selector is a fact the user supplied.</p>
+<h2 id="the-failure-that-produced-it" class="h-anch"><a class="hlink" href="#the-failure-that-produced-it" aria-label="Link to this section">#</a>The failure that produced it</h2>
+<p><a class="wl" href="farely.html">farely</a> first shipped <code>PAUSE_LABELS</code> / <code>RESUME_LABELS</code>: keyword lists meant to find a &quot;pause&quot; control in Bolt, Uber and FreeNow. The premise itself was wrong, and the CHANGELOG says so plainly rather than quietly deleting it:</p>
+<blockquote><p>&quot;Correcting a wrong premise: no ride app ships a \&quot;Pause\&quot; button, and the real controls (online/offline toggle, \&quot;Stop new requests\&quot;, trip / ID-check markers) differ per app + locale and are often icons with no matchable text.&quot;</p><cite>Farley/docs/ocr-overlay/CHANGELOG.md, 2026-07-12</cite></blockquote>
+<p>Three distinct defeats for label guessing in one sentence: the control may not exist, its name varies per app and language, and it may be an <strong>icon with no text at all</strong>. No amount of keyword tuning recovers from the third.</p>
+<h2 id="the-replacement-learn-controls" class="h-anch"><a class="hlink" href="#the-replacement-learn-controls" aria-label="Link to this section">#</a>The replacement — Learn-controls</h2>
+<p>The driver opens the target app, Farely watches, and the driver tags the real node. What gets stored is a selector, matched <strong>view-ID-first</strong> with text as a weaker fallback — <code>flagReportViewIds</code> on the accessibility service is what makes those IDs visible in the first place, see <a class="wl" href="android-accessibility-service.html">android-accessibility-service</a>. Coverage is displayed as a fraction (0/4 → 2/4 in the recorded manual checks), so the user can see what the app still cannot do.</p>
+<h2 id="boundaries" class="h-anch"><a class="hlink" href="#boundaries" aria-label="Link to this section">#</a>Boundaries</h2>
+<p>Tagging is restricted to <strong>chore controls</strong> — the multi-app housekeeping actions. A ride offer&#x27;s Accept button can never become a taught selector; that exclusion is enforced separately and argued on <a class="wl" href="never-automate-the-accept-tap.html">never-automate-the-accept-tap</a>. A general-purpose &quot;teach me any button&quot; mechanism would have dissolved the product&#x27;s central safety rule, so the teaching surface is deliberately narrower than the technique allows.</p>
+<h2 id="where-else-it-applies" class="h-anch"><a class="hlink" href="#where-else-it-applies" aria-label="Link to this section">#</a>Where else it applies</h2>
+<p>Any automation over an interface you do not own and cannot version-pin: browser extensions over third party sites, RPA over enterprise apps, test suites over someone else&#x27;s front end. The same trade appears in <a class="wl" href="farely.html">farely</a>&#x27;s reading path, where a structured node read beats an inferred one — <a class="wl" href="node-tree-read-before-ocr.html">node-tree-read-before-ocr</a> — and it is the same instinct as <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>: prefer the value that was <em>given</em> to the value that was <em>derived</em>, and record which one you have.</p>
+<h2 id="cost" class="h-anch"><a class="hlink" href="#cost" aria-label="Link to this section">#</a>Cost</h2>
+<p>It is unusable on first launch. Every taught selector is an onboarding step, and the app must degrade gracefully to zero coverage — which it does, by simply not offering chore automation until taught.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="farely.html">farely</a> · <a class="wl" href="accessibility-service-overlay.html">accessibility-service-overlay</a> · <a class="wl" href="on-device-black-box-diagnostics.html">on-device-black-box-diagnostics</a> · <a class="wl" href="on-device-first-inference.html">on-device-first-inference</a></p></div>
+  <div class="tags"><span class="tag">mobile</span><span class="tag">architecture</span><span class="tag">refactoring</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Farley</span><span class="src-p">/apps/tester/src/app/lib/controls.ts</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/android/android/app/src/main/java/com/farely/app/MultiAppCoordinator.kt</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/ocr-overlay/CHANGELOG.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/ocr-overlay/04-accessibility-service.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="accessibility-service-overlay.html"><span class="kind k-concept">concept</span><span class="rel-t">Accessibility Service Overlay</span><span class="rel-g">Read another app&#x27;s live view hierarchy through the platform accessibility channel, compute something from it, then draw the answer back on top of that same app — without…</span></a><a class="rel" href="on-device-black-box-diagnostics.html"><span class="kind k-concept">concept</span><span class="rel-t">On-Device Black Box Diagnostics</span><span class="rel-g">When you cannot attach a debugger — the user is driving, the failure is a screen you have never seen, and no telemetry may leave the device — record a bounded local…</span></a><a class="rel" href="on-device-first-inference.html"><span class="kind k-concept">concept</span><span class="rel-t">On-Device-First Inference</span><span class="rel-g">Do the classification locally with cheap deterministic logic; treat a model call as an upgrade the owner may switch on, never as the default path</span></a><a class="rel" href="never-automate-the-accept-tap.html"><span class="kind k-decision">decision</span><span class="rel-t">Never Automate The Accept Tap</span><span class="rel-g">farely advises; the driver taps</span></a><a class="rel" href="node-tree-read-before-ocr.html"><span class="kind k-decision">decision</span><span class="rel-t">Node-Tree Read Before OCR</span><span class="rel-g">Read a ride offer&#x27;s fare, distance and duration from the accessibility node tree</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="farely.html"><span class="kind k-project">project</span><span class="rel-t">Farely</span><span class="rel-g">A personal Android rideshare/delivery driver assistant for Wrocław</span></a><a class="rel" href="android-accessibility-service.html"><span class="kind k-tech">tech</span><span class="rel-t">Android Accessibility Service</span><span class="rel-g">The platform API that lets an app observe another app&#x27;s view hierarchy and act on it</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

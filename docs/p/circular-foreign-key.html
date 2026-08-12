@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Circular Foreign Key · Glass Box</title>
+<meta name="description" content="Two tables that reference each other">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Circular Foreign Key · Glass Box">
+<meta property="og:description" content="Two tables that reference each other">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The instance","Why it is awkward","Two ways out","Not the same as a self-reference","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Oracle-Database-Laboratories/docs/schema.md","Oracle-Database-Laboratories/sql/01_schema/02_create_tables.sql","Oracle-Database-Laboratories/sql/01_schema/03_seed_data.sql"],"dateModified":"2026-07-28","description":"Two tables that reference each other","headline":"Circular Foreign Key","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["databases","data-modelling","sql"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Oracle-Database-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Two tables that reference each other</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-instance">The instance</a></li><li><a href="#why-it-is-awkward">Why it is awkward</a></li><li><a href="#two-ways-out">Two ways out</a></li><li><a href="#not-the-same-as-a-self-reference">Not the same as a self-reference</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="circular-foreign-key">Circular Foreign Key</h1>
+<p>Two tables that reference each other. <code>A</code> has a foreign key into <code>B</code>; <code>B</code> has a foreign key into <code>A</code>. The pair is legal and sometimes the correct model, but it breaks two things that normally come free: <strong>neither table can be created with both keys in place, and neither can be seeded first.</strong></p>
+<h2 id="the-instance" class="h-anch"><a class="hlink" href="#the-instance" aria-label="Link to this section">#</a>The instance</h2>
+<p>In <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a> the cycle is between cats and their hunting bands:</p>
+<ul><li><code>CATS.band_no</code> → <code>BANDS.band_no</code> — a cat belongs to a band.</li><li><code>BANDS.band_chief</code> → <code>CATS.nickname</code> — a band is led by a cat.</li></ul>
+<p>Both directions are real. Neither is redundant: membership is many-to-one, leadership is one-to-one and carries a <code>UNIQUE</code> constraint so no cat leads two bands. Dropping either key would lose information, so the cycle is a property of the domain rather than a modelling mistake.</p>
+<h2 id="why-it-is-awkward" class="h-anch"><a class="hlink" href="#why-it-is-awkward" aria-label="Link to this section">#</a>Why it is awkward</h2>
+<p><code>CREATE TABLE Cats</code> with a foreign key into <code>Bands</code> fails because <code>Bands</code> does not exist yet; reversing the order fails symmetrically. And at load time, the first <code>INSERT</code> into either table violates the other table&#x27;s key, because the row it points at has not been written.</p>
+<p>So a cycle costs you a <strong>schema-creation order</strong> <em>and</em> a <strong>data-load order</strong>, and the two are different problems with different fixes.</p>
+<h2 id="two-ways-out" class="h-anch"><a class="hlink" href="#two-ways-out" aria-label="Link to this section">#</a>Two ways out</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Approach</th>
+<th>How</th>
+<th>Cost</th>
+</tr></thead><tbody>
+<tr><td><strong>Create partial, then <code>ALTER TABLE</code></strong></td><td>build <code>CATS</code> without <code>band_no</code>&#x27;s FK, build <code>BANDS</code> in full, add the constraint afterwards; seed <code>BANDS</code> with a null chief, load <code>CATS</code>, then <code>UPDATE</code> the chiefs in</td><td>the load order is fixed and the <code>UPDATE</code> step is mandatory — an omitted <code>UPDATE</code> leaves the model silently half-built</td></tr>
+<tr><td><strong>Deferrable constraints</strong></td><td>declare both keys <code>DEFERRABLE INITIALLY DEFERRED</code>, insert in any order, let <code>COMMIT</code> check them</td><td>you lose per-statement error reporting: the failure surfaces at commit, pointing at a transaction rather than at the row</td></tr>
+</tbody></table></div>
+<p>The repository takes the first and names the second as the rejected alternative:</p>
+<blockquote><p>&quot;The alternative — deferrable constraints checked at <code>COMMIT</code> — buys free insert ordering at the cost of per-statement error reporting.&quot;</p><cite>Oracle-Database-Laboratories/README.md, 2026-07-25</cite></blockquote>
+<p>Recorded as <a class="wl" href="circular-fk-via-alter-table.html">circular-fk-via-alter-table</a>.</p>
+<p>A third option exists and is not used here: make one side nullable and <em>never</em> enforce it, keeping the link in application code. That trades a database guarantee for convenience and is worse than either option above — it converts a load-order problem into an integrity problem.</p>
+<h2 id="not-the-same-as-a-self-reference" class="h-anch"><a class="hlink" href="#not-the-same-as-a-self-reference" aria-label="Link to this section">#</a>Not the same as a self-reference</h2>
+<p><code>CATS.chief</code> → <code>CATS.nickname</code> is a <strong>self</strong>-referencing key, and it does <em>not</em> have this problem: a single table can be created with a key into itself, and rows load fine as long as each chief is inserted before its subordinates. The cat-herd schema has both, which is why they are easy to conflate. The self-reference is what <a class="wl" href="hierarchical-queries.html">hierarchical-queries</a> walks; the cycle is what forces the load order in <a class="wl" href="referential-integrity.html">referential-integrity</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="referential-integrity.html">referential-integrity</a> · <a class="wl" href="circular-fk-via-alter-table.html">circular-fk-via-alter-table</a> · <a class="wl" href="hierarchical-queries.html">hierarchical-queries</a> · <span class="unpub" title="named in the source wiki; not published">database-normalisation</span> · <a class="wl" href="etl-load-order.html">etl-load-order</a> · <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a></p></div>
+  <div class="tags"><span class="tag">databases</span><span class="tag">data-modelling</span><span class="tag">sql</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/docs/schema.md</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/01_schema/02_create_tables.sql</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/01_schema/03_seed_data.sql</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="etl-load-order.html"><span class="kind k-concept">concept</span><span class="rel-t">ETL Load Order</span><span class="rel-g">Load order in a star-schema is not a style choice</span></a><a class="rel" href="hierarchical-queries.html"><span class="kind k-concept">concept</span><span class="rel-t">Hierarchical Queries</span><span class="rel-g">Walking a tree that is stored in a single self-referencing column</span></a><a class="rel" href="referential-integrity.html"><span class="kind k-concept">concept</span><span class="rel-t">Referential Integrity</span><span class="rel-g">Every foreign-key value either matches an existing primary key or is NULL</span></a><a class="rel" href="circular-fk-via-alter-table.html"><span class="kind k-decision">decision</span><span class="rel-t">Resolve the Circular Foreign Key via ALTER TABLE</span><span class="rel-g">Break the CATS ↔ BANDS cycle by creating one table without its foreign key, adding the constraint by ALTER TABLE once both tables exist, and seeding with a deliberate…</span></a><a class="rel" href="oracle-database-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Oracle Database Laboratories</span><span class="rel-g">Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

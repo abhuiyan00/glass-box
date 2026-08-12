@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Android Accessibility Service · Glass Box</title>
+<meta name="description" content="The platform API that lets an app observe another app&#x27;s view hierarchy and act on it">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Accessibility Service · Glass Box">
+<meta property="og:description" content="The platform API that lets an app observe another app&#x27;s view hierarchy and act on it">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Configuration in Farely","The three capabilities used","Permission findings","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Farley/apps/android/android/app/src/main/java/com/farely/app/FarelyAccessibilityService.kt","Farley/apps/android/reference/accessibility_service_config.xml","Farley/apps/android/android/app/src/main/AndroidManifest.xml","Farley/docs/ocr-overlay/04-accessibility-service.md","Farley/docs/ocr-overlay/03-android-permissions-and-legal.md"],"dateModified":"2026-07-28","description":"The platform API that lets an app observe another app's view hierarchy and act on it","headline":"Android Accessibility Service","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["mobile","architecture","privacy"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-02</span>
+    <span class="repos">Farley</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The platform API that lets an app observe another app&#x27;s view hierarchy and act on it</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#configuration-in-farely">Configuration in Farely</a></li><li><a href="#the-three-capabilities-used">The three capabilities used</a></li><li><a href="#permission-findings">Permission findings</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="android-accessibility-service">Android Accessibility Service</h1>
+<p>The platform API that lets an app observe another app&#x27;s view hierarchy and act on it. In <a class="wl" href="farely.html">farely</a> it is the entire capture layer — see <a class="wl" href="accessibility-service-overlay.html">accessibility-service-overlay</a> for the idea, this page for the concrete API surface.</p>
+<h2 id="configuration-in-farely" class="h-anch"><a class="hlink" href="#configuration-in-farely" aria-label="Link to this section">#</a>Configuration in Farely</h2>
+<p><code>FarelyAccessibilityService</code> is declared with <code>android:permission=&quot;android.permission.BIND_ACCESSIBILITY_SERVICE&quot;</code> and <code>exported=false</code>. Its <code>accessibility_service_config.xml</code>:</p>
+<ul><li><code>packageNames</code> — <strong>restricted to four apps</strong>: <code>ee.mtakso.driver</code>, <code>com.ubercab.driver</code>, <code>taxi.android.driver</code>, <code>com.mytaxi.driver</code></li><li><code>flags</code> — <code>flagReportViewIds | flagRetrieveInteractiveWindows</code></li><li><code>notificationTimeout</code> — 100 ms</li></ul>
+<p><code>flagReportViewIds</code> is not decoration: view IDs are what make <a class="wl" href="taught-selectors-over-guessed-labels.html">taught-selectors-over-guessed-labels</a> possible. Without it a taught selector would have nothing stable to store.</p>
+<p>Events handled: <code>TYPE_WINDOW_CONTENT_CHANGED</code>, <code>TYPE_WINDOW_STATE_CHANGED</code>, <code>TYPE_NOTIFICATION_STATE_CHANGED</code>, debounced at 300 ms.</p>
+<h2 id="the-three-capabilities-used" class="h-anch"><a class="hlink" href="#the-three-capabilities-used" aria-label="Link to this section">#</a>The three capabilities used</h2>
+<ol><li><strong>Node-tree read</strong> — <code>OfferNodeParser</code> pulls fare / km / min out of <code>TextView</code> nodes. <a class="wl" href="node-tree-read-before-ocr.html">node-tree-read-before-ocr</a>.</li><li><strong>Overlay window</strong> — <code>TYPE_ACCESSIBILITY_OVERLAY</code>, attached through the running service, requiring no extra user grant. <a class="wl" href="accessibility-overlay-over-system-alert-window.html">accessibility-overlay-over-system-alert-window</a>.</li><li><strong><code>AccessibilityService.takeScreenshot()</code></strong> (API 30+) — the screen capture fed to the key-gated <a class="wl" href="opt-in-cloud-fallback.html">opt-in-cloud-fallback</a>. Never invoked while the coordinator is frozen.</li></ol>
+<p>Gesture dispatch is used only for chore automation in the <em>other</em> apps, never for a ride offer: <a class="wl" href="never-automate-the-accept-tap.html">never-automate-the-accept-tap</a>.</p>
+<h2 id="permission-findings" class="h-anch"><a class="hlink" href="#permission-findings" aria-label="Link to this section">#</a>Permission findings</h2>
+<p>Manifest declares <code>INTERNET</code>, <code>SYSTEM_ALERT_WINDOW</code>, <code>FOREGROUND_SERVICE</code>, <code>FOREGROUND_SERVICE_MEDIA_PROJECTION</code>, <code>ACCESS_FINE_LOCATION</code>, <code>POST_NOTIFICATIONS</code>, plus <code>&lt;queries&gt;</code> for the four driver packages and a calendar INSERT intent.</p>
+<p><strong>Load-bearing today:</strong> <code>BIND_ACCESSIBILITY_SERVICE</code>, <code>&lt;queries&gt;</code>, <code>INTERNET</code>, <code>POST_NOTIFICATIONS</code>.</p>
+<p><strong>Declared but unused:</strong></p>
+<div class="tw"><table>
+<thead><tr>
+<th>Permission</th>
+<th>Why it is dead</th>
+</tr></thead><tbody>
+<tr><td><code>FOREGROUND_SERVICE_MEDIA_PROJECTION</code>, <code>FOREGROUND_SERVICE</code></td><td>exist for the OCR capture path, which is a stub — no MediaProjection code anywhere</td></tr>
+<tr><td><code>SYSTEM_ALERT_WINDOW</code></td><td>the overlay deliberately uses <code>TYPE_ACCESSIBILITY_OVERLAY</code> instead</td></tr>
+<tr><td><code>ACCESS_FINE_LOCATION</code></td><td>no native location code; deadhead uses a simulated <code>positionRef</code></td></tr>
+</tbody></table></div>
+<p>An unused permission is not free — it is what a reviewer, a store listing, or a suspicious user reads first. Also a documentation contradiction: <code>03-android-permissions-and-legal.md</code> lists MediaProjection as <em>required</em> and asserts there is &quot;No <code>INTERNET</code>-dependent OCR&quot;, while the shipped manifest declares <code>INTERNET</code> and never mentions <code>POST_NOTIFICATIONS</code>. See <a class="wl" href="documentation-drift.html">documentation-drift</a>.</p>
+<ul><li><code>TODO:</code> whether a MediaProjection capture path was written and removed once <code>takeScreenshot()</code> proved sufficient, and whether real GPS was ever wired, are both unrecorded. Not asked at interview.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="farely.html">farely</a> · <a class="wl" href="accessibility-service-overlay.html">accessibility-service-overlay</a> · <a class="wl" href="capacitor.html">capacitor</a> · <a class="wl" href="privacy-documented-beside-the-feature.html">privacy-documented-beside-the-feature</a></p></div>
+  <div class="tags"><span class="tag">mobile</span><span class="tag">architecture</span><span class="tag">privacy</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Farley</span><span class="src-p">/apps/android/android/app/src/main/java/com/farely/app/FarelyAccessibilityService.kt</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/android/reference/accessibility_service_config.xml</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/android/android/app/src/main/AndroidManifest.xml</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/ocr-overlay/04-accessibility-service.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/ocr-overlay/03-android-permissions-and-legal.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="accessibility-service-overlay.html"><span class="kind k-concept">concept</span><span class="rel-t">Accessibility Service Overlay</span><span class="rel-g">Read another app&#x27;s live view hierarchy through the platform accessibility channel, compute something from it, then draw the answer back on top of that same app — without…</span></a><a class="rel" href="opt-in-cloud-fallback.html"><span class="kind k-concept">concept</span><span class="rel-t">Opt-In Cloud Fallback</span><span class="rel-g">A remote model call that is structurally optional: absent a key it does not exist, present a key it fires only for inputs a cheap local gate has already judged novel,…</span></a><a class="rel" href="taught-selectors-over-guessed-labels.html"><span class="kind k-concept">concept</span><span class="rel-t">Taught Selectors Over Guessed Labels</span><span class="rel-g">Stop trying to infer which UI element is which from its text, and let the user point at it once</span></a><a class="rel" href="accessibility-overlay-over-system-alert-window.html"><span class="kind k-decision">decision</span><span class="rel-t">Accessibility Overlay Over SYSTEM_ALERT_WINDOW</span><span class="rel-g">Draw the ACCEPT / MARGINAL / DECLINE bubble as a TYPE_ACCESSIBILITY_OVERLAY window attached to the already-running accessibility service, instead of a…</span></a><a class="rel" href="never-automate-the-accept-tap.html"><span class="kind k-decision">decision</span><span class="rel-t">Never Automate The Accept Tap</span><span class="rel-g">farely advises; the driver taps</span></a><a class="rel" href="node-tree-read-before-ocr.html"><span class="kind k-decision">decision</span><span class="rel-t">Node-Tree Read Before OCR</span><span class="rel-g">Read a ride offer&#x27;s fare, distance and duration from the accessibility node tree</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="privacy-documented-beside-the-feature.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Privacy Documented Beside The Feature</span><span class="rel-g">The privacy argument is not filed in one policy document — it is restated at every site where the sensitive thing happens: in the vision doc, in the legal chapter, in…</span></a><a class="rel" href="farely.html"><span class="kind k-project">project</span><span class="rel-t">Farely</span><span class="rel-g">A personal Android rideshare/delivery driver assistant for Wrocław</span></a><a class="rel" href="capacitor.html"><span class="kind k-tech">tech</span><span class="rel-t">Capacitor</span><span class="rel-g">Native runtime that wraps a web build in a WebView and exposes native capability through plugins</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Minimum-Curvature Racing Line · Glass Box</title>
+<meta name="description" content="The fastest path around a circuit is not the shortest one">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Minimum-Curvature Racing Line · Glass Box">
+<meta property="og:description" content="The fastest path around a circuit is not the shortest one">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Stage 1 — geometry, then relaxation","Stage 2 — a physically achievable speed profile","The calibration loop that closes it","Why this belongs beside the learning","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["IT Applications in Business and Commerce/project/code/a.bhuiyan/gym_torcs/racing_line.py","IT Applications in Business and Commerce/project/code/a.bhuiyan/gym_torcs/analyze_telemetry.py","IT Applications in Business and Commerce/project/code/a.bhuiyan/guide.txt"],"dateModified":"2026-07-28","description":"The fastest path around a circuit is not the shortest one","headline":"Minimum-Curvature Racing Line","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["optimization","physics","algorithms","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">IT Applications in Business and Commerce</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The fastest path around a circuit is not the shortest one</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#stage-1-geometry-then-relaxation">Stage 1 — geometry, then relaxation</a></li><li><a href="#stage-2-a-physically-achievable-speed-profile">Stage 2 — a physically achievable speed profile</a></li><li><a href="#the-calibration-loop-that-closes-it">The calibration loop that closes it</a></li><li><a href="#why-this-belongs-beside-the-learning">Why this belongs beside the learning</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="minimum-curvature-racing-line">Minimum-Curvature Racing Line</h1>
+<p>The fastest path around a circuit is not the shortest one. Cornering speed is capped by grip: <code>v ≤ √(a_lat / κ)</code>, where <code>κ</code> is the path&#x27;s curvature. <strong>Reducing curvature raises the speed ceiling everywhere</strong>, so the optimal line straightens corners by using the full width of the track — entering wide, clipping the apex, exiting wide — even though the resulting path is longer.</p>
+<p>That gives a two-stage problem: find the low-curvature path within the track corridor, then find the fastest speed profile the car can actually drive along it.</p>
+<h2 id="stage-1-geometry-then-relaxation" class="h-anch"><a class="hlink" href="#stage-1-geometry-then-relaxation" aria-label="Link to this section">#</a>Stage 1 — geometry, then relaxation</h2>
+<p><code>racing_line.py</code> builds the centre line by <strong>arc-length integration of the track XML</strong> — straights, arcs, and clothoid transitions with distinct entry and exit radii (<code>r0</code>/<code>r1</code>). Track geometry comes from the XML rather than the simulator, which is a decision in its own right: <a class="wl" href="parse-track-xml-not-ttrackseg.html">parse-track-xml-not-ttrackseg</a>.</p>
+<p>The line is then flattened by <strong>periodic Laplacian relaxation</strong> inside a corridor of <code>±(w/2 − 1.5 m)</code> — each node is repeatedly pulled toward the midpoint of its neighbours and clamped back inside the corridor. <code>iters=800</code>, <code>relax=0.2</code>, <code>margin=1.5</code>. It is a smoothing iteration rather than a solve: there is no objective function, no optimality certificate, and no comparison against a published minimum-curvature solver. It is the cheap approximation, and it runs offline once per track.</p>
+<h2 id="stage-2-a-physically-achievable-speed-profile" class="h-anch"><a class="hlink" href="#stage-2-a-physically-achievable-speed-profile" aria-label="Link to this section">#</a>Stage 2 — a physically achievable speed profile</h2>
+<p>Curvature gives a friction cap per node, <code>√(a_lat/κ)</code> with <code>mu=1.1</code> and <code>grip=0.70</code>. That cap is then made reachable by <strong>two grade-aware passes</strong> over the closed loop:</p>
+<ul><li>a forward pass limited by <code>a_accel = 5 m/s²</code>, so the profile never demands acceleration the car cannot deliver, adjusted by the local gradient;</li><li>a backward pass limited by <code>a_brake = 8 m/s²</code>, so every speed reduction has room to happen before the corner rather than at it.</li></ul>
+<p>Capped at <code>v_top = 55 m/s</code>. At runtime a <code>safe_speed</code> braking envelope reads the profile ahead of the car and returns the highest speed from which it can still make the next constraint.</p>
+<h2 id="the-calibration-loop-that-closes-it" class="h-anch"><a class="hlink" href="#the-calibration-loop-that-closes-it" aria-label="Link to this section">#</a>The calibration loop that closes it</h2>
+<p><code>analyze_telemetry.py</code> is the offline race-engineer half: it takes logged laps, computes the <strong>p95 measured lateral-g</strong> and suggests a <code>--grip</code> value from it, clusters off-track coordinates with a 30 m gap to find real hotspots rather than one-off spins, and audits speed in 50 m bins. Its output feeds back into stage 2 and into the corner memory of <a class="wl" href="residual-reinforcement-learning.html">residual-reinforcement-learning</a> — measurement replacing a guessed constant.</p>
+<ul><li><strong>TODO:</strong> the shipped default is <code>grip=0.70</code> against <code>mu=1.1</code>, and nothing in the repo records whether that 0.70 was ever replaced by a measured value from the tool built to measure it. Do not assert it was calibrated. <code>confidence: low</code> on the constant&#x27;s provenance.</li><li><strong>TODO:</strong> <code>V_REF = 80.0</code> is commented &quot;above any car top speed&quot; and is a fixed constant, even though <code>car_spec.py</code> already parses the real car&#x27;s top speed. No reason is recorded.</li></ul>
+<h2 id="why-this-belongs-beside-the-learning" class="h-anch"><a class="hlink" href="#why-this-belongs-beside-the-learning" aria-label="Link to this section">#</a>Why this belongs beside the learning</h2>
+<p>The line and its speed profile are the <strong>prior</strong>. They encode everything about the track that is knowable without driving it, computed once, offline, deterministically. Only what remains — tyre behaviour, model error, the specific car&#x27;s transients — is left for <a class="wl" href="proximal-policy-optimisation.html">proximal-policy-optimisation</a> to learn. That division is the whole architecture of the agent.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="residual-reinforcement-learning.html">residual-reinforcement-learning</a> · <a class="wl" href="parse-track-xml-not-ttrackseg.html">parse-track-xml-not-ttrackseg</a> · <a class="wl" href="data-driven-gearing-over-hand-tuned-rpm-bands.html">data-driven-gearing-over-hand-tuned-rpm-bands</a> · <a class="wl" href="torcs-scr-protocol.html">torcs-scr-protocol</a> · <a class="wl" href="it-applications-in-business-and-commerce.html">it-applications-in-business-and-commerce</a> · <a class="wl" href="optimization-methods.html">optimization-methods</a></p></div>
+  <div class="tags"><span class="tag">optimization</span><span class="tag">physics</span><span class="tag">algorithms</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/a.bhuiyan/gym_torcs/racing_line.py</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/a.bhuiyan/gym_torcs/analyze_telemetry.py</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/a.bhuiyan/guide.txt</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="proximal-policy-optimisation.html"><span class="kind k-concept">concept</span><span class="rel-t">Proximal Policy Optimisation</span><span class="rel-g">A policy-gradient method that improves a policy by repeatedly taking small, bounded steps away from the policy that collected the data</span></a><a class="rel" href="residual-reinforcement-learning.html"><span class="kind k-concept">concept</span><span class="rel-t">Residual Reinforcement Learning</span><span class="rel-g">A deterministic controller does the driving; the learned policy only outputs a bounded correction on top of it</span></a><a class="rel" href="data-driven-gearing-over-hand-tuned-rpm-bands.html"><span class="kind k-decision">decision</span><span class="rel-t">Data-Driven Gearing over Hand-Tuned RPM Bands</span><span class="rel-g">Choose gears from the car&#x27;s own engine data — parsed out of the TORCS car XML — rather than from tuned rpm thresholds or from a learned reward term</span></a><a class="rel" href="parse-track-xml-not-ttrackseg.html"><span class="kind k-decision">decision</span><span class="rel-t">Parse Track XML Instead of tTrackSeg</span><span class="rel-g">Reconstruct the track centreline offline, by parsing the track&#x27;s XML definition, instead of reading TORCS&#x27;s own tTrackSeg geometry at runtime</span></a><a class="rel" href="it-applications-in-business-and-commerce.html"><span class="kind k-project">project</span><span class="rel-t">IT Applications in Business and Commerce</span><span class="rel-g">This repository is not business analytics</span></a><a class="rel" href="optimization-methods.html"><span class="kind k-project">project</span><span class="rel-t">Optimization Methods</span><span class="rel-g">Master&#x27;s Optimization Methods course at Wrocław University of Science and Technology (FICT, lectures by M. Przewoźniczek)</span></a><a class="rel" href="torcs-scr-protocol.html"><span class="kind k-tech">tech</span><span class="rel-t">TORCS and the SCR Protocol</span><span class="rel-g">TORCS is an open-source racing simulator</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

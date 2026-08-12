@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Man-in-the-Middle Attack · Glass Box</title>
+<meta name="description" content="A class of attack in which the attacker sits between two communicating parties, relaying traffic while both believe they are talking directly to each other">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Man-in-the-Middle Attack · Glass Box">
+<meta property="og:description" content="A class of attack in which the attacker sits between two communicating parties, relaying traffic while both believe they are talking directly to each other">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The two halves","What the lab demonstrated","The cryptographic form of the same attack","The defence is authentication, not encryption","Scope","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Cybersecurity-Engineering-Laboratories/labs/08_network_security/lab-08-report.pdf","Cybersecurity-Engineering-Laboratories/labs/05_attacks_on_modern_ciphers/lab-05-report.pdf","Cybersecurity-Engineering-Laboratories/labs/09_secure_communication/lab-09-report.pdf"],"dateModified":"2026-07-28","description":"A class of attack in which the attacker sits between two communicating parties, relaying traffic while both believe they are talking directly to each other","headline":"Man-in-the-Middle Attack","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["security","networking"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Cybersecurity-Engineering-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A class of attack in which the attacker sits between two communicating parties, relaying traffic while both believe they are talking directly to each other</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-two-halves">The two halves</a></li><li><a href="#what-the-lab-demonstrated">What the lab demonstrated</a></li><li><a href="#the-cryptographic-form-of-the-same-attack">The cryptographic form of the same attack</a></li><li><a href="#the-defence-is-authentication-not-encryption">The defence is authentication, not encryption</a></li><li><a href="#scope">Scope</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="man-in-the-middle-attack">Man-in-the-Middle Attack</h1>
+<p>A class of attack in which the attacker sits <strong>between</strong> two communicating parties, relaying traffic while both believe they are talking directly to each other. Once positioned, the attacker can read, modify, delay or drop anything that passes. Lab 08 of <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a> performs one end to end inside a lab network.</p>
+<h2 id="the-two-halves" class="h-anch"><a class="hlink" href="#the-two-halves" aria-label="Link to this section">#</a>The two halves</h2>
+<p>Every MitM has a <strong>positioning</strong> step and an <strong>exploitation</strong> step, and they are independent problems. Positioning is the hard part; once achieved, exploitation is ordinary traffic handling.</p>
+<p>Positioning techniques the labs enumerate:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Technique</th>
+<th>Layer</th>
+<th>Why it works</th>
+</tr></thead><tbody>
+<tr><td><strong>Wi-Fi eavesdropping</strong> (rogue AP)</td><td>link</td><td>clients associate to a familiar SSID with no mutual authentication</td></tr>
+<tr><td><strong>ARP poisoning</strong></td><td>link</td><td><strong>ARP has no authentication at all</strong> — an unsolicited reply is believed</td></tr>
+<tr><td><strong>DNS spoofing / cache poisoning</strong></td><td>application</td><td>name→address answers are accepted without origin authentication</td></tr>
+<tr><td><strong>ICMP redirects</strong></td><td>network</td><td>routers are instructed to reroute a victim&#x27;s traffic</td></tr>
+<tr><td><strong>Port stealing</strong></td><td>link</td><td>the switch&#x27;s forwarding table is rewritten so frames arrive at the attacker&#x27;s port</td></tr>
+<tr><td><strong>STP mangling</strong></td><td>link</td><td>the attacker&#x27;s bridge claims to be the spanning-tree root</td></tr>
+</tbody></table></div>
+<p>Every one of these is a <strong>missing-authentication</strong> bug in a protocol designed when the local network was assumed friendly. That is the transferable lesson: the vulnerability is not an implementation defect anywhere, it is an omitted requirement that was reasonable in 1982 and is not now.</p>
+<h2 id="what-the-lab-demonstrated" class="h-anch"><a class="hlink" href="#what-the-lab-demonstrated" aria-label="Link to this section">#</a>What the lab demonstrated</h2>
+<p>ARP poisoning combined with DNS spoofing against a deliberately vulnerable web application on a Metasploitable VM, with the resulting traffic captured in <a class="wl" href="wireshark.html">wireshark</a> — showing that credentials submitted over an unencrypted form are readable in full by the interposed host. The captured material is <strong>not reproduced anywhere in this wiki</strong>; the finding is that plaintext form submission over a network an attacker can position on offers zero confidentiality, which is the point of the exercise.</p>
+<h2 id="the-cryptographic-form-of-the-same-attack" class="h-anch"><a class="hlink" href="#the-cryptographic-form-of-the-same-attack" aria-label="Link to this section">#</a>The cryptographic form of the same attack</h2>
+<p>Lab 05 lists MitM among the classical attack models: the attacker terminates two separate encrypted sessions, one with each party, and re-encrypts between them. Both endpoints see a valid session. Unauthenticated Diffie–Hellman is the textbook victim — key <em>agreement</em> without key <em>authentication</em> agrees a key with whoever is on the wire, and the report names this as DH&#x27;s main risk. See <a class="wl" href="symmetric-vs-asymmetric-cryptography.html">symmetric-vs-asymmetric-cryptography</a>.</p>
+<h2 id="the-defence-is-authentication-not-encryption" class="h-anch"><a class="hlink" href="#the-defence-is-authentication-not-encryption" aria-label="Link to this section">#</a>The defence is authentication, not encryption</h2>
+<p>Encryption alone does not help — the attacker simply negotiates with each side separately. What defeats MitM is binding the far end&#x27;s key to an identity you can verify:</p>
+<ul><li><strong><a class="wl" href="public-key-infrastructure.html">public-key-infrastructure</a></strong> and certificate validation for TLS: the chain is checked against a trust store before key agreement completes. Signing the DH exchange is precisely the fix — see <a class="wl" href="digital-signatures.html">digital-signatures</a>.</li><li><strong>Channel confidentiality below the application</strong>, verified by capture. Lab 09 captures a VPN&#x27;s tunnel interface against the underlying one to confirm what an interposed observer can and cannot read.</li><li><strong>Link-layer hygiene</strong> for the positioning half: dynamic ARP inspection, DHCP snooping, port security, 802.1X. These do not make the protocols authenticated; they make the switch refuse the lie.</li></ul>
+<p>A proxy that intercepts your own browser traffic is the same technique used cooperatively — the lab reports note that <a class="wl" href="owasp-zap.html">owasp-zap</a> and Burp are structurally a MitM where the tester holds both roles. That framing is worth keeping: the mechanism is neutral; only the consent differs.</p>
+<h2 id="scope" class="h-anch"><a class="hlink" href="#scope" aria-label="Link to this section">#</a>Scope</h2>
+<p>Performed in 2022 against lab VMs and deliberately vulnerable targets provided for the purpose. No step-by-step procedure, tool invocation or captured credential from these labs appears in this wiki.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="public-key-infrastructure.html">public-key-infrastructure</a> · <a class="wl" href="digital-signatures.html">digital-signatures</a> · <a class="wl" href="cia-triad.html">cia-triad</a> · <a class="wl" href="network-reconnaissance.html">network-reconnaissance</a> · <a class="wl" href="wireshark.html">wireshark</a> · <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a></p></div>
+  <div class="tags"><span class="tag">security</span><span class="tag">networking</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/08_network_security/lab-08-report.pdf</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/05_attacks_on_modern_ciphers/lab-05-report.pdf</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/09_secure_communication/lab-09-report.pdf</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="cia-triad.html"><span class="kind k-concept">concept</span><span class="rel-t">CIA Triad</span><span class="rel-g">Confidentiality, Integrity, Availability — the three properties any security control is ultimately defending</span></a><a class="rel" href="digital-signatures.html"><span class="kind k-concept">concept</span><span class="rel-t">Digital Signatures</span><span class="rel-g">Sign with the private key, verify with the public one — the reverse of encryption&#x27;s key usage, and the source of three properties encryption alone does not provide</span></a><a class="rel" href="network-reconnaissance.html"><span class="kind k-concept">concept</span><span class="rel-t">Network Reconnaissance</span><span class="rel-g">The information-gathering phase that precedes any assessment</span></a><a class="rel" href="public-key-infrastructure.html"><span class="kind k-concept">concept</span><span class="rel-t">Public Key Infrastructure</span><span class="rel-g">The answer to the question asymmetric cryptography leaves open: you hold a public key, but whose is it? PKI is the set of roles, policies and formats that binds a public…</span></a><a class="rel" href="symmetric-vs-asymmetric-cryptography.html"><span class="kind k-concept">concept</span><span class="rel-t">Symmetric vs Asymmetric Cryptography</span><span class="rel-g">Two families with different guarantees and wildly different costs</span></a><a class="rel" href="cybersecurity-engineering-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Cybersecurity Engineering Laboratories</span><span class="rel-g">Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026</span></a><a class="rel" href="owasp-zap.html"><span class="kind k-tech">tech</span><span class="rel-t">OWASP ZAP</span><span class="rel-g">The Zed Attack Proxy — an open-source web application security scanner maintained by OWASP volunteers, usable both as an automated scanner and as a manual testing proxy</span></a><a class="rel" href="wireshark.html"><span class="kind k-tech">tech</span><span class="rel-t">Wireshark</span><span class="rel-g">A packet capture and protocol analyser: read frames off an interface, dissect them by protocol, and inspect any layer of any packet</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

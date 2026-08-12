@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Field Shadowing Versus Method Overriding · Glass Box</title>
+<meta name="description" content="Methods dispatch on the runtime type of an object">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Field Shadowing Versus Method Overriding · Glass Box">
+<meta property="og:description" content="Methods dispatch on the runtime type of an object">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Put varying behaviour in a method","What static and dynamic dispatch mean","Test through the abstraction","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["programming-fundamentals-and-oop-laboratories/src/main/java/fundamentals/inventory/Container.java","programming-fundamentals-and-oop-laboratories/src/test/java/fundamentals/inventory/ContainerTest.java","programming-fundamentals-and-oop-laboratories/README.md"],"dateModified":"2026-08-12","description":"Methods dispatch on the runtime type of an object","headline":"Field Shadowing Versus Method Overriding","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["java","cpp","debugging","refactoring","testing"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-12 · in force since 2026-08-02</span>
+    <span class="repos">programming-fundamentals-and-oop-laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Methods dispatch on the runtime type of an object</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#put-varying-behaviour-in-a-method">Put varying behaviour in a method</a></li><li><a href="#what-static-and-dynamic-dispatch-mean">What static and dynamic dispatch mean</a></li><li><a href="#test-through-the-abstraction">Test through the abstraction</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="field-shadowing-versus-method-overriding">Field Shadowing Versus Method Overriding</h1>
+<p><strong>Methods dispatch on the runtime type of an object. Fields resolve from the static type of the expression.</strong> A subclass field with the same name as a base-class field is separate storage; it does not override the base field.</p>
+<p>That distinction matters whenever a base class supplies common rendering or behaviour and each subclass supplies one varying value.</p>
+<h2 id="put-varying-behaviour-in-a-method" class="h-anch"><a class="hlink" href="#put-varying-behaviour-in-a-method" aria-label="Link to this section">#</a>Put varying behaviour in a method</h2>
+<p>Container makes the label a polymorphic method:</p>
+<p>~~~java public abstract String label();</p>
+<p>@Override public String toString() { return &quot;[&quot; + label() + &quot; - ...]&quot;; } ~~~</p>
+<p>Bag, ShoppingBag, and HandHoldBag implement label(), while the base class owns the shared rendering. Calling toString() therefore dispatches to the concrete object&#x27;s label without duplicating formatting in each subclass.</p>
+<p>This is the useful rule: when a value is meant to vary by subtype <em>as part of behaviour</em>, expose it through an overridable method rather than through a same-named field.</p>
+<h2 id="what-static-and-dynamic-dispatch-mean" class="h-anch"><a class="hlink" href="#what-static-and-dynamic-dispatch-mean" aria-label="Link to this section">#</a>What static and dynamic dispatch mean</h2>
+<p>Given a base-typed reference, Java chooses a method implementation from the object&#x27;s runtime class. Field access does not work that way: the compiler selects the field declared by the reference&#x27;s static type. The language permits both forms because fields can intentionally hide other fields, but the two mechanisms have different contracts.</p>
+<p>@Override makes the method contract visible to both the reader and the compiler. It cannot apply to a field, which is a useful signal that a field is not participating in polymorphic dispatch.</p>
+<h2 id="test-through-the-abstraction" class="h-anch"><a class="hlink" href="#test-through-the-abstraction" aria-label="Link to this section">#</a>Test through the abstraction</h2>
+<p>The inventory tests exercise a List&lt;Container&gt; containing all three concrete container types and assert that each rendered representation contains its label(). Testing through the base type confirms the contract that callers actually receive: common behaviour with subtype-specific values.</p>
+<p>For C++, the analogous choice requires a virtual member function when runtime dispatch is required. A base type used to delete derived objects should also have a virtual destructor. The syntax differs, but the design question is the same: is this member data, or is it behaviour selected by the concrete type?</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="programming-fundamentals-and-oop-laboratories.html">programming-fundamentals-and-oop-laboratories</a> · <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a> · <a class="wl" href="layered-architecture.html">layered-architecture</a> · <a class="wl" href="functional-programming-scala-laboratories.html">functional-programming-scala-laboratories</a></p></div>
+  <div class="tags"><span class="tag">java</span><span class="tag">cpp</span><span class="tag">debugging</span><span class="tag">refactoring</span><span class="tag">testing</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">programming-fundamentals-and-oop-laboratories</span><span class="src-p">/src/main/java/fundamentals/inventory/Container.java</span></code></li><li><code><span class="src-r">programming-fundamentals-and-oop-laboratories</span><span class="src-p">/src/test/java/fundamentals/inventory/ContainerTest.java</span></code></li><li><code><span class="src-r">programming-fundamentals-and-oop-laboratories</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="layered-architecture.html"><span class="kind k-concept">concept</span><span class="rel-t">Layered Architecture</span><span class="rel-g">Split the application into horizontal tiers where each layer may only call the one below it: api/ handles HTTP and nothing else, service/ holds the domain rules and…</span></a><a class="rel" href="tests-that-pass-for-the-wrong-reason.html"><span class="kind k-concept">concept</span><span class="rel-t">Tests That Pass for the Wrong Reason</span><span class="rel-g">A failing test tells you something is broken</span></a><a class="rel" href="functional-programming-scala-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Functional Programming Scala Laboratories</span><span class="rel-g">A fragmented set of Scala exercises rebuilt as one coherent laboratory</span></a><a class="rel" href="programming-fundamentals-and-oop-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Programming Fundamentals and OOP Laboratories</span><span class="rel-g">Compact laboratory modules for object-oriented modelling in Java 21 and explicit ownership in C++20</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

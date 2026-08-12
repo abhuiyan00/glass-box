@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>README as Guided Tour · Glass Box</title>
+<meta name="description" content="The README is written for a reader being shown around, not for a user trying to run something">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="README as Guided Tour · Glass Box">
+<meta property="og:description" content="The README is written for a reader being shown around, not for a user trying to run something">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The recurring skeleton","Evidence","How far it goes","Where it is absent","Reading it critically","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["browser_game_stickfps/README.md","Farley/README.md","Discrete-Mathematics-Laboratories/README.md","Optimization Methods/README.md","IT Applications in Business and Commerce/README.md","Information-Systems-Modelling/README.md","labour-fraud-analysis-a-forensic-data-investigation/README.md","Physics/README.md"],"dateModified":"2026-07-28","description":"The README is written for a reader being shown around, not for a user trying to run something","headline":"README as Guided Tour","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["documentation"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-03-20</span>
+    <span class="repos">Discrete-Mathematics-Laboratories · Farley · IT Applications in Business and Commerce · Information-Systems-Modelling · Optimization Methods · Physics · browser_game_stickfps · labour-fraud-analysis-a-forensic-data-investigation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The README is written for a reader being shown around, not for a user trying to run something</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-recurring-skeleton">The recurring skeleton</a></li><li><a href="#evidence">Evidence</a></li><li><a href="#how-far-it-goes">How far it goes</a></li><li><a href="#where-it-is-absent">Where it is absent</a></li><li><a href="#reading-it-critically">Reading it critically</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="readme-as-guided-tour">README as Guided Tour</h1>
+<p>The README is written <strong>for a reader being shown around</strong>, not for a user trying to run something. Present in all 15 source repositories. Three of them say it in so many words.</p>
+<h2 id="the-recurring-skeleton" class="h-anch"><a class="hlink" href="#the-recurring-skeleton" aria-label="Link to this section">#</a>The recurring skeleton</h2>
+<ol><li>Shields.io badges (MIT, &quot;open source · free to use&quot;, sometimes stack badges)</li><li>A centred hero screenshot or figure with a caption</li><li>An explicit &quot;Start here&quot; line</li><li>A screenshot table — 2×2, 2×3 or 3-up — each image with a <code>&lt;sub&gt;</code> caption saying what to look at</li><li>An &quot;arc at a glance&quot; table walking the parts in order</li><li>A fenced repo-layout tree</li><li>A <code>## Technology</code> prose section</li><li>A <code>## Skills demonstrated</code> section</li><li><code>## License</code></li></ol>
+<h2 id="evidence" class="h-anch"><a class="hlink" href="#evidence" aria-label="Link to this section">#</a>Evidence</h2>
+<blockquote><p>&quot;<strong>Start here.</strong> This page is the guided tour of all three projects&quot;</p><cite>Optimization Methods/README.md, 2026-07-10</cite></blockquote>
+<blockquote><p>&quot;The armory opens for 8 seconds each round… validated server-side, not trusted from the client&quot;</p><cite>browser_game_stickfps/README.md, 2026-07-25</cite></blockquote>
+<p>The captions carry argument, not decoration — the second quote is a screenshot caption that explains <a class="wl" href="server-authoritative-netcode.html">server-authoritative-netcode</a> in passing.</p>
+<h2 id="how-far-it-goes" class="h-anch"><a class="hlink" href="#how-far-it-goes" aria-label="Link to this section">#</a>How far it goes</h2>
+<ul><li><code>browser_game_stickfps/assets/README.md</code> documents the <strong>capture settings</strong> for its own screenshots: 1600×900 downscaled to 1440 px, progressive JPEG q90, &quot;chosen over PNG to avoid banding&quot;.</li><li><code>Python-Programming-Laboratories/assets/README.md</code> states provenance: &quot;Real captures, not mockups.&quot;</li><li><code>Farley</code> ships <strong>three task-scoped guides</strong> (DEMO / EMULATOR / ANDROID-INSTALL) plus one-click <code>.bat</code> launchers for each.</li><li><code>Information-Systems-Modelling/README.md</code> runs to <strong>385 lines</strong> with a per-lab chapter each.</li><li><code>IT Applications in Business and Commerce</code> nests <strong>four</strong> guided-tour READMEs.</li></ul>
+<h2 id="where-it-is-absent" class="h-anch"><a class="hlink" href="#where-it-is-absent" aria-label="Link to this section">#</a>Where it is absent</h2>
+<p>Two repos break the pattern, and they break it the same way — <code>Oracle-Database-Laboratories</code> and <code>Cybersecurity-Engineering-Laboratories</code> both have a walkthrough README but <strong>no badges</strong>, and both bundle README + LICENSE + <code>.gitignore</code> into a single final commit rather than the separate polish commits described in <a class="wl" href="presentation-polish-tail-commits.html">presentation-polish-tail-commits</a>. Both are also the two most prose-disciplined repos in the set.</p>
+<h2 id="reading-it-critically" class="h-anch"><a class="hlink" href="#reading-it-critically" aria-label="Link to this section">#</a>Reading it critically</h2>
+<p>A guided tour is a persuasive form, and in several repos the tour is more confident than the code. <code>IT Applications in Business and Commerce/project/README.md</code> softens a failure its own sub-README states flatly (&quot;did not fully solve the S-curve&quot;). <code>Farley</code>&#x27;s README claims a test suite that does not exist. The tour is the top of a gradient — see <a class="wl" href="documentation-drift.html">documentation-drift</a> — and the deeper file is usually the more honest one, which is itself an instance of <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="presentation-polish-tail-commits.html">presentation-polish-tail-commits</a> · <a class="wl" href="documentation-drift.html">documentation-drift</a> · <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> · <a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a> · <a class="wl" href="course-as-runnable-study-tool.html">course-as-runnable-study-tool</a></p></div>
+  <div class="tags"><span class="tag">documentation</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="server-authoritative-netcode.html"><span class="kind k-concept">concept</span><span class="rel-t">Server-Authoritative Netcode</span><span class="rel-g">The client is an input device and a renderer</span></a><a class="rel" href="course-as-runnable-study-tool.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Course as Runnable Study Tool</span><span class="rel-g">Four separate courses were revised by building the syllabus into a program rather than by reading notes</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="import-finished-work-into-git.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Import Finished Work Into Git</span><span class="rel-g">Work is built to completion outside version control, then imported in a burst</span></a><a class="rel" href="presentation-polish-tail-commits.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Presentation Polish Tail Commits</span><span class="rel-g">After the substance lands, a distinct tail of commits does nothing but presentation: screenshots, then a licence, then licence badges</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

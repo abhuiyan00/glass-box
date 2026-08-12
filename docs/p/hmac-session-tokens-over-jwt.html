@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HMAC Session Tokens Over JWT · Glass Box</title>
+<meta name="description" content="project-management-web-platform issues session credentials as a base64url JSON payload and an HMAC-SHA256 tag, using node:crypto rather than a JWT library">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HMAC Session Tokens Over JWT · Glass Box">
+<meta property="og:description" content="project-management-web-platform issues session credentials as a base64url JSON payload and an HMAC-SHA256 tag, using node:crypto rather than a JWT library">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["A small, fixed protocol","Why this format fits here","The trade-off is interoperability","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["project-management-web-platform/src/security/token.ts","project-management-web-platform/src/service/auth.ts","project-management-web-platform/test/token.test.ts","project-management-web-platform/README.md"],"dateModified":"2026-08-12","description":"project-management-web-platform issues session credentials as a base64url JSON payload and an HMAC-SHA256 tag, using node:crypto rather than a JWT library","headline":"HMAC Session Tokens Over JWT","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["security","cryptography","typescript","architecture"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-12 · in force since 2026-08-02</span>
+    <span class="repos">project-management-web-platform</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>project-management-web-platform issues session credentials as a base64url JSON payload and an HMAC-SHA256 tag, using node:crypto rather than a JWT library</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#a-small-fixed-protocol">A small, fixed protocol</a></li><li><a href="#why-this-format-fits-here">Why this format fits here</a></li><li><a href="#the-trade-off-is-interoperability">The trade-off is interoperability</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="hmac-session-tokens-over-jwt">HMAC Session Tokens Over JWT</h1>
+<p><strong>Decision.</strong> <a class="wl" href="project-management-web-platform.html">project-management-web-platform</a> issues session credentials as a base64url JSON payload and an HMAC-SHA256 tag, using node:crypto rather than a JWT library.</p>
+<p>~~~text base64url(JSON({ u, r, iat, exp })) . base64url(HMAC-SHA256(payload, secret)) ~~~</p>
+<p>The session secret comes from validated configuration. The payload identifies the account and records its issuance and expiry; request authentication reloads the account before building the current actor.</p>
+<h2 id="a-small-fixed-protocol" class="h-anch"><a class="hlink" href="#a-small-fixed-protocol" aria-label="Link to this section">#</a>A small, fixed protocol</h2>
+<p>The token implementation has one signing algorithm: HMAC-SHA256. It has no caller-supplied algorithm field, and verification compares the expected tag in constant time before parsing the payload. It also rejects malformed structures, invalid claims, expired tokens, and timestamps that are too far in the future.</p>
+<p>Keeping those checks in one short module makes the token boundary visible. The accompanying node:test suite covers valid issuance, forgery, tampering, expiry, malformed input, and bearer header parsing.</p>
+<h2 id="why-this-format-fits-here" class="h-anch"><a class="hlink" href="#why-this-format-fits-here" aria-label="Link to this section">#</a>Why this format fits here</h2>
+<p>The API is a single service with one runtime dependency, Express. Node provides the HMAC primitive through its standard library, so this format does not introduce a second runtime package for a single verifier.</p>
+<p>This is not a general recommendation to avoid JWTs. A maintained JWT library is a good fit when other services must validate the same credential or when a standard interoperable representation is required. In that situation, the project&#x27;s own source recommends adopting the maintained library rather than porting this format.</p>
+<h2 id="the-trade-off-is-interoperability" class="h-anch"><a class="hlink" href="#the-trade-off-is-interoperability" aria-label="Link to this section">#</a>The trade-off is interoperability</h2>
+<p>These credentials are intentionally local to this service. Another verifier would need an agreed protocol and compatible key handling, so interoperability is the point at which the format&#x27;s small surface area stops being an advantage.</p>
+<p>The format also does not make the service stateless. The API chooses to reload the named account on each authenticated request so a block, deletion, or role change takes effect from current data. That complementary decision is described in <a class="wl" href="re-read-the-account-on-every-request.html">re-read-the-account-on-every-request</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="re-read-the-account-on-every-request.html">re-read-the-account-on-every-request</a> · <a class="wl" href="stateless-jwt-authentication.html">stateless-jwt-authentication</a> · <a class="wl" href="project-management-web-platform.html">project-management-web-platform</a> · <a class="wl" href="secrets-from-environment-only.html">secrets-from-environment-only</a> · <a class="wl" href="symmetric-vs-asymmetric-cryptography.html">symmetric-vs-asymmetric-cryptography</a> · <a class="wl" href="digital-signatures.html">digital-signatures</a> · <a class="wl" href="bcrypt-crypto-only-no-spring-security.html">bcrypt-crypto-only-no-spring-security</a></p></div>
+  <div class="tags"><span class="tag">security</span><span class="tag">cryptography</span><span class="tag">typescript</span><span class="tag">architecture</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">project-management-web-platform</span><span class="src-p">/src/security/token.ts</span></code></li><li><code><span class="src-r">project-management-web-platform</span><span class="src-p">/src/service/auth.ts</span></code></li><li><code><span class="src-r">project-management-web-platform</span><span class="src-p">/test/token.test.ts</span></code></li><li><code><span class="src-r">project-management-web-platform</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="digital-signatures.html"><span class="kind k-concept">concept</span><span class="rel-t">Digital Signatures</span><span class="rel-g">Sign with the private key, verify with the public one — the reverse of encryption&#x27;s key usage, and the source of three properties encryption alone does not provide</span></a><a class="rel" href="stateless-jwt-authentication.html"><span class="kind k-concept">concept</span><span class="rel-t">Stateless JWT Authentication</span><span class="rel-g">The server keeps no session</span></a><a class="rel" href="symmetric-vs-asymmetric-cryptography.html"><span class="kind k-concept">concept</span><span class="rel-t">Symmetric vs Asymmetric Cryptography</span><span class="rel-g">Two families with different guarantees and wildly different costs</span></a><a class="rel" href="bcrypt-crypto-only-no-spring-security.html"><span class="kind k-decision">decision</span><span class="rel-t">BCrypt Crypto Only, No Spring Security</span><span class="rel-g">Take spring-security-crypto for its BCrypt password encoder and nothing else from Spring Security</span></a><a class="rel" href="re-read-the-account-on-every-request.html"><span class="kind k-decision">decision</span><span class="rel-t">Re-read the Account on Every Request</span><span class="rel-g">project-management-web-platform verifies a session token and then loads the account named by its claims for every authenticated request</span></a><a class="rel" href="secrets-from-environment-only.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Secrets from Environment Only</span><span class="rel-g">Credentials are read from environment variables and from nowhere else, and .gitignore is written so that the lazy path and the safe path are the same path</span></a><a class="rel" href="project-management-web-platform.html"><span class="kind k-project">project</span><span class="rel-t">Project Management Web Platform</span><span class="rel-g">A TypeScript API for projects, tasks, accounts, and session-based access control</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

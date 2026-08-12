@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IT Applications in Business and Commerce · Glass Box</title>
+<meta name="description" content="This repository is not business analytics">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IT Applications in Business and Commerce · Glass Box">
+<meta property="og:description" content="This repository is not business analytics">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Read this first — the course title is misleading","The git history is a publication record, not a development record","Team attribution and the identifiers this wiki omits","Headline performance claims have no artefact","`guide.txt` — a documentation-drift showcase","The exam-prep app, and where the lineage starts","Concepts, patterns and decisions recorded","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["IT Applications in Business and Commerce/README.md","IT Applications in Business and Commerce/project/README.md","IT Applications in Business and Commerce/project/code/stable/gym_torcs/","IT Applications in Business and Commerce/project/code/a.bhuiyan/gym_torcs/","IT Applications in Business and Commerce/project/docs/branch-reports/","IT Applications in Business and Commerce/lecture/exam_prep/","IT Applications in Business and Commerce/.gitignore"],"dateModified":"2026-07-28","description":"This repository is not business analytics","headline":"IT Applications in Business and Commerce","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["reinforcement-learning","ml","python","javascript","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">IT Applications in Business and Commerce</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>This repository is not business analytics</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#read-this-first-the-course-title-is-misleading">Read this first — the course title is misleading</a></li><li><a href="#the-git-history-is-a-publication-record-not-a-development-record">The git history is a publication record, not a development record</a></li><li><a href="#team-attribution-and-the-identifiers-this-wiki-omits">Team attribution and the identifiers this wiki omits</a></li><li><a href="#headline-performance-claims-have-no-artefact">Headline performance claims have no artefact</a></li><li><a href="#guidetxt-a-documentation-drift-showcase">`guide.txt` — a documentation-drift showcase</a></li><li><a href="#the-exam-prep-app-and-where-the-lineage-starts">The exam-prep app, and where the lineage starts</a></li><li><a href="#concepts-patterns-and-decisions-recorded">Concepts, patterns and decisions recorded</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="it-applications-in-business-and-commerce">IT Applications in Business and Commerce</h1>
+<h2 id="read-this-first-the-course-title-is-misleading" class="h-anch"><a class="hlink" href="#read-this-first-the-course-title-is-misleading" aria-label="Link to this section">#</a>Read this first — the course title is misleading</h2>
+<p><strong>This repository is not business analytics.</strong> There is no e-commerce model, CRM, ERP, supply-chain simulation, payment system, market-basket analysis, RFM segmentation, forecasting model or KPI dashboard anywhere in the code. A reader arriving from the course title will expect the opposite of what is here.</p>
+<p>What is actually in the tree is two unrelated deliverables:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Unit</th>
+<th>What it is</th>
+<th>Stack</th>
+</tr></thead><tbody>
+<tr><td><code>project/</code> — <strong>AI Racer</strong></td><td>a <a class="wl" href="proximal-policy-optimisation.html">proximal-policy-optimisation</a> agent driving in TORCS over the <a class="wl" href="torcs-scr-protocol.html">torcs-scr-protocol</a>, for the IBM AI Racing League</td><td>Python + <a class="wl" href="pytorch.html">pytorch</a></td></tr>
+<tr><td><code>lecture/exam_prep/</code> — <strong>IT Apps Knowledge Test</strong></td><td>a zero-build single-page quiz app, 497 questions across 28 sets</td><td>vanilla HTML/CSS/JS</td></tr>
+</tbody></table></div>
+<p>Business-systems material — SOA, BPEL, BPMN, WSDL, SOAP, REST/microservices, virtualization, PKI, proof-of-work — appears <strong>only as quiz content</strong> in <code>chapters.js</code>. Not one line of code in this repo implements a business system. Tagging the AI-Racer material <code>business-systems</code> would misfile the whole repo, so none of these pages carry that tag.</p>
+<p><strong>Status: coursework, finished and frozen at last commit 2026-07-25.</strong> &quot;All finished and frozen&quot; (interview, 2026-07-28). Nothing here is maintained.</p>
+<h2 id="the-git-history-is-a-publication-record-not-a-development-record" class="h-anch"><a class="hlink" href="#the-git-history-is-a-publication-record-not-a-development-record" aria-label="Link to this section">#</a>The git history is a publication record, not a development record</h2>
+<p>11 commits, ~100 tracked files, ~9.8k lines of Python and JS, ~25 MB of committed binaries. <strong>Eight of the eleven commits land inside six seconds</strong> on 2026-07-10T20:46, importing a complete, documented, screenshot-illustrated tree. A second micro-burst on 2026-07-25 changes <strong>36 lines total</strong> and touches no code. This is the cleanest instance of <a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a> in the corpus, with the polish tail of <a class="wl" href="presentation-polish-tail-commits.html">presentation-polish-tail-commits</a> — with one inversion worth recording: licence work is commit <strong>#1</strong> here, not the last act.</p>
+<p><strong>The real development history lives in a different repository.</strong> <code>Szymon1905/AI_racer_pytorch</code>, six named authors, branch tips dated 2026-04-19 → 2026-06-17. None of that history is in this git. Commit messages here are uniformly publication-facing (&quot;Add the top-level guide…&quot;, &quot;Remove decorative emoji…&quot;); <strong>none describes a bug, an experiment or a decision</strong> — the exact opposite of the messages quoted <em>inside</em> the branch reports.</p>
+<p><code>project/docs/branch-reports/</code> — 11 markdown files, 846 lines — is a mechanical branch-by-branch audit of that other repository, with tip SHAs, constants tables, reward pseudocode and a lineage graph. See <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a> and <a class="wl" href="branch-per-experiment.html">branch-per-experiment</a>. <strong>Its generator was never committed</strong>, so unlike the sibling instances of that pattern the audit cannot be re-run.</p>
+<h2 id="team-attribution-and-the-identifiers-this-wiki-omits" class="h-anch"><a class="hlink" href="#team-attribution-and-the-identifiers-this-wiki-omits" aria-label="Link to this section">#</a>Team attribution and the identifiers this wiki omits</h2>
+<p><code>project/README.md</code> carries a per-member contribution table. Public per-member attribution was a <strong>competition requirement</strong>:</p>
+<blockquote><p>&quot;Intentional — team credit was required.&quot;</p><cite>interview, 2026-07-28</cite></blockquote>
+<p>The table pairs full names with institutional student identifiers. <strong>This wiki deliberately omits both the names and the identifiers</strong> and reproduces no part of that table. The requirement is recorded here as context; the personal data is not.</p>
+<p>The blanket <code>publish: false</code> on this repo&#x27;s pages was lifted on 2026-07-30. <strong>The omission was never enforced by that flag and does not depend on it</strong> — the names and identifiers are not in these files at all, so there is nothing for a publish flag to hold back. Re-checked on 2026-07-30 against person-like values across every page resting on this repo; <code>audit-secrets</code> re-checks the published subset on every build. What goes public is the engineering: the <a class="wl" href="torcs-scr-protocol.html">torcs-scr-protocol</a> client, the generated question bank, the branch strategy.</p>
+<h2 id="headline-performance-claims-have-no-artefact" class="h-anch"><a class="hlink" href="#headline-performance-claims-have-no-artefact" aria-label="Link to this section">#</a>Headline performance claims have no artefact</h2>
+<p>The README&#x27;s <strong>1:31.53 lap at ≈245 km/h</strong>, and &quot;<strong>8 of 10 runs (≈80 %), mean ≈1:33</strong>&quot;, rest on prose alone. There is no eval log, no TORCS results file, no video and no plot data in the repo. The nine committed CSVs come from the <em>other</em> branch and carry <strong>no lap-time column</strong>; the lap-time figure is a PNG, not data.</p>
+<ul><li><strong>TODO:</strong> locate the primary artefact for 1:31.53 / ≈245 km/h and for the 10-run consistency batch. <code>confidence: low</code> on both numbers as stated.</li><li><strong>TODO:</strong> six of eight branches (<code>master</code>, <code>160speed</code>, <code>160speed+stablesteer</code>, <code>Reward_func_improvement</code>, <code>headless</code>, <code>parallel</code>, <code>gear_strategy_max_jerk</code>, <code>piasecki/fix1</code>) exist here <strong>only as prose reports, no code</strong>. The <code>parallel</code> branch&#x27;s &quot;≈9× rollout throughput&quot; is unreproducible from this repo — <code>parallel.md</code> itself only claims ~9× environment <em>concurrency</em>. <code>confidence: low</code>.</li></ul>
+<p>What <em>is</em> verified holds up: <code>chapters.js</code> really contains 497 questions and 28 sets, and every constant the reports cite for the two shipped trees checks out against the source (<code>DEFAULT_SHIFT_FRAC = 0.93</code>, <code>mu=1.1</code>, <code>grip=0.70</code>, <code>iters=800</code>, <code>off_track_penalty = 10000.0</code>).</p>
+<h2 id="guidetxt-a-documentation-drift-showcase" class="h-anch"><a class="hlink" href="#guidetxt-a-documentation-drift-showcase" aria-label="Link to this section">#</a><code>guide.txt</code> — a documentation-drift showcase</h2>
+<p>Four distinct failures in one file, all instances of <a class="wl" href="documentation-drift.html">documentation-drift</a>:</p>
+<ol><li>The banner stamps the focus track as corkscrew while §0, §3.1, §3.5 and G8 still target <strong>alpine-1</strong> and save to <code>lines/alpine-1.npz</code>.</li><li>§8 lists <code>gym_torcs/recon_lap.py</code>, and gotchas G4/G5 plus validation V4 depend on it — <strong>the file does not exist</strong>.</li><li>§1 describes the <em>pre-rewrite</em> baseline (steer-only, gear hardcoded to 1, 23-dim state) as &quot;What exists today&quot;, contradicting the shipped three-dimensional-action racing-line environment.</li><li>§7 proposes a speed-cap curriculum that nothing in <code>train_torcs_rl.py</code> implements.</li></ol>
+<p>Seven further drift instances exist elsewhere — a stale copy-pasted <code>commands.txt</code>, a report claiming 12 log files where 9 exist, <code>eval_torcs.py</code> for <code>eval_torcs_rl.py</code>, Obsidian wikilinks that render as literal brackets on GitHub, and a top-level README that softens a failure the branch&#x27;s own README states flatly.</p>
+<p><strong>The last commit in the repo exists solely to remove a pointer to agent tooling.</strong> As committed on 2026-07-10, <code>guide.txt</code> opened with:</p>
+<blockquote><p>&quot;architecture in this repo. Read CLAUDE.md first for the project map; this file&quot;</p><cite>IT Applications in Business and Commerce/project/code/a.bhuiyan/guide.txt, 2026-07-10</cite></blockquote>
+<p><code>439a690</code> (2026-07-25T02:04) rewrites that line to point at the README instead. No <code>CLAUDE.md</code>, <code>.claude/</code> or <code>AGENTS.md</code> exists in the tree <strong>or in history</strong>. Agent tooling was present in the working copy and deliberately excluded from publication — the repo&#x27;s final act was scrubbing its last trace. This contradicts <a class="wl" href="agent-skills-checked-into-the-repo.html">agent-skills-checked-into-the-repo</a>.</p>
+<h2 id="the-exam-prep-app-and-where-the-lineage-starts" class="h-anch"><a class="hlink" href="#the-exam-prep-app-and-where-the-lineage-starts" aria-label="Link to this section">#</a>The exam-prep app, and where the lineage starts</h2>
+<p><code>lecture/exam_prep/</code> is the <strong>origin</strong> of the four-repo exam-prep lineage:</p>
+<blockquote><p>&quot;One was first and I copied it forward.&quot;</p><cite>interview, 2026-07-28</cite></blockquote>
+<p>The user names this repo as the first. One caveat is recorded rather than dropped: the earliest <em>in-repo</em> mtime evidence points at <code>Physics/exam_prep/</code> instead (2026-06-27→06-30), and this app has no comparable in-repo timestamp because its development history lives in the other repository. See <a class="wl" href="course-as-runnable-study-tool.html">course-as-runnable-study-tool</a>, <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> and <a class="wl" href="offline-first-static-deliverable.html">offline-first-static-deliverable</a>.</p>
+<p>The app itself is the strongest engineering in the repo: all scores <strong>derived</strong> from the <code>answered</code> set rather than kept in desyncable counters, <code>STORAGE_VERSION = 7</code> invalidation, and <code>qa_test.js</code> — a hand-rolled <code>node:vm</code> + DOM-shim harness that loads the <em>production</em> <code>app.js</code>, drives real event handlers and <strong>exits non-zero on failure</strong>. It is the only automated test in the repo; <code>_smoke.py</code> prints and never asserts.</p>
+<p><strong>Content provenance, stated because no README states it.</strong> The 20 study sets are a <strong>synthetic</strong> bank — disclosed only in a code comment in <code>_build_bank.js</code>, never in any README, while the root README says the app &quot;turns the whole syllabus into an interactive quiz&quot;. The 8 &quot;Testownik&quot; sets are <strong>real past-exam questions</strong> whose primary source (<code>uploads/Quiz_Question_Bank.md</code>) is absent from the repo.</p>
+<ul><li><strong>TODO:</strong> the copyright status of the Testownik question source is unestablished and the primary files are missing, so their answer-key verification is unauditable. <strong>No quiz item is reproduced in this wiki</strong>, and none should be. <code>confidence: low</code> on any provenance claim for that bank.</li></ul>
+<p>The training CSVs are clean by contrast: 9 files, 330 rows, machine-written by this repo&#x27;s own code against a simulator on 2026-06-04/05. No personal or commercial data. <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> is unusually well done here — <code>.gitignore</code> explains <em>why</em> the ~1 GB TORCS simulator is excluded, <code>NOTICE</code> attributes the upstream work, the README has an explicit &quot;Not included:&quot; callout, and <code>a.bhuiyan/README.md</code> lists five failures by track coordinate.</p>
+<h2 id="concepts-patterns-and-decisions-recorded" class="h-anch"><a class="hlink" href="#concepts-patterns-and-decisions-recorded" aria-label="Link to this section">#</a>Concepts, patterns and decisions recorded</h2>
+<p><a class="wl" href="residual-reinforcement-learning.html">residual-reinforcement-learning</a> · <a class="wl" href="minimum-curvature-racing-line.html">minimum-curvature-racing-line</a> · <a class="wl" href="reward-shaping.html">reward-shaping</a> · <a class="wl" href="proximal-policy-optimisation.html">proximal-policy-optimisation</a> · <a class="wl" href="generated-artifact-with-pristine-source.html">generated-artifact-with-pristine-source</a> · <a class="wl" href="parse-track-xml-not-ttrackseg.html">parse-track-xml-not-ttrackseg</a> · <a class="wl" href="data-driven-gearing-over-hand-tuned-rpm-bands.html">data-driven-gearing-over-hand-tuned-rpm-bands</a> · <a class="wl" href="ship-two-branches-not-all-eight.html">ship-two-branches-not-all-eight</a> · <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> · <a class="wl" href="readme-as-guided-tour.html">readme-as-guided-tour</a></p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="information-systems-modelling.html">information-systems-modelling</a> · <a class="wl" href="optimization-methods.html">optimization-methods</a> · <a class="wl" href="physics-exam-prep.html">physics-exam-prep</a> · <a class="wl" href="research-methodologies-open-set-recognition.html">research-methodologies-open-set-recognition</a></p></div>
+  <div class="tags"><span class="tag">reinforcement-learning</span><span class="tag">ml</span><span class="tag">python</span><span class="tag">javascript</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/README.md</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/stable/gym_torcs/</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/a.bhuiyan/gym_torcs/</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/docs/branch-reports/</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/lecture/exam_prep/</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/.gitignore</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="minimum-curvature-racing-line.html"><span class="kind k-concept">concept</span><span class="rel-t">Minimum-Curvature Racing Line</span><span class="rel-g">The fastest path around a circuit is not the shortest one</span></a><a class="rel" href="proximal-policy-optimisation.html"><span class="kind k-concept">concept</span><span class="rel-t">Proximal Policy Optimisation</span><span class="rel-g">A policy-gradient method that improves a policy by repeatedly taking small, bounded steps away from the policy that collected the data</span></a><a class="rel" href="residual-reinforcement-learning.html"><span class="kind k-concept">concept</span><span class="rel-t">Residual Reinforcement Learning</span><span class="rel-g">A deterministic controller does the driving; the learned policy only outputs a bounded correction on top of it</span></a><a class="rel" href="reward-shaping.html"><span class="kind k-concept">concept</span><span class="rel-t">Reward Shaping</span><span class="rel-g">The task in it-applications-in-business-and-commerce is &quot;drive a fast, clean lap&quot;</span></a><a class="rel" href="data-driven-gearing-over-hand-tuned-rpm-bands.html"><span class="kind k-decision">decision</span><span class="rel-t">Data-Driven Gearing over Hand-Tuned RPM Bands</span><span class="rel-g">Choose gears from the car&#x27;s own engine data — parsed out of the TORCS car XML — rather than from tuned rpm thresholds or from a learned reward term</span></a><a class="rel" href="parse-track-xml-not-ttrackseg.html"><span class="kind k-decision">decision</span><span class="rel-t">Parse Track XML Instead of tTrackSeg</span><span class="rel-g">Reconstruct the track centreline offline, by parsing the track&#x27;s XML definition, instead of reading TORCS&#x27;s own tTrackSeg geometry at runtime</span></a><a class="rel" href="ship-two-branches-not-all-eight.html"><span class="kind k-decision">decision</span><span class="rel-t">Ship Two Branches, Not All Eight</span><span class="rel-g">Publish two of the ten experiment branches as running code, and cover the rest with written per-branch reports</span></a><a class="rel" href="agent-skills-checked-into-the-repo.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Agent Skills Checked Into the Repo</span><span class="rel-g">The tooling that builds the product is committed alongside the product, versioned with it and reviewed like it</span></a><a class="rel" href="branch-per-experiment.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Branch per Experiment</span><span class="rel-g">A git branch holds one hypothesis, not one feature</span></a><a class="rel" href="course-as-runnable-study-tool.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Course as Runnable Study Tool</span><span class="rel-g">Four separate courses were revised by building the syllabus into a program rather than by reading notes</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="generated-artifact-with-pristine-source.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Artifact with a Pristine Source</span><span class="rel-g">The file the application loads is generated, carries a DO-NOT-EDIT banner naming its generator, and its input is committed beside it</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="import-finished-work-into-git.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Import Finished Work Into Git</span><span class="rel-g">Work is built to completion outside version control, then imported in a burst</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="offline-first-static-deliverable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Offline-First Static Deliverable</span><span class="rel-g">The deliverable must work by double-clicking a file: no server, no install, no network</span></a><a class="rel" href="presentation-polish-tail-commits.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Presentation Polish Tail Commits</span><span class="rel-g">After the substance lands, a distinct tail of commits does nothing but presentation: screenshots, then a licence, then licence badges</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="readme-as-guided-tour.html"><span class="kind k-pattern">pattern</span><span class="rel-t">README as Guided Tour</span><span class="rel-g">The README is written for a reader being shown around, not for a user trying to run something</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="information-systems-modelling.html"><span class="kind k-project">project</span><span class="rel-t">Information Systems Modelling</span><span class="rel-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span></a><a class="rel" href="optimization-methods.html"><span class="kind k-project">project</span><span class="rel-t">Optimization Methods</span><span class="rel-g">Master&#x27;s Optimization Methods course at Wrocław University of Science and Technology (FICT, lectures by M. Przewoźniczek)</span></a><a class="rel" href="physics-exam-prep.html"><span class="kind k-project">project</span><span class="rel-t">Physics Exam Prep</span><span class="rel-g">Not a generated static site and not an asset dump: a hand-written, zero-dependency, offline-first single-page web app — an installable PWA — built from one Physics…</span></a><a class="rel" href="research-methodologies-open-set-recognition.html"><span class="kind k-project">project</span><span class="rel-t">Research Methodologies — Open-Set Recognition</span><span class="rel-g">Despite the course name, this repo does not teach research methods — it applies one</span></a><a class="rel" href="pytorch.html"><span class="kind k-tech">tech</span><span class="rel-t">PyTorch</span><span class="rel-g">torch==2.11.0</span></a><a class="rel" href="torcs-scr-protocol.html"><span class="kind k-tech">tech</span><span class="rel-t">TORCS and the SCR Protocol</span><span class="rel-g">TORCS is an open-source racing simulator</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

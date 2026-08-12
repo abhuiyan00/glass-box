@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fact Grain · Glass Box</title>
+<meta name="description" content="The grain of a fact table is the answer to &quot;what does one row mean?&quot;">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fact Grain · Glass Box">
+<meta property="og:description" content="The grain of a fact table is the answer to &quot;what does one row mean?&quot;">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Declare it, then enforce it","Consequences that show up immediately","Grain outside the warehouse","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Data-Warehousing-and-Business-Intelligence/sql/02_star_schema/01_create_star_schema.sql","Data-Warehousing-and-Business-Intelligence/project/twtr/sql/02_star_schema.sql"],"dateModified":"2026-07-28","description":"The grain of a fact table is the answer to \"what does one row mean?\"","headline":"Fact Grain","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["data-modelling","databases","sql"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Data-Warehousing-and-Business-Intelligence</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The grain of a fact table is the answer to &quot;what does one row mean?&quot;</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#declare-it-then-enforce-it">Declare it, then enforce it</a></li><li><a href="#consequences-that-show-up-immediately">Consequences that show up immediately</a></li><li><a href="#grain-outside-the-warehouse">Grain outside the warehouse</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="fact-grain">Fact Grain</h1>
+<p>The grain of a fact table is the answer to &quot;what does one row mean?&quot;. It is the first decision in a <a class="wl" href="star-schema.html">star-schema</a>, because every later choice — which dimensions can attach, which measures are additive, which duplicates are impossible — follows from it.</p>
+<h2 id="declare-it-then-enforce-it" class="h-anch"><a class="hlink" href="#declare-it-then-enforce-it" aria-label="Link to this section">#</a>Declare it, then enforce it</h2>
+<p><a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> states the grain in prose <strong>and</strong> makes the primary key carry it, in both marts:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Mart</th>
+<th>Grain</th>
+<th>Enforced by</th>
+</tr></thead><tbody>
+<tr><td>Retail sales</td><td>one row per sales order line</td><td>PK on the source order-line identifier</td></tr>
+<tr><td>Price quotes</td><td>one row per ticker per trading day</td><td>composite PK <code>(TickerKey, DateKey)</code></td></tr>
+</tbody></table></div>
+<blockquote><p>&quot;The primary key states the grain: one row per ticker per trading day. A fact table without one leaves the grain to be inferred from the loading query, which is how duplicate rows get in.&quot;</p><cite>Data-Warehousing-and-Business-Intelligence/project/twtr/sql/02_star_schema.sql, 2026-07-25</cite></blockquote>
+<p>The point of that comment is that a grain written only in documentation is a comment; a grain written as a primary key is a constraint the database enforces on every future load. It is the same instinct as <a class="wl" href="verify-the-load-dont-declare-it.html">verify-the-load-dont-declare-it</a> applied at DDL time rather than at load time, and the same instinct as <a class="wl" href="idempotent-loading.html">idempotent-loading</a> — uniqueness lives in the schema, not in the loader.</p>
+<h2 id="consequences-that-show-up-immediately" class="h-anch"><a class="hlink" href="#consequences-that-show-up-immediately" aria-label="Link to this section">#</a>Consequences that show up immediately</h2>
+<ul><li><strong>Measure additivity.</strong> At order-line grain, <code>LineTotal</code> sums freely across any dimension. At ticker-day grain, a closing price does not sum across days at all — which is part of why an indicator computed over a window is not a stored dimension attribute, see <a class="wl" href="measure-vs-dimension.html">measure-vs-dimension</a>.</li><li><strong>Which dimensions can attach.</strong> A dimension can only join if it is meaningful at the grain. A salesperson is meaningful per order line; it is also frequently absent, hence <a class="wl" href="nullable-salesperson-key.html">nullable-salesperson-key</a>.</li><li><strong>Window functions need the grain to be regular.</strong> The whole <code>ROWS BETWEEN n PRECEDING AND CURRENT ROW</code> construction in <a class="wl" href="window-function-frames.html">window-function-frames</a> assumes one row per ticker per trading day and silently means something else if that stops being true.</li></ul>
+<h2 id="grain-outside-the-warehouse" class="h-anch"><a class="hlink" href="#grain-outside-the-warehouse" aria-label="Link to this section">#</a>Grain outside the warehouse</h2>
+<p>The same discipline shows up in <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a>, where the twenty-table dataset is FK-closed and each table&#x27;s row count is reconciled against a committed manifest — a row-count reconciliation is only meaningful if you can say what one row is. See <a class="wl" href="third-normal-form.html">third-normal-form</a> and <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="star-schema.html">star-schema</a> · <a class="wl" href="surrogate-vs-natural-keys.html">surrogate-vs-natural-keys</a> · <a class="wl" href="etl-load-order.html">etl-load-order</a> · <a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> · <a class="wl" href="sql-server.html">sql-server</a></p></div>
+  <div class="tags"><span class="tag">data-modelling</span><span class="tag">databases</span><span class="tag">sql</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/sql/02_star_schema/01_create_star_schema.sql</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/sql/02_star_schema.sql</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="etl-load-order.html"><span class="kind k-concept">concept</span><span class="rel-t">ETL Load Order</span><span class="rel-g">Load order in a star-schema is not a style choice</span></a><a class="rel" href="idempotent-loading.html"><span class="kind k-concept">concept</span><span class="rel-t">Idempotent Loading</span><span class="rel-g">A load script is idempotent when running it twice leaves the store exactly as running it once did</span></a><a class="rel" href="measure-vs-dimension.html"><span class="kind k-concept">concept</span><span class="rel-t">Measure vs Dimension</span><span class="rel-g">In a star-schema, a measure is a number you aggregate; a dimension is a thing you aggregate by</span></a><a class="rel" href="reproducible-analysis.html"><span class="kind k-concept">concept</span><span class="rel-t">Reproducible Analysis</span><span class="rel-g">An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose</span></a><a class="rel" href="star-schema.html"><span class="kind k-concept">concept</span><span class="rel-t">Star Schema</span><span class="rel-g">One fact table of measurements surrounded by denormalised dimension tables that describe them</span></a><a class="rel" href="surrogate-vs-natural-keys.html"><span class="kind k-concept">concept</span><span class="rel-t">Surrogate vs Natural Keys</span><span class="rel-g">A natural key is the identifier the source system already uses — a product id, a customer id, an order-line id</span></a><a class="rel" href="third-normal-form.html"><span class="kind k-concept">concept</span><span class="rel-t">Third Normal Form</span><span class="rel-g">A relation is in 3NF when every non-key attribute depends on the key, the whole key, and nothing but the key</span></a><a class="rel" href="window-function-frames.html"><span class="kind k-concept">concept</span><span class="rel-t">Window Function Frames</span><span class="rel-g">GROUP BY collapses rows</span></a><a class="rel" href="nullable-salesperson-key.html"><span class="kind k-decision">decision</span><span class="rel-t">Nullable Salesperson Key</span><span class="rel-g">Declare mart.FACT_SALES.SalesPersonID as INT NULL with a foreign key to mart.DIM_SALESPERSON, and load every order line regardless of whether a salesperson exists</span></a><a class="rel" href="verify-the-load-dont-declare-it.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Verify the Load, Don&#x27;t Declare It</span><span class="rel-g">A data pipeline ends with a query whose result can be wrong, not with a status row saying it went fine</span></a><a class="rel" href="data-warehousing-and-business-intelligence.html"><span class="kind k-project">project</span><span class="rel-t">Data Warehousing and Business Intelligence</span><span class="rel-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a><a class="rel" href="sql-server.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server</span><span class="rel-g">Microsoft&#x27;s relational engine, driven here as T-SQL on SQL Server 2019 across seven annotated scripts in data-warehousing-and-business-intelligence — two analytics labs,…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

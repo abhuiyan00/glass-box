@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maven · Glass Box</title>
+<meta name="description" content="Four pom.xml files, all in Information-Systems-Modelling — labs 2, 3, 4 and 5">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Maven · Glass Box">
+<meta property="og:description" content="Four pom.xml files, all in Information-Systems-Modelling — labs 2, 3, 4 and 5">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The one interesting plugin chain","Dependency management, not just dependencies","What Maven is *not* used for here","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Information-Systems-Modelling/lab2/StudentService/pom.xml","Information-Systems-Modelling/lab3/StudentService_vlab3/pom.xml","Information-Systems-Modelling/lab4/StudentService/pom.xml","Information-Systems-Modelling/lab5/sesameExample_sol/pom.xml","Information-Systems-Modelling/README.md"],"dateModified":"2026-07-28","description":"Four pom.xml files, all in Information-Systems-Modelling — labs 2, 3, 4 and 5","headline":"Maven","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["java","devops","architecture"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-04-14</span>
+    <span class="repos">Information-Systems-Modelling</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Four pom.xml files, all in Information-Systems-Modelling — labs 2, 3, 4 and 5</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-one-interesting-plugin-chain">The one interesting plugin chain</a></li><li><a href="#dependency-management-not-just-dependencies">Dependency management, not just dependencies</a></li><li><a href="#what-maven-is-not-used-for-here">What Maven is *not* used for here</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="maven">Maven</h1>
+<p>Four <code>pom.xml</code> files, all in <code>Information-Systems-Modelling</code> — labs 2, 3, 4 and 5. The only Java build tool in the source set; there is no Gradle anywhere. Labs 2–4 ship the <strong>Maven wrapper</strong> (<code>mvnw</code> 3.3.2, resolving Maven 3.9.10); <strong>lab 5 does not</strong>, and <code>lab3/README.md</code> tells the reader to run bare <code>mvn clean compile</code> regardless.</p>
+<p>⚠ The root README&#x27;s toolbelt table says &quot;<strong>Maven 3.9+</strong> | labs 2–5 | or use the bundled wrapper <code>mvnw</code>&quot;. Lab 5 has no wrapper, so the promise fails on a quarter of its own scope — <a class="wl" href="documentation-drift.html">documentation-drift</a>.</p>
+<h2 id="the-one-interesting-plugin-chain" class="h-anch"><a class="hlink" href="#the-one-interesting-plugin-chain" aria-label="Link to this section">#</a>The one interesting plugin chain</h2>
+<p>Labs 2–4 do not hand-write their API interfaces. Three plugins cooperate:</p>
+<ol><li><strong><code>openapi-generator-maven-plugin</code> 7.20.0</strong> reads <code>src/main/resources/openapi/openapi.yaml</code> and generates Spring interfaces with <code>interfaceOnly=true</code> + <code>delegatePattern</code>, emitting into <code>target/generated-sources/openapi</code>.</li><li><strong><code>build-helper-maven-plugin</code></strong> adds that directory to the compile source roots so javac sees it. <em>(Present in labs 3 and 4; lab 2 wires the generator without it.)</em></li><li><strong><code>spring-boot-maven-plugin</code></strong> packages the result.</li></ol>
+<p>This is the machinery behind <a class="wl" href="contract-first-api-design.html">contract-first-api-design</a>, and it has a second-order consequence worth noting: because the controllers implement <em>generated</em> interfaces, hand-adding cross-cutting code to them is fragile — which is the stated reason lab 4 reaches for <a class="wl" href="aspect-oriented-programming.html">aspect-oriented-programming</a> instead.</p>
+<p>The generated tree is also why a naive file count over this repo reports <strong>231 Java files</strong> when the tracked source is <strong>134</strong>: <code>target/</code> holds build copies of everything.</p>
+<h2 id="dependency-management-not-just-dependencies" class="h-anch"><a class="hlink" href="#dependency-management-not-just-dependencies" aria-label="Link to this section">#</a>Dependency management, not just dependencies</h2>
+<ul><li>Labs 2–4 inherit from <code>spring-boot-starter-parent</code>, so Spring, Jackson and JPA versions come from the BOM rather than from pins. See <a class="wl" href="spring-boot.html">spring-boot</a>.</li><li>Lab 5 inherits from nothing and imports <strong><code>rdf4j-bom</code></strong> in <code>dependencyManagement</code> for the same effect on the RDF4J side. See <a class="wl" href="rdf4j.html">rdf4j</a>.</li><li>Only the genuinely external things are pinned by hand: <code>sqlite-jdbc</code> 3.49.1.0 and <code>hibernate-community-dialects</code> (lab 2), <code>h2</code> (labs 3–4), jjwt 0.12.6 (lab 4), springdoc 2.8.9 / 2.8.13, <code>jakarta.xml.bind-api</code> 4.0.0.</li><li>Lab 5 uses <strong><code>exec-maven-plugin</code> 3.1.0</strong> as its run mechanism — no Spring Boot plugin, so <code>mvn exec:java</code> is the entry point.</li></ul>
+<h2 id="what-maven-is-not-used-for-here" class="h-anch"><a class="hlink" href="#what-maven-is-not-used-for-here" aria-label="Link to this section">#</a>What Maven is <em>not</em> used for here</h2>
+<p>No <code>maven-surefire</code> configuration beyond the default, no failsafe, no jacoco, no checkstyle, no shade/assembly, no release plugin, no CI that invokes any of it. The build produces jars and nothing else; the verification story is thin and lives outside JUnit — see <a class="wl" href="information-systems-modelling.html">information-systems-modelling</a>.</p>
+<p>Three of the seven labs use <strong>no build tool at all</strong>: labs 6 and 7 and the exam trainer are plain Node with <code>dependencies: {}</code>. Lab 7&#x27;s README says so in as many words, which is why <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> and Maven coexist in one repository without contradiction — they cover disjoint halves of it.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="spring-boot.html">spring-boot</a> · <a class="wl" href="contract-first-api-design.html">contract-first-api-design</a> · <a class="wl" href="rdf4j.html">rdf4j</a> · <a class="wl" href="aspect-oriented-programming.html">aspect-oriented-programming</a> · <a class="wl" href="information-systems-modelling.html">information-systems-modelling</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a></p></div>
+  <div class="tags"><span class="tag">java</span><span class="tag">devops</span><span class="tag">architecture</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab2/StudentService/pom.xml</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab3/StudentService_vlab3/pom.xml</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab4/StudentService/pom.xml</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab5/sesameExample_sol/pom.xml</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="aspect-oriented-programming.html"><span class="kind k-concept">concept</span><span class="rel-t">Aspect Oriented Programming</span><span class="rel-g">A cross-cutting concern — logging, timing, auditing, usage counting — is one that would otherwise be copy-pasted into every method that needs it</span></a><a class="rel" href="contract-first-api-design.html"><span class="kind k-concept">concept</span><span class="rel-t">Contract-First API Design</span><span class="rel-g">Write the API specification first; generate the code from it</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="information-systems-modelling.html"><span class="kind k-project">project</span><span class="rel-t">Information Systems Modelling</span><span class="rel-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span></a><a class="rel" href="rdf4j.html"><span class="kind k-tech">tech</span><span class="rel-t">RDF4J</span><span class="rel-g">Eclipse RDF4J — the successor to the OpenRDF Sesame framework — is a Java library for storing, inferring over and querying RDF</span></a><a class="rel" href="spring-boot.html"><span class="kind k-tech">tech</span><span class="rel-t">Spring Boot</span><span class="rel-g">3.5.6 on Java 21, via spring-boot-starter-parent</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

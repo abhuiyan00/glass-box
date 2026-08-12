@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Convergent Evidence · Glass Box</title>
+<meta name="description" content="An argument built from several independently weak signals that point the same way, rather than from one decisive test">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Convergent Evidence · Glass Box">
+<meta property="og:description" content="An argument built from several independently weak signals that point the same way, rather than from one decisive test">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The signals","What the method is, precisely","Convergence needs independence, and that is the soft spot","Gap","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["labour-fraud-analysis-a-forensic-data-investigation/docs/investigation.md","labour-fraud-analysis-a-forensic-data-investigation/notebooks/01_investigation_analysis.ipynb","labour-fraud-analysis-a-forensic-data-investigation/src/app.py","labour-fraud-analysis-a-forensic-data-investigation/src/tests/test_dataset.py"],"dateModified":"2026-07-28","description":"An argument built from several independently weak signals that point the same way, rather than from one decisive test","headline":"Convergent Evidence","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["forensics","investigation","data-analysis","research-methods"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">labour-fraud-analysis-a-forensic-data-investigation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>An argument built from several independently weak signals that point the same way, rather than from one decisive test</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-signals">The signals</a></li><li><a href="#what-the-method-is-precisely">What the method is, precisely</a></li><li><a href="#convergence-needs-independence-and-that-is-the-soft-spot">Convergence needs independence, and that is the soft spot</a></li><li><a href="#gap">Gap</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="convergent-evidence">Convergent Evidence</h1>
+<p>An argument built from several independently weak signals that point the same way, rather than from one decisive test. Each signal on its own has an innocent explanation; the claim is that the conjunction does not. <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> states the frame explicitly — &quot;not a smoking gun, a convergence&quot;, and &quot;No single one proves intent&quot;.</p>
+<h2 id="the-signals" class="h-anch"><a class="hlink" href="#the-signals" aria-label="Link to this section">#</a>The signals</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Signal</th>
+<th>Computation</th>
+<th>Weakness taken alone</th>
+</tr></thead><tbody>
+<tr><td>Bulk sponsorship</td><td>group permits by (day, employer); flag days above a threshold</td><td>a genuine large employer hires in batches</td></tr>
+<tr><td>Shared identifiers</td><td>value-count concentration on contact fields</td><td>shared inboxes are common and legal</td></tr>
+<tr><td>Wage uniformity</td><td>modal spike in a 30-bin histogram of contract values</td><td>a standard rate produces the same spike</td></tr>
+<tr><td>Entity succession</td><td>permits migrating predecessor→successor across a year</td><td>ordinary corporate restructuring</td></tr>
+<tr><td>Network bridging</td><td>people adjacent to two or more companies in an entity graph</td><td>people change jobs</td></tr>
+</tbody></table></div>
+<p>Each is reproduced identically in the narrative, the dashboard, the notebook and the tests — the <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a> property that keeps the four surfaces from disagreeing.</p>
+<h2 id="what-the-method-is-precisely" class="h-anch"><a class="hlink" href="#what-the-method-is-precisely" aria-label="Link to this section">#</a>What the method is, precisely</h2>
+<p>Threshold flags, group-bys, value-count concentration, and a graph — then an argument. Stating that plainly matters more than it might seem, because a reader who sees &quot;forensic data analysis&quot; will assume a standard toolkit that <strong>is not present here</strong>:</p>
+<ul><li>no Benford&#x27;s law</li><li>no z-score, IQR, or any statistical outlier detection</li><li>no time-series anomaly model</li><li>no significance testing of any kind</li><li>no coefficient of variation or entropy behind the &quot;uniformity&quot; read — it is a visual modal spike</li><li>no centrality measure; graph degree is used only for node sizing, and &quot;bridging&quot; is a neighbour count</li><li>no ghost-employee test as such — the outsized payroll line and the implausible-age employees are narrative observations, not computed</li><li>no duplicate-record detection as an analytic; the content-hash folding is an ingestion step, see <a class="wl" href="chain-of-custody.html">chain-of-custody</a></li></ul>
+<p>None of that is a defect of the <em>argument</em>, which never claims statistical inference. It is a correction to what a reader would otherwise assume.</p>
+<h2 id="convergence-needs-independence-and-that-is-the-soft-spot" class="h-anch"><a class="hlink" href="#convergence-needs-independence-and-that-is-the-soft-spot" aria-label="Link to this section">#</a>Convergence needs independence, and that is the soft spot</h2>
+<p>The signals are only mutually reinforcing if they are independent. Several are computed from the same permit table, so a single upstream irregularity could produce more than one of them. Nothing in the repo argues for independence. Compare <a class="wl" href="dual-implementation-as-cross-check.html">dual-implementation-as-cross-check</a>, where independence is the entire design goal.</p>
+<h2 id="gap" class="h-anch"><a class="hlink" href="#gap" aria-label="Link to this section">#</a>Gap</h2>
+<ul><li><strong>TODO:</strong> permit-number <strong>contiguity</strong> is described as the strongest single element of the bulk-sponsorship case and appears as a table of ranges in the narrative — but it is <strong>asserted by eye and never computed</strong>. The notebook prints a sorted list of serials for the largest batch; nothing measures gaps. The anonymiser is documented as preserving contiguity via a constant offset, which would keep it true, but no check confirms either. <code>confidence: low</code> on contiguity as a finding.</li><li><strong>TODO:</strong> the bulk-filing threshold is hard-coded identically in three places with no derivation recorded — legal threshold, empirical break, or round number is unknown. <code>confidence: low</code> on the threshold&#x27;s justification. See <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a>.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="shared-identifier-clustering.html">shared-identifier-clustering</a> · <a class="wl" href="chain-of-custody.html">chain-of-custody</a> · <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a> · <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> · <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> · <a class="wl" href="networkx.html">networkx</a></p></div>
+  <div class="tags"><span class="tag">forensics</span><span class="tag">investigation</span><span class="tag">data-analysis</span><span class="tag">research-methods</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/docs/investigation.md</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/notebooks/01_investigation_analysis.ipynb</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/app.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/tests/test_dataset.py</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="chain-of-custody.html"><span class="kind k-concept">concept</span><span class="rel-t">Chain of Custody</span><span class="rel-g">In forensic work, a claim is only as good as the trail from the claim back to the artefact it came from</span></a><a class="rel" href="reproducible-analysis.html"><span class="kind k-concept">concept</span><span class="rel-t">Reproducible Analysis</span><span class="rel-g">An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose</span></a><a class="rel" href="shared-identifier-clustering.html"><span class="kind k-concept">concept</span><span class="rel-t">Shared-Identifier Clustering</span><span class="rel-g">When records that are supposed to be independent share a contact point — one inbox, one phone, one address, one bank account — the sharing is a claim about control</span></a><a class="rel" href="dual-implementation-as-cross-check.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Dual Implementation as Cross-Check</span><span class="rel-g">Build the same thing twice, in two different stacks, and keep both</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a><a class="rel" href="networkx.html"><span class="kind k-tech">tech</span><span class="rel-t">NetworkX</span><span class="rel-g">Pure-Python graph library</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

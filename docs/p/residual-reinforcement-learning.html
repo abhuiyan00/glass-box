@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Residual Reinforcement Learning · Glass Box</title>
+<meta name="description" content="A deterministic controller does the driving; the learned policy only outputs a bounded correction on top of it">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Residual Reinforcement Learning · Glass Box">
+<meta property="og:description" content="A deterministic controller does the driving; the learned policy only outputs a bounded correction on top of it">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["As implemented","The self-learning corner memory","Outcome, stated honestly by the source","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["IT Applications in Business and Commerce/project/code/a.bhuiyan/gym_torcs/gym_torcs.py","IT Applications in Business and Commerce/project/code/a.bhuiyan/gym_torcs/rl_agent.py","IT Applications in Business and Commerce/project/code/a.bhuiyan/README.md"],"dateModified":"2026-07-28","description":"A deterministic controller does the driving; the learned policy only outputs a bounded correction on top of it","headline":"Residual Reinforcement Learning","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["reinforcement-learning","ml","architecture","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">IT Applications in Business and Commerce</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A deterministic controller does the driving; the learned policy only outputs a bounded correction on top of it</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#as-implemented">As implemented</a></li><li><a href="#the-self-learning-corner-memory">The self-learning corner memory</a></li><li><a href="#outcome-stated-honestly-by-the-source">Outcome, stated honestly by the source</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="residual-reinforcement-learning">Residual Reinforcement Learning</h1>
+<p><strong>A deterministic controller does the driving; the learned policy only outputs a bounded correction on top of it.</strong> The agent never has to rediscover behaviour that classical control already gets right — it spends its whole sample budget on the part the controller gets wrong.</p>
+<p>The trade is explicit. You give up the possibility of the policy discovering a strategy the baseline forecloses, and you inherit every bias in the baseline. What you buy is that a random policy at initialisation still drives roughly correctly, so early episodes produce useful data instead of immediate termination.</p>
+<h2 id="as-implemented" class="h-anch"><a class="hlink" href="#as-implemented" aria-label="Link to this section">#</a>As implemented</h2>
+<p>In the <code>a.bhuiyan</code> tree of <a class="wl" href="it-applications-in-business-and-commerce.html">it-applications-in-business-and-commerce</a>:</p>
+<ul><li><code>_baseline_action</code> is a full hand-written driver — heading and cross-track error terms, a curvature feed-forward, a per-distance braking envelope derived from the <a class="wl" href="minimum-curvature-racing-line.html">minimum-curvature-racing-line</a> speed profile, grade-aware hill logic, and an rpm gearbox with hysteresis and a hold timer (see <a class="wl" href="data-driven-gearing-over-hand-tuned-rpm-bands.html">data-driven-gearing-over-hand-tuned-rpm-bands</a>).</li><li>The <a class="wl" href="proximal-policy-optimisation.html">proximal-policy-optimisation</a> policy&#x27;s output is blended in at <strong>±0.5</strong> — a hard cap on how far the agent can deviate, exposed as <code>--residual-scale</code>.</li><li><code>_launch_warmup</code> brings the car to roughly 90 km/h under baseline control <strong>before</strong> the agent gets the wheel, so no episode is spent learning to start.</li><li><code>_apply_steer_constraints</code> adds a speed-scaled clip and a rate limit on top, so even a saturated residual cannot produce a physically absurd steering command.</li><li>The observation is a <strong>33-dimensional tracking-error state</strong> built by <code>flatten_racingline_observation</code> — deviations from the precomputed line, not raw sensors. The policy sees &quot;how wrong is the baseline right now&quot;, which is the only thing it can act on.</li></ul>
+<p><code>--no-assist</code> disables the whole arrangement, which is how the ablation is expressed.</p>
+<h2 id="the-self-learning-corner-memory" class="h-anch"><a class="hlink" href="#the-self-learning-corner-memory" aria-label="Link to this section">#</a>The self-learning corner memory</h2>
+<p>A second, non-gradient learning loop sits beside the policy. When the car goes off track, the environment records the arc-length coordinate, slows that corner&#x27;s target speed, and <strong>propagates the same reduction to curvature look-alikes elsewhere on the track</strong>. The result persists to a <code>.npy</code> that the environment auto-loads, and <code>analyze_telemetry.py</code> can rebuild it offline from logged laps.</p>
+<ul><li><strong>TODO:</strong> no convergence criterion or stopping rule for the corner memory is stated anywhere in the repo, and nothing documents what prevents oscillation between over- and under-slowing a corner. <code>confidence: low</code> on its stability. Do not assert it converges.</li></ul>
+<h2 id="outcome-stated-honestly-by-the-source" class="h-anch"><a class="hlink" href="#outcome-stated-honestly-by-the-source" aria-label="Link to this section">#</a>Outcome, stated honestly by the source</h2>
+<p>This branch&#x27;s own README records that it <strong>did not fully solve the S-curve</strong> and that the car did not finish a clean full lap in the earlier runs. The top-level <code>project/README.md</code> softens the same result to &quot;reduced but didn&#x27;t eliminate S-curve errors&quot; — one of the drift instances catalogued on <a class="wl" href="documentation-drift.html">documentation-drift</a>. The branch that shipped as the headline result is the <em>other</em> one; see <a class="wl" href="ship-two-branches-not-all-eight.html">ship-two-branches-not-all-eight</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="proximal-policy-optimisation.html">proximal-policy-optimisation</a> · <a class="wl" href="minimum-curvature-racing-line.html">minimum-curvature-racing-line</a> · <a class="wl" href="reward-shaping.html">reward-shaping</a> · <a class="wl" href="torcs-scr-protocol.html">torcs-scr-protocol</a> · <a class="wl" href="it-applications-in-business-and-commerce.html">it-applications-in-business-and-commerce</a></p></div>
+  <div class="tags"><span class="tag">reinforcement-learning</span><span class="tag">ml</span><span class="tag">architecture</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/a.bhuiyan/gym_torcs/gym_torcs.py</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/a.bhuiyan/gym_torcs/rl_agent.py</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/a.bhuiyan/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="minimum-curvature-racing-line.html"><span class="kind k-concept">concept</span><span class="rel-t">Minimum-Curvature Racing Line</span><span class="rel-g">The fastest path around a circuit is not the shortest one</span></a><a class="rel" href="proximal-policy-optimisation.html"><span class="kind k-concept">concept</span><span class="rel-t">Proximal Policy Optimisation</span><span class="rel-g">A policy-gradient method that improves a policy by repeatedly taking small, bounded steps away from the policy that collected the data</span></a><a class="rel" href="reward-shaping.html"><span class="kind k-concept">concept</span><span class="rel-t">Reward Shaping</span><span class="rel-g">The task in it-applications-in-business-and-commerce is &quot;drive a fast, clean lap&quot;</span></a><a class="rel" href="data-driven-gearing-over-hand-tuned-rpm-bands.html"><span class="kind k-decision">decision</span><span class="rel-t">Data-Driven Gearing over Hand-Tuned RPM Bands</span><span class="rel-g">Choose gears from the car&#x27;s own engine data — parsed out of the TORCS car XML — rather than from tuned rpm thresholds or from a learned reward term</span></a><a class="rel" href="ship-two-branches-not-all-eight.html"><span class="kind k-decision">decision</span><span class="rel-t">Ship Two Branches, Not All Eight</span><span class="rel-g">Publish two of the ten experiment branches as running code, and cover the rest with written per-branch reports</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="it-applications-in-business-and-commerce.html"><span class="kind k-project">project</span><span class="rel-t">IT Applications in Business and Commerce</span><span class="rel-g">This repository is not business analytics</span></a><a class="rel" href="torcs-scr-protocol.html"><span class="kind k-tech">tech</span><span class="rel-t">TORCS and the SCR Protocol</span><span class="rel-g">TORCS is an open-source racing simulator</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

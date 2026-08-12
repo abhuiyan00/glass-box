@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CMake · Glass Box</title>
+<meta name="description" content="Cross-platform build-system generator: a CMakeLists.txt describes targets, and CMake emits Makefiles, Ninja files or an MSVC solution for whatever toolchain is present">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CMake · Glass Box">
+<meta property="og:description" content="Cross-platform build-system generator: a CMakeLists.txt describes targets, and CMake emits Makefiles, Ninja files or an MSVC solution for whatever toolchain is present">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The broken first line — a §10 contradiction, both claims recorded","Dropped for the second project","Build verification across the repo","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Optimization Methods/first_project/CMakeLists.txt","Optimization Methods/first_project/README.md","Optimization Methods/final_project/mdvrp/Makefile","Optimization Methods/final_project/docs/commands.txt"],"dateModified":"2026-08-05","description":"Cross-platform build-system generator: a CMakeLists.txt describes targets, and CMake emits Makefiles, Ninja files or an MSVC solution for whatever toolchain is present","headline":"CMake","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["cpp","devops","architecture"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-05 · in force since 2026-04-20</span>
+    <span class="repos">Optimization Methods</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Cross-platform build-system generator: a CMakeLists.txt describes targets, and CMake emits Makefiles, Ninja files or an MSVC solution for whatever toolchain is present</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-broken-first-line-a-10-contradiction-both-claims-recorded">The broken first line — a §10 contradiction, both claims recorded</a></li><li><a href="#dropped-for-the-second-project">Dropped for the second project</a></li><li><a href="#build-verification-across-the-repo">Build verification across the repo</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="cmake">CMake</h1>
+<p>Cross-platform build-system generator: a <code>CMakeLists.txt</code> describes targets, and CMake emits Makefiles, Ninja files or an MSVC solution for whatever toolchain is present. The usual reason to reach for it in a C++ project is portability — one description, many generators.</p>
+<p>It appears once in <a class="wl" href="optimization-methods.html">optimization-methods</a>, for <code>first_project</code>&#x27;s <span class="unpub" title="named in the source wiki; not published">permutation-flow-shop-scheduling</span> benchmark, and is <strong>not carried forward</strong>.</p>
+<h2 id="the-broken-first-line-a-10-contradiction-both-claims-recorded" class="h-anch"><a class="hlink" href="#the-broken-first-line-a-10-contradiction-both-claims-recorded" aria-label="Link to this section">#</a>The broken first line — a §10 contradiction, both claims recorded</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>#</th>
+<th>Claim</th>
+<th>Source</th>
+<th><code>valid_from</code></th>
+<th><code>valid_to</code></th>
+</tr></thead><tbody>
+<tr><td>1</td><td><code>first_project/CMakeLists.txt</code> <strong>cannot configure</strong>: <code>cmake_minimum_required</code> is missing its <code>VERSION</code> keyword</td><td><code>first_project/CMakeLists.txt</code></td><td>2026-03-28</td><td>2026-08-01</td></tr>
+<tr><td>2</td><td>It configures: the keyword is present and <code>project()</code> declares <code>CXX</code></td><td><code>git show d116a84</code>, read 2026-08-05</td><td>2026-08-01</td><td>null</td></tr>
+</tbody></table></div>
+<p>For the entire life of the coursework, <code>first_project/CMakeLists.txt</code> opened with:</p>
+<pre><code class="lang-cmake">cmake_minimum_required(3.16)
+project(PFSP)</code></pre>
+<p><strong>The <code>VERSION</code> keyword is missing.</strong> The command&#x27;s signature is <code>cmake_minimum_required(VERSION &lt;min&gt;)</code>, so <code>cmake_minimum_required(3.16)</code> is a hard configure error, not a warning. The rest of the file is fine — C++17 required, <code>include_directories(include)</code>, a single <code>pfsp</code> executable over the 12 sources — but nothing downstream ever ran, because configuration aborted on line 1.</p>
+<p>It now reads <code>cmake_minimum_required(VERSION 3.16)</code> / <code>project(PFSP CXX)</code>, repaired on 2026-08-01:</p>
+<blockquote><p>Optimization Methods, git commit d116a84 &quot;Fix the CMake invocation that stopped the build configuring&quot;, 2026-08-01</p></blockquote>
+<p>The naming of the language in <code>project()</code> is the second half of the same repair and easy to miss. <code>project(PFSP)</code> enables <code>C</code> and <code>CXX</code> by default, so CMake probes for a C compiler this project never uses — a second failure waiting behind the first. The commit says so in its own words, and says it triaged before repairing: <em>&quot;all twelve sources compile clean under <code>g++ -std=c++17</code>, so the C++ was never the problem. Verified by an out-of-source configure and build that links <code>pfsp.exe</code>.&quot;</em> Fixing only the visible error would have moved the failure rather than removed it.</p>
+<p>What follows is the analysis of why the defect survived so long. The repair does not touch it: it is dated 2026-08-01, three weeks after the course ended, and its own message records that the project still has no unit tests. Nobody hit this by following the README, which is the point.</p>
+<p>The README nonetheless presented CMake as the <strong>recommended</strong> build path. So for the whole course the documented happy path did not work as written, which lines up with the other evidence: a prebuilt <strong><code>pfsp.exe</code> is committed</strong> and kept current (<code>287876f build: update compiled pfsp executable</code>), tracked despite the root <code>.gitignore</code> carrying an <code>*.exe</code> rule. The executable was the actual run path; CMake was aspirational.</p>
+<p><code>confidence: high</code> — both versions of the file read directly. The repaired configure step is <strong>not</strong> independently re-run here: CMake is not installed on the auditing machine, so the only evidence that it now configures is the commit&#x27;s own statement that it was verified out-of-source. That is weaker evidence than reading the file, and is worth less than it looks — see the residual gap below.</p>
+<p>This is a distinct species of <a class="wl" href="documentation-drift.html">documentation-drift</a>: not documentation that fell behind working code, but documentation for code that never worked. Ordinary drift is caught by anyone following the README; this was not, which is the tell that nobody followed it — including the author, who had a working binary.</p>
+<p><strong>The repair did not reach the README.</strong> <code>first_project/README.md</code> still says <em>&quot;From repository root: <code>cmake -S . -B build</code>&quot;</em>, and there is no <code>CMakeLists.txt</code> at the git repository root — it is in <code>first_project/</code>. Read as written, against the root the sentence names, the command still fails; read as &quot;the project root&quot;, it now works. One line of the documented path is fixed and the line above it is still ambiguous. <code>confidence: high</code> on the file layout, <code>low</code> on which root the sentence means.</p>
+<h2 id="dropped-for-the-second-project" class="h-anch"><a class="hlink" href="#dropped-for-the-second-project" aria-label="Link to this section">#</a>Dropped for the second project</h2>
+<p><code>final_project/mdvrp</code> does not use CMake at all. It has a hand-written <code>Makefile</code> (<code>-std=c++17 -O2 -static -Wall -Wextra</code>) plus raw <code>g++</code> invocations recorded in <code>docs/commands.txt</code>, building six executables from one header-only include tree. For a standard-library-only, header-only-dependency project targeting one toolchain (MinGW), a 20-line Makefile does genuinely carry less ceremony than CMake — but the switch is undocumented.</p>
+<ul><li><strong>TODO:</strong> no recorded reason for dropping CMake between the two projects. Whether the broken <code>cmake_minimum_required</code> line was ever hit and prompted the switch, or the Makefile was simply preferred, is unrecoverable from the repo. <code>confidence: low</code> on the causal link.</li><li><strong>TODO:</strong> the &quot;recommended&quot; CMake instructions in <code>first_project/README.md</code> still name the repository root, which holds no <code>CMakeLists.txt</code>. The build file was repaired on 2026-08-01 and the sentence pointing at it was not, so the documentation is now one step behind the code rather than ahead of it — ordinary <a class="wl" href="documentation-drift.html">documentation-drift</a>, where it used to be the rarer kind.</li></ul>
+<h2 id="build-verification-across-the-repo" class="h-anch"><a class="hlink" href="#build-verification-across-the-repo" aria-label="Link to this section">#</a>Build verification across the repo</h2>
+<p>There is <strong>no CI anywhere</strong> — no <code>.github/</code>, no build check. The claim that all seven C++ sources compile clean under <code>-std=c++17 -O2 -Wall</code> is attested by hand in <code>docs/DATA_VERIFICATION.md</code>, dated 2026-07-09, by the author. That is the same auditing-instead-of-testing posture as the rest of the repo — see <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a> and the absence of any unit tests noted on <a class="wl" href="optimization-methods.html">optimization-methods</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="multi-depot-vehicle-routing.html">multi-depot-vehicle-routing</a> · <a class="wl" href="iterated-local-search.html">iterated-local-search</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a></p></div>
+  <div class="tags"><span class="tag">cpp</span><span class="tag">devops</span><span class="tag">architecture</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/first_project/CMakeLists.txt</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/first_project/README.md</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/mdvrp/Makefile</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/docs/commands.txt</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="iterated-local-search.html"><span class="kind k-concept">concept</span><span class="rel-t">Iterated Local Search</span><span class="rel-g">A metaheuristic with exactly four moving parts: an initial solution, a local search that descends to a local optimum, a perturbation that kicks the solution far enough…</span></a><a class="rel" href="multi-depot-vehicle-routing.html"><span class="kind k-concept">concept</span><span class="rel-t">Multi-Depot Vehicle Routing</span><span class="rel-g">Serve every customer from one of several depots, at minimum total travel cost, without exceeding vehicle capacity</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="optimization-methods.html"><span class="kind k-project">project</span><span class="rel-t">Optimization Methods</span><span class="rel-g">Master&#x27;s Optimization Methods course at Wrocław University of Science and Technology (FICT, lectures by M. Przewoźniczek)</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprague-Grundy and the Nim-Sum · Glass Box</title>
+<meta name="description" content="Nim is solved">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sprague-Grundy and the Nim-Sum · Glass Box">
+<meta property="og:description" content="Nim is solved">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Misère is the interesting variant","Difficulty as a probability, not a weaker algorithm","Structure","Gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Discrete-Mathematics-Laboratories/lab4_Complexity/part1/nim_game/"],"dateModified":"2026-07-28","description":"Nim is solved","headline":"Sprague-Grundy and the Nim-Sum","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["discrete-math","algorithms","game-dev","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-05-02</span>
+    <span class="repos">Discrete-Mathematics-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Nim is solved</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#misre-is-the-interesting-variant">Misère is the interesting variant</a></li><li><a href="#difficulty-as-a-probability-not-a-weaker-algorithm">Difficulty as a probability, not a weaker algorithm</a></li><li><a href="#structure">Structure</a></li><li><a href="#gaps">Gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="sprague-grundy-and-the-nim-sum">Sprague-Grundy and the Nim-Sum</h1>
+<p>Nim is solved. Not &quot;solved well&quot; — solved exactly, by an XOR.</p>
+<p>The <strong>nim-sum</strong> of a position is the bitwise XOR of the pile sizes. A position with nim-sum 0 is a <strong>P-position</strong>: the player about to move loses under perfect play. Any position with nim-sum ≠ 0 is an N-position, and there is always a move making the nim-sum 0. So optimal play is: compute <code>s = p₁ ⊕ p₂ ⊕ … ⊕ pₙ</code>, find a pile where <code>pᵢ ⊕ s &lt; pᵢ</code>, and reduce it to <code>pᵢ ⊕ s</code>.</p>
+<p>The <strong>Sprague-Grundy theorem</strong> is why this generalises: every impartial game under the normal play convention is equivalent to a single Nim pile whose size is its Grundy value, and the Grundy value of a sum of games is the XOR of the parts. Nim is not a special case — it is the canonical form.</p>
+<h2 id="misre-is-the-interesting-variant" class="h-anch"><a class="hlink" href="#misre-is-the-interesting-variant" aria-label="Link to this section">#</a>Misère is the interesting variant</h2>
+<p>Under <strong>misère</strong> play (the player taking the last object <em>loses</em>), the strategy is identical until every remaining pile has size 1, at which point it inverts: leave an <em>odd</em> number of single-object piles instead of an even one. Two rules that agree everywhere except at the endgame is exactly the kind of thing that is easier to believe after playing it than after reading it — which is why lab 4 of <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> ships four variants (classic, misère, single-pile, bounded) rather than one.</p>
+<h2 id="difficulty-as-a-probability-not-a-weaker-algorithm" class="h-anch"><a class="hlink" href="#difficulty-as-a-probability-not-a-weaker-algorithm" aria-label="Link to this section">#</a>Difficulty as a probability, not a weaker algorithm</h2>
+<p>The AI has one strategy. Difficulty is the <strong>probability that it plays the optimal move</strong> rather than a random legal one — 15 % / 58 % / 99 %. This is the honest way to build a beatable opponent for a solved game: there is no &quot;weaker&quot; nim engine, only a less consistent one.</p>
+<h2 id="structure" class="h-anch"><a class="hlink" href="#structure" aria-label="Link to this section">#</a>Structure</h2>
+<p>A <a class="wl" href="tkinter.html">tkinter</a> GUI, stdlib only. Layered: variants → players → state → screens. Screens are instantiated once and raised with <code>tkraise()</code> rather than destroyed and rebuilt, which keeps widget state alive across navigation.</p>
+<h2 id="gaps" class="h-anch"><a class="hlink" href="#gaps" aria-label="Link to this section">#</a>Gaps</h2>
+<ul><li><strong>TODO:</strong> <code>players/ai_player.py</code> documents &quot;Expected player win-rate: Easy ~75 %, Medium ~40 %, Hard ~1 %&quot;. There is <strong>no simulation harness anywhere in the repo</strong>, so whether these were measured or estimated is unknown. <code>confidence: low</code> on all three figures — do not cite them as results.</li><li><strong>TODO:</strong> the <code>PROJECT.md</code> defends Tkinter only as &quot;no external UI dependencies&quot;; whether PyQt, pygame or a web UI were considered, or stdlib-only was a hard course constraint, is not recorded.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> · <a class="wl" href="tkinter.html">tkinter</a> · <a class="wl" href="ackermann-and-primitive-recursion.html">ackermann-and-primitive-recursion</a> · <a class="wl" href="make-the-formal-object-observable.html">make-the-formal-object-observable</a></p></div>
+  <div class="tags"><span class="tag">discrete-math</span><span class="tag">algorithms</span><span class="tag">game-dev</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab4_Complexity/part1/nim_game/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="ackermann-and-primitive-recursion.html"><span class="kind k-concept">concept</span><span class="rel-t">Ackermann and Primitive Recursion</span><span class="rel-g">The Ackermann function is the standard witness that total computable is strictly larger than primitive recursive</span></a><a class="rel" href="make-the-formal-object-observable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Make the Formal Object Observable</span><span class="rel-g">Take a mathematical definition and build something that lets you watch it behave</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="tkinter.html"><span class="kind k-tech">tech</span><span class="rel-t">Tkinter</span><span class="rel-g">Python&#x27;s standard-library GUI toolkit</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

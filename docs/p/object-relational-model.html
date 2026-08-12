@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Object-Relational Model · Glass Box</title>
+<meta name="description" content="A relational database with user-defined types layered on top: rows are objects, columns can be pointers to other objects, types carry methods, and a join becomes a dot">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Object-Relational Model · Glass Box">
+<meta property="og:description" content="A relational database with user-defined types layered on top: rows are objects, columns can be pointers to other objects, types carry methods, and a join becomes a dot">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The three moves","A join becomes a dot","`SCOPE FOR` is the load-bearing detail","What the model does *not* give you","The honest assessment","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Oracle-Database-Laboratories/sql/04_object_relational/01_types_and_tables.sql","Oracle-Database-Laboratories/sql/04_object_relational/02_seed_data.sql","Oracle-Database-Laboratories/sql/04_object_relational/03_ref_navigation.sql","Oracle-Database-Laboratories/docs/schema.md"],"dateModified":"2026-07-28","description":"A relational database with user-defined types layered on top: rows are objects, columns can be pointers to other objects, types carry methods, and a join becomes a dot","headline":"Object-Relational Model","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["databases","data-modelling","plsql"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Oracle-Database-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A relational database with user-defined types layered on top: rows are objects, columns can be pointers to other objects, types carry methods, and a join becomes a dot</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-three-moves">The three moves</a></li><li><a href="#a-join-becomes-a-dot">A join becomes a dot</a></li><li><a href="#scope-for-is-the-load-bearing-detail">`SCOPE FOR` is the load-bearing detail</a></li><li><a href="#what-the-model-does-not-give-you">What the model does *not* give you</a></li><li><a href="#the-honest-assessment">The honest assessment</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="object-relational-model">Object-Relational Model</h1>
+<p>A relational database with user-defined types layered on top: rows are objects, columns can be pointers to other objects, types carry methods, and a join becomes a dot. Oracle&#x27;s implementation is the reference one; the ideas are older than any of the ORMs that reinvented them in application code.</p>
+<h2 id="the-three-moves" class="h-anch"><a class="hlink" href="#the-three-moves" aria-label="Link to this section">#</a>The three moves</h2>
+<ol><li><strong><code>CREATE TYPE … AS OBJECT</code></strong> — a structured type with attributes and <code>MEMBER FUNCTION</code> / <code>MEMBER PROCEDURE</code> declarations, plus a separate <code>TYPE BODY</code>.</li><li><strong><code>CREATE TABLE … OF type</code></strong> — a typed (object) table. Each row <em>is</em> an instance, addressable by a <code>REF</code>.</li><li><strong><code>REF type</code></strong> — a pointer column. <code>DEREF(r)</code> returns the whole object; <code>alias.col.attr</code> navigates in one step; <code>VALUE(t)</code> returns the row object itself.</li></ol>
+<p>In <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a> the entire cat-herd domain is rebuilt this way as <code>cat_type</code>, <code>common_type</code>, <code>elite_type</code>, <code>account_type</code> and <code>incident_type</code>, alongside — not replacing — the relational schema. The two coexist in one schema, which forces the naming discipline: <code>CatsR</code>, <code>IncidentsR</code>, and <code>_r</code>-suffixed constraint names, because Oracle constraint names are unique per schema rather than per table.</p>
+<h2 id="a-join-becomes-a-dot" class="h-anch"><a class="hlink" href="#a-join-becomes-a-dot" aria-label="Link to this section">#</a>A join becomes a dot</h2>
+<pre><code class="lang-sql">-- relational
+SELECT c.name FROM Cats c JOIN Cats chief ON c.chief = chief.nickname;
+
+-- object-relational
+SELECT c.chief.name FROM CatsR c;</code></pre>
+<p>The second is shorter, and that is the whole sales pitch. It is also strictly less flexible: the navigation direction is fixed by which side holds the pointer, and there is no <code>LEFT JOIN</code> equivalent — a <code>NULL</code> <code>REF</code> simply yields <code>NULL</code>. Traversal still works: <code>CONNECT BY</code> runs over <code>REF</code>s once resolved to a comparable attribute, so <a class="wl" href="hierarchical-queries.html">hierarchical-queries</a> carries over unchanged.</p>
+<h2 id="scope-for-is-the-load-bearing-detail" class="h-anch"><a class="hlink" href="#scope-for-is-the-load-bearing-detail" aria-label="Link to this section">#</a><code>SCOPE FOR</code> is the load-bearing detail</h2>
+<blockquote><p>&quot;SCOPE FOR constrains the REF to one table. Without it a REF may point at any table of the type, the pointer needs more storage, and Oracle cannot resolve dot navigation as efficiently.&quot;</p><cite>Oracle-Database-Laboratories/sql/04_object_relational/01_types_and_tables.sql, 2026-07-25</cite></blockquote>
+<p>Three benefits from one clause — smaller pointer, faster navigation, and a correctness guarantee that the pointer cannot stray to an unexpected table of the same type. An unscoped <code>REF</code> is a foreign key with no target table named, which is not a thing the relational model would ever have allowed.</p>
+<h2 id="what-the-model-does-not-give-you" class="h-anch"><a class="hlink" href="#what-the-model-does-not-give-you" aria-label="Link to this section">#</a>What the model does <em>not</em> give you</h2>
+<ul><li><strong>Dangling references are possible.</strong> Delete the row a <code>REF</code> points at and the pointer survives its target. <code>IS DANGLING</code> is the only reliable test. A foreign key would have refused the delete or cascaded it; a <code>REF</code> does neither by default. This is the single clearest reason the relational model is still the default.</li><li><strong>Methods run per row.</strong> <code>get_total_eats()</code> puts the <code>NVL</code> arithmetic on the type instead of at every call site — genuinely better than repeating it — but it is a function call per row, not a set operation.</li><li><strong>Type signatures must match their bodies exactly.</strong> Declaring <code>RETURN DATE</code> over a <code>TO_CHAR</code> body makes Oracle convert the string back through the session&#x27;s NLS format: silent on a matching session, <code>PLS-00382</code> on any other. The file names this trap where it occurs.</li><li><strong><code>SELF</code> is <code>IN OUT</code> by default</strong> in a <code>MEMBER PROCEDURE</code>, so assigning to an attribute mutates the instance the caller holds. Convenient and easy to miss.</li></ul>
+<h2 id="the-honest-assessment" class="h-anch"><a class="hlink" href="#the-honest-assessment" aria-label="Link to this section">#</a>The honest assessment</h2>
+<p>The object-relational layer buys terser navigation and lets domain logic live with the data. It costs referential guarantees, portability, and a second set of teardown rules — object tables must be dropped before the types they are built on, since <code>FORCE</code> would leave the table invalid rather than removing the dependency. Compare <span class="unpub" title="named in the source wiki; not published">database-normalisation</span>: the relational model is a set of guarantees you give up piece by piece, and each concession should be named.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="referential-integrity.html">referential-integrity</a> · <a class="wl" href="hierarchical-queries.html">hierarchical-queries</a> · <span class="unpub" title="named in the source wiki; not published">database-normalisation</span> · <a class="wl" href="plsql.html">plsql</a> · <a class="wl" href="oracle-database.html">oracle-database</a> · <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a></p></div>
+  <div class="tags"><span class="tag">databases</span><span class="tag">data-modelling</span><span class="tag">plsql</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/04_object_relational/01_types_and_tables.sql</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/04_object_relational/02_seed_data.sql</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/04_object_relational/03_ref_navigation.sql</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/docs/schema.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="hierarchical-queries.html"><span class="kind k-concept">concept</span><span class="rel-t">Hierarchical Queries</span><span class="rel-g">Walking a tree that is stored in a single self-referencing column</span></a><a class="rel" href="referential-integrity.html"><span class="kind k-concept">concept</span><span class="rel-t">Referential Integrity</span><span class="rel-g">Every foreign-key value either matches an existing primary key or is NULL</span></a><a class="rel" href="oracle-database-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Oracle Database Laboratories</span><span class="rel-g">Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite</span></a><a class="rel" href="oracle-database.html"><span class="kind k-tech">tech</span><span class="rel-t">Oracle Database</span><span class="rel-g">Oracle&#x27;s relational database engine</span></a><a class="rel" href="plsql.html"><span class="kind k-tech">tech</span><span class="rel-t">PL/SQL</span><span class="rel-g">Oracle&#x27;s procedural extension to SQL: block-structured, statically typed against the schema, and executed inside the database rather than in a client</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

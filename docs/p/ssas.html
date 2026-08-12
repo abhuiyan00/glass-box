@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQL Server Analysis Services · Glass Box</title>
+<meta name="description" content="Microsoft&#x27;s OLAP layer">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL Server Analysis Services · Glass Box">
+<meta property="og:description" content="Microsoft&#x27;s OLAP layer">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The SSAS side ships the design the SQL side rejects","Three further drifts","Never deployed","Open gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Data-Warehousing-and-Business-Intelligence/olap/ssas/","Data-Warehousing-and-Business-Intelligence/project/twtr/ssas/","Data-Warehousing-and-Business-Intelligence/docs/star-schema.md"],"dateModified":"2026-07-28","description":"Microsoft's OLAP layer","headline":"SQL Server Analysis Services","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["databases","data-modelling","data-analysis","business-systems"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Data-Warehousing-and-Business-Intelligence</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Microsoft&#x27;s OLAP layer</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-ssas-side-ships-the-design-the-sql-side-rejects">The SSAS side ships the design the SQL side rejects</a></li><li><a href="#three-further-drifts">Three further drifts</a></li><li><a href="#never-deployed">Never deployed</a></li><li><a href="#open-gaps">Open gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="sql-server-analysis-services">SQL Server Analysis Services</h1>
+<p>Microsoft&#x27;s OLAP layer. A <strong>multidimensional</strong> SSAS project sits on top of a relational mart and declares, as XML source files: a data source (<code>.ds</code>), a data source view binding specific tables (<code>.dsv</code>), one <code>.dim</code> per dimension, one <code>.cube</code> per cube with its measure groups, and a <code>.partitions</code> file. <a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> holds <strong>three</strong> such projects.</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Project</th>
+<th>Cube(s)</th>
+<th>Over</th>
+</tr></thead><tbody>
+<tr><td><code>olap/ssas/</code></td><td><code>Adventure Works2019.cube</code></td><td>the five <code>mart</code> tables — four <code>.dim</code> files</td></tr>
+<tr><td><code>project/twtr/ssas/</code></td><td><code>Twitter.cube</code></td><td><code>FactTwitterData</code> + <code>DimDate</code></td></tr>
+<tr><td><code>project/twtr/ssas/</code></td><td><code>Twitter_rsi.cube</code></td><td><code>FactRSI</code> + <code>DimRSI</code> + <code>DimDate</code></td></tr>
+</tbody></table></div>
+<p>The AdventureWorks cube&#x27;s measure group exposes quantity, unit price, discount, line total and a row count, with the time dimension <strong>role-played twice</strong> as order date and ship date — the OLAP expression of the same modelling choice made in the DDL. See <a class="wl" href="star-schema.html">star-schema</a> and <a class="wl" href="measure-vs-dimension.html">measure-vs-dimension</a>.</p>
+<h2 id="the-ssas-side-ships-the-design-the-sql-side-rejects" class="h-anch"><a class="hlink" href="#the-ssas-side-ships-the-design-the-sql-side-rejects" aria-label="Link to this section">#</a>The SSAS side ships the design the SQL side rejects</h2>
+<p>This is the sharpest finding in the repository. <code>docs/star-schema.md</code> argues at length that a technical indicator belongs on the fact table as a measure, with thresholds pushed into a view — <a class="wl" href="rsi-as-measure-not-dimension.html">rsi-as-measure-not-dimension</a>. And <code>project/twtr/ssas/Dim RSI.dim</code> implements the indicator <strong>as a dimension</strong>, with <code>RSIKey</code>, <code>IsOverbought</code> and <code>IsOversold</code> attributes, feeding a second cube whose only measure is a row count.</p>
+<p>Both artefacts are committed. The winner ships in SQL; the loser ships in SSAS. See <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a>.</p>
+<h2 id="three-further-drifts" class="h-anch"><a class="hlink" href="#three-further-drifts" aria-label="Link to this section">#</a>Three further drifts</h2>
+<ul><li><code>Twitter.dsv</code> binds <code>FactTwitterData</code> and <code>DimDate</code>; <code>Twitter_rsi.dsv</code> binds <code>FactRSI</code> and <code>DimRSI</code>. <strong>None of those four tables is created by any committed DDL</strong>, which builds <code>dw.FACT_QUOTES</code>, <code>dw.DIM_DATE</code> and <code>dw.DIM_TICKER</code>. The cubes and the schema do not describe the same database.</li><li><code>olap/ssas/DIM TIME.dim</code> exposes only <code>DateKey</code>, <code>Day</code>, <code>Month</code> and <code>Year</code>, while the DDL defines Quarter, MonthName and IsWeekend as well. The cube sees a narrower dimension than the mart offers.</li><li>All of it is <a class="wl" href="documentation-drift.html">documentation-drift</a> of the kind that only surfaces when someone tries to process the cube.</li></ul>
+<h2 id="never-deployed" class="h-anch"><a class="hlink" href="#never-deployed" aria-label="Link to this section">#</a>Never deployed</h2>
+<blockquote><p>&quot;They are Visual Studio project files rather than deployed databases; opening them needs SQL Server Data Tools.&quot;</p><cite>Data-Warehousing-and-Business-Intelligence/docs/star-schema.md, 2026-07-25</cite></blockquote>
+<p>Stated by the repo itself, which is the honest move — <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>. The <code>.dim</code>, <code>.cube</code> and <code>.partitions</code> files are committed as plain blobs with no <code>.gitattributes</code> and no Git LFS.</p>
+<h2 id="open-gaps" class="h-anch"><a class="hlink" href="#open-gaps" aria-label="Link to this section">#</a>Open gaps</h2>
+<ul><li><strong>TODO:</strong> why <strong>multidimensional</strong> rather than <strong>tabular</strong> is recorded nowhere. Whether it was prescribed by the lab assignment or chosen is unknown. <code>confidence: low</code> on any rationale — do not infer one from the era or the toolchain.</li><li><strong>TODO:</strong> whether any cube was ever processed and browsed, or only ever opened in SSDT, is unrecorded. The unbound tables above suggest at least the TWTR cubes could not have processed against the committed schema, but that is an inference, not a record.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> · <a class="wl" href="sql-server.html">sql-server</a> · <a class="wl" href="ssis.html">ssis</a> · <a class="wl" href="star-schema.html">star-schema</a> · <a class="wl" href="measure-vs-dimension.html">measure-vs-dimension</a> · <a class="wl" href="rsi-as-measure-not-dimension.html">rsi-as-measure-not-dimension</a> · <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a></p></div>
+  <div class="tags"><span class="tag">databases</span><span class="tag">data-modelling</span><span class="tag">data-analysis</span><span class="tag">business-systems</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/olap/ssas/</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/ssas/</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/docs/star-schema.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="measure-vs-dimension.html"><span class="kind k-concept">concept</span><span class="rel-t">Measure vs Dimension</span><span class="rel-g">In a star-schema, a measure is a number you aggregate; a dimension is a thing you aggregate by</span></a><a class="rel" href="star-schema.html"><span class="kind k-concept">concept</span><span class="rel-t">Star Schema</span><span class="rel-g">One fact table of measurements surrounded by denormalised dimension tables that describe them</span></a><a class="rel" href="rsi-as-measure-not-dimension.html"><span class="kind k-decision">decision</span><span class="rel-t">RSI as Measure, Not Dimension</span><span class="rel-g">Store the 14-day relative strength index as a nullable numeric column on the fact table dw.FACT_QUOTES, and push the overbought/oversold interpretation into a view</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="data-warehousing-and-business-intelligence.html"><span class="kind k-project">project</span><span class="rel-t">Data Warehousing and Business Intelligence</span><span class="rel-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span></a><a class="rel" href="sql-server.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server</span><span class="rel-g">Microsoft&#x27;s relational engine, driven here as T-SQL on SQL Server 2019 across seven annotated scripts in data-warehousing-and-business-intelligence — two analytics labs,…</span></a><a class="rel" href="ssis.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server Integration Services</span><span class="rel-g">Microsoft&#x27;s ETL tool: packages authored as .dtsx in Visual Studio / SSDT, built from a control flow of tasks and, inside a Data Flow Task, a data flow of typed sources,…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

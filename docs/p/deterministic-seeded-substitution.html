@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deterministic Seeded Substitution · Glass Box</title>
+<meta name="description" content="The mechanism that makes structure-preserving-anonymisation work">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Deterministic Seeded Substitution · Glass Box">
+<meta property="og:description" content="The mechanism that makes structure-preserving-anonymisation work">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The three properties it buys","Namespacing is not decoration","What is and is not secret","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["labour-fraud-analysis-a-forensic-data-investigation/src/anonymize.py","labour-fraud-analysis-a-forensic-data-investigation/src/fiction.py","labour-fraud-analysis-a-forensic-data-investigation/docs/methodology.md"],"dateModified":"2026-07-28","description":"The mechanism that makes structure-preserving-anonymisation work","headline":"Deterministic Seeded Substitution","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["privacy","python","data-engineering","testing"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">labour-fraud-analysis-a-forensic-data-investigation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The mechanism that makes structure-preserving-anonymisation work</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-three-properties-it-buys">The three properties it buys</a></li><li><a href="#namespacing-is-not-decoration">Namespacing is not decoration</a></li><li><a href="#what-is-and-is-not-secret">What is and is not secret</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="deterministic-seeded-substitution">Deterministic Seeded Substitution</h1>
+<p>The mechanism that makes <a class="wl" href="structure-preserving-anonymisation.html">structure-preserving-anonymisation</a> work. Instead of drawing a random replacement each time a value is encountered, derive the replacement <strong>from the value itself</strong> through a keyed hash, so the mapping is a pure function.</p>
+<p>The construction in <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a>:</p>
+<ol><li>Concatenate a single global seed string, a namespace (which kind of thing is being replaced), and a stable key (either a surrogate id or the original value).</li><li>Hash that with <code>blake2b</code>.</li><li>Interpret the digest as an integer and use it to seed a <code>random.Random</code> instance.</li><li>Draw the fake value from that instance&#x27;s own stream.</li></ol>
+<p>Every draw for a given <code>(namespace, key)</code> therefore comes from a private, reproducible generator.</p>
+<h2 id="the-three-properties-it-buys" class="h-anch"><a class="hlink" href="#the-three-properties-it-buys" aria-label="Link to this section">#</a>The three properties it buys</h2>
+<ul><li><strong>Cross-table consistency.</strong> The same source entity maps to the same fake entity in every table <em>and</em> in free prose, without keeping a lookup table in memory during the run. Joins survive; the entity graph survives. Without this the whole dataset falls apart into unlinkable fragments.</li><li><strong>Reproducibility.</strong> Re-running the pipeline on the same input produces byte-identical output, which is what lets generated artefacts be committed and diff-checked — see <a class="wl" href="generated-docs-checked-by-ci-diff.html">generated-docs-checked-by-ci-diff</a> and <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a>.</li><li><strong>A regeneration switch.</strong> Changing the one seed string produces a completely different but internally consistent world:</li></ul>
+<blockquote><p>&quot;Global seed — flip this and re-run to regenerate a completely different (but internally consistent) fictional world. Committed value gives the published data.&quot;</p><cite>labour-fraud-analysis-a-forensic-data-investigation/src/fiction.py, 2026-07-11</cite></blockquote>
+<h2 id="namespacing-is-not-decoration" class="h-anch"><a class="hlink" href="#namespacing-is-not-decoration" aria-label="Link to this section">#</a>Namespacing is not decoration</h2>
+<p>Two different entity types can share a key value — an id <code>4102</code> might exist as both a person and a company. Without the namespace in the hash input, they would derive the same generator and could collide into related-looking fake values, leaking a correlation that does not exist in the source. The namespace makes each entity type&#x27;s mapping independent.</p>
+<h2 id="what-is-and-is-not-secret" class="h-anch"><a class="hlink" href="#what-is-and-is-not-secret" aria-label="Link to this section">#</a>What is and is not secret</h2>
+<p>Determinism means the mapping is exactly as strong as its inputs. The seed string is committed; the mapping&#x27;s other input is the private source data. The <strong>re-identification key</strong> — the materialised mapping file — is git-ignored, and so are the local scrub rules. This wiki does not reproduce the seed value, the mapping, or any mapped value; describing the mechanism is safe, publishing a pair is not. The same reasoning as <a class="wl" href="secrets-from-environment-only.html">secrets-from-environment-only</a>: the algorithm is public, the key is not.</p>
+<p>Note the corollary honestly: anyone holding the private source <em>and</em> the seed can reconstruct the mapping. The scheme protects against a reader who has neither, which is the actual threat model.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="structure-preserving-anonymisation.html">structure-preserving-anonymisation</a> · <a class="wl" href="format-preserving-invalid-identifiers.html">format-preserving-invalid-identifiers</a> · <a class="wl" href="disclosure-gate.html">disclosure-gate</a> · <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a> · <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a></p></div>
+  <div class="tags"><span class="tag">privacy</span><span class="tag">python</span><span class="tag">data-engineering</span><span class="tag">testing</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/anonymize.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/fiction.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/docs/methodology.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="disclosure-gate.html"><span class="kind k-concept">concept</span><span class="rel-t">Disclosure Gate</span><span class="rel-g">A build step that must pass before anything derived from sensitive input may be published</span></a><a class="rel" href="format-preserving-invalid-identifiers.html"><span class="kind k-concept">concept</span><span class="rel-t">Format-Preserving Invalid Identifiers</span><span class="rel-g">A replacement identifier has two jobs that pull against each other</span></a><a class="rel" href="reproducible-analysis.html"><span class="kind k-concept">concept</span><span class="rel-t">Reproducible Analysis</span><span class="rel-g">An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose</span></a><a class="rel" href="structure-preserving-anonymisation.html"><span class="kind k-concept">concept</span><span class="rel-t">Structure-Preserving Anonymisation</span><span class="rel-g">Redaction destroys the thing being studied</span></a><a class="rel" href="generated-docs-checked-by-ci-diff.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Docs Checked by CI Diff</span><span class="rel-g">Generate documentation from the data, commit the output, and then have CI regenerate it and fail the build if the result differs</span></a><a class="rel" href="secrets-from-environment-only.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Secrets from Environment Only</span><span class="rel-g">Credentials are read from environment variables and from nowhere else, and .gitignore is written so that the lazy path and the safe path are the same path</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

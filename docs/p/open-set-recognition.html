@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open-Set Recognition · Glass Box</title>
+<meta name="description" content="A classifier trained on K categories must, by construction, map every input onto one of them">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Open-Set Recognition · Glass Box">
+<meta property="og:description" content="A classifier trained on K categories must, by construction, map every input onto one of them">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why it matters, per the study","The three families","The result that unifies them","Where the study takes it","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Research Methodologies/README.md","Research Methodologies/docs/01-open-set-recognition.md","Research Methodologies/docs/02-gans-and-opengan.md"],"dateModified":"2026-07-28","description":"A classifier trained on K categories must, by construction, map every input onto one of them","headline":"Open-Set Recognition","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["ml","research-methods","algorithms"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">Research Methodologies</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A classifier trained on K categories must, by construction, map every input onto one of them</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why-it-matters-per-the-study">Why it matters, per the study</a></li><li><a href="#the-three-families">The three families</a></li><li><a href="#the-result-that-unifies-them">The result that unifies them</a></li><li><a href="#where-the-study-takes-it">Where the study takes it</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="open-set-recognition">Open-Set Recognition</h1>
+<p>A classifier trained on <code>K</code> categories must, by construction, map <strong>every</strong> input onto one of them. Open-set recognition (OSR) removes that assumption: the model may name a known class <strong>or reject the input as unknown</strong>, and both are correct answers.</p>
+<p>The failure it fixes is not inaccuracy but <em>silence</em>. Train on cats, dogs and horses, show it a frog, and the network returns whichever known class looks most similar — usually with high confidence. A softmax layer makes this unavoidable: its outputs sum to 1 across the known classes, so there is nowhere for probability mass to go except onto a wrong label.</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Ability</th>
+<th>Closed-set</th>
+<th>Open-set</th>
+</tr></thead><tbody>
+<tr><td>Classify a known class</td><td>✓</td><td>✓</td></tr>
+<tr><td>Recognise &quot;this is none of the known classes&quot;</td><td>✗</td><td>✓</td></tr>
+<tr><td>Cope with a changing, open world</td><td>✗</td><td>✓</td></tr>
+</tbody></table></div>
+<h2 id="why-it-matters-per-the-study" class="h-anch"><a class="hlink" href="#why-it-matters-per-the-study" aria-label="Link to this section">#</a>Why it matters, per the study</h2>
+<p>Three arguments, in the order <a class="wl" href="research-methodologies-open-set-recognition.html">research-methodologies-open-set-recognition</a> makes them: <strong>safety</strong> (a face-recognition system that must choose will match a stranger to a friend; a perception stack will read a stroller as a motorcycle), <strong>annotation cost</strong> (supervised learning needs every class labelled by hand and can never be exhaustive), and <strong>fit to deployment</strong> (the real world is open-ended by nature).</p>
+<h2 id="the-three-families" class="h-anch"><a class="hlink" href="#the-three-families" aria-label="Link to this section">#</a>The three families</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Family</th>
+<th>Method</th>
+<th>Core idea</th>
+</tr></thead><tbody>
+<tr><td><strong>Traditional</strong></td><td>confidence / distance threshold</td><td>reject anything scoring below a chosen cut; simple and effective, the hard part is picking the threshold</td></tr>
+<tr><td></td><td>distance-based rejection</td><td>reject samples far from every known-class prototype in feature space</td></tr>
+<tr><td><strong>Statistical</strong></td><td>Extreme Value Theory</td><td>model the <em>tail</em> of the score distribution, where outliers live</td></tr>
+<tr><td></td><td><strong>OpenMax</strong></td><td>replace softmax with a layer that hands probability mass to an explicit unknown class — <a class="wl" href="openmax-and-extreme-value-theory.html">openmax-and-extreme-value-theory</a></td></tr>
+<tr><td><strong>Deep</strong></td><td>metric learning</td><td>compact, well-separated features leave empty space for unknowns to fall into</td></tr>
+<tr><td></td><td>generative</td><td>synthesise unknown-looking samples, or use reconstruction error as the signal — <a class="wl" href="generative-adversarial-network.html">generative-adversarial-network</a></td></tr>
+<tr><td></td><td>self-supervised / contrastive / Bayesian / evidential / ViT</td><td>stronger representations, uncertainty estimated directly</td></tr>
+</tbody></table></div>
+<h2 id="the-result-that-unifies-them" class="h-anch"><a class="hlink" href="#the-result-that-unifies-them" aria-label="Link to this section">#</a>The result that unifies them</h2>
+<blockquote><p>&quot;A recurring modern finding ties the families together: **a good closed-set classifier is&quot;</p><cite>Research Methodologies/README.md, 2026-07-11</cite></blockquote>
+<p>— already a good open-set detector (Vaze et al., ICLR 2022). Improving plain accuracy tends to improve the confidence and feature scores that OSR relies on, which makes the two goals far more aligned than the taxonomy suggests. It also sets an uncomfortable bar for any dedicated method: it must beat a merely better-trained baseline.</p>
+<h2 id="where-the-study-takes-it" class="h-anch"><a class="hlink" href="#where-the-study-takes-it" aria-label="Link to this section">#</a>Where the study takes it</h2>
+<p>The generative branch is developed in full and ends on OpenGAN (Kong &amp; Ramanan, ICCV 2021), which moves the discrimination into <strong>feature space</strong> and selects the model checkpoint on a small held-out open set. Benchmarks are cited, not reproduced — <a class="wl" href="report-cites-benchmarks-rather-than-reproducing.html">report-cites-benchmarks-rather-than-reproducing</a>.</p>
+<p><code>confidence: high</code> — the content is read directly from three source documents that agree with each other, and it is textbook material corroborated by nine cited papers.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="research-methodologies-open-set-recognition.html">research-methodologies-open-set-recognition</a> · <a class="wl" href="openmax-and-extreme-value-theory.html">openmax-and-extreme-value-theory</a> · <a class="wl" href="generative-adversarial-network.html">generative-adversarial-network</a> · <a class="wl" href="literature-review-synthesis.html">literature-review-synthesis</a> · <a class="wl" href="report-cites-benchmarks-rather-than-reproducing.html">report-cites-benchmarks-rather-than-reproducing</a> · <a class="wl" href="blind-baseline-comparison.html">blind-baseline-comparison</a></p></div>
+  <div class="tags"><span class="tag">ml</span><span class="tag">research-methods</span><span class="tag">algorithms</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Research Methodologies</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Research Methodologies</span><span class="src-p">/docs/01-open-set-recognition.md</span></code></li><li><code><span class="src-r">Research Methodologies</span><span class="src-p">/docs/02-gans-and-opengan.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="blind-baseline-comparison.html"><span class="kind k-concept">concept</span><span class="rel-t">Blind Baseline Comparison</span><span class="rel-g">Deliberately withhold the domain heuristic from the metaheuristic so that the comparison against that heuristic measures something</span></a><a class="rel" href="generative-adversarial-network.html"><span class="kind k-concept">concept</span><span class="rel-t">Generative Adversarial Network</span><span class="rel-g">Two networks trained against each other as a two-player game</span></a><a class="rel" href="literature-review-synthesis.html"><span class="kind k-concept">concept</span><span class="rel-t">Literature Review Synthesis</span><span class="rel-g">Narrative synthesis of an existing literature into one argued account, as opposed to producing new data</span></a><a class="rel" href="openmax-and-extreme-value-theory.html"><span class="kind k-concept">concept</span><span class="rel-t">OpenMax and Extreme Value Theory</span><span class="rel-g">The statistical family&#x27;s answer to open-set-recognition: instead of thresholding a confidence score by eye, model the tail of the score distribution — the rare, extreme…</span></a><a class="rel" href="report-cites-benchmarks-rather-than-reproducing.html"><span class="kind k-decision">decision</span><span class="rel-t">Report Cites Benchmarks Rather Than Reproducing</span><span class="rel-g">Scope research-methodologies-open-set-recognition as a written synthesis</span></a><a class="rel" href="research-methodologies-open-set-recognition.html"><span class="kind k-project">project</span><span class="rel-t">Research Methodologies — Open-Set Recognition</span><span class="rel-g">Despite the course name, this repo does not teach research methods — it applies one</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

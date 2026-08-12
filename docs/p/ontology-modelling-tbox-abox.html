@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ontology Modelling TBox and ABox · Glass Box</title>
+<meta name="description" content="An RDF knowledge base splits into two halves that live in the same triple store but answer different questions:">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ontology Modelling TBox and ABox · Glass Box">
+<meta property="og:description" content="An RDF knowledge base splits into two halves that live in the same triple store but answer different questions:">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["How lab 5 realises it","Where the TBox goes next","Unused ABoxes left in the tree","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Information-Systems-Modelling/lab5/sesameExample_sol/src/main/resources/ontology.ttl","Information-Systems-Modelling/lab5/sesameExample_sol/src/main/resources/sample-data.ttl","Information-Systems-Modelling/lab5/sesameExample_sol/src/main/java/pl/edu/pwr/modellingclub/","Information-Systems-Modelling/lab5/README.md","Information-Systems-Modelling/lab6/vocabulary/ontology.ttl"],"dateModified":"2026-07-28","description":"An RDF knowledge base splits into two halves that live in the same triple store but answer different questions:","headline":"Ontology Modelling TBox and ABox","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["semantic-web","data-modelling","java"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-05-28</span>
+    <span class="repos">Information-Systems-Modelling</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>An RDF knowledge base splits into two halves that live in the same triple store but answer different questions:</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#how-lab-5-realises-it">How lab 5 realises it</a></li><li><a href="#where-the-tbox-goes-next">Where the TBox goes next</a></li><li><a href="#unused-aboxes-left-in-the-tree">Unused ABoxes left in the tree</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="ontology-modelling-tbox-and-abox">Ontology Modelling: TBox and ABox</h1>
+<p>An RDF knowledge base splits into two halves that live in the same triple store but answer different questions:</p>
+<ul><li><strong>TBox</strong> (terminology) — the schema. What classes exist, how they specialise each other, what properties connect them, what their domains and ranges are. <em>&quot;A Builder is a User is a Person is an Agent.&quot;</em></li><li><strong>ABox</strong> (assertions) — the instances. <em>&quot;<code>mc:alice</code> is a <code>mc:Builder</code>.&quot;</em></li></ul>
+<p>The split is what makes a <strong>reasoner</strong> useful. Load both, and the store can derive facts nobody wrote: assert <code>mc:alice a mc:Builder</code>, and RDFS inference over <code>rdfs:subClassOf</code> answers &quot;list all Agents&quot; with Alice in it. In a relational schema the same question needs a join the modeller anticipated; here it needs no query change at all.</p>
+<h2 id="how-lab-5-realises-it" class="h-anch"><a class="hlink" href="#how-lab-5-realises-it" aria-label="Link to this section">#</a>How lab 5 realises it</h2>
+<p><code>Information-Systems-Modelling</code> lab 5 keeps the halves in separate Turtle files under <code>src/main/resources/</code>, and <code>App.java</code> loads them into an in-memory <a class="wl" href="rdf4j.html">rdf4j</a> repository wrapped in an RDFS inferencer:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>File</th>
+<th>Role</th>
+<th>Lines</th>
+</tr></thead><tbody>
+<tr><td><code>ontology.ttl</code></td><td>TBox — the ModellingClub vocabulary</td><td>577</td></tr>
+<tr><td><code>sample-data.ttl</code></td><td>ABox — instances</td><td>209</td></tr>
+</tbody></table></div>
+<p>The TBox declares a real taxonomy rather than a flat list of types: <strong>24 <code>rdfs:subClassOf</code> statements</strong>, rooted at <code>mc:Agent</code> → <code>mc:Person</code> / <code>mc:SystemAccount</code>, then <code>mc:User</code> → <code>mc:AdminUser</code> / <code>mc:Builder</code>, each class carrying an <code>rdfs:label</code> and an <code>rdfs:comment</code>. Every term is namespaced under <code>http://modellingclub.local/ontology#</code> and the ontology resource itself carries <code>owl:Ontology</code> metadata with a Dublin Core title, description and creator.</p>
+<p>Eight SPARQL <code>SELECT</code> queries run against the loaded store. Two of them exist specifically to prove the reasoner is doing work rather than the data: <code>listInferredKnowsLinks</code> (a symmetric property returning links nobody asserted in that direction) and <code>listTransitiveCommunityMembership</code>. The others — builds with creators, approved builds by score, drone telemetry, votes per build, marketplace listings, test-run attendees — are ordinary retrieval.</p>
+<p><code>SampleDataWriter.addAdditionalUser</code> also writes triples programmatically before querying, so the same store is exercised through both a file loader and the RDF4J model API.</p>
+<h2 id="where-the-tbox-goes-next" class="h-anch"><a class="hlink" href="#where-the-tbox-goes-next" aria-label="Link to this section">#</a>Where the TBox goes next</h2>
+<p>The identical <code>ontology.ttl</code> reappears in <code>lab6/vocabulary/</code> and becomes the fallback vocabulary for <a class="wl" href="linked-data-publishing.html">linked-data-publishing</a> — where schema.org has no term, the <code>mc:</code> term from this TBox is used instead. See <a class="wl" href="schema-org-first-custom-vocab-fallback.html">schema-org-first-custom-vocab-fallback</a>.</p>
+<p>The two copies are <strong>byte-identical rather than shared</strong>, which is a small instance of <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> and sits awkwardly beside lab 6&#x27;s own headline principle that no fact should be written twice.</p>
+<h2 id="unused-aboxes-left-in-the-tree" class="h-anch"><a class="hlink" href="#unused-aboxes-left-in-the-tree" aria-label="Link to this section">#</a>Unused ABoxes left in the tree</h2>
+<p><code>instances.ttl</code> (557 lines — larger than the ABox actually loaded), <code>cardinalityTest.owl</code>, <code>convert.py</code>, <code>ontology_instances.rdf</code> and <code>ontology_instances.jsonld</code> are all tracked in the same <code>resources/</code> directory and referenced by <strong>no code, README or pom</strong>. <code>App.java</code> loads <code>ontology.ttl</code> and <code>sample-data.ttl</code> only.</p>
+<ul><li><strong>TODO:</strong> whether those files are the professor&#x27;s <code>sesameExample</code> template leftovers or an earlier ABox that <code>sample-data.ttl</code> replaced is unrecorded. <code>confidence: low</code> — do not assert either.</li><li><strong>TODO:</strong> <code>lab5/README.md</code> claims the store &quot;loads 465 statements and answers eight queries&quot;. The eight queries are verifiable in <code>QueryRunner</code>; the statement count is single-source prose with no assertion behind it. <code>confidence: low</code> on the number.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="rdf4j.html">rdf4j</a> · <a class="wl" href="linked-data-publishing.html">linked-data-publishing</a> · <a class="wl" href="information-systems-modelling.html">information-systems-modelling</a> · <a class="wl" href="schema-org-first-custom-vocab-fallback.html">schema-org-first-custom-vocab-fallback</a> · <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a></p></div>
+  <div class="tags"><span class="tag">semantic-web</span><span class="tag">data-modelling</span><span class="tag">java</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab5/sesameExample_sol/src/main/resources/ontology.ttl</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab5/sesameExample_sol/src/main/resources/sample-data.ttl</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab5/sesameExample_sol/src/main/java/pl/edu/pwr/modellingclub/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab5/README.md</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab6/vocabulary/ontology.ttl</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="linked-data-publishing.html"><span class="kind k-concept">concept</span><span class="rel-t">Linked Data Publishing</span><span class="rel-g">Publishing linked data means shipping a web page that is simultaneously readable by a person and parseable as a graph by a machine, with every entity identified by an…</span></a><a class="rel" href="schema-org-first-custom-vocab-fallback.html"><span class="kind k-decision">decision</span><span class="rel-t">schema.org First, Custom Vocabulary as Fallback</span><span class="rel-g">Describe every entity with schema.org terms wherever schema.org has one, and reach for the project&#x27;s own mc: vocabulary only where it does not</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="information-systems-modelling.html"><span class="kind k-project">project</span><span class="rel-t">Information Systems Modelling</span><span class="rel-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span></a><a class="rel" href="rdf4j.html"><span class="kind k-tech">tech</span><span class="rel-t">RDF4J</span><span class="rel-g">Eclipse RDF4J — the successor to the OpenRDF Sesame framework — is a Java library for storing, inferring over and querying RDF</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

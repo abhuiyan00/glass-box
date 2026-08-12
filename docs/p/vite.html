@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vite · Glass Box</title>
+<meta name="description" content="Build tool and dev server for the stickfps client — vite ^8.1.1 with @vitejs/plugin-react ^6.0.3, producing the static bundle that is deployed separately from the game…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vite · Glass Box">
+<meta property="og:description" content="Build tool and dev server for the stickfps client — vite ^8.1.1 with @vitejs/plugin-react ^6.0.3, producing the static bundle that is deployed separately from the game…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The property that shapes the deployment","Vitest","Toolchain shape","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["browser_game_stickfps/client/package.json","browser_game_stickfps/client/vite.config.ts","browser_game_stickfps/client/.env.example","browser_game_stickfps/docs/DEPLOYMENT.md","browser_game_stickfps/server/vitest.config.ts"],"dateModified":"2026-07-28","description":"Build tool and dev server for the stickfps client — vite ^8.1.1 with @vitejs/plugin-react ^6.0.3, producing the static bundle that is deployed separately from the game…","headline":"Vite","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["web-dev","typescript","devops","testing"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-14</span>
+    <span class="repos">browser_game_stickfps</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Build tool and dev server for the stickfps client — vite ^8.1.1 with @vitejs/plugin-react ^6.0.3, producing the static bundle that is deployed separately from the game…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-property-that-shapes-the-deployment">The property that shapes the deployment</a></li><li><a href="#vitest">Vitest</a></li><li><a href="#toolchain-shape">Toolchain shape</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="vite">Vite</h1>
+<p>Build tool and dev server for the <a class="wl" href="stickfps.html">stickfps</a> client — <code>vite ^8.1.1</code> with <code>@vitejs/plugin-react ^6.0.3</code>, producing the static bundle that is deployed separately from the game server under <a class="wl" href="split-frontend-backend-hosting.html">split-frontend-backend-hosting</a>.</p>
+<h2 id="the-property-that-shapes-the-deployment" class="h-anch"><a class="hlink" href="#the-property-that-shapes-the-deployment" aria-label="Link to this section">#</a>The property that shapes the deployment</h2>
+<p><strong><code>VITE_*</code> variables are inlined at build time, not read at runtime.</strong> <code>VITE_SERVER_URL</code>, <code>VITE_SERVER_PORT</code>, <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_ANON_KEY</code> are baked into the bundle by <code>vite build</code>. Changing the backend address is therefore a <strong>rebuild and redeploy</strong>, not a configuration change — which is why the deployment runbook is ordered backend-first: the server URL must exist before the frontend can be built against it.</p>
+<p>The corollary is a security one worth stating: anything with a <code>VITE_</code> prefix is public by construction. It is visible in the shipped JavaScript. Only publishable values belong there — the anon key in <span class="unpub" title="named in the source wiki; not published">supabase</span> is designed for that, a service key never would be.</p>
+<h2 id="vitest" class="h-anch"><a class="hlink" href="#vitest" aria-label="Link to this section">#</a>Vitest</h2>
+<p><code>vitest ^4.1.10</code> on both sides of the repo, sharing Vite&#x27;s transform pipeline, plus <code>jsdom ^29.1.1</code> and <code>@testing-library/react ^16.3.2</code> on the client. 52 client tests, all over pure functions; <a class="wl" href="playwright.html">playwright</a> covers anything needing a real GL context.</p>
+<p>The server keeps a <code>vitest.config.ts</code> that exists for a <strong>single line</strong>: <code>fileParallelism: false</code>, working around a vitest 4 worker-loading failure on Windows under CommonJS. Worth recording as the kind of config file that looks arbitrary a year later — the reason is in <code>PROGRESS.md</code>, not beside the setting, and that gap is exactly where <a class="wl" href="documentation-drift.html">documentation-drift</a> starts.</p>
+<h2 id="toolchain-shape" class="h-anch"><a class="hlink" href="#toolchain-shape" aria-label="Link to this section">#</a>Toolchain shape</h2>
+<p><code>tsc</code> and <code>oxlint ^1.71.0</code> both run clean, and <code>vite build</code> is clean. Two build pipelines and twelve runtime dependencies across client and server put <a class="wl" href="stickfps.html">stickfps</a> firmly on the other side of <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> from the coursework repositories — the same instinct reappears one layer down as an absolute rule about assets rather than about tooling, in <a class="wl" href="no-external-assets.html">no-external-assets</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="react-three-fiber.html">react-three-fiber</a> · <a class="wl" href="playwright.html">playwright</a> · <span class="unpub" title="named in the source wiki; not published">supabase</span> · <a class="wl" href="render-hosting.html">render-hosting</a> · <a class="wl" href="stickfps.html">stickfps</a></p></div>
+  <div class="tags"><span class="tag">web-dev</span><span class="tag">typescript</span><span class="tag">devops</span><span class="tag">testing</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/client/package.json</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/client/vite.config.ts</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/client/.env.example</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/docs/DEPLOYMENT.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/server/vitest.config.ts</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="no-external-assets.html"><span class="kind k-decision">decision</span><span class="rel-t">No External Assets</span><span class="rel-g">Decision: every visual and audio asset in stickfps must be generated in code</span></a><a class="rel" href="split-frontend-backend-hosting.html"><span class="kind k-decision">decision</span><span class="rel-t">Split Frontend and Backend Hosting</span><span class="rel-g">Decision: deploy the stickfps client as a static bundle on one host and the game server as a long-lived process on another, rather than shipping one application</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="stickfps.html"><span class="kind k-project">project</span><span class="rel-t">Stickfps</span><span class="rel-g">A 5v5 round-based browser tactical FPS: Counter-Strike round/economy structure, Krunker-style movement feel, procedurally-generated low-poly stickmen</span></a><a class="rel" href="playwright.html"><span class="kind k-tech">tech</span><span class="rel-t">Playwright</span><span class="rel-g">Browser automation, @playwright/test ^1.61.1</span></a><a class="rel" href="react-three-fiber.html"><span class="kind k-tech">tech</span><span class="rel-t">React Three Fiber</span><span class="rel-g">A React renderer for three-js: the scene graph is expressed as JSX components and reconciled like a DOM tree</span></a><a class="rel" href="render-hosting.html"><span class="kind k-tech">tech</span><span class="rel-t">Render</span><span class="rel-g">Managed application hosting with a free tier that does not require a credit card</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

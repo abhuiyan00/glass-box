@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shared-Identifier Clustering · Glass Box</title>
+<meta name="description" content="When records that are supposed to be independent share a contact point — one inbox, one phone, one address, one bank account — the sharing is a claim about control">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shared-Identifier Clustering · Glass Box">
+<meta property="og:description" content="When records that are supposed to be independent share a contact point — one inbox, one phone, one address, one bank account — the sharing is a claim about control">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The mechanic","The graph restatement","Why it survives anonymisation, and why that is checked","What this is not","Where it fits in the argument","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["labour-fraud-analysis-a-forensic-data-investigation/docs/investigation.md","labour-fraud-analysis-a-forensic-data-investigation/src/app.py","labour-fraud-analysis-a-forensic-data-investigation/notebooks/01_investigation_analysis.ipynb","labour-fraud-analysis-a-forensic-data-investigation/src/tests/test_dataset.py"],"dateModified":"2026-07-28","description":"When records that are supposed to be independent share a contact point — one inbox, one phone, one address, one bank account — the sharing is a claim about control","headline":"Shared-Identifier Clustering","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["forensics","data-analysis","investigation","privacy","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">labour-fraud-analysis-a-forensic-data-investigation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>When records that are supposed to be independent share a contact point — one inbox, one phone, one address, one bank account — the sharing is a claim about control</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-mechanic">The mechanic</a></li><li><a href="#the-graph-restatement">The graph restatement</a></li><li><a href="#why-it-survives-anonymisation-and-why-that-is-checked">Why it survives anonymisation, and why that is checked</a></li><li><a href="#what-this-is-not">What this is not</a></li><li><a href="#where-it-fits-in-the-argument">Where it fits in the argument</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="shared-identifier-clustering">Shared-Identifier Clustering</h1>
+<p>When records that are <em>supposed</em> to be independent share a contact point — one inbox, one phone, one address, one bank account — the sharing is a claim about control. Counting how many nominally separate entities collapse onto each identifier turns an administrative detail into a structural finding.</p>
+<p>It is the cheapest signal in <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> and, by the narrative&#x27;s own assessment, the strongest.</p>
+<blockquote><p>&quot;The prettiest evidence in the box isn&#x27;t dramatic. It&#x27;s a <code>GROUP BY</code>.&quot;</p><cite>labour-fraud-analysis-a-forensic-data-investigation/docs/investigation.md, 2026-07-11</cite></blockquote>
+<h2 id="the-mechanic" class="h-anch"><a class="hlink" href="#the-mechanic" aria-label="Link to this section">#</a>The mechanic</h2>
+<p>One <code>value_counts()</code> over a contact column, filtered to non-empty values, sorted descending. That is the entire computation — see <a class="wl" href="pandas.html">pandas</a>. In the case dataset, sixty-six workers, each with a separate name, passport and personal file, resolve onto <strong>two</strong> contact inboxes: twenty-three people on the first, twelve on the second. (No identifier or person-like value from the dataset is reproduced in this wiki, synthetic or not.)</p>
+<p>The interpretive move is what makes it evidence:</p>
+<blockquote><p>&quot;One inbox is not thirty-five people&#x27;s private correspondence. One inbox is one operator holding thirty-five people&#x27;s mail.&quot;</p><cite>labour-fraud-analysis-a-forensic-data-investigation/docs/investigation.md, 2026-07-11</cite></blockquote>
+<p>The count is not the finding. The finding is that the count contradicts the story the records tell about themselves — independent hires who happen to share an employer.</p>
+<h2 id="the-graph-restatement" class="h-anch"><a class="hlink" href="#the-graph-restatement" aria-label="Link to this section">#</a>The graph restatement</h2>
+<p>The same relation expressed as edges gives a second reading. Build a bipartite people↔companies graph from four document types, then count people adjacent to <strong>two or more</strong> companies; those bridges are what entity succession looks like from the person&#x27;s side rather than the company&#x27;s. See <a class="wl" href="networkx.html">networkx</a>. Degree is used only for node sizing — no centrality measure is computed, so the graph is a picture of the same group-by, not an independent statistic.</p>
+<h2 id="why-it-survives-anonymisation-and-why-that-is-checked" class="h-anch"><a class="hlink" href="#why-it-survives-anonymisation-and-why-that-is-checked" aria-label="Link to this section">#</a>Why it survives anonymisation, and why that is checked</h2>
+<p>Replacing every value while preserving every relationship (<a class="wl" href="structure-preserving-anonymisation.html">structure-preserving-anonymisation</a>) is exactly what keeps this signal readable: two source inboxes become two fictional inboxes with the same fan-out. Because that is a property the pipeline could silently destroy, it is asserted:</p>
+<blockquote><p>&quot;&quot;&quot;The &#x27;one operator, many workers&#x27; signal must survive: an inbox shared widely.&quot;&quot;&quot;</p><cite>labour-fraud-analysis-a-forensic-data-investigation/src/tests/test_dataset.py, 2026-07-11</cite></blockquote>
+<p>The assertion floor is deliberately far below the observed value — see <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a> for why a loose floor is the right choice for a regenerable dataset.</p>
+<h2 id="what-this-is-not" class="h-anch"><a class="hlink" href="#what-this-is-not" aria-label="Link to this section">#</a>What this is not</h2>
+<p><code>confidence: low</code> on the labelling. The README lists <strong>entity resolution</strong> as a demonstrated skill. What the code performs is grouping and value-counting on an exact string. There is no blocking, no similarity scoring, no probabilistic matching, no transitive-closure clustering — nothing that resolves <em>near</em>-duplicates, which is what entity resolution normally means. Exact-identifier collapse is a valid and often decisive technique; it is a different technique.</p>
+<p><strong>TODO:</strong> what was meant by &quot;entity resolution&quot; is unrecorded. Do not read the README&#x27;s term as a description of the implementation.</p>
+<p>Related: the same repo&#x27;s <code>person</code> table carries the contact fields the analysis treats as <em>shared</em> across people, which sits awkwardly with its <a class="wl" href="third-normal-form.html">third-normal-form</a> claim — the normalisation &quot;violation&quot; and the signal are the same fact.</p>
+<h2 id="where-it-fits-in-the-argument" class="h-anch"><a class="hlink" href="#where-it-fits-in-the-argument" aria-label="Link to this section">#</a>Where it fits in the argument</h2>
+<p>One concentration count proves nothing on its own. It is the second of four independent weak signals argued together as <a class="wl" href="convergent-evidence.html">convergent-evidence</a>, each anchored to a document row through <a class="wl" href="chain-of-custody.html">chain-of-custody</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="convergent-evidence.html">convergent-evidence</a> · <a class="wl" href="chain-of-custody.html">chain-of-custody</a> · <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> · <a class="wl" href="pandas.html">pandas</a> · <a class="wl" href="networkx.html">networkx</a> · <a class="wl" href="structure-preserving-anonymisation.html">structure-preserving-anonymisation</a> · <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a></p></div>
+  <div class="tags"><span class="tag">forensics</span><span class="tag">data-analysis</span><span class="tag">investigation</span><span class="tag">privacy</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/docs/investigation.md</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/app.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/notebooks/01_investigation_analysis.ipynb</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/tests/test_dataset.py</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="chain-of-custody.html"><span class="kind k-concept">concept</span><span class="rel-t">Chain of Custody</span><span class="rel-g">In forensic work, a claim is only as good as the trail from the claim back to the artefact it came from</span></a><a class="rel" href="convergent-evidence.html"><span class="kind k-concept">concept</span><span class="rel-t">Convergent Evidence</span><span class="rel-g">An argument built from several independently weak signals that point the same way, rather than from one decisive test</span></a><a class="rel" href="reproducible-analysis.html"><span class="kind k-concept">concept</span><span class="rel-t">Reproducible Analysis</span><span class="rel-g">An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose</span></a><a class="rel" href="structure-preserving-anonymisation.html"><span class="kind k-concept">concept</span><span class="rel-t">Structure-Preserving Anonymisation</span><span class="rel-g">Redaction destroys the thing being studied</span></a><a class="rel" href="third-normal-form.html"><span class="kind k-concept">concept</span><span class="rel-t">Third Normal Form</span><span class="rel-g">A relation is in 3NF when every non-key attribute depends on the key, the whole key, and nothing but the key</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a><a class="rel" href="networkx.html"><span class="kind k-tech">tech</span><span class="rel-t">NetworkX</span><span class="rel-g">Pure-Python graph library</span></a><a class="rel" href="pandas.html"><span class="kind k-tech">tech</span><span class="rel-t">pandas</span><span class="rel-g">Python&#x27;s in-memory dataframe library</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

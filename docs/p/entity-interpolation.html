@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entity Interpolation · Glass Box</title>
+<meta name="description" content="Snapshots arrive at the tick rate and at the mercy of the network; frames render at whatever the monitor does">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Entity Interpolation · Glass Box">
+<meta property="og:description" content="Snapshots arrive at the tick rate and at the mercy of the network; frames render at whatever the monitor does">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The four parameters that matter","The ±π seam","Why it is not prediction","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["browser_game_stickfps/client/src/net/remoteInterpolation.ts","browser_game_stickfps/client/src/game/player/RemotePlayers.tsx","browser_game_stickfps/docs/specs/task-4.1.md","browser_game_stickfps/PROGRESS.md"],"dateModified":"2026-07-28","description":"Snapshots arrive at the tick rate and at the mercy of the network; frames render at whatever the monitor does","headline":"Entity Interpolation","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["networking","game-dev","performance"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-14</span>
+    <span class="repos">browser_game_stickfps</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Snapshots arrive at the tick rate and at the mercy of the network; frames render at whatever the monitor does</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-four-parameters-that-matter">The four parameters that matter</a></li><li><a href="#the-seam">The ±π seam</a></li><li><a href="#why-it-is-not-prediction">Why it is not prediction</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="entity-interpolation">Entity Interpolation</h1>
+<p>Snapshots arrive at the tick rate and at the mercy of the network; frames render at whatever the monitor does. Drawing remote players at the last received position gives visible stepping. Entity interpolation fixes this by <strong>rendering remote entities deliberately in the past</strong>, between two snapshots that have both already arrived.</p>
+<p>The cost is a fixed, chosen latency on everyone else&#x27;s position. The benefit is that motion is always smooth, because you are interpolating between two known points rather than extrapolating past one.</p>
+<h2 id="the-four-parameters-that-matter" class="h-anch"><a class="hlink" href="#the-four-parameters-that-matter" aria-label="Link to this section">#</a>The four parameters that matter</h2>
+<p><a class="wl" href="stickfps.html">stickfps</a>&#x27;s <code>RemotePlayerInterpolator</code> is a compact reference implementation:</p>
+<ul><li><strong>Buffer depth: 2 snapshots per remote player.</strong> The minimum for interpolation — one behind, one ahead. Deeper buffers absorb more jitter at more latency.</li><li><strong>Render delay: 100 ms.</strong> Remote players are drawn 100 ms behind the newest snapshot, so a late packet within that window costs nothing.</li><li><strong>Shortest-arc angle blending.</strong> Yaw is blended with <code>lerpAngle</code>, not a linear lerp.</li><li><strong>Staleness cutoff: 1000 ms.</strong> A player with no snapshot for a second is removed rather than held. Leavers <strong>vanish instead of freezing</strong> — a small decision that changes how the game reads, because a frozen avatar is indistinguishable from a stationary opponent.</li></ul>
+<h2 id="the-seam" class="h-anch"><a class="hlink" href="#the-seam" aria-label="Link to this section">#</a>The ±π seam</h2>
+<p>Naive interpolation of an angle is wrong exactly once per rotation. Yaw wraps at ±π, so blending from <code>+3.10</code> to <code>-3.10</code> takes the long way round: remote players in <a class="wl" href="stickfps.html">stickfps</a> were observed <strong>spinning a full 360°</strong> whenever an opponent crossed the seam. <code>lerpAngle</code> picks the shortest arc by normalising the difference into (−π, π] before blending.</p>
+<p>This is the canonical bug of the technique. Any interpolated quantity with a wrap point — heading, hue, time of day — has the same failure, and it is invisible in testing until something crosses the seam.</p>
+<h2 id="why-it-is-not-prediction" class="h-anch"><a class="hlink" href="#why-it-is-not-prediction" aria-label="Link to this section">#</a>Why it is not prediction</h2>
+<p><a class="wl" href="client-side-prediction-and-reconciliation.html">client-side-prediction-and-reconciliation</a> runs the <em>local</em> player ahead of the server so input feels instant. Interpolation runs <em>remote</em> players behind it so motion looks smooth. The two point in opposite directions on purpose, and the gap between them is the latency budget you are actually shooting through — which matters because <a class="wl" href="server-authoritative-netcode.html">server-authoritative-netcode</a> here has no lag compensation, so the server judges hits against current positions, not the interpolated positions the shooter saw.</p>
+<p>The alternative to interpolating is <strong>extrapolation</strong> (dead reckoning): keep moving the entity along its last velocity when snapshots stop. It removes the delay but invents positions, so it produces snap-backs when the guess is wrong. <a class="wl" href="stickfps.html">stickfps</a> does not extrapolate.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="client-side-prediction-and-reconciliation.html">client-side-prediction-and-reconciliation</a> · <a class="wl" href="server-authoritative-netcode.html">server-authoritative-netcode</a> · <a class="wl" href="fixed-timestep-simulation.html">fixed-timestep-simulation</a> · <a class="wl" href="ws-websocket-server.html">ws-websocket-server</a> · <a class="wl" href="stickfps.html">stickfps</a></p></div>
+  <div class="tags"><span class="tag">networking</span><span class="tag">game-dev</span><span class="tag">performance</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/client/src/net/remoteInterpolation.ts</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/client/src/game/player/RemotePlayers.tsx</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/docs/specs/task-4.1.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/PROGRESS.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="client-side-prediction-and-reconciliation.html"><span class="kind k-concept">concept</span><span class="rel-t">Client-Side Prediction and Reconciliation</span><span class="rel-g">Under server-authoritative-netcode the client owns no state — but waiting a round trip before the player&#x27;s own avatar moves is unplayable</span></a><a class="rel" href="fixed-timestep-simulation.html"><span class="kind k-concept">concept</span><span class="rel-t">Fixed Timestep Simulation</span><span class="rel-g">Advance the simulation in constant-size steps regardless of how long a frame took</span></a><a class="rel" href="server-authoritative-netcode.html"><span class="kind k-concept">concept</span><span class="rel-t">Server-Authoritative Netcode</span><span class="rel-g">The client is an input device and a renderer</span></a><a class="rel" href="stickfps.html"><span class="kind k-project">project</span><span class="rel-t">Stickfps</span><span class="rel-g">A 5v5 round-based browser tactical FPS: Counter-Strike round/economy structure, Krunker-style movement feel, procedurally-generated low-poly stickmen</span></a><a class="rel" href="ws-websocket-server.html"><span class="kind k-tech">tech</span><span class="rel-t">ws (WebSocket Server)</span><span class="rel-g">The Node WebSocket implementation, ^8.21.1</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

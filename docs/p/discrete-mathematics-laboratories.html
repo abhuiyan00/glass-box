@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Discrete Mathematics Laboratories · Glass Box</title>
+<meta name="description" content="Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Discrete Mathematics Laboratories · Glass Box">
+<meta property="og:description" content="Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The six labs","Git history — this repo *contradicts* the usual pattern","Findings","Decisions recorded","Open gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Discrete-Mathematics-Laboratories/README.md","Discrete-Mathematics-Laboratories/lab1_Max_Cut/","Discrete-Mathematics-Laboratories/lab2_Crypt/","Discrete-Mathematics-Laboratories/lab3_Sets/","Discrete-Mathematics-Laboratories/lab4_Complexity/","Discrete-Mathematics-Laboratories/lab5_GraphTheory/","Discrete-Mathematics-Laboratories/lab6_Neo4j/"],"dateModified":"2026-07-28","description":"Six discrete-maths lab deliverables for a Master's course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up","headline":"Discrete Mathematics Laboratories","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["discrete-math","algorithms","python","javascript","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-03-20</span>
+    <span class="repos">Discrete-Mathematics-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-six-labs">The six labs</a></li><li><a href="#git-history-this-repo-contradicts-the-usual-pattern">Git history — this repo *contradicts* the usual pattern</a></li><li><a href="#findings">Findings</a></li><li><a href="#decisions-recorded">Decisions recorded</a></li><li><a href="#open-gaps">Open gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="discrete-mathematics-laboratories">Discrete Mathematics Laboratories</h1>
+<p>Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a <strong>runnable artifact</strong> rather than a write-up. 108 files, single author, MIT, public remote. The organising idea is stated in the repo itself and is the reason this repo gets its own pattern page — see <a class="wl" href="make-the-formal-object-observable.html">make-the-formal-object-observable</a>.</p>
+<blockquote><p>&quot;The thread running through all six: take a formal object (a cut, a modulus, a set, a recursion, a graph, an information system) and make its behaviour <strong>observable</strong>.&quot;</p><cite>Discrete-Mathematics-Laboratories/README.md, 2026-07-10</cite></blockquote>
+<p><strong>Status: coursework, finished and frozen at last commit 2026-07-10.</strong> The course is done and nothing is maintained (&quot;All finished and frozen&quot; — interview, 2026-07-28).</p>
+<h2 id="the-six-labs" class="h-anch"><a class="hlink" href="#the-six-labs" aria-label="Link to this section">#</a>The six labs</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Lab</th>
+<th>Topic</th>
+<th>Stack</th>
+<th>Concept pages</th>
+</tr></thead><tbody>
+<tr><td><code>lab1_Max_Cut</code></td><td>Max-Cut, NP-hard partitioning</td><td>Python stdlib</td><td><a class="wl" href="max-cut-and-local-search.html">max-cut-and-local-search</a></td></tr>
+<tr><td><code>lab2_Crypt</code></td><td>RSA keygen + four factorization attacks</td><td>Jupyter/Colab, numpy, <a class="wl" href="matplotlib.html">matplotlib</a></td><td><a class="wl" href="rsa-and-integer-factorization.html">rsa-and-integer-factorization</a></td></tr>
+<tr><td><code>lab3_Sets</code></td><td>Set theory as a library; job recommender</td><td>Python, no deps</td><td><a class="wl" href="characteristic-functions.html">characteristic-functions</a> · <a class="wl" href="set-similarity-metrics.html">set-similarity-metrics</a></td></tr>
+<tr><td><code>lab4_Complexity</code></td><td>Ackermann, Stirling, Nim — twice (Python + browser)</td><td><a class="wl" href="matplotlib.html">matplotlib</a>, <a class="wl" href="tkinter.html">tkinter</a>, vanilla JS</td><td><a class="wl" href="ackermann-and-primitive-recursion.html">ackermann-and-primitive-recursion</a> · <a class="wl" href="sprague-grundy-nim-sum.html">sprague-grundy-nim-sum</a></td></tr>
+<tr><td><code>lab5_GraphTheory</code></td><td>SentinelNet (Iberian grid) + Q-HYDRO Wrocław (gravimeter mesh)</td><td><a class="wl" href="react.html">react</a> vendored; Leaflet</td><td><a class="wl" href="shortest-path-algorithm-family.html">shortest-path-algorithm-family</a> · <a class="wl" href="graph-connectivity-and-resilience.html">graph-connectivity-and-resilience</a></td></tr>
+<tr><td><code>lab6_Neo4j</code></td><td>Pawlak information system <code>S=(U,A)</code></td><td><a class="wl" href="neo4j.html">neo4j</a>, <a class="wl" href="cypher.html">cypher</a>, plus an offline JS viewer</td><td><a class="wl" href="pawlak-information-system.html">pawlak-information-system</a></td></tr>
+</tbody></table></div>
+<p>Directory numbering carries the course order and the root README walks them as chapters — the local variant of <a class="wl" href="numbered-stages-in-directory-names.html">numbered-stages-in-directory-names</a>. Labs 4 (part 2), 5 and 6 (viewer) are double-click HTML, see <a class="wl" href="offline-first-static-deliverable.html">offline-first-static-deliverable</a>. Lab 4 and lab 6 each exist twice in two stacks: <a class="wl" href="dual-implementation-as-cross-check.html">dual-implementation-as-cross-check</a>.</p>
+<h2 id="git-history-this-repo-contradicts-the-usual-pattern" class="h-anch"><a class="hlink" href="#git-history-this-repo-contradicts-the-usual-pattern" aria-label="Link to this section">#</a>Git history — this repo <em>contradicts</em> the usual pattern</h2>
+<p>49 commits, <strong>2026-03-20 → 2026-07-10</strong>, five working dates with real gaps, and commits that only exist because something broke: <code>48ba16d Fix UnicodeEncodeError in the lab3 demos on Windows consoles</code>, <code>06b5882 Make SentinelNet run offline: vendor React, precompile the JSX</code> (2,692 insertions), <code>8a2acfe Add .gitignore and stop tracking compiled bytecode</code>, <code>e42bc80 Rename Max_Cut_lab1 to lab1_Max_Cut</code>. That is a working log, not an import — a documented counter-example to <a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a>.</p>
+<p><strong>Caveat, so the wiki does not overstate it:</strong> <em>within-session</em> granularity is still upload-shaped. Whole finished labs land in one day, one commit per file with the file path as the message, and one commit is literally <code>Add files via upload</code> from the GitHub web UI. Finished work still gets imported — just repeatedly, over four months, with fixes in between.</p>
+<p>The 2026-07-10 tail is a textbook publishing pass — seven README+screenshot commits, then <code>0a6d54b Rewrite the top-level README as a guided tour</code>, <code>24e7b33 Add MIT license</code>, <code>7273d68 Add license badges</code>. See <a class="wl" href="presentation-polish-tail-commits.html">presentation-polish-tail-commits</a> and <a class="wl" href="readme-as-guided-tour.html">readme-as-guided-tour</a>. Per the interview these bursts were &quot;just cleaning up local folders&quot; — consolidation, not a release.</p>
+<p><strong>Provenance note.</strong> <code>brain.py survey</code> reported this repo as first = last = 2026-07-10, hiding the whole four-month arc. Every date above came from <code>git log</code> directly; the survey&#x27;s git dates are not trustworthy.</p>
+<h2 id="findings" class="h-anch"><a class="hlink" href="#findings" aria-label="Link to this section">#</a>Findings</h2>
+<ul><li><strong><code>tspChristofides</code> in <code>sn-algo.js</code> is not Christofides.</strong> It matches odd-degree vertices greedily rather than by minimum-weight perfect matching, so the 1.5-approximation guarantee does <strong>not</strong> hold. Call it a Christofides-<em>shaped</em> heuristic. Recorded on <a class="wl" href="shortest-path-algorithm-family.html">shortest-path-algorithm-family</a>. <code>confidence: high</code> (read from source).</li><li><strong>The zero-dependency claim is internally contradicted.</strong> <code>lab4/part2</code> and <code>lab6/viewer</code> contain zero external URLs; <code>Q-HYDRO Wrocław</code> says &quot;No dependencies are vendored&quot; and loads Leaflet, map tiles and IBM Plex from CDNs. Two lab-5 apps side by side under opposite rules, and the root README&#x27;s &quot;all run offline&quot; overstates it. See <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a>.</li><li><strong>Documentation drift, three instances.</strong> <code>lab6_Neo4j/guide.txt</code> still lists &quot;object count = 38&quot; after the README says 38→39 was corrected &quot;throughout&quot;; the same file hard-codes a stale personal absolute path; the root README&#x27;s offline claim above. See <a class="wl" href="documentation-drift.html">documentation-drift</a>.</li><li>The only automated check in the repo is <code>lab3_Sets/mandatory_tasks/test_suite.py</code>, a hand-rolled <code>TestRunner</code> with boolean assertions — not <a class="wl" href="pytest.html">pytest</a>. Everything else is asserted in prose and screenshots.</li><li>Boundaries are written beside the claims rather than hidden — &quot;a conservative placeholder — a full Stoer-Wagner cut is out of scope&quot;, &quot;swap in a binary heap for scale&quot;. This is the strongest instance of <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> in the whole source set.</li><li><code>lab6_Neo4j/guide.txt</code> is written as an assistant addressing the user and closes <em>&quot;When all are in this folder, say \&quot;screenshots ready\&quot; -&gt; I build the LaTeX report.&quot;</em> — a handoff instruction shipped as a lab deliverable. No agent tooling is in the tree: no <code>.tooling/</code>, no <code>CLAUDE.md</code>, no CI. Do not infer any.</li><li>No <code>.gitattributes</code> and no Git LFS: 19 PNGs and an 840 KB PDF are committed as plain blobs.</li></ul>
+<h2 id="decisions-recorded" class="h-anch"><a class="hlink" href="#decisions-recorded" aria-label="Link to this section">#</a>Decisions recorded</h2>
+<p><a class="wl" href="vendor-react-over-babel-cdn.html">vendor-react-over-babel-cdn</a> · <a class="wl" href="heuristic-over-exact-max-cut.html">heuristic-over-exact-max-cut</a> · <a class="wl" href="cypher-scripts-over-neo4j-import-tool.html">cypher-scripts-over-neo4j-import-tool</a></p>
+<h2 id="open-gaps" class="h-anch"><a class="hlink" href="#open-gaps" aria-label="Link to this section">#</a>Open gaps</h2>
+<ul><li><strong>TODO:</strong> the LaTeX report promised at the end of <code>guide.txt</code> is not in the repo. Whether it was submitted separately is unknown — do not assert that it was.</li><li><strong>TODO:</strong> Q-HYDRO&#x27;s real-world figures (Odra 5, Exail AQG µGal accuracy, &quot;CAGR 9.2 %, $73.1M → $135.4M, 2024–2031&quot;) cite vendor and market-research pages only. Unresolved whether the user would defend them or considers them scene-setting for the funding-proposal framing. <code>confidence: low</code> on every such figure.</li><li><strong>TODO:</strong> <code>players/ai_player.py</code> documents &quot;Easy ~75 % / Medium ~40 % / Hard ~1 %&quot; player win-rates with no simulation harness anywhere in the repo — measured or estimated is unknown. <code>confidence: low</code>.</li><li><strong>TODO:</strong> the README calls the <code>Credit_Rating</code> partition &quot;the entry point to rough-set indiscernibility&quot; but lower/upper approximations are never defined. Whether the assignment stopped there is unrecorded.</li><li><strong>TODO:</strong> why React for SentinelNet only, when lab 4 part 2 and the lab 6 viewer do the same job in vanilla JS, is not recorded anywhere in the repo.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> · <a class="wl" href="optimization-methods.html">optimization-methods</a> · <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a></p></div>
+  <div class="tags"><span class="tag">discrete-math</span><span class="tag">algorithms</span><span class="tag">python</span><span class="tag">javascript</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab1_Max_Cut/</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab2_Crypt/</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab3_Sets/</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab4_Complexity/</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab5_GraphTheory/</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab6_Neo4j/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="ackermann-and-primitive-recursion.html"><span class="kind k-concept">concept</span><span class="rel-t">Ackermann and Primitive Recursion</span><span class="rel-g">The Ackermann function is the standard witness that total computable is strictly larger than primitive recursive</span></a><a class="rel" href="characteristic-functions.html"><span class="kind k-concept">concept</span><span class="rel-t">Characteristic Functions</span><span class="rel-g">The characteristic function χ_A(x) of a set A over a universe U returns 1 when x ∈ A and 0 otherwise</span></a><a class="rel" href="graph-connectivity-and-resilience.html"><span class="kind k-concept">concept</span><span class="rel-t">Graph Connectivity and Resilience</span><span class="rel-g">&quot;Is this network connected?&quot; is a yes/no question</span></a><a class="rel" href="max-cut-and-local-search.html"><span class="kind k-concept">concept</span><span class="rel-t">Max-Cut and Local Search</span><span class="rel-g">Max-Cut: partition a graph&#x27;s vertices into two sets so that the weight of edges crossing between them is maximised</span></a><a class="rel" href="pawlak-information-system.html"><span class="kind k-concept">concept</span><span class="rel-t">Pawlak Information System</span><span class="rel-g">A Pawlak information system is the pair S = (U, A): a universe U of objects, a set A of attributes, and for each attribute a ∈ A a function a: U → V_a assigning every…</span></a><a class="rel" href="rsa-and-integer-factorization.html"><span class="kind k-concept">concept</span><span class="rel-t">RSA and Integer Factorization</span><span class="rel-g">RSA&#x27;s security rests on one asymmetry: multiplying two large primes is cheap, recovering them from the product is not</span></a><a class="rel" href="set-similarity-metrics.html"><span class="kind k-concept">concept</span><span class="rel-t">Set Similarity Metrics</span><span class="rel-g">Three ways to turn &quot;how alike are these two sets?&quot; into a number between 0 and 1</span></a><a class="rel" href="shortest-path-algorithm-family.html"><span class="kind k-concept">concept</span><span class="rel-t">The Shortest-Path Algorithm Family</span><span class="rel-g">Four algorithms, one problem, four different sets of assumptions</span></a><a class="rel" href="sprague-grundy-nim-sum.html"><span class="kind k-concept">concept</span><span class="rel-t">Sprague-Grundy and the Nim-Sum</span><span class="rel-g">Nim is solved</span></a><a class="rel" href="cypher-scripts-over-neo4j-import-tool.html"><span class="kind k-decision">decision</span><span class="rel-t">Cypher Scripts Over the Neo4j Import Tool</span><span class="rel-g">Import the dataset with LOAD CSV + MERGE Cypher scripts run from the Query editor, not with Neo4j Desktop&#x27;s graphical Import tool</span></a><a class="rel" href="heuristic-over-exact-max-cut.html"><span class="kind k-decision">decision</span><span class="rel-t">Heuristic Over Exact Max-Cut</span><span class="rel-g">Solve Max-Cut with best-improvement local search plus ten random restarts, instead of searching the partition space exhaustively</span></a><a class="rel" href="vendor-react-over-babel-cdn.html"><span class="kind k-decision">decision</span><span class="rel-t">Vendor React Over the Babel CDN</span><span class="rel-g">Commit React and ReactDOM&#x27;s production UMD builds into the repository and precompile sn-app.jsx to sn-app.js ahead of time, rather than loading Babel from a CDN and…</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="dual-implementation-as-cross-check.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Dual Implementation as Cross-Check</span><span class="rel-g">Build the same thing twice, in two different stacks, and keep both</span></a><a class="rel" href="import-finished-work-into-git.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Import Finished Work Into Git</span><span class="rel-g">Work is built to completion outside version control, then imported in a burst</span></a><a class="rel" href="make-the-formal-object-observable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Make the Formal Object Observable</span><span class="rel-g">Take a mathematical definition and build something that lets you watch it behave</span></a><a class="rel" href="numbered-stages-in-directory-names.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Numbered Stages in Directory Names</span><span class="rel-g">Order is encoded in filenames and directory names, not in a table of contents</span></a><a class="rel" href="offline-first-static-deliverable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Offline-First Static Deliverable</span><span class="rel-g">The deliverable must work by double-clicking a file: no server, no install, no network</span></a><a class="rel" href="presentation-polish-tail-commits.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Presentation Polish Tail Commits</span><span class="rel-g">After the substance lands, a distinct tail of commits does nothing but presentation: screenshots, then a licence, then licence badges</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="readme-as-guided-tour.html"><span class="kind k-pattern">pattern</span><span class="rel-t">README as Guided Tour</span><span class="rel-g">The README is written for a reader being shown around, not for a user trying to run something</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="optimization-methods.html"><span class="kind k-project">project</span><span class="rel-t">Optimization Methods</span><span class="rel-g">Master&#x27;s Optimization Methods course at Wrocław University of Science and Technology (FICT, lectures by M. Przewoźniczek)</span></a><a class="rel" href="oracle-database-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Oracle Database Laboratories</span><span class="rel-g">Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite</span></a><a class="rel" href="python-programming-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Python Programming Laboratories</span><span class="rel-g">Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…</span></a><a class="rel" href="cypher.html"><span class="kind k-tech">tech</span><span class="rel-t">Cypher</span><span class="rel-g">neo4j&#x27;s declarative query language</span></a><a class="rel" href="matplotlib.html"><span class="kind k-tech">tech</span><span class="rel-t">matplotlib</span><span class="rel-g">Python&#x27;s plotting library</span></a><a class="rel" href="neo4j.html"><span class="kind k-tech">tech</span><span class="rel-t">Neo4j</span><span class="rel-g">Native property-graph database</span></a><a class="rel" href="pytest.html"><span class="kind k-tech">tech</span><span class="rel-t">pytest</span><span class="rel-g">The test runner for python-programming-laboratories — and the only real test framework anywhere in the two lab repositories</span></a><a class="rel" href="react.html"><span class="kind k-tech">tech</span><span class="rel-t">React</span><span class="rel-g">Component library for building UIs from declarative state-to-markup functions</span></a><a class="rel" href="tkinter.html"><span class="kind k-tech">tech</span><span class="rel-t">Tkinter</span><span class="rel-g">Python&#x27;s standard-library GUI toolkit</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

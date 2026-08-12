@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenRouter · Glass Box</title>
+<meta name="description" content="A single OpenAI-compatible HTTP endpoint in front of many vendors&#x27; models, billed per token against one account">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenRouter · Glass Box">
+<meta property="og:description" content="A single OpenAI-compatible HTTP endpoint in front of many vendors&#x27; models, billed per token against one account">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The property the design leans on","No vendor is named in code","Cost and key handling"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["vs-llm-orchestrator/agent-orchestrator/backend/graph.py","vs-llm-orchestrator/docs/SRS.md","vs-llm-orchestrator/docs/SECURITY_MODEL.md"],"dateModified":"2026-08-08","description":"A single OpenAI-compatible HTTP endpoint in front of many vendors' models, billed per token against one account","headline":"OpenRouter","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["architecture","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-08 · in force since 2026-08-08</span>
+    <span class="repos">vs-llm-orchestrator</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A single OpenAI-compatible HTTP endpoint in front of many vendors&#x27; models, billed per token against one account</p></aside>
+  
+  
+  <div class="prose"><h1 id="openrouter">OpenRouter</h1>
+<p>A single OpenAI-compatible HTTP endpoint in front of many vendors&#x27; models, billed per token against one account. In <a class="wl" href="agent-orchestrator.html">agent-orchestrator</a> it is the <strong>router</strong>: the model that plans, answers directly when a request does not need agents, writes the optional workspace brief, and merges the finished subtasks.</p>
+<h2 id="the-property-the-design-leans-on" class="h-anch"><a class="hlink" href="#the-property-the-design-leans-on" aria-label="Link to this section">#</a>The property the design leans on</h2>
+<p>The router is the one component that reads every subtask&#x27;s output — and it has <strong>no tools at all</strong>. That asymmetry is the security model&#x27;s load-bearing claim: text that persuades the router can produce a wrong answer but cannot produce an action. The executors have the tools; the reader has none.</p>
+<h2 id="no-vendor-is-named-in-code" class="h-anch"><a class="hlink" href="#no-vendor-is-named-in-code" aria-label="Link to this section">#</a>No vendor is named in code</h2>
+<p>The model id is configuration (<code>z-ai/glm-5.2</code> by default, any id OpenRouter serves). At start-up the backend resolves the display name, context window and reasoning support from <code>/models</code>, and if the id is absent from that catalog it still uses it and logs a line saying so. So switching router is a settings change, and a model released next week works without a code change.</p>
+<p>Where a configured router advertises no reasoning parameter, none is sent — the same restraint as <a class="wl" href="reasoning-effort-as-a-portable-label.html">reasoning-effort-as-a-portable-label</a> one level up.</p>
+<h2 id="cost-and-key-handling" class="h-anch"><a class="hlink" href="#cost-and-key-handling" aria-label="Link to this section">#</a>Cost and key handling</h2>
+<p>Only these calls cost money: roughly $0.002 for a two-subtask run, because the agents themselves run on the user&#x27;s existing CLI subscriptions (<a class="wl" href="claude-code-cli.html">claude-code-cli</a>, <a class="wl" href="codex-cli.html">codex-cli</a>). The key lives in VS Code&#x27;s encrypted SecretStorage, reaches the backend as an environment variable, and is never sent to the webview — <a class="wl" href="secrets-from-environment-only.html">secrets-from-environment-only</a>. The plaintext settings field still works and the panel offers to migrate it, because a key already typed into settings is a fact to handle, not a mistake to lecture about.</p></div>
+  <div class="tags"><span class="tag">architecture</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/agent-orchestrator/backend/graph.py</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/docs/SRS.md</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/docs/SECURITY_MODEL.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="reasoning-effort-as-a-portable-label.html"><span class="kind k-concept">concept</span><span class="rel-t">Reasoning Effort as a Portable Label</span><span class="rel-g">Every vendor exposes &quot;think harder&quot; differently: a token on a ladder, a numeric budget, a flag that does not exist</span></a><a class="rel" href="secrets-from-environment-only.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Secrets from Environment Only</span><span class="rel-g">Credentials are read from environment variables and from nowhere else, and .gitignore is written so that the lazy path and the safe path are the same path</span></a><a class="rel" href="agent-orchestrator.html"><span class="kind k-project">project</span><span class="rel-t">Agent Orchestrator</span><span class="rel-g">A VS Code extension that turns one request into a plan and runs it across the coding CLIs the author already pays for</span></a><a class="rel" href="claude-code-cli.html"><span class="kind k-tech">tech</span><span class="rel-t">Claude Code CLI</span><span class="rel-g">Anthropic&#x27;s terminal coding agent</span></a><a class="rel" href="codex-cli.html"><span class="kind k-tech">tech</span><span class="rel-t">Codex CLI</span><span class="rel-g">OpenAI&#x27;s terminal coding agent, and the second executor in agent-orchestrator</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

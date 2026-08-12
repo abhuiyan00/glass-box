@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Set Similarity Metrics · Glass Box</title>
+<meta name="description" content="Three ways to turn &quot;how alike are these two sets?&quot; into a number between 0 and 1">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Set Similarity Metrics · Glass Box">
+<meta property="og:description" content="Three ways to turn &quot;how alike are these two sets?&quot; into a number between 0 and 1">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The application","A wrinkle worth recording","Related","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Discrete-Mathematics-Laboratories/lab3_Sets/optional_task/"],"dateModified":"2026-07-28","description":"Three ways to turn \"how alike are these two sets?\" into a number between 0 and 1","headline":"Set Similarity Metrics","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["discrete-math","algorithms","data-analysis","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-04-21</span>
+    <span class="repos">Discrete-Mathematics-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Three ways to turn &quot;how alike are these two sets?&quot; into a number between 0 and 1</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-application">The application</a></li><li><a href="#a-wrinkle-worth-recording">A wrinkle worth recording</a></li><li><a href="#related">Related</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="set-similarity-metrics">Set Similarity Metrics</h1>
+<p>Three ways to turn &quot;how alike are these two sets?&quot; into a number between 0 and 1. The optional task of lab 3 in <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> codes all three and applies them to a job recommender, which is what makes the differences visible rather than academic.</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Metric</th>
+<th>Formula</th>
+<th>Behaviour</th>
+</tr></thead><tbody>
+<tr><td><strong>Jaccard</strong></td><td>`\</td><td>A∩B\</td><td>/ \</td><td>A∪B\</td><td>`</td><td>penalises every non-shared element; strict</td></tr>
+<tr><td><strong>Sørensen–Dice</strong></td><td>`2\</td><td>A∩B\</td><td>/ (\</td><td>A\</td><td>+\</td><td>B\</td><td>)`</td><td>double-weights the overlap; more forgiving of size mismatch</td></tr>
+<tr><td><strong>Cosine</strong> (on sets)</td><td>`\</td><td>A∩B\</td><td>/ √(\</td><td>A\</td><td>·\</td><td>B\</td><td>)`</td><td>geometric mean in the denominator; between the other two</td></tr>
+</tbody></table></div>
+<p>Dice and Jaccard are monotone transforms of each other, so they rank pairs identically — they differ only in the <em>magnitude</em> of the score, which matters as soon as a threshold is applied. Cosine can reorder pairs when the two sets differ sharply in size, because a large set is penalised by <code>√</code> rather than linearly.</p>
+<h2 id="the-application" class="h-anch"><a class="hlink" href="#the-application" aria-label="Link to this section">#</a>The application</h2>
+<p>A skill-set recommender: user skills as one set, job requirements as another.</p>
+<ul><li><strong>Skill gap</strong> = <code>requirements − skills</code>, a set difference read directly as &quot;what to learn next&quot;.</li><li><strong>Match category</strong> = a banded label over the similarity score.</li><li><strong>Composite score</strong> = job match × mean similarity to similar users × count of similar users — a collaborative-filtering shape built from nothing but set operations.</li></ul>
+<p>That composite is the interesting part: three quantities multiplied with no weighting, so a single zero factor annihilates the recommendation.</p>
+<h2 id="a-wrinkle-worth-recording" class="h-anch"><a class="hlink" href="#a-wrinkle-worth-recording" aria-label="Link to this section">#</a>A wrinkle worth recording</h2>
+<p>This optional task uses Python&#x27;s <strong>builtin</strong> <code>set</code>, while <code>mandatory_tasks/core.py</code> in the same lab implements <code>Set</code>, <code>MultiSet</code> and <code>EmptySet</code> from scratch over native lists (see <a class="wl" href="characteristic-functions.html">characteristic-functions</a>). Whether the mandatory task forbade builtins or this is drift is not recorded in the repo. <strong>TODO:</strong> unresolved; <code>confidence: low</code> on the reason.</p>
+<h2 id="related" class="h-anch"><a class="hlink" href="#related" aria-label="Link to this section">#</a>Related</h2>
+<p>Jaccard reappears as a selection criterion rather than a recommender in <a class="wl" href="jaccard-similarity-set-selection.html">jaccard-similarity-set-selection</a>, where <a class="wl" href="physics-exam-prep.html">physics-exam-prep</a> uses it to pick maximally dissimilar question sets — same metric, different job.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="characteristic-functions.html">characteristic-functions</a> · <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> · <a class="wl" href="make-the-formal-object-observable.html">make-the-formal-object-observable</a></p></div>
+  <div class="tags"><span class="tag">discrete-math</span><span class="tag">algorithms</span><span class="tag">data-analysis</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab3_Sets/optional_task/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="characteristic-functions.html"><span class="kind k-concept">concept</span><span class="rel-t">Characteristic Functions</span><span class="rel-g">The characteristic function χ_A(x) of a set A over a universe U returns 1 when x ∈ A and 0 otherwise</span></a><a class="rel" href="jaccard-similarity-set-selection.html"><span class="kind k-concept">concept</span><span class="rel-t">Jaccard Similarity Set Selection</span><span class="rel-g">Using a set-overlap score not to rank items but to partition a corpus into what you have already seen and what you have not</span></a><a class="rel" href="make-the-formal-object-observable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Make the Formal Object Observable</span><span class="rel-g">Take a mathematical definition and build something that lets you watch it behave</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="physics-exam-prep.html"><span class="kind k-project">project</span><span class="rel-t">Physics Exam Prep</span><span class="rel-g">Not a generated static site and not an asset dump: a hand-written, zero-dependency, offline-first single-page web app — an installable PWA — built from one Physics…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

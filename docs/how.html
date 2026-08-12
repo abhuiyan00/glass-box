@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How it works · Glass Box</title>
+<meta name="description" content="Two repositories, one gate, and a search that runs in your browser.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How it works · Glass Box">
+<meta property="og:description" content="Two repositories, one gate, and a search that runs in your browser.">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="index.html">Ask</a><a href="browse.html">Browse</a><a href="map.html">Map</a><a href="receipts.html">Receipts</a><a href="gaps.html">Gaps</a><a href="how.html" aria-current="page">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<section class="page-head">
+  <h1>How it works</h1>
+  <p class="lede">Two repositories and one file boundary between them. This one is public and
+    holds no private page; the other is private and renders no HTML.</p>
+</section>
+
+<section class="band">
+  <h2>The path a page takes</h2>
+  <ol class="steps">
+    <li><span class="step-n">01</span><div><h3>It gets written once</h3>
+      <p>A repository is read, then the author is interviewed about what the code cannot
+      say — why a tool was chosen, what was tried and abandoned, whether the project is
+      actually finished. Answers become quoted evidence on the page. Questions that go
+      unanswered become a recorded gap, never a plausible-sounding reason.</p></div></li>
+    <li><span class="step-n">02</span><div><h3>It has to pass a gate to leave</h3>
+      <p>Pages default to private. A page becomes public only when a person marks it so, and
+      only if it clears mechanical checks first: the right type, high or medium confidence,
+      current status, and no unreviewed dependency on a sensitive source. Anything the gate
+      rates <em>low</em> — one weak source, or a question that was asked and never answered —
+      stays private, and session records can never be published at all. Pages admitted below
+      the top level open with a block saying exactly what that costs you.</p></div></li>
+    <li><span class="step-n">03</span><div><h3>What crosses is data, not the wiki</h3>
+      <p>An export writes a bundle of the 281 cleared pages —
+      their text, what they link to, and every measured figure — and scans it for anything
+      secret-shaped before it is written. The private repository is not present when this
+      site is built, so it cannot leak a page it has never seen.</p></div></li>
+    <li><span class="step-n">04</span><div><h3>This site is generated from that bundle</h3>
+      <p>Python standard library, no dependencies, no build tooling. Output is flat HTML with
+      relative links, so it works on a static host and equally well from a folder on your
+      desktop with no network at all.</p></div></li>
+  </ol>
+</section>
+
+<section class="band">
+  <h2>What happens when you type a question</h2>
+  <p class="band-b">Nothing leaves your browser. The index ships with the page.</p>
+  <ul class="plain">
+    <li>Your words are matched against six fields per page — its name, title, alternative
+      phrasings, summary, tags and source paths — each weighted differently, plus the body
+      text at the lowest weight.</li>
+    <li>Rare words count for more than common ones, measured across the pages published
+      here. That is why a ranking on this site can differ slightly from the author's private
+      tool: the same scorer, a smaller corpus.</li>
+    <li>A score is multiplied by how much of your question the page actually covered,
+      squared. This is what stops a page about a data-protection <em>controller</em> from
+      answering a question about a Kubernetes ingress <em>controller</em>.</li>
+    <li>Then it follows exactly one link outward, because a link between two pages is the
+      author's own judgement that they belong together — the most reliable signal available
+      and one that word matching cannot see.</li>
+    <li>If nothing clears the relevance floor, it says so and offers what it does cover.
+      A designed refusal beats a confident wrong answer.</li>
+  </ul>
+</section>
+
+<section class="band closing">
+  <h2>Why not just use a chatbot over the pages</h2>
+  <p>Because a summary you cannot check is worth less than a page you can. This returns
+    pages, and every page names the files it was written from and quotes them. The failure
+    mode of a language model here is a fluent sentence with nothing behind it, which is the
+    exact failure this whole system was built to avoid. If prose answers are added later,
+    they will cite the page every claim came from or they will not ship.</p>
+</section>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="browse.html">Browse everything</a>
+    <a href="receipts.html">The numbers, and how each is counted</a>
+    <a href="gaps.html">What it does not know</a>
+    <a href="how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

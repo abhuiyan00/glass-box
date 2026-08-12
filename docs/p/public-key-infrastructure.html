@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Public Key Infrastructure · Glass Box</title>
+<meta name="description" content="The answer to the question asymmetric cryptography leaves open: you hold a public key, but whose is it? PKI is the set of roles, policies and formats that binds a public…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Public Key Infrastructure · Glass Box">
+<meta property="og:description" content="The answer to the question asymmetric cryptography leaves open: you hold a public key, but whose is it? PKI is the set of roles, policies and formats that binds a public…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The roles","Why the CSR is generated on the client","What the lab built","Where PKI shows up in transport security","The parts that are hard in practice","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Cybersecurity-Engineering-Laboratories/labs/07_applied_cryptography/lab-07-report.pdf","Cybersecurity-Engineering-Laboratories/labs/09_secure_communication/lab-09-report.pdf"],"dateModified":"2026-07-28","description":"The answer to the question asymmetric cryptography leaves open: you hold a public key, but whose is it? PKI is the set of roles, policies and formats that binds a public…","headline":"Public Key Infrastructure","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["cryptography","security","networking"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Cybersecurity-Engineering-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The answer to the question asymmetric cryptography leaves open: you hold a public key, but whose is it? PKI is the set of roles, policies and formats that binds a public…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-roles">The roles</a></li><li><a href="#why-the-csr-is-generated-on-the-client">Why the CSR is generated on the client</a></li><li><a href="#what-the-lab-built">What the lab built</a></li><li><a href="#where-pki-shows-up-in-transport-security">Where PKI shows up in transport security</a></li><li><a href="#the-parts-that-are-hard-in-practice">The parts that are hard in practice</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="public-key-infrastructure">Public Key Infrastructure</h1>
+<p>The answer to the question asymmetric cryptography leaves open: <strong>you hold a public key, but whose is it?</strong> PKI is the set of roles, policies and formats that binds a public key to an identity in a way a third party can check. Lab 07 of <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a> builds one end to end.</p>
+<h2 id="the-roles" class="h-anch"><a class="hlink" href="#the-roles" aria-label="Link to this section">#</a>The roles</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Role</th>
+<th>Does</th>
+</tr></thead><tbody>
+<tr><td><strong>End entity</strong></td><td>the subject a certificate is issued to; holds its own private key</td></tr>
+<tr><td><strong>Certification authority (CA)</strong></td><td>signs certificates, asserting the key↔identity binding</td></tr>
+<tr><td><strong>Registration authority (RA)</strong></td><td>verifies identity before the CA signs; optional, folded into the CA when absent</td></tr>
+<tr><td><strong>CRL issuer</strong></td><td>publishes revocations for certificates that must stop being trusted early</td></tr>
+<tr><td><strong>Certificate repository</strong></td><td>stores certificates and CRLs so relying parties can fetch them</td></tr>
+</tbody></table></div>
+<p>The dominant format is <strong>X.509 v3</strong>. A certificate is a structured document — subject, public key, issuer, validity window, extensions — signed by the issuer&#x27;s private key. Verification is recursive: check the signature using the issuer&#x27;s public key, which comes from the issuer&#x27;s certificate, up to a root you already trust. <strong>The chain terminates in a decision, not in a proof.</strong> Root certificates are trusted because they were shipped with the operating system or the browser, and that is the actual foundation of the whole edifice.</p>
+<h2 id="why-the-csr-is-generated-on-the-client" class="h-anch"><a class="hlink" href="#why-the-csr-is-generated-on-the-client" aria-label="Link to this section">#</a>Why the CSR is generated on the client</h2>
+<p>The certificate signing request carries the public key and the identity to be certified, and it is generated on the subject&#x27;s own machine for one reason: <strong>the private key never leaves it.</strong> If the CA generated the keypair, the CA would have held the private key, and non-repudiation — the property <a class="wl" href="digital-signatures.html">digital-signatures</a> exists to provide — would be gone. This is the single most load-bearing procedural detail in PKI and the lab records it explicitly.</p>
+<p>The practical corollary shows up in this repository&#x27;s own handling rules: a <code>.p12</code> bundle is a private key container by definition, so none are committed, and the natural illustration for this lab was rejected because it printed a private key to a terminal. See <a class="wl" href="omit-rsa-private-key-screenshot.html">omit-rsa-private-key-screenshot</a>.</p>
+<h2 id="what-the-lab-built" class="h-anch"><a class="hlink" href="#what-the-lab-built" aria-label="Link to this section">#</a>What the lab built</h2>
+<p>RSA keypair generation, signing and verification via <a class="wl" href="openssl.html">openssl</a>; a parallel OpenPGP keypair (ECC and RSA) via GnuPG; a certificate authority stood up with Easy-RSA, a CSR issued and signed, and the resulting certificates used for OpenVPN in the secure-communication lab. Also PKCS#12 packaging and HMAC.</p>
+<p>The two trust models placed side by side is the useful part. <strong>X.509 is hierarchical</strong> — trust flows down from roots, and revocation is centralised through CRLs (or OCSP). <strong>OpenPGP is a web of trust</strong> — peers sign each other&#x27;s keys and each relying party decides how much transitive trust to extend. The same cryptographic primitives, two entirely different governance answers to &quot;whose key is this&quot;.</p>
+<h2 id="where-pki-shows-up-in-transport-security" class="h-anch"><a class="hlink" href="#where-pki-shows-up-in-transport-security" aria-label="Link to this section">#</a>Where PKI shows up in transport security</h2>
+<p>TLS is the mass deployment. The server presents a certificate chain, the client validates it against its trust store, and only then does key agreement proceed — which is exactly the authentication step whose absence makes unauthenticated Diffie–Hellman vulnerable to a <a class="wl" href="man-in-the-middle-attack.html">man-in-the-middle-attack</a>. Lab 09 inspects TLS 1.2 and 1.3 handshakes in <a class="wl" href="wireshark.html">wireshark</a> and captures an OpenVPN tunnel interface against the underlying one, confirming that an observer outside the tunnel sees ciphertext. See <a class="wl" href="cia-triad.html">cia-triad</a> for the properties being claimed and <a class="wl" href="symmetric-vs-asymmetric-cryptography.html">symmetric-vs-asymmetric-cryptography</a> for the hybrid construction underneath.</p>
+<h2 id="the-parts-that-are-hard-in-practice" class="h-anch"><a class="hlink" href="#the-parts-that-are-hard-in-practice" aria-label="Link to this section">#</a>The parts that are hard in practice</h2>
+<p>Revocation is the weak joint: a certificate is valid until it expires unless something actively says otherwise, and CRL/OCSP distribution is slow, cacheable and frequently fails open. Certificate lifetime management, key rotation and CA compromise are all operational problems that the mathematics does not touch, and none of them are exercised in a single-session lab.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="digital-signatures.html">digital-signatures</a> · <a class="wl" href="symmetric-vs-asymmetric-cryptography.html">symmetric-vs-asymmetric-cryptography</a> · <a class="wl" href="cia-triad.html">cia-triad</a> · <a class="wl" href="man-in-the-middle-attack.html">man-in-the-middle-attack</a> · <a class="wl" href="openssl.html">openssl</a> · <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a></p></div>
+  <div class="tags"><span class="tag">cryptography</span><span class="tag">security</span><span class="tag">networking</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/07_applied_cryptography/lab-07-report.pdf</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/09_secure_communication/lab-09-report.pdf</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="cia-triad.html"><span class="kind k-concept">concept</span><span class="rel-t">CIA Triad</span><span class="rel-g">Confidentiality, Integrity, Availability — the three properties any security control is ultimately defending</span></a><a class="rel" href="digital-signatures.html"><span class="kind k-concept">concept</span><span class="rel-t">Digital Signatures</span><span class="rel-g">Sign with the private key, verify with the public one — the reverse of encryption&#x27;s key usage, and the source of three properties encryption alone does not provide</span></a><a class="rel" href="man-in-the-middle-attack.html"><span class="kind k-concept">concept</span><span class="rel-t">Man-in-the-Middle Attack</span><span class="rel-g">A class of attack in which the attacker sits between two communicating parties, relaying traffic while both believe they are talking directly to each other</span></a><a class="rel" href="symmetric-vs-asymmetric-cryptography.html"><span class="kind k-concept">concept</span><span class="rel-t">Symmetric vs Asymmetric Cryptography</span><span class="rel-g">Two families with different guarantees and wildly different costs</span></a><a class="rel" href="omit-rsa-private-key-screenshot.html"><span class="kind k-decision">decision</span><span class="rel-t">Omit the RSA Private-Key Screenshot</span><span class="rel-g">Do not use the natural illustration for the applied-cryptography lab, because that page prints a private key</span></a><a class="rel" href="cybersecurity-engineering-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Cybersecurity Engineering Laboratories</span><span class="rel-g">Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026</span></a><a class="rel" href="openssl.html"><span class="kind k-tech">tech</span><span class="rel-t">OpenSSL</span><span class="rel-g">The general-purpose cryptography toolkit — a library that most of the internet links against, plus a command-line front end that is the standard way to do PKI work by…</span></a><a class="rel" href="wireshark.html"><span class="kind k-tech">tech</span><span class="rel-t">Wireshark</span><span class="rel-g">A packet capture and protocol analyser: read frames off an interface, dissect them by protocol, and inspect any layer of any packet</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

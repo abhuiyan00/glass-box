@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQL*Plus · Glass Box</title>
+<meta name="description" content="Oracle&#x27;s command-line client, and the execution model the whole of oracle-database-laboratories is written against">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL*Plus · Glass Box">
+<meta property="og:description" content="Oracle&#x27;s command-line client, and the execution model the whole of oracle-database-laboratories is written against">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The four client features the repo depends on","Substitution variables versus bind variables","Output is deliberately not committed","Why a client gets its own page","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Oracle-Database-Laboratories/README.md","Oracle-Database-Laboratories/sql/03_plsql/02_cursors.sql","Oracle-Database-Laboratories/.gitignore"],"dateModified":"2026-07-28","description":"Oracle's command-line client, and the execution model the whole of oracle-database-laboratories is written against","headline":"SQL*Plus","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["databases","sql","devops"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Oracle-Database-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Oracle&#x27;s command-line client, and the execution model the whole of oracle-database-laboratories is written against</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-four-client-features-the-repo-depends-on">The four client features the repo depends on</a></li><li><a href="#substitution-variables-versus-bind-variables">Substitution variables versus bind variables</a></li><li><a href="#output-is-deliberately-not-committed">Output is deliberately not committed</a></li><li><a href="#why-a-client-gets-its-own-page">Why a client gets its own page</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="sqlplus">SQL*Plus</h1>
+<p>Oracle&#x27;s command-line client, and the execution model the whole of <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a> is written against. Every script in that repo is a SQL*Plus script first and a SQL file second — the <code>@</code> run order, the <code>&amp;</code> substitution variables and the <code>/</code> statement terminator are all client features, not database ones.</p>
+<h2 id="the-four-client-features-the-repo-depends-on" class="h-anch"><a class="hlink" href="#the-four-client-features-the-repo-depends-on" aria-label="Link to this section">#</a>The four client features the repo depends on</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Feature</th>
+<th>Use</th>
+</tr></thead><tbody>
+<tr><td><code>@path/to/script.sql</code></td><td>run a file; the README&#x27;s run order is literally a list of <code>@</code> lines</td></tr>
+<tr><td><code>&amp;variable</code></td><td>prompt-and-substitute at parse time — the repo&#x27;s only parameterisation mechanism</td></tr>
+<tr><td><code>SET SERVEROUTPUT ON</code></td><td>make <code>DBMS_OUTPUT.PUT_LINE</code> actually print; without it the block runs and shows nothing</td></tr>
+<tr><td><code>SHOW ERRORS PACKAGE BODY x</code></td><td>see why a body compiled invalid</td></tr>
+<tr><td><code>/</code> on its own line</td><td>terminate a PL/SQL block or type body — a bare <code>;</code> will not</td></tr>
+</tbody></table></div>
+<p><code>SET SERVEROUTPUT ON</code> appears at the top of every procedural script. Forgetting it is the classic &quot;my trigger did nothing&quot; false alarm: the code ran, the buffer filled, nothing was flushed.</p>
+<h2 id="substitution-variables-versus-bind-variables" class="h-anch"><a class="hlink" href="#substitution-variables-versus-bind-variables" aria-label="Link to this section">#</a>Substitution variables versus bind variables</h2>
+<p><code>&amp;name</code> is a <strong>textual</strong> substitution performed by the client before the statement reaches the server. It is not a bind variable: there is no type, no reuse of the parsed plan, and no protection against whatever the value expands into. Host binds (<code>:name</code>) exist, but need a separate <code>VARIABLE</code> declaration before the block will run.</p>
+<p>The repo standardises on substitution throughout and says so where the choice is visible:</p>
+<blockquote><p>&quot;Substitution variables (&amp;...) throughout, consistent with the rest of the file -- mixing in a host bind (:name) would need a separate VARIABLE declaration before the block would run under SQL*Plus.&quot;</p><cite>Oracle-Database-Laboratories/sql/03_plsql/02_cursors.sql, 2026-07-25</cite></blockquote>
+<p>That records <em>internal consistency</em> as the reason for the choice, which is real but narrow.</p>
+<p><strong>TODO:</strong> whether SQL*Plus and substitution variables were a deliberate preference or simply the course-provided environment is not recorded anywhere in the repository. Do not infer a preference. <code>confidence: low</code> on the motivation; <code>confidence: high</code> on the fact that the whole suite uses them.</p>
+<h2 id="output-is-deliberately-not-committed" class="h-anch"><a class="hlink" href="#output-is-deliberately-not-committed" aria-label="Link to this section">#</a>Output is deliberately not committed</h2>
+<p><code>.gitignore</code> excludes <code>*.lst</code>, <code>*.log</code>, <code>*.trc</code>, <code>sqlnet.log</code> and <code>afiedt.buf</code> — SQL*Plus spool and editor artefacts — alongside wallet and credential material (<code>*.sso</code>, <code>*.p12</code>, <code>*.jks</code>, <code>tnsnames.ora</code>, <code>wallet/</code>). Clean, but it has a consequence the wiki records rather than glosses: <strong>no execution evidence exists in the repository.</strong> The scripts are internally consistent and would run; that they <em>were</em> run is not established. See <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a>.</p>
+<h2 id="why-a-client-gets-its-own-page" class="h-anch"><a class="hlink" href="#why-a-client-gets-its-own-page" aria-label="Link to this section">#</a>Why a client gets its own page</h2>
+<p>Because the run contract lives here, not in the database. <code>@</code>-ordered scripts with no build step and no driver program are the same delivery shape as <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> elsewhere in this source set: the artefact is text, the runner is whatever the reader already has, and the ordering is carried by <a class="wl" href="numbered-stages-in-directory-names.html">numbered-stages-in-directory-names</a> rather than by a manifest.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="oracle-database.html">oracle-database</a> · <a class="wl" href="plsql.html">plsql</a> · <a class="wl" href="idempotent-teardown-scripts.html">idempotent-teardown-scripts</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> · <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a></p></div>
+  <div class="tags"><span class="tag">databases</span><span class="tag">sql</span><span class="tag">devops</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/03_plsql/02_cursors.sql</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/.gitignore</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="idempotent-teardown-scripts.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Idempotent Teardown Scripts</span><span class="rel-g">Every script in the set can be run again, from any state, without editing it first</span></a><a class="rel" href="numbered-stages-in-directory-names.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Numbered Stages in Directory Names</span><span class="rel-g">Order is encoded in filenames and directory names, not in a table of contents</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="oracle-database-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Oracle Database Laboratories</span><span class="rel-g">Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite</span></a><a class="rel" href="oracle-database.html"><span class="kind k-tech">tech</span><span class="rel-t">Oracle Database</span><span class="rel-g">Oracle&#x27;s relational database engine</span></a><a class="rel" href="plsql.html"><span class="kind k-tech">tech</span><span class="rel-t">PL/SQL</span><span class="rel-g">Oracle&#x27;s procedural extension to SQL: block-structured, statically typed against the schema, and executed inside the database rather than in a client</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

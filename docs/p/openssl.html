@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenSSL · Glass Box</title>
+<meta name="description" content="The general-purpose cryptography toolkit — a library that most of the internet links against, plus a command-line front end that is the standard way to do PKI work by…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenSSL · Glass Box">
+<meta property="og:description" content="The general-purpose cryptography toolkit — a library that most of the internet links against, plus a command-line front end that is the standard way to do PKI work by…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The subcommands the labs exercise","Where it sits against CrypTool","The Diffie–Hellman exercise did not complete","Operational notes worth keeping","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Cybersecurity-Engineering-Laboratories/labs/07_applied_cryptography/lab-07-report.pdf","Cybersecurity-Engineering-Laboratories/labs/06_hash_functions/lab-06-report.pdf","Cybersecurity-Engineering-Laboratories/labs/09_secure_communication/lab-09-report.pdf","Cybersecurity-Engineering-Laboratories/.gitignore"],"dateModified":"2026-07-28","description":"The general-purpose cryptography toolkit — a library that most of the internet links against, plus a command-line front end that is the standard way to do PKI work by…","headline":"OpenSSL","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["cryptography","security","bash"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Cybersecurity-Engineering-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The general-purpose cryptography toolkit — a library that most of the internet links against, plus a command-line front end that is the standard way to do PKI work by…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-subcommands-the-labs-exercise">The subcommands the labs exercise</a></li><li><a href="#where-it-sits-against-cryptool">Where it sits against CrypTool</a></li><li><a href="#the-diffiehellman-exercise-did-not-complete">The Diffie–Hellman exercise did not complete</a></li><li><a href="#operational-notes-worth-keeping">Operational notes worth keeping</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="openssl">OpenSSL</h1>
+<p>The general-purpose cryptography toolkit — a library that most of the internet links against, plus a command-line front end that is the standard way to <em>do</em> PKI work by hand. Used in labs 06, 07 and 09 of <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a>, alongside GnuPG and Easy-RSA.</p>
+<h2 id="the-subcommands-the-labs-exercise" class="h-anch"><a class="hlink" href="#the-subcommands-the-labs-exercise" aria-label="Link to this section">#</a>The subcommands the labs exercise</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Area</th>
+<th>Subcommand</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr><td>RSA keys</td><td><code>genrsa</code>, <code>rsa</code></td><td>generate a private key; derive the public half</td></tr>
+<tr><td>Modern keygen</td><td><code>genpkey</code></td><td>algorithm-agnostic key and parameter generation, including DH parameters</td></tr>
+<tr><td>Digests &amp; signing</td><td><code>dgst</code></td><td>hash, sign with a private key, verify with a public one</td></tr>
+<tr><td>Key agreement</td><td><code>pkeyutl -derive</code>, <code>pkeyparam</code>, <code>pkey</code></td><td>Diffie–Hellman derivation and key inspection</td></tr>
+<tr><td>Certificates</td><td><code>req</code>, <code>x509</code>, <code>ca</code> (via Easy-RSA)</td><td>CSR generation, self-signing, CA operations</td></tr>
+<tr><td>Packaging</td><td><code>pkcs12</code></td><td>bundle key and certificate into a <code>.p12</code></td></tr>
+</tbody></table></div>
+<p>The sign/verify pair is the heart of lab 07: sign a file with the private key, verify with the public one, then modify the file and verify again to watch it fail — see <a class="wl" href="digital-signatures.html">digital-signatures</a>. Easy-RSA wraps the same primitives into a CA whose certificates then feed OpenVPN in lab 09.</p>
+<h2 id="where-it-sits-against-cryptool" class="h-anch"><a class="hlink" href="#where-it-sits-against-cryptool" aria-label="Link to this section">#</a>Where it sits against CrypTool</h2>
+<p><a class="wl" href="cryptool.html">cryptool</a> shows you what a primitive <em>does</em>; OpenSSL makes you produce the artefacts. The commands are text, so they are reviewable and repeatable — which is precisely what the GUI crypto labs cannot leave behind. That is also why OpenSSL is where the repository&#x27;s failures are most visible: a screenshot of a working demo hides nothing, whereas a command that returns an error is recorded as an error.</p>
+<h2 id="the-diffiehellman-exercise-did-not-complete" class="h-anch"><a class="hlink" href="#the-diffiehellman-exercise-did-not-complete" aria-label="Link to this section">#</a>The Diffie–Hellman exercise did not complete</h2>
+<p>Lab 06 attempts DH practically between two VMs — generate shared parameters, derive per-client keys, exchange public halves, derive the shared secret, compare. The report records failures at four consecutive steps (&quot;could not extract&quot;, &quot;not working&quot;, &quot;did not work&quot;, &quot;not resolved&quot;) and the author notes the instructions were unclear.</p>
+<p><strong>TODO:</strong> whether this was ever completed off-repo is unrecorded. <code>confidence: low</code> on the practical DH exchange; the conceptual material is separately evidenced on <a class="wl" href="symmetric-vs-asymmetric-cryptography.html">symmetric-vs-asymmetric-cryptography</a>. Do not invent a cause — the reports do not diagnose it.</p>
+<h2 id="operational-notes-worth-keeping" class="h-anch"><a class="hlink" href="#operational-notes-worth-keeping" aria-label="Link to this section">#</a>Operational notes worth keeping</h2>
+<ul><li><strong>Generate the CSR where the private key lives.</strong> The private key must never leave the subject&#x27;s machine — the whole non-repudiation argument in <a class="wl" href="public-key-infrastructure.html">public-key-infrastructure</a> rests on it.</li><li><strong>A <code>.p12</code> is a private-key container by definition.</strong> This repository&#x27;s <code>.gitignore</code> excludes <code>*.p12</code>, <code>*.pfx</code>, <code>*.pem</code>, <code>*.key</code>, <code>*.jks</code>, <code>*.keystore</code> and <code>id_rsa*</code> so the rule holds by default rather than by vigilance.</li><li><strong>The natural terminal output of key generation prints the private key.</strong> That single fact drove a documentation decision in this repo — see <a class="wl" href="omit-rsa-private-key-screenshot.html">omit-rsa-private-key-screenshot</a>.</li><li><strong>Verification failures are informative and distinguishable.</strong> Verifying against the wrong key and omitting the signature argument fail differently, which is exactly why the lab&#x27;s chosen illustration keeps the failed attempts above the successful one.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="public-key-infrastructure.html">public-key-infrastructure</a> · <a class="wl" href="digital-signatures.html">digital-signatures</a> · <a class="wl" href="symmetric-vs-asymmetric-cryptography.html">symmetric-vs-asymmetric-cryptography</a> · <a class="wl" href="cryptool.html">cryptool</a> · <a class="wl" href="wireshark.html">wireshark</a> · <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a></p></div>
+  <div class="tags"><span class="tag">cryptography</span><span class="tag">security</span><span class="tag">bash</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/07_applied_cryptography/lab-07-report.pdf</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/06_hash_functions/lab-06-report.pdf</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/09_secure_communication/lab-09-report.pdf</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/.gitignore</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="digital-signatures.html"><span class="kind k-concept">concept</span><span class="rel-t">Digital Signatures</span><span class="rel-g">Sign with the private key, verify with the public one — the reverse of encryption&#x27;s key usage, and the source of three properties encryption alone does not provide</span></a><a class="rel" href="public-key-infrastructure.html"><span class="kind k-concept">concept</span><span class="rel-t">Public Key Infrastructure</span><span class="rel-g">The answer to the question asymmetric cryptography leaves open: you hold a public key, but whose is it? PKI is the set of roles, policies and formats that binds a public…</span></a><a class="rel" href="symmetric-vs-asymmetric-cryptography.html"><span class="kind k-concept">concept</span><span class="rel-t">Symmetric vs Asymmetric Cryptography</span><span class="rel-g">Two families with different guarantees and wildly different costs</span></a><a class="rel" href="omit-rsa-private-key-screenshot.html"><span class="kind k-decision">decision</span><span class="rel-t">Omit the RSA Private-Key Screenshot</span><span class="rel-g">Do not use the natural illustration for the applied-cryptography lab, because that page prints a private key</span></a><a class="rel" href="cybersecurity-engineering-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Cybersecurity Engineering Laboratories</span><span class="rel-g">Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026</span></a><a class="rel" href="cryptool.html"><span class="kind k-tech">tech</span><span class="rel-t">CrypTool</span><span class="rel-g">A free cryptography teaching application developed by German universities, built to make cryptographic mechanisms visible rather than merely available</span></a><a class="rel" href="wireshark.html"><span class="kind k-tech">tech</span><span class="rel-t">Wireshark</span><span class="rel-g">A packet capture and protocol analyser: read frames off an interface, dissect them by protocol, and inspect any layer of any packet</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Documented Beside The Feature · Glass Box</title>
+<meta name="description" content="The privacy argument is not filed in one policy document — it is restated at every site where the sensitive thing happens: in the vision doc, in the legal chapter, in…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Privacy Documented Beside The Feature · Glass Box">
+<meta property="og:description" content="The privacy argument is not filed in one policy document — it is restated at every site where the sensitive thing happens: in the vision doc, in the legal chapter, in…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Evidence","Why the redundancy is the point","The two costs, both visible in this repo","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Farley/docs/VISION.md","Farley/docs/ocr-overlay/03-android-permissions-and-legal.md","Farley/docs/guides/ANDROID-INSTALL.md","Farley/docs/SRS.md","Farley/apps/android/android/app/src/main/java/com/farely/app/FarelyAccessibilityService.kt","Farley/apps/tester/src/app/lib/coordinator.ts"],"dateModified":"2026-07-28","description":"The privacy argument is not filed in one policy document — it is restated at every site where the sensitive thing happens: in the vision doc, in the legal chapter, in…","headline":"Privacy Documented Beside The Feature","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["privacy","documentation","mobile"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-02</span>
+    <span class="repos">Farley</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The privacy argument is not filed in one policy document — it is restated at every site where the sensitive thing happens: in the vision doc, in the legal chapter, in…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#evidence">Evidence</a></li><li><a href="#why-the-redundancy-is-the-point">Why the redundancy is the point</a></li><li><a href="#the-two-costs-both-visible-in-this-repo">The two costs, both visible in this repo</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="privacy-documented-beside-the-feature">Privacy Documented Beside The Feature</h1>
+<p>The privacy argument is not filed in one policy document — it is <strong>restated at every site where the sensitive thing happens</strong>: in the vision doc, in the legal chapter, in the install guide, in the SRS non-functional requirements, and in the header comment of the source file that does the capture.</p>
+<p>In <a class="wl" href="farely.html">farely</a> the same two invariants — never tap Accept, never come between the driver and an identity check — are written down in at least six places, in two languages of expression (prose and code comment) and two programming languages.</p>
+<h2 id="evidence" class="h-anch"><a class="hlink" href="#evidence" aria-label="Link to this section">#</a>Evidence</h2>
+<p>The trade-off is stated where the trade-off is made:</p>
+<blockquote><p>&quot;This is a deliberate, documented departure from \&quot;nothing leaves the phone\&quot;: a screen capture leaves the device <strong>only</strong> for this classifier, and only for screens that pass a cheap on-device novelty gate.&quot;</p><cite>Farley/docs/VISION.md, 2026-07-13</cite></blockquote>
+<p>And restated as a comment on the keyword list that enforces it:</p>
+<blockquote><p>&quot;Deliberately excludes verification/selfie terms: identity checks are detected on-device by the coordinator and NEVER routed to cloud vision.&quot;</p><cite>Farley/apps/android/.../FarelyAccessibilityService.kt, 2026-07-13</cite></blockquote>
+<p>The second quote is the pattern in one line. A developer editing <code>NOVELTY_HINTS</code> to add a keyword reads the rule at the moment they could break it. A privacy policy in a separate repository would not have been in that field of view — which is worth noting given that <a class="wl" href="privacy-policy-template.html">privacy-policy-template</a> exists and, by chronology, covers neither of the author&#x27;s two products.</p>
+<h2 id="why-the-redundancy-is-the-point" class="h-anch"><a class="hlink" href="#why-the-redundancy-is-the-point" aria-label="Link to this section">#</a>Why the redundancy is the point</h2>
+<p>It is the <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> habit applied to a legal and ethical constraint rather than to a data field. Six copies is normally a maintenance smell; here each copy sits next to a different way of violating the rule, so the duplication tracks the attack surface rather than the document tree. The ToS and ban-risk warning is likewise repeated four times — README warning block, VISION §7, the legal chapter (including a draft in-app disclaimer), and SRS NFR-L-1.</p>
+<h2 id="the-two-costs-both-visible-in-this-repo" class="h-anch"><a class="hlink" href="#the-two-costs-both-visible-in-this-repo" aria-label="Link to this section">#</a>The two costs, both visible in this repo</h2>
+<p><strong>Copies drift.</strong> The 2026-07-24 README rewrite for public release restated the privacy claim as &quot;runs fully on-device&quot;, which is <strong>less</strong> accurate than the VISION text it echoed: map tiles and fueleconomy.gov are unconditional outbound calls, and the <a class="wl" href="anthropic-messages-api.html">anthropic-messages-api</a> path ships in the bundle. Six sites of truth means six chances to write the sixth one carelessly — see <a class="wl" href="documentation-drift.html">documentation-drift</a> and <a class="wl" href="on-device-first-inference.html">on-device-first-inference</a>.</p>
+<p><strong>Documentation is not enforcement.</strong> The identity-check freeze is corroborated in three independent mechanisms, but all three are keyword heuristics; a verification screen containing an unlisted novelty word could still be captured. The docs assert a guarantee the code makes only probable. Stating the rule six times does not make it structural — see <a class="wl" href="opt-in-cloud-fallback.html">opt-in-cloud-fallback</a> and <a class="wl" href="never-automate-the-accept-tap.html">never-automate-the-accept-tap</a>, where the boundary <em>is</em> structural and the difference is instructive.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="farely.html">farely</a> · <a class="wl" href="android-accessibility-service.html">android-accessibility-service</a> · <a class="wl" href="accessibility-service-overlay.html">accessibility-service-overlay</a> · <a class="wl" href="readme-as-guided-tour.html">readme-as-guided-tour</a> · <a class="wl" href="privacy-policy-template.html">privacy-policy-template</a></p></div>
+  <div class="tags"><span class="tag">privacy</span><span class="tag">documentation</span><span class="tag">mobile</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Farley</span><span class="src-p">/docs/VISION.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/ocr-overlay/03-android-permissions-and-legal.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/guides/ANDROID-INSTALL.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/SRS.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/android/android/app/src/main/java/com/farely/app/FarelyAccessibilityService.kt</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/tester/src/app/lib/coordinator.ts</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="accessibility-service-overlay.html"><span class="kind k-concept">concept</span><span class="rel-t">Accessibility Service Overlay</span><span class="rel-g">Read another app&#x27;s live view hierarchy through the platform accessibility channel, compute something from it, then draw the answer back on top of that same app — without…</span></a><a class="rel" href="on-device-first-inference.html"><span class="kind k-concept">concept</span><span class="rel-t">On-Device-First Inference</span><span class="rel-g">Do the classification locally with cheap deterministic logic; treat a model call as an upgrade the owner may switch on, never as the default path</span></a><a class="rel" href="opt-in-cloud-fallback.html"><span class="kind k-concept">concept</span><span class="rel-t">Opt-In Cloud Fallback</span><span class="rel-g">A remote model call that is structurally optional: absent a key it does not exist, present a key it fires only for inputs a cheap local gate has already judged novel,…</span></a><a class="rel" href="never-automate-the-accept-tap.html"><span class="kind k-decision">decision</span><span class="rel-t">Never Automate The Accept Tap</span><span class="rel-g">farely advises; the driver taps</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="readme-as-guided-tour.html"><span class="kind k-pattern">pattern</span><span class="rel-t">README as Guided Tour</span><span class="rel-g">The README is written for a reader being shown around, not for a user trying to run something</span></a><a class="rel" href="farely.html"><span class="kind k-project">project</span><span class="rel-t">Farely</span><span class="rel-g">A personal Android rideshare/delivery driver assistant for Wrocław</span></a><a class="rel" href="privacy-policy-template.html"><span class="kind k-project">project</span><span class="rel-t">Privacy Policy Template</span><span class="rel-g">Six files, ~25 KB</span></a><a class="rel" href="android-accessibility-service.html"><span class="kind k-tech">tech</span><span class="rel-t">Android Accessibility Service</span><span class="rel-g">The platform API that lets an app observe another app&#x27;s view hierarchy and act on it</span></a><a class="rel" href="anthropic-messages-api.html"><span class="kind k-tech">tech</span><span class="rel-t">Anthropic Messages API</span><span class="rel-g">The only path in farely by which content leaves the phone</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Make the Formal Object Observable · Glass Box</title>
+<meta name="description" content="Take a mathematical definition and build something that lets you watch it behave">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Make the Formal Object Observable · Glass Box">
+<meta property="og:description" content="Take a mathematical definition and build something that lets you watch it behave">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Six instances, one per lab","The recurring mechanics","Why it is a pattern and not a preference","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Discrete-Mathematics-Laboratories/README.md","Discrete-Mathematics-Laboratories/lab4_Complexity/part1/Ackermann_Function/","Discrete-Mathematics-Laboratories/lab5_GraphTheory/SentinelNet/","Discrete-Mathematics-Laboratories/lab6_Neo4j/viewer/"],"dateModified":"2026-07-28","description":"Take a mathematical definition and build something that lets you watch it behave","headline":"Make the Formal Object Observable","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["discrete-math","documentation","algorithms"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-03-20</span>
+    <span class="repos">Discrete-Mathematics-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Take a mathematical definition and build something that lets you watch it behave</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#six-instances-one-per-lab">Six instances, one per lab</a></li><li><a href="#the-recurring-mechanics">The recurring mechanics</a></li><li><a href="#why-it-is-a-pattern-and-not-a-preference">Why it is a pattern and not a preference</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="make-the-formal-object-observable">Make the Formal Object Observable</h1>
+<p>Take a mathematical definition and build something that lets you <em>watch it behave</em>. Not a write-up with worked examples — a program with a slider, a stepper, or a failure simulation. The repository states this as its own organising thread:</p>
+<blockquote><p>&quot;The thread running through all six: take a formal object (a cut, a modulus, a set, a recursion, a graph, an information system) and make its behaviour <strong>observable</strong>.&quot;</p><cite>Discrete-Mathematics-Laboratories/README.md, 2026-07-10</cite></blockquote>
+<p>The verb is <em>observable</em>, not <em>illustrated</em>. The distinction is that the reader supplies the input.</p>
+<h2 id="six-instances-one-per-lab" class="h-anch"><a class="hlink" href="#six-instances-one-per-lab" aria-label="Link to this section">#</a>Six instances, one per lab</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Formal object</th>
+<th>What you can watch</th>
+</tr></thead><tbody>
+<tr><td>A cut</td><td>the best cut value climbing across ten random restarts — <a class="wl" href="max-cut-and-local-search.html">max-cut-and-local-search</a></td></tr>
+<tr><td>A modulus</td><td>Fermat&#x27;s attack collapsing as `\</td><td>p−q\</td><td>` shrinks — <a class="wl" href="rsa-and-integer-factorization.html">rsa-and-integer-factorization</a></td></tr>
+<tr><td>A set</td><td>χ-sums, truth tables and inclusion–exclusion agreeing — <a class="wl" href="characteristic-functions.html">characteristic-functions</a></td></tr>
+<tr><td>A recursion</td><td>the call counter exploding while the value barely moves — <a class="wl" href="ackermann-and-primitive-recursion.html">ackermann-and-primitive-recursion</a></td></tr>
+<tr><td>A graph</td><td>nodes failing one by one until the network splits — <a class="wl" href="graph-connectivity-and-resilience.html">graph-connectivity-and-resilience</a></td></tr>
+<tr><td>An information system</td><td>a query and its result rendered side by side — <a class="wl" href="pawlak-information-system.html">pawlak-information-system</a></td></tr>
+</tbody></table></div>
+<h2 id="the-recurring-mechanics" class="h-anch"><a class="hlink" href="#the-recurring-mechanics" aria-label="Link to this section">#</a>The recurring mechanics</h2>
+<ul><li><strong>A control, not a constant.</strong> <a class="wl" href="matplotlib.html">matplotlib</a> <code>Slider</code> widgets over <code>m</code>/<code>n</code>; Colab <code>#@param</code> form fields; a browser panel of lenses. The parameter that carries the concept is the one exposed.</li><li><strong>Show the cost beside the answer.</strong> A recursive-call counter, a <code>2^127</code> search space quoted next to a ten-restart heuristic, live graph metrics — the price of the computation is part of the observation.</li><li><strong>Steps, not results.</strong> BFS and DFS render as replayable step-frames rather than a final ordering.</li><li><strong>Failure as an interaction.</strong> Q-HYDRO&#x27;s stackable node failures make connectivity theory something you break rather than read.</li><li><strong>Scales chosen so something is visible.</strong> <code>LogNorm</code> heatmaps, log-space evaluation via <code>lgamma</code> — a linear axis on Ackermann values shows one hot cell and nothing else.</li></ul>
+<h2 id="why-it-is-a-pattern-and-not-a-preference" class="h-anch"><a class="hlink" href="#why-it-is-a-pattern-and-not-a-preference" aria-label="Link to this section">#</a>Why it is a pattern and not a preference</h2>
+<p>Because the same instinct survives outside the maths course. <a class="wl" href="course-as-runnable-study-tool.html">course-as-runnable-study-tool</a> is this pattern applied to exam revision across four other repositories; the deliverables are double-click HTML for the same reason — <a class="wl" href="offline-first-static-deliverable.html">offline-first-static-deliverable</a>. The cost is real: <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> has essentially no automated tests, because effort went into making behaviour visible to a human rather than assertable by a runner. Observability substituted for verification.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> · <a class="wl" href="dual-implementation-as-cross-check.html">dual-implementation-as-cross-check</a> · <a class="wl" href="offline-first-static-deliverable.html">offline-first-static-deliverable</a> · <a class="wl" href="course-as-runnable-study-tool.html">course-as-runnable-study-tool</a> · <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a></p></div>
+  <div class="tags"><span class="tag">discrete-math</span><span class="tag">documentation</span><span class="tag">algorithms</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab4_Complexity/part1/Ackermann_Function/</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab5_GraphTheory/SentinelNet/</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab6_Neo4j/viewer/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="ackermann-and-primitive-recursion.html"><span class="kind k-concept">concept</span><span class="rel-t">Ackermann and Primitive Recursion</span><span class="rel-g">The Ackermann function is the standard witness that total computable is strictly larger than primitive recursive</span></a><a class="rel" href="characteristic-functions.html"><span class="kind k-concept">concept</span><span class="rel-t">Characteristic Functions</span><span class="rel-g">The characteristic function χ_A(x) of a set A over a universe U returns 1 when x ∈ A and 0 otherwise</span></a><a class="rel" href="graph-connectivity-and-resilience.html"><span class="kind k-concept">concept</span><span class="rel-t">Graph Connectivity and Resilience</span><span class="rel-g">&quot;Is this network connected?&quot; is a yes/no question</span></a><a class="rel" href="max-cut-and-local-search.html"><span class="kind k-concept">concept</span><span class="rel-t">Max-Cut and Local Search</span><span class="rel-g">Max-Cut: partition a graph&#x27;s vertices into two sets so that the weight of edges crossing between them is maximised</span></a><a class="rel" href="pawlak-information-system.html"><span class="kind k-concept">concept</span><span class="rel-t">Pawlak Information System</span><span class="rel-g">A Pawlak information system is the pair S = (U, A): a universe U of objects, a set A of attributes, and for each attribute a ∈ A a function a: U → V_a assigning every…</span></a><a class="rel" href="rsa-and-integer-factorization.html"><span class="kind k-concept">concept</span><span class="rel-t">RSA and Integer Factorization</span><span class="rel-g">RSA&#x27;s security rests on one asymmetry: multiplying two large primes is cheap, recovering them from the product is not</span></a><a class="rel" href="course-as-runnable-study-tool.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Course as Runnable Study Tool</span><span class="rel-g">Four separate courses were revised by building the syllabus into a program rather than by reading notes</span></a><a class="rel" href="dual-implementation-as-cross-check.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Dual Implementation as Cross-Check</span><span class="rel-g">Build the same thing twice, in two different stacks, and keep both</span></a><a class="rel" href="offline-first-static-deliverable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Offline-First Static Deliverable</span><span class="rel-g">The deliverable must work by double-clicking a file: no server, no install, no network</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="matplotlib.html"><span class="kind k-tech">tech</span><span class="rel-t">matplotlib</span><span class="rel-g">Python&#x27;s plotting library</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KaTeX · Glass Box</title>
+<meta name="description" content="Client-side LaTeX math renderer">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KaTeX · Glass Box">
+<meta property="og:description" content="Client-side LaTeX math renderer">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["How it is included","Why it is vendored rather than fetched","Why KaTeX rather than MathJax","Cost of the choice","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Physics/exam_prep/vendor/katex/","Physics/exam_prep/index.html","Physics/exam_prep/sw.js","Physics/exam_prep/snapshot.md","Physics/exam_prep/tools/qa.mjs"],"dateModified":"2026-07-28","description":"Client-side LaTeX math renderer","headline":"KaTeX","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["javascript","web-dev","documentation"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-06-27</span>
+    <span class="repos">Physics</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Client-side LaTeX math renderer</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#how-it-is-included">How it is included</a></li><li><a href="#why-it-is-vendored-rather-than-fetched">Why it is vendored rather than fetched</a></li><li><a href="#why-katex-rather-than-mathjax">Why KaTeX rather than MathJax</a></li><li><a href="#cost-of-the-choice">Cost of the choice</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="katex">KaTeX</h1>
+<p>Client-side LaTeX math renderer. It is the <strong>only</strong> third-party dependency anywhere in <a class="wl" href="physics-exam-prep.html">physics-exam-prep</a>, and the reason that repo contains 20 <code>.woff2</code> font files — a fact that looks like build residue until you know what it is.</p>
+<h2 id="how-it-is-included" class="h-anch"><a class="hlink" href="#how-it-is-included" aria-label="Link to this section">#</a>How it is included</h2>
+<p>Three files under <code>exam_prep/vendor/katex/</code>, committed into the repository:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>File</th>
+<th>Size</th>
+<th>Role</th>
+</tr></thead><tbody>
+<tr><td><code>katex.min.js</code></td><td>277 KB</td><td>the renderer</td></tr>
+<tr><td><code>katex.min.css</code></td><td>23 KB</td><td>the stylesheet — this is what references the fonts</td></tr>
+<tr><td><code>auto-render.min.js</code></td><td>3.5 KB</td><td>scans the DOM and renders delimited math in place</td></tr>
+<tr><td><code>fonts/KaTeX_*.woff2</code></td><td>×20</td><td>AMS, Main, Math, SansSerif, Script, Size1–4, Caligraphic, Fraktur, Typewriter</td></tr>
+</tbody></table></div>
+<p>Loaded by two plain <code>&lt;script src=&quot;vendor/…&quot;&gt;</code> tags and one <code>&lt;link rel=&quot;stylesheet&quot;&gt;</code> in a hand-authored <code>index.html</code>. No bundler, no package manager, no import map — see <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a>.</p>
+<p>The <code>auto-render</code> plugin is why the knowledge base can store math as ordinary strings: <code>js/data.js</code> writes <code>\(…\)</code> delimiters inline and the renderer finds them after the page is built, so nothing in the app has to know KaTeX exists.</p>
+<h2 id="why-it-is-vendored-rather-than-fetched" class="h-anch"><a class="hlink" href="#why-it-is-vendored-rather-than-fetched" aria-label="Link to this section">#</a>Why it is vendored rather than fetched</h2>
+<p>Recorded as <a class="wl" href="vendor-katex-instead-of-cdn.html">vendor-katex-instead-of-cdn</a>. The one-line justification is written into the app&#x27;s own structural map:</p>
+<blockquote><p>&quot;        └── katex/                  # bundled KaTeX (offline math) — no CDN needed&quot;</p><cite>Physics/exam_prep/snapshot.md, 2026-06-30</cite></blockquote>
+<p>A study tool whose formulas silently fail to render when the Wi-Fi is off is not a study tool. All 23 KaTeX assets are listed in the service worker&#x27;s <code>CORE</code> precache array, and <code>tools/qa.mjs</code> statically checks that every formula in the knowledge base actually parses — so a malformed LaTeX string fails the harness rather than the exam-eve revision session.</p>
+<h2 id="why-katex-rather-than-mathjax" class="h-anch"><a class="hlink" href="#why-katex-rather-than-mathjax" aria-label="Link to this section">#</a>Why KaTeX rather than MathJax</h2>
+<p>The functional argument is that KaTeX renders synchronously and self-contained, with no font fetching at runtime beyond the files already on disk, which is precisely what a <code>file://</code> deliverable needs — <a class="wl" href="offline-first-static-deliverable.html">offline-first-static-deliverable</a>. MathJax&#x27;s fuller LaTeX coverage buys nothing for a syllabus of physics formulas.</p>
+<p><strong>TODO:</strong> that is the reconstructable engineering argument, <strong>not a recorded rationale.</strong> No file in the repo compares the two, and the choice was not asked at interview. <code>confidence: low</code> on the reason; <code>high</code> on everything above it, read directly from the tree.</p>
+<h2 id="cost-of-the-choice" class="h-anch"><a class="hlink" href="#cost-of-the-choice" aria-label="Link to this section">#</a>Cost of the choice</h2>
+<p>~304 KB of JS/CSS plus the font files, committed permanently and updated by hand or not at all. There is no version pin and no update path recorded anywhere — the vendored copy is frozen at whatever was current on 2026-06-27, the earliest mtime in the repo.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="physics-exam-prep.html">physics-exam-prep</a> · <a class="wl" href="vendor-katex-instead-of-cdn.html">vendor-katex-instead-of-cdn</a> · <a class="wl" href="offline-first-static-deliverable.html">offline-first-static-deliverable</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> · <a class="wl" href="cache-individually-not-addall.html">cache-individually-not-addall</a></p></div>
+  <div class="tags"><span class="tag">javascript</span><span class="tag">web-dev</span><span class="tag">documentation</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/vendor/katex/</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/index.html</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/sw.js</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/snapshot.md</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/tools/qa.mjs</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="cache-individually-not-addall.html"><span class="kind k-decision">decision</span><span class="rel-t">Cache Individually, Not addAll</span><span class="rel-g">In the service worker&#x27;s install handler, precache each URL with its own cache.add(url).catch(() =&gt; {}) inside a Promise.all, rather than the idiomatic cache.addAll(CORE)</span></a><a class="rel" href="vendor-katex-instead-of-cdn.html"><span class="kind k-decision">decision</span><span class="rel-t">Vendor KaTeX Instead of CDN</span><span class="rel-g">Copy katex — katex.min.js, katex.min.css, auto-render.min.js and all 20 KaTeX_*.woff2 font files — into exam_prep/vendor/katex/ and load them by relative path, rather…</span></a><a class="rel" href="offline-first-static-deliverable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Offline-First Static Deliverable</span><span class="rel-g">The deliverable must work by double-clicking a file: no server, no install, no network</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="physics-exam-prep.html"><span class="kind k-project">project</span><span class="rel-t">Physics Exam Prep</span><span class="rel-g">Not a generated static site and not an asset dump: a hand-written, zero-dependency, offline-first single-page web app — an installable PWA — built from one Physics…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

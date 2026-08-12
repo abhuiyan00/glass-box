@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lazy versus Eager Learners · Glass Box</title>
+<meta name="description" content="Two classifiers taught in the same course sit at opposite ends of one trade, and the trade is a pair of counts rather than a pair of adjectives">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lazy versus Eager Learners · Glass Box">
+<meta property="og:description" content="Two classifiers taught in the same course sit at opposite ends of one trade, and the trade is a pair of counts rather than a pair of adjectives">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why the asymmetry is the whole design","The naive Bayes failure that matters more than the algorithm","The other arithmetic failure","Determinism is not free either","Where this appears"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["systems-analysis-and-decision-support/src/decision_support/classification.py","systems-analysis-and-decision-support/tests/test_classification.py"],"dateModified":"2026-08-04","description":"Two classifiers taught in the same course sit at opposite ends of one trade, and the trade is a pair of counts rather than a pair of adjectives","headline":"Lazy versus Eager Learners","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["ml","algorithms","performance","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-04 · in force since 2026-08-04</span>
+    <span class="repos">systems-analysis-and-decision-support</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Two classifiers taught in the same course sit at opposite ends of one trade, and the trade is a pair of counts rather than a pair of adjectives</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why-the-asymmetry-is-the-whole-design">Why the asymmetry is the whole design</a></li><li><a href="#the-naive-bayes-failure-that-matters-more-than-the-algorithm">The naive Bayes failure that matters more than the algorithm</a></li><li><a href="#the-other-arithmetic-failure">The other arithmetic failure</a></li><li><a href="#determinism-is-not-free-either">Determinism is not free either</a></li><li><a href="#where-this-appears">Where this appears</a></li></ol></nav>
+  <div class="prose"><h1 id="lazy-versus-eager-learners">Lazy versus Eager Learners</h1>
+<p>Two classifiers taught in the same course sit at opposite ends of one trade, and the trade is a pair of counts rather than a pair of adjectives.</p>
+<div class="tw"><table>
+<thead><tr>
+<th></th>
+<th>work at fit time</th>
+<th>work per prediction</th>
+</tr></thead><tbody>
+<tr><td>κ-NN (lazy)</td><td><strong>0</strong> distances computed</td><td>exactly <code>len(train)</code> distances</td></tr>
+<tr><td>naive Bayes (eager)</td><td>one counting pass over the data</td><td><code>features × classes</code>, independent of <code>len(train)</code></td></tr>
+</tbody></table></div>
+<p>Both numbers are counted by the implementations and asserted by tests. &quot;κ-NN is slow at prediction time&quot; is unfalsifiable; &quot;it computes exactly <code>len(train)</code> distances per query&quot; fails the moment an index or an approximation is introduced, which is what makes it worth writing down — <a class="wl" href="counted-complexity-assertions.html">counted-complexity-assertions</a>.</p>
+<h2 id="why-the-asymmetry-is-the-whole-design" class="h-anch"><a class="hlink" href="#why-the-asymmetry-is-the-whole-design" aria-label="Link to this section">#</a>Why the asymmetry is the whole design</h2>
+<p>A lazy learner defers everything, so it has <strong>no model</strong>. That has consequences in both directions and neither is obviously the better side:</p>
+<ul><li>adding training data is free — no refit, no retraining, no invalidation;</li><li>there is nothing to inspect, nothing to ship without the data, and nothing that compresses;</li><li>every query pays for the whole history, forever.</li></ul>
+<p>An eager learner does the opposite. It compresses the data into parameters once, and the parameters are the thing you can ship, version, inspect and reason about. Adding data means refitting.</p>
+<p>The practical rule that falls out: <strong>lazy wins when the data changes faster than you query it, eager wins when you query faster than it changes.</strong></p>
+<h2 id="the-naive-bayes-failure-that-matters-more-than-the-algorithm" class="h-anch"><a class="hlink" href="#the-naive-bayes-failure-that-matters-more-than-the-algorithm" aria-label="Link to this section">#</a>The naive Bayes failure that matters more than the algorithm</h2>
+<p>A word never seen in a class gets probability zero under maximum likelihood, and zero is absorbing in a product. One unseen feature drives that class&#x27;s posterior to zero regardless of every other piece of evidence in the document — a single word vetoing the verdict.</p>
+<p>Laplace smoothing adds a pseudo-count to every cell and removes the veto. Measured with <code>alpha = 0</code>, a document of three unseen words gives <code>-inf</code> for one class and a finite score for the other; with <code>alpha = 1</code> both are finite and the evidence decides.</p>
+<p>This is why the smoothing parameter is not a tuning knob. At zero the estimator is not merely worse, it is structurally broken, and it is broken in a way that looks like confidence.</p>
+<h2 id="the-other-arithmetic-failure" class="h-anch"><a class="hlink" href="#the-other-arithmetic-failure" aria-label="Link to this section">#</a>The other arithmetic failure</h2>
+<p>Naive Bayes multiplies one factor per feature, which underflows long before the answer is reached — see <a class="wl" href="log-domain-arithmetic-for-probability-products.html">log-domain-arithmetic-for-probability-products</a> for the measured vocabulary size at which it dies.</p>
+<h2 id="determinism-is-not-free-either" class="h-anch"><a class="hlink" href="#determinism-is-not-free-either" aria-label="Link to this section">#</a>Determinism is not free either</h2>
+<p>κ-NN ties have to be broken by something. Left to dictionary or set iteration order, identical code over identical data scores differently on consecutive runs — which has actually happened in this archive&#x27;s retrieval evaluation, where one scoring path produced 0.73, 0.53 and 0.60 on three runs.</p>
+<p>Breaking ties by training-set order makes the result reproducible, and the test asserts it by repetition rather than by inspection.</p>
+<h2 id="where-this-appears" class="h-anch"><a class="hlink" href="#where-this-appears" aria-label="Link to this section">#</a>Where this appears</h2>
+<p>Implemented in <a class="wl" href="systems-analysis-and-decision-support.html">systems-analysis-and-decision-support</a>. The complexity-as-a-count habit is shared with <a class="wl" href="data-structures-and-algorithms.html">data-structures-and-algorithms</a>; the model-selection consequence of κ-NN having zero training error at <code>k = 1</code> is in <a class="wl" href="held-out-error-over-training-error.html">held-out-error-over-training-error</a>.</p></div>
+  <div class="tags"><span class="tag">ml</span><span class="tag">algorithms</span><span class="tag">performance</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/src/decision_support/classification.py</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/tests/test_classification.py</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="counted-complexity-assertions.html"><span class="kind k-concept">concept</span><span class="rel-t">Counted Complexity Assertions</span><span class="rel-g">Turning an asymptotic claim into an ordinary unit-test assertion by counting operations instead of measuring time</span></a><a class="rel" href="held-out-error-over-training-error.html"><span class="kind k-concept">concept</span><span class="rel-t">Held-Out Error over Training Error</span><span class="rel-g">Training error cannot select a model, and the reason is structural rather than statistical: for nested model families it is monotonically non-increasing in complexity by…</span></a><a class="rel" href="log-domain-arithmetic-for-probability-products.html"><span class="kind k-concept">concept</span><span class="rel-t">Log-Domain Arithmetic for Probability Products</span><span class="rel-g">Multiplying many probabilities underflows to zero, and when it does, every candidate ties at zero and the answer becomes whichever one was checked first</span></a><a class="rel" href="data-structures-and-algorithms.html"><span class="kind k-project">project</span><span class="rel-t">Data Structures and Algorithms</span><span class="rel-g">A Java 21 library in which every complexity claim is a test rather than a comment</span></a><a class="rel" href="systems-analysis-and-decision-support.html"><span class="kind k-project">project</span><span class="rel-t">Systems Analysis and Decision Support</span><span class="rel-g">Least squares and ridge regression, κ-NN, Bernoulli naive Bayes, and logistic regression fitted by both gradient ascent and IRLS — in pure Python with no NumPy</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Health Awareness Support Platform · Glass Box</title>
+<meta name="description" content="Clearpath — a Django health-education product rebuilt from a bachelor capstone by the same author">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Health Awareness Support Platform · Glass Box">
+<meta property="og:description" content="Clearpath — a Django health-education product rebuilt from a bachelor capstone by the same author">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The design problem","What carries the weight","Privacy as a document, not a posture","Verification","Open gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["health-awareness-support-platform/README.md","health-awareness-support-platform/docs/privacy-threat-model.md","health-awareness-support-platform/docs/product-decisions.md","health-awareness-support-platform/docs/architecture.md","health-awareness-support-platform/docs/provenance.md","health-awareness-support-platform/learning/views.py","health-awareness-support-platform/learning/services.py","health-awareness-support-platform/learning/tests.py","health-awareness-support-platform/NOTICE"],"dateModified":"2026-08-12","description":"Clearpath — a Django health-education product rebuilt from a bachelor capstone by the same author","headline":"Health Awareness Support Platform","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["python","web-dev","privacy","security","architecture","testing","product"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-12 · in force since 2026-08-02</span>
+    <span class="repos">health-awareness-support-platform</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Clearpath — a Django health-education product rebuilt from a bachelor capstone by the same author</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-design-problem">The design problem</a></li><li><a href="#what-carries-the-weight">What carries the weight</a></li><li><a href="#privacy-as-a-document-not-a-posture">Privacy as a document, not a posture</a></li><li><a href="#verification">Verification</a></li><li><a href="#open-gaps">Open gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="health-awareness-support-platform">Health Awareness Support Platform</h1>
+<p><em>Clearpath</em> — a Django health-education product rebuilt from a bachelor capstone by the same author. Server-rendered, no client framework, synthetic users only, and explicit about being <strong>not a medical device</strong>: it does not diagnose, triage, treat, or stand in for a professional.</p>
+<p>The rebuild exists because the student-era version did not have the controls described below. Authorship settles ownership, not quality — a distinction the repository states itself rather than leaving to a reader.</p>
+<h2 id="the-design-problem" class="h-anch"><a class="hlink" href="#the-design-problem" aria-label="Link to this section">#</a>The design problem</h2>
+<p>A health application is the case where the two obvious product instincts are both wrong. Collecting more makes the recommendation better and the breach worse; saying more makes the advice useful and the liability real. The reconstruction resolves both by <em>removing</em> capability, and records what it removed in <code>docs/product-decisions.md</code> rather than quietly not building it.</p>
+<p>The prompt function takes three broad self-ratings and returns one educational route. It <strong>cannot</strong> infer a condition, compute a risk score, contact a third party, or turn free text into a profile. That is a deliberate ceiling, not an unfinished feature — <a class="wl" href="data-minimisation.html">data-minimisation</a> applied at the point where the data would have been useful.</p>
+<h2 id="what-carries-the-weight" class="h-anch"><a class="hlink" href="#what-carries-the-weight" aria-label="Link to this section">#</a>What carries the weight</h2>
+<p><strong>Deterministic rules instead of a score.</strong> Selection is a pure function in <code>learning/services.py</code> — no model, no opacity, no training data. A reader can predict its output, and a test can pin it. The same instinct as <a class="wl" href="separating-computation-from-io.html">separating-computation-from-io</a>: the part that decides is the part with no I/O in it.</p>
+<p><strong>Ownership filters on the server, with tests that try to break them.</strong> Check-ins and progress records belong to an account, and the query boundary is enforced in the view rather than in the template. <code>learning/tests.py</code> includes cross-user disclosure attempts — the tests that only exist if someone thought to act as a <em>second</em> user, which is exactly the omission that produced <a class="wl" href="authorization-in-the-query-predicate.html">authorization-in-the-query-predicate</a> in the neighbouring <a class="wl" href="project-management-web-platform.html">project-management-web-platform</a>.</p>
+<p><strong>Response security as configuration, not folklore.</strong> CSRF on every state change, POST-only mutations, secure cookie defaults, CSP, clickjacking and referrer policies. These are the controls a capstone demo reliably skips because nothing visible breaks without them.</p>
+<p><strong>No committed secret, database, or upload.</strong> Demo seeding is idempotent and takes its password from <code>DEMO_PASSWORD</code> in the environment — <a class="wl" href="secrets-from-environment-only.html">secrets-from-environment-only</a> — and the seeded users are invented. Compare <a class="wl" href="generate-fixtures-not-commit.html">generate-fixtures-not-commit</a>: a fixture that must be generated cannot be leaked by being checked in.</p>
+<h2 id="privacy-as-a-document-not-a-posture" class="h-anch"><a class="hlink" href="#privacy-as-a-document-not-a-posture" aria-label="Link to this section">#</a>Privacy as a document, not a posture</h2>
+<p><code>docs/privacy-threat-model.md</code> names the adversaries and the boundaries rather than asserting that the application &quot;takes privacy seriously&quot;. It is the artefact that makes the product decisions auditable, and it is why the removed features are legible as choices. Related: <a class="wl" href="privacy-documented-beside-the-feature.html">privacy-documented-beside-the-feature</a>, <a class="wl" href="disclosure-gate.html">disclosure-gate</a>, <a class="wl" href="controller-vs-processor.html">controller-vs-processor</a>, <a class="wl" href="gdpr-legal-bases.html">gdpr-legal-bases</a>.</p>
+<p>The evidence boundary is stated in the same register: learning content is a small demonstration that links to its publisher, and the README lists what a real service would additionally need — clinical governance, dated review, regional crisis routes, translation review, withdrawal procedures. See <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>.</p>
+<h2 id="verification" class="h-anch"><a class="hlink" href="#verification" aria-label="Link to this section">#</a>Verification</h2>
+<p><code>manage.py test</code>, plus <code>makemigrations --check --dry-run</code> so a model change cannot land without its migration, plus <code>manage.py check</code>. The test suite covers privacy, CSRF, publication state, validation, response headers, and the prompt rules.</p>
+<p>A 2026-08-12 local audit ran that documented gate unchanged: 11 Django tests passed, migrations were current, and Django reported no system-check issues. The wide and narrow real captures were also reviewed manually; the page remains a strong reference for the stated-limit and real-visual parts of the repository style.</p>
+<p>The landing capture in <code>assets/</code> is generated from the running application by a repeatable headless procedure, not drawn as a mock-up — the same standard applied across the collection.</p>
+<h2 id="open-gaps" class="h-anch"><a class="hlink" href="#open-gaps" aria-label="Link to this section">#</a>Open gaps</h2>
+<ul><li><strong>TODO:</strong> SQLite only. The committed schema and the tests are the evidence; a real deployment needs a managed database, TLS, backups, monitoring, a retention policy and an incident process, and the README refuses to pretend a development container supplies them.</li><li><strong>TODO:</strong> no public signup, password reset, social login or analytics. Deliberate, but it means the authentication surface is narrower than a real product&#x27;s.</li><li><strong>TODO:</strong> learning content is a demonstration set. Without editorial governance it should not be read as health guidance, which is why every module is source-labelled.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> · <a class="wl" href="clean-room-rebuild-from-specification.html">clean-room-rebuild-from-specification</a> · <a class="wl" href="provenance-notice-file.html">provenance-notice-file</a> · <a class="wl" href="structure-preserving-anonymisation.html">structure-preserving-anonymisation</a> · <a class="wl" href="layered-architecture.html">layered-architecture</a> · <a class="wl" href="cia-triad.html">cia-triad</a></p></div>
+  <div class="tags"><span class="tag">python</span><span class="tag">web-dev</span><span class="tag">privacy</span><span class="tag">security</span><span class="tag">architecture</span><span class="tag">testing</span><span class="tag">product</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">health-awareness-support-platform</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">health-awareness-support-platform</span><span class="src-p">/docs/privacy-threat-model.md</span></code></li><li><code><span class="src-r">health-awareness-support-platform</span><span class="src-p">/docs/product-decisions.md</span></code></li><li><code><span class="src-r">health-awareness-support-platform</span><span class="src-p">/docs/architecture.md</span></code></li><li><code><span class="src-r">health-awareness-support-platform</span><span class="src-p">/docs/provenance.md</span></code></li><li><code><span class="src-r">health-awareness-support-platform</span><span class="src-p">/learning/views.py</span></code></li><li><code><span class="src-r">health-awareness-support-platform</span><span class="src-p">/learning/services.py</span></code></li><li><code><span class="src-r">health-awareness-support-platform</span><span class="src-p">/learning/tests.py</span></code></li><li><code><span class="src-r">health-awareness-support-platform</span><span class="src-p">/NOTICE</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="authorization-in-the-query-predicate.html"><span class="kind k-concept">concept</span><span class="rel-t">Authorisation in the Query Predicate</span><span class="rel-g">Authorisation is a domain decision: the system determines whether an authenticated actor may operate on a loaded resource, then performs the requested operation</span></a><a class="rel" href="cia-triad.html"><span class="kind k-concept">concept</span><span class="rel-t">CIA Triad</span><span class="rel-g">Confidentiality, Integrity, Availability — the three properties any security control is ultimately defending</span></a><a class="rel" href="controller-vs-processor.html"><span class="kind k-concept">concept</span><span class="rel-t">Controller vs Processor</span><span class="rel-g">The controller decides why and how personal data is processed</span></a><a class="rel" href="data-minimisation.html"><span class="kind k-concept">concept</span><span class="rel-t">Data Minimisation</span><span class="rel-g">GDPR Art</span></a><a class="rel" href="disclosure-gate.html"><span class="kind k-concept">concept</span><span class="rel-t">Disclosure Gate</span><span class="rel-g">A build step that must pass before anything derived from sensitive input may be published</span></a><a class="rel" href="gdpr-legal-bases.html"><span class="kind k-concept">concept</span><span class="rel-t">GDPR Legal Bases</span><span class="rel-g">Under GDPR Art</span></a><a class="rel" href="layered-architecture.html"><span class="kind k-concept">concept</span><span class="rel-t">Layered Architecture</span><span class="rel-g">Split the application into horizontal tiers where each layer may only call the one below it: api/ handles HTTP and nothing else, service/ holds the domain rules and…</span></a><a class="rel" href="separating-computation-from-io.html"><span class="kind k-concept">concept</span><span class="rel-t">Separating Computation from I/O</span><span class="rel-g">A function that computes and prints can only be tested by capturing stdout</span></a><a class="rel" href="structure-preserving-anonymisation.html"><span class="kind k-concept">concept</span><span class="rel-t">Structure-Preserving Anonymisation</span><span class="rel-g">Redaction destroys the thing being studied</span></a><a class="rel" href="generate-fixtures-not-commit.html"><span class="kind k-decision">decision</span><span class="rel-t">Generate Fixtures Rather Than Commit Them</span><span class="rel-g">Ship a four-line generator for the 1 MB / 5 MB / 10 MB inputs used to time RSA, and .gitignore the outputs — rather than committing 16 MB of filler</span></a><a class="rel" href="clean-room-rebuild-from-specification.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Clean-Room Rebuild From Specification</span><span class="rel-g">A clean-room rebuild implements a required outcome from independently written requirements and contracts rather than by adapting an existing source tree</span></a><a class="rel" href="privacy-documented-beside-the-feature.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Privacy Documented Beside The Feature</span><span class="rel-g">The privacy argument is not filed in one policy document — it is restated at every site where the sensitive thing happens: in the vision doc, in the legal chapter, in…</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="provenance-notice-file.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance NOTICE File</span><span class="rel-g">A separate, plain-text NOTICE at the repository root whose only job is to draw the line between what the author made and what the author borrowed</span></a><a class="rel" href="secrets-from-environment-only.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Secrets from Environment Only</span><span class="rel-g">Credentials are read from environment variables and from nowhere else, and .gitignore is written so that the lazy path and the safe path are the same path</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a><a class="rel" href="project-management-web-platform.html"><span class="kind k-project">project</span><span class="rel-t">Project Management Web Platform</span><span class="rel-g">A TypeScript API for projects, tasks, accounts, and session-based access control</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

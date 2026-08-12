@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anthropic Messages API · Glass Box</title>
+<meta name="description" content="The only path in farely by which content leaves the phone">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Anthropic Messages API · Glass Box">
+<meta property="og:description" content="The only path in farely by which content leaves the phone">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Call shape","Three transports, one function","Cost control","Doc conflict","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Farley/apps/tester/src/app/lib/vision.ts","Farley/apps/tester/src/app/lib/session.ts","Farley/docs/VISION.md","Farley/docs/SRS.md"],"dateModified":"2026-07-28","description":"The only path in farely by which content leaves the phone","headline":"Anthropic Messages API","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["ml","typescript","networking"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-13</span>
+    <span class="repos">Farley</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The only path in farely by which content leaves the phone</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#call-shape">Call shape</a></li><li><a href="#three-transports-one-function">Three transports, one function</a></li><li><a href="#cost-control">Cost control</a></li><li><a href="#doc-conflict">Doc conflict</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="anthropic-messages-api">Anthropic Messages API</h1>
+<p>The only path in <a class="wl" href="farely.html">farely</a> by which content leaves the phone. Used for one job: classifying a screen the on-device keyword classifier could not name. The gating that makes it optional is the subject of <a class="wl" href="opt-in-cloud-fallback.html">opt-in-cloud-fallback</a>; this page is the integration itself.</p>
+<h2 id="call-shape" class="h-anch"><a class="hlink" href="#call-shape" aria-label="Link to this section">#</a>Call shape</h2>
+<ul><li><code>vision.ts</code> — <code>classifyScreen(capture, apiKey)</code>, <code>VISION_MODEL = &quot;claude-opus-4-8&quot;</code>, <code>max_tokens: 700</code>, header <code>anthropic-version: 2023-06-01</code>.</li><li><strong>Strict-JSON classifier prompt.</strong> The response is constrained to <code>class ∈ {offer, trip, idCheck, appUpdate, unknown}</code> and <code>action ∈ {freeze, note, map-control, none}</code> — a small closed vocabulary the caller can switch on, not free prose. The prompt also explicitly instructs the model to <strong>never propose tapping accept</strong>, mirroring <a class="wl" href="never-automate-the-accept-tap.html">never-automate-the-accept-tap</a> at the model boundary rather than trusting downstream code to filter it out.</li><li>Result carries <code>VisionResult.method: &quot;cloud&quot; | &quot;on-device&quot;</code>, so provenance survives into the UI.</li></ul>
+<h2 id="three-transports-one-function" class="h-anch"><a class="hlink" href="#three-transports-one-function" aria-label="Link to this section">#</a>Three transports, one function</h2>
+<p><code>CapacitorHttp</code> on the device (native HTTP, sidesteps WebView CORS), a <code>/anthropic</code> Vite dev proxy in local development, and a direct <code>fetch</code> with <code>anthropic-dangerous-direct-browser-access</code> otherwise. That header is the notable one: it exists because browser-side calls put the key in the browser. Here the key is the <strong>driver&#x27;s own</strong>, entered in Settings and persisted to <code>localStorage</code> in plaintext — never committed, never bundled, and <code>.gitignore</code> excludes <code>.env*</code>, <code>*.pem</code>, <code>*.keystore</code>, <code>*.jks</code>. The plaintext storage is a real residual risk and is <strong>not stated as a limitation anywhere in the repo</strong>.</p>
+<h2 id="cost-control" class="h-anch"><a class="hlink" href="#cost-control" aria-label="Link to this section">#</a>Cost control</h2>
+<p>Because it is billed per call, the gating is the design: no key ⇒ no call at all; only <code>WINDOW_STATE_CHANGED</code> events; a novelty-keyword gate; ≥5 minutes between calls per platform; and an early return whenever the coordinator is frozen. Every call is written to <a class="wl" href="on-device-black-box-diagnostics.html">on-device-black-box-diagnostics</a> as a <code>vision</code> event, so spend is observable after the fact without any server.</p>
+<ul><li><code>TODO:</code> <code>vision.ts</code> hardcodes the most capable vision model with a comment offering a cheaper Haiku swap, for a fallback that fires at most once per five minutes per app. No rationale is recorded and it was not asked at interview — <code>confidence: low</code> on why that model.</li></ul>
+<h2 id="doc-conflict" class="h-anch"><a class="hlink" href="#doc-conflict" aria-label="Link to this section">#</a>Doc conflict</h2>
+<p><code>docs/SRS.md</code> §3.x sequence diagrams show the cloud call as <strong>normal flow</strong>, while the post-2026-07-24 README calls the same path &quot;ships off by default&quot; and VISION §5 calls it &quot;a deliberate trade-off I switched on&quot;. Three documents, three postures toward one code path — see <a class="wl" href="documentation-drift.html">documentation-drift</a> and the accuracy note on <a class="wl" href="on-device-first-inference.html">on-device-first-inference</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="farely.html">farely</a> · <a class="wl" href="opt-in-cloud-fallback.html">opt-in-cloud-fallback</a> · <a class="wl" href="on-device-first-inference.html">on-device-first-inference</a> · <a class="wl" href="ticketmaster-discovery-api.html">ticketmaster-discovery-api</a> · <a class="wl" href="capacitor.html">capacitor</a></p></div>
+  <div class="tags"><span class="tag">ml</span><span class="tag">typescript</span><span class="tag">networking</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Farley</span><span class="src-p">/apps/tester/src/app/lib/vision.ts</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/tester/src/app/lib/session.ts</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/VISION.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/SRS.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="on-device-black-box-diagnostics.html"><span class="kind k-concept">concept</span><span class="rel-t">On-Device Black Box Diagnostics</span><span class="rel-g">When you cannot attach a debugger — the user is driving, the failure is a screen you have never seen, and no telemetry may leave the device — record a bounded local…</span></a><a class="rel" href="on-device-first-inference.html"><span class="kind k-concept">concept</span><span class="rel-t">On-Device-First Inference</span><span class="rel-g">Do the classification locally with cheap deterministic logic; treat a model call as an upgrade the owner may switch on, never as the default path</span></a><a class="rel" href="opt-in-cloud-fallback.html"><span class="kind k-concept">concept</span><span class="rel-t">Opt-In Cloud Fallback</span><span class="rel-g">A remote model call that is structurally optional: absent a key it does not exist, present a key it fires only for inputs a cheap local gate has already judged novel,…</span></a><a class="rel" href="never-automate-the-accept-tap.html"><span class="kind k-decision">decision</span><span class="rel-t">Never Automate The Accept Tap</span><span class="rel-g">farely advises; the driver taps</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="farely.html"><span class="kind k-project">project</span><span class="rel-t">Farely</span><span class="rel-g">A personal Android rideshare/delivery driver assistant for Wrocław</span></a><a class="rel" href="capacitor.html"><span class="kind k-tech">tech</span><span class="rel-t">Capacitor</span><span class="rel-g">Native runtime that wraps a web build in a WebView and exposes native capability through plugins</span></a><a class="rel" href="ticketmaster-discovery-api.html"><span class="kind k-tech">tech</span><span class="rel-t">Ticketmaster Discovery API</span><span class="rel-g">Public events feed, used by farely to know when Wrocław venues will empty</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

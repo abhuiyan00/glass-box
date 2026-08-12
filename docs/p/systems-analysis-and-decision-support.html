@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Systems Analysis and Decision Support · Glass Box</title>
+<meta name="description" content="Least squares and ridge regression, κ-NN, Bernoulli naive Bayes, and logistic regression fitted by both gradient ascent and IRLS — in pure Python with no NumPy">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Systems Analysis and Decision Support · Glass Box">
+<meta property="og:description" content="Least squares and ridge regression, κ-NN, Bernoulli naive Bayes, and logistic regression fitted by both gradient ascent and IRLS — in pure Python with no NumPy">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why no NumPy","Four measurements","Three claims the tests corrected","Provenance, and a correction","2026-08-12 reference audit","Status","Branch status - a contradiction, both claims recorded"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["systems-analysis-and-decision-support/README.md","systems-analysis-and-decision-support/NOTICE","systems-analysis-and-decision-support/src/decision_support/linalg.py","systems-analysis-and-decision-support/src/decision_support/regression.py","systems-analysis-and-decision-support/src/decision_support/classification.py","systems-analysis-and-decision-support/src/decision_support/logistic.py","systems-analysis-and-decision-support/tests/test_regression.py","systems-analysis-and-decision-support/tests/test_classification.py","systems-analysis-and-decision-support/tests/test_logistic.py","systems-analysis-and-decision-support/docs/visual-guide.svg"],"dateModified":"2026-08-12","description":"Least squares and ridge regression, κ-NN, Bernoulli naive Bayes, and logistic regression fitted by both gradient ascent and IRLS — in pure Python with no NumPy","headline":"Systems Analysis and Decision Support","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["ml","algorithms","python","testing","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-12 · in force since 2026-08-04</span>
+    <span class="repos">systems-analysis-and-decision-support</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Least squares and ridge regression, κ-NN, Bernoulli naive Bayes, and logistic regression fitted by both gradient ascent and IRLS — in pure Python with no NumPy</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why-no-numpy">Why no NumPy</a></li><li><a href="#four-measurements">Four measurements</a></li><li><a href="#three-claims-the-tests-corrected">Three claims the tests corrected</a></li><li><a href="#provenance-and-a-correction">Provenance, and a correction</a></li><li><a href="#2026-08-12-reference-audit">2026-08-12 reference audit</a></li><li><a href="#status">Status</a></li><li><a href="#branch-status-a-contradiction-both-claims-recorded">Branch status - a contradiction, both claims recorded</a></li></ol></nav>
+  <div class="prose"><h1 id="systems-analysis-and-decision-support">Systems Analysis and Decision Support</h1>
+<p>Least squares and ridge regression, κ-NN, Bernoulli naive Bayes, and logistic regression fitted by both gradient ascent and IRLS — in pure Python with <strong>no NumPy</strong>. 75 tests. A <a class="wl" href="clean-room-rebuild-from-specification.html">clean-room-rebuild-from-specification</a> of the sixth-semester SADiSM laboratories.</p>
+<h2 id="why-no-numpy" class="h-anch"><a class="hlink" href="#why-no-numpy" aria-label="Link to this section">#</a>Why no NumPy</h2>
+<p>NumPy is the sensible engineering choice and is deliberately absent. Every question this subject is worth studying for is a question about the solve step or the arithmetic around it, and delegating those answers none of them: why ridge is stable where ordinary least squares is not, what ill-conditioning costs in digits, why a naive sigmoid raises <code>OverflowError</code>, why a product of probabilities has to become a sum of logs.</p>
+<p>This is <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> chosen for pedagogy rather than for deployment — the dependency would not have been a burden, it would have been an answer skipped.</p>
+<h2 id="four-measurements" class="h-anch"><a class="hlink" href="#four-measurements" aria-label="Link to this section">#</a>Four measurements</h2>
+<p><strong>Regularisation, in digits.</strong> <code>λI</code> shifts every eigenvalue of the Gram matrix up by exactly λ. Measured on a degree-8 design over eleven points, the condition estimate falls <code>3.32×10¹⁰ → 1.07×10⁸ → 2.71×10⁶ → 4.57×10⁴ → 778 → 10.1</code> across six values of λ. Unregularised, ten of a double&#x27;s sixteen digits are already gone — see <a class="wl" href="condition-number-as-digits-lost.html">condition-number-as-digits-lost</a>. The cost side is asserted too: on data a plain fit handles well, ridge makes the training error strictly <em>worse</em>. That is what the parameter is for.</p>
+<p><strong>Training error cannot choose a model.</strong> It is monotone in the degree by construction, so selecting on it picks the largest candidate whatever the data. Validation error is not monotone, and that non-monotonicity is what pays for the split — <a class="wl" href="held-out-error-over-training-error.html">held-out-error-over-training-error</a>.</p>
+<p><strong>The two classifiers are opposite ends of one trade.</strong> κ-NN computes zero distances at fit time and exactly <code>len(train)</code> per query; naive Bayes counts once and predicts in <code>features × classes</code> regardless of training-set size. Both counted by the implementations rather than described — <a class="wl" href="lazy-versus-eager-learners.html">lazy-versus-eager-learners</a>, and <a class="wl" href="counted-complexity-assertions.html">counted-complexity-assertions</a> again.</p>
+<p><strong>Where the arithmetic breaks.</strong> The naive Bayes log-posterior reaches −115.8 at a 400-word vocabulary, −259.6 at 900, −461.0 at 1,600, and −748.7 at 2,600 — the first that exponentiates to exactly <code>0.0</code>. See <a class="wl" href="log-domain-arithmetic-for-probability-products.html">log-domain-arithmetic-for-probability-products</a>.</p>
+<h2 id="three-claims-the-tests-corrected" class="h-anch"><a class="hlink" href="#three-claims-the-tests-corrected" aria-label="Link to this section">#</a>Three claims the tests corrected</h2>
+<p>A fifty-fold convergence claim measured twelve-fold: 76 gradient iterations against 6 for IRLS. The measurement was right and the claim was not, so the claim changed — and what the numbers show is better than a ratio. Gradient ascent takes 677, 149 or 76 iterations depending on a step size that nothing in the data suggests; IRLS takes 6 with no such parameter at all.</p>
+<p>κ-NN&#x27;s zero-training-error guarantee has a precondition nobody states: it holds only while no two identical feature vectors disagree on a label. Found by writing the test wrong — it added a contradictory duplicate, expected 1.0, and measured 0.8. Real text data is full of duplicate feature vectors, so the precondition now has its own test.</p>
+<p>Accuracy hides the failure that matters. An all-negative classifier scores 0.90 when positives are one in ten, which is exactly the shape of the course&#x27;s face-detection task. The empty column in the confusion matrix is where it shows.</p>
+<p>All three follow <a class="wl" href="document-the-failure-mode-next-to-the-fix.html">document-the-failure-mode-next-to-the-fix</a> and are the reason this page claims <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a> is the failure mode worth designing against.</p>
+<h2 id="provenance-and-a-correction" class="h-anch"><a class="hlink" href="#provenance-and-a-correction" aria-label="Link to this section">#</a>Provenance, and a correction</h2>
+<p>The laboratory specifications are the work of A. Gonczarek, J.M. Tomczak, S. Zaręba, M. Zięba, J. Kaczmar and P. Klukowski. The code skeletons are headed <code>Authors: A. Gonczarek, J. Kaczmar, S. Zareba — DO NOT MODIFY THIS FILE</code>, and in the archive copy <code>content.py</code> is still the unfilled stub. The archive&#x27;s own completed solutions sit separately, in <code>6th/SADiSM/Sadism/1..3</code>.</p>
+<p>None of the three was copied. A solution written inside someone else&#x27;s scaffold cannot be lifted out of it cleanly, so the methods are re-derived here in a structure of this repository&#x27;s own — <a class="wl" href="provenance-notice-file.html">provenance-notice-file</a>.</p>
+<p><strong>This repository is a correction.</strong> An earlier coverage matrix excluded the whole <code>6th/SADiSM</code> folder because Bishop and Murphy sit in it. Excluding the textbooks was right; the four laboratory specifications and three solution trees beside them were excluded alongside them without ever being named. The full accounting is in <a class="wl" href="pwr-subject-notes.html">pwr-subject-notes</a>.</p>
+<h2 id="2026-08-12-reference-audit" class="h-anch"><a class="hlink" href="#2026-08-12-reference-audit" aria-label="Link to this section">#</a>2026-08-12 reference audit</h2>
+<p>The dependency-free Python suite passed <strong>75/75</strong> tests. The audit preserved the existing visual guide because its stated regularisation, validation, classifier-cost, and numerical stability examples are the repository&#x27;s measured teaching artefacts; the uncommitted README and SVG changes pre-dated this pass. The checked local branch is <code>main</code>.</p>
+<h2 id="status" class="h-anch"><a class="hlink" href="#status" aria-label="Link to this section">#</a>Status</h2>
+<p>Complete and committed locally on <code>main</code>. No remote. List 4 — an open-ended free-choice classifier — is deliberately not rebuilt: the task has no fixed specification, so there is nothing to assert.</p>
+<h2 id="branch-status-a-contradiction-both-claims-recorded" class="h-anch"><a class="hlink" href="#branch-status-a-contradiction-both-claims-recorded" aria-label="Link to this section">#</a>Branch status - a contradiction, both claims recorded</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>#</th>
+<th>Claim</th>
+<th>Source</th>
+<th><code>valid_from</code></th>
+<th><code>valid_to</code></th>
+</tr></thead><tbody>
+<tr><td>1</td><td>Local branch was <code>master</code>.</td><td><code>git reflog</code></td><td>2026-08-04</td><td>2026-08-12</td></tr>
+<tr><td>2</td><td>Local branch is <code>main</code>.</td><td><code>git branch --show-current</code></td><td>2026-08-12</td><td>null</td></tr>
+</tbody></table></div>
+<p>The reflog records the local <code>master</code> -&gt; <code>main</code> rename; the current branch command reports <code>main</code>.</p></div>
+  <div class="tags"><span class="tag">ml</span><span class="tag">algorithms</span><span class="tag">python</span><span class="tag">testing</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/NOTICE</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/src/decision_support/linalg.py</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/src/decision_support/regression.py</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/src/decision_support/classification.py</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/src/decision_support/logistic.py</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/tests/test_regression.py</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/tests/test_classification.py</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/tests/test_logistic.py</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/docs/visual-guide.svg</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="condition-number-as-digits-lost.html"><span class="kind k-concept">concept</span><span class="rel-t">Condition Number as Digits Lost</span><span class="rel-g">&quot;Ill-conditioned&quot; is a word that does no work</span></a><a class="rel" href="counted-complexity-assertions.html"><span class="kind k-concept">concept</span><span class="rel-t">Counted Complexity Assertions</span><span class="rel-g">Turning an asymptotic claim into an ordinary unit-test assertion by counting operations instead of measuring time</span></a><a class="rel" href="held-out-error-over-training-error.html"><span class="kind k-concept">concept</span><span class="rel-t">Held-Out Error over Training Error</span><span class="rel-g">Training error cannot select a model, and the reason is structural rather than statistical: for nested model families it is monotonically non-increasing in complexity by…</span></a><a class="rel" href="lazy-versus-eager-learners.html"><span class="kind k-concept">concept</span><span class="rel-t">Lazy versus Eager Learners</span><span class="rel-g">Two classifiers taught in the same course sit at opposite ends of one trade, and the trade is a pair of counts rather than a pair of adjectives</span></a><a class="rel" href="log-domain-arithmetic-for-probability-products.html"><span class="kind k-concept">concept</span><span class="rel-t">Log-Domain Arithmetic for Probability Products</span><span class="rel-g">Multiplying many probabilities underflows to zero, and when it does, every candidate ties at zero and the answer becomes whichever one was checked first</span></a><a class="rel" href="tests-that-pass-for-the-wrong-reason.html"><span class="kind k-concept">concept</span><span class="rel-t">Tests That Pass for the Wrong Reason</span><span class="rel-g">A failing test tells you something is broken</span></a><a class="rel" href="clean-room-rebuild-from-specification.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Clean-Room Rebuild From Specification</span><span class="rel-g">A clean-room rebuild implements a required outcome from independently written requirements and contracts rather than by adapting an existing source tree</span></a><a class="rel" href="document-the-failure-mode-next-to-the-fix.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Document the Failure Mode Next to the Fix</span><span class="rel-g">Almost every note in these two repositories has the same shape: state the wrong-but-plausible alternative, name the concrete input that breaks it, then give the fix</span></a><a class="rel" href="provenance-notice-file.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance NOTICE File</span><span class="rel-g">A separate, plain-text NOTICE at the repository root whose only job is to draw the line between what the author made and what the author borrowed</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="pwr-subject-notes.html"><span class="kind k-project">project</span><span class="rel-t">PWR Subject Notes</span><span class="rel-g">The knowledge in the coursework archive that has no repository, written down — plus the census that proves nothing was quietly left out</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

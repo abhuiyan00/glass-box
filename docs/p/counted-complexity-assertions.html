@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Counted Complexity Assertions · Glass Box</title>
+<meta name="description" content="Turning an asymptotic claim into an ordinary unit-test assertion by counting operations instead of measuring time">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Counted Complexity Assertions · Glass Box">
+<meta property="og:description" content="Turning an asymptotic claim into an ordinary unit-test assertion by counting operations instead of measuring time">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The problem with the obvious approach","The mechanism","What it is not","What it caught"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["data-structures-and-algorithms/src/main/java/dsa/complexity/GrowthFit.java","data-structures-and-algorithms/src/main/java/dsa/complexity/Counter.java","data-structures-and-algorithms/src/test/java/dsa/complexity/GrowthFitTest.java","data-structures-and-algorithms/docs/architecture.md"],"dateModified":"2026-08-02","description":"Turning an asymptotic claim into an ordinary unit-test assertion by counting operations instead of measuring time","headline":"Counted Complexity Assertions","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["algorithms","testing","performance"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-02 · in force since 2026-08-02</span>
+    <span class="repos">data-structures-and-algorithms</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Turning an asymptotic claim into an ordinary unit-test assertion by counting operations instead of measuring time</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-problem-with-the-obvious-approach">The problem with the obvious approach</a></li><li><a href="#the-mechanism">The mechanism</a></li><li><a href="#what-it-is-not">What it is not</a></li><li><a href="#what-it-caught">What it caught</a></li></ol></nav>
+  <div class="prose"><h1 id="counted-complexity-assertions">Counted Complexity Assertions</h1>
+<p>Turning an asymptotic claim into an ordinary unit-test assertion by <strong>counting operations instead of measuring time</strong>.</p>
+<h2 id="the-problem-with-the-obvious-approach" class="h-anch"><a class="hlink" href="#the-problem-with-the-obvious-approach" aria-label="Link to this section">#</a>The problem with the obvious approach</h2>
+<p>A test that asserts merge sort beats insertion sort by the clock is a test about the machine it ran on. It passes on a quiet laptop, fails on a loaded CI runner, and in neither case says anything about the algorithms. So complexity claims end up in comments, where nothing checks them and they drift away from the code underneath.</p>
+<h2 id="the-mechanism" class="h-anch"><a class="hlink" href="#the-mechanism" aria-label="Link to this section">#</a>The mechanism</h2>
+<ol><li><strong>Charge the algorithm.</strong> Every operation takes a counter and increments it for each key comparison, element move and structural probe. The cost becomes part of the signature, not an estimate made afterwards.</li><li><strong>Measure over a doubling series.</strong> Run at <code>n, 2n, 4n, …</code> with a fresh counter each time.</li><li><strong>Fit scale-free.</strong> For each candidate growth function <code>g</code>, take the constant that best explains the data — the mean of <code>ops(n) / g(n)</code> — and score the candidate by mean relative error. Lowest wins. Dividing the constant out is what makes the verdict an <em>order</em> and nothing else, which is exactly the claim asymptotic notation makes.</li><li><strong>Assert the class.</strong> <code>assertEquals(Growth.LINEARITHMIC, classify(measure(sizes, work)))</code>.</li></ol>
+<p>Counts are deterministic for a fixed input, so the assertion is reproducible everywhere. The same idea appears in a different guise in <a class="wl" href="cryptanalysis-by-measurement.html">cryptanalysis-by-measurement</a>: replace an argument about behaviour with a number the code produces.</p>
+<h2 id="what-it-is-not" class="h-anch"><a class="hlink" href="#what-it-is-not" aria-label="Link to this section">#</a>What it is not</h2>
+<p><strong>Not a proof.</strong> It measures the sizes it was given over the inputs it was given. A quadratic worst case hiding behind a linear average is a property of the input generator, which is why a quicksort test that wants to see the worst case must feed it a sorted array on purpose.</p>
+<p><strong>Not able to name a class outside its candidate set.</strong> Shell sort is <code>O(n^1.5)</code> and jump search <code>O(√n)</code>; with neither in the candidates, both are asserted negatively — &quot;not quadratic&quot;, &quot;the cost doubles when <code>n</code> quadruples&quot; — rather than forced into a box. An honest negative beats a confident wrong label.</p>
+<p><strong>Not immune to small <code>n</code>.</strong> <code>n/4 + 1000</code> classifies as constant at <code>n ≤ 512</code> and linear at <code>n ≥ 8192</code>, and the fitter is correct both times: asymptotic behaviour is a claim about large <code>n</code>. Every growth assertion has to pick sizes where the term under test dominates, and the disagreement itself is worth keeping as a test.</p>
+<h2 id="what-it-caught" class="h-anch"><a class="hlink" href="#what-it-caught" aria-label="Link to this section">#</a>What it caught</h2>
+<p>Two documented claims that were wrong, found because the measurement disagreed with the javadoc:</p>
+<ul><li><strong>Repeated heap insertion measures linear on shuffled input.</strong> The familiar <code>O(n log n)</code> is the worst case; a random key sifts up about one level. The gap appears only on descending keys.</li><li><strong>Linear probing with nearly consecutive hashes is not constant per operation at all.</strong> Its measured total is neither linear nor monotonic in <code>n</code>, while double hashing on the same keys is a straight line.</li></ul>
+<p>Both were fixed in the documentation rather than by relaxing the assertion, which is the useful direction: see <a class="wl" href="document-the-failure-mode-next-to-the-fix.html">document-the-failure-mode-next-to-the-fix</a> and <a class="wl" href="data-structures-and-algorithms.html">data-structures-and-algorithms</a> for the full record.</p></div>
+  <div class="tags"><span class="tag">algorithms</span><span class="tag">testing</span><span class="tag">performance</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">data-structures-and-algorithms</span><span class="src-p">/src/main/java/dsa/complexity/GrowthFit.java</span></code></li><li><code><span class="src-r">data-structures-and-algorithms</span><span class="src-p">/src/main/java/dsa/complexity/Counter.java</span></code></li><li><code><span class="src-r">data-structures-and-algorithms</span><span class="src-p">/src/test/java/dsa/complexity/GrowthFitTest.java</span></code></li><li><code><span class="src-r">data-structures-and-algorithms</span><span class="src-p">/docs/architecture.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="cryptanalysis-by-measurement.html"><span class="kind k-concept">concept</span><span class="rel-t">Cryptanalysis by Measurement</span><span class="rel-g">Identifying and attacking a cipher by measuring statistical properties of its output rather than by reasoning about its construction</span></a><a class="rel" href="document-the-failure-mode-next-to-the-fix.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Document the Failure Mode Next to the Fix</span><span class="rel-g">Almost every note in these two repositories has the same shape: state the wrong-but-plausible alternative, name the concrete input that breaks it, then give the fix</span></a><a class="rel" href="data-structures-and-algorithms.html"><span class="kind k-project">project</span><span class="rel-t">Data Structures and Algorithms</span><span class="rel-g">A Java 21 library in which every complexity claim is a test rather than a comment</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

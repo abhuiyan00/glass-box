@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blind Baseline Comparison · Glass Box</title>
+<meta name="description" content="Deliberately withhold the domain heuristic from the metaheuristic so that the comparison against that heuristic measures something">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Blind Baseline Comparison · Glass Box">
+<meta property="og:description" content="Deliberately withhold the domain heuristic from the metaheuristic so that the comparison against that heuristic measures something">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The result is a loss, and it is in the headline table","Why this is the methodologically interesting page","The numbers are externally checked","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Optimization Methods/final_project/README.md","Optimization Methods/final_project/ARCHITECTURE.md","Optimization Methods/final_project/tools/verify_reports.py","Optimization Methods/final_project/output/plots/findings.md"],"dateModified":"2026-07-28","description":"Deliberately withhold the domain heuristic from the metaheuristic so that the comparison against that heuristic measures something","headline":"Blind Baseline Comparison","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["optimization","algorithms","research-methods"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">Optimization Methods</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Deliberately withhold the domain heuristic from the metaheuristic so that the comparison against that heuristic measures something</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-result-is-a-loss-and-it-is-in-the-headline-table">The result is a loss, and it is in the headline table</a></li><li><a href="#why-this-is-the-methodologically-interesting-page">Why this is the methodologically interesting page</a></li><li><a href="#the-numbers-are-externally-checked">The numbers are externally checked</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="blind-baseline-comparison">Blind Baseline Comparison</h1>
+<p>Deliberately <strong>withhold</strong> the domain heuristic from the metaheuristic so that the comparison against that heuristic measures something. A GA seeded with nearest-depot assignments and greedy routes will of course beat greedy — it <em>starts</em> at greedy. What it will not tell you is whether evolutionary search contributed anything.</p>
+<p>So the GA in <a class="wl" href="optimization-methods.html">optimization-methods</a> is built blind on purpose: purely random initial population, no nearest-depot seeding, an i.i.d. depot gene.</p>
+<blockquote><p>&quot;A deliberately blind GA — purely random initial population, no nearest-depot seeding, an i.i.d. depot gene. This isolates what evolutionary search achieves <em>from scratch</em> and makes the comparison against a strong greedy heuristic a genuine test.&quot;</p><cite>Optimization Methods/final_project/README.md, 2026-07-10</cite></blockquote>
+<h2 id="the-result-is-a-loss-and-it-is-in-the-headline-table" class="h-anch"><a class="hlink" href="#the-result-is-a-loss-and-it-is-in-the-headline-table" aria-label="Link to this section">#</a>The result is a loss, and it is in the headline table</h2>
+<p>The greedy nearest-neighbour heuristic wins 9 of 12 instances on raw distance, and often by a wide margin — Wrocław large 481,089 m for greedy against 1,003,882 m for the tuned GA. Those numbers are the README&#x27;s own <strong>headline table</strong>, not an appendix.</p>
+<p>The three exceptions are informative rather than face-saving: the GA wins on Zurich small and Berlin small (as LBBS), i.e. the sparsest instances, where global search has few enough decisions to actually explore the space. The repo states the boundary directly:</p>
+<blockquote><p>&quot;The from-scratch GA <strong>does not beat greedy on raw distance</strong> at medium/large scale — by design (no warm start). The exception is the sparsest instances (<strong>Zurich small</strong>), where global search overtakes the heuristic.&quot;</p><cite>Optimization Methods/final_project/README.md, 2026-07-10</cite></blockquote>
+<h2 id="why-this-is-the-methodologically-interesting-page" class="h-anch"><a class="hlink" href="#why-this-is-the-methodologically-interesting-page" aria-label="Link to this section">#</a>Why this is the methodologically interesting page</h2>
+<p>Three things are true at once and the repo lets all three stand:</p>
+<ol><li>The GA is worse than a heuristic anyone could write in an afternoon.</li><li>That is the <em>expected</em> consequence of a design choice made before the results were known.</li><li>Publishing it makes every other claim in the paper more credible, because the experiment demonstrably could have produced an unflattering answer and did.</li></ol>
+<p>A warm-started GA would have produced better numbers and a worse experiment. Choosing the design that can fail is what separates a comparison from a demonstration — and the <span class="unpub" title="named in the source wiki; not published">operator-bake-off</span> rests on the same footing, because a blind GA&#x27;s ranking over operator types is not contaminated by a seed that already encodes the answer.</p>
+<p>This is the strongest instance of <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> in the corpus: the negative result is not merely admitted, it is advertised in the first table a reader sees. The second negative kept on the same principle is <a class="wl" href="revert-depot-mutation-rate-raise.html">revert-depot-mutation-rate-raise</a>.</p>
+<h2 id="the-numbers-are-externally-checked" class="h-anch"><a class="hlink" href="#the-numbers-are-externally-checked" aria-label="Link to this section">#</a>The numbers are externally checked</h2>
+<p>The blind GA and greedy totals are re-derivable: <code>tools/verify_reports.py</code> hard-codes the paper&#x27;s Table 7 values and cross-checks the committed reports against them to ±2 m. Because the expected values live in the checker rather than being read back from the artefact being checked, this is a genuine cross-check rather than a tautology — see <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a>.</p>
+<p>The GA is also bit-for-bit reproducible per seed, and infeasibility is priced rather than forbidden (fitness = road distance + <code>1e6 ×</code> overload units), so a run that violates capacity is comparable rather than discarded.</p>
+<ul><li><strong>TODO:</strong> <code>verify_reports.py</code> hard-codes a baseline <code>blind_ga</code> value for Wrocław large (1,171,457) that differs from the README&#x27;s <code>blind_ga_tuned</code> headline (1,003,882). These are almost certainly the baseline and tuned columns respectively, but nothing in the repo states that, and a stale constant would look identical. <code>confidence: low</code> on that one reconciliation.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="optimization-methods.html">optimization-methods</a> · <a class="wl" href="multi-depot-vehicle-routing.html">multi-depot-vehicle-routing</a> · <a class="wl" href="workload-balance-vs-distance.html">workload-balance-vs-distance</a> · <a class="wl" href="lazy-dijkstra-distance-cache.html">lazy-dijkstra-distance-cache</a> · <a class="wl" href="multiple-solutions-side-by-side.html">multiple-solutions-side-by-side</a></p></div>
+  <div class="tags"><span class="tag">optimization</span><span class="tag">algorithms</span><span class="tag">research-methods</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/README.md</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/ARCHITECTURE.md</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/tools/verify_reports.py</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/output/plots/findings.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="lazy-dijkstra-distance-cache.html"><span class="kind k-concept">concept</span><span class="rel-t">Lazy Dijkstra Distance Cache</span><span class="rel-g">Do not build the all-pairs distance matrix</span></a><a class="rel" href="multi-depot-vehicle-routing.html"><span class="kind k-concept">concept</span><span class="rel-t">Multi-Depot Vehicle Routing</span><span class="rel-g">Serve every customer from one of several depots, at minimum total travel cost, without exceeding vehicle capacity</span></a><a class="rel" href="workload-balance-vs-distance.html"><span class="kind k-concept">concept</span><span class="rel-t">Workload Balance Vs Distance</span><span class="rel-g">Minimising total fleet distance and sharing work evenly across vehicles are different objectives, and optimising the first alone reliably produces a fleet where one…</span></a><a class="rel" href="revert-depot-mutation-rate-raise.html"><span class="kind k-decision">decision</span><span class="rel-t">Revert The Depot-Mutation-Rate Raise</span><span class="rel-g">Keep p_mut_depot = 0.05</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="multiple-solutions-side-by-side.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Multiple Solutions Side by Side</span><span class="rel-g">The same problem is solved two or three ways in one deliverable, and the trade-off between them is the point</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="optimization-methods.html"><span class="kind k-project">project</span><span class="rel-t">Optimization Methods</span><span class="rel-g">Master&#x27;s Optimization Methods course at Wrocław University of Science and Technology (FICT, lectures by M. Przewoźniczek)</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

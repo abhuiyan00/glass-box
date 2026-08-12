@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Make · Glass Box</title>
+<meta name="description" content="The old dependency-graph task runner, used here purely as a named-command registry rather than for incremental rebuilds">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Make · Glass Box">
+<meta property="og:description" content="The old dependency-graph task runner, used here purely as a named-command registry rather than for incremental rebuilds">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The idea worth stealing: split targets by what they can access","Self-documenting help","Overridable variables, not hard-coded paths","Targets that assert rather than build","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["labour-fraud-analysis-a-forensic-data-investigation/Makefile","labour-fraud-analysis-a-forensic-data-investigation/.github/workflows/ci.yml","labour-fraud-analysis-a-forensic-data-investigation/README.md"],"dateModified":"2026-07-28","description":"The old dependency-graph task runner, used here purely as a named-command registry rather than for incremental rebuilds","headline":"Make","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["devops","ci-cd","documentation","bash"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">labour-fraud-analysis-a-forensic-data-investigation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The old dependency-graph task runner, used here purely as a named-command registry rather than for incremental rebuilds</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-idea-worth-stealing-split-targets-by-what-they-can-access">The idea worth stealing: split targets by what they can access</a></li><li><a href="#self-documenting-help">Self-documenting help</a></li><li><a href="#overridable-variables-not-hard-coded-paths">Overridable variables, not hard-coded paths</a></li><li><a href="#targets-that-assert-rather-than-build">Targets that assert rather than build</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="make">Make</h1>
+<p>The old dependency-graph task runner, used here purely as a <strong>named-command registry</strong> rather than for incremental rebuilds. <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> carries the only Makefile across the repositories ingested with it; <a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> has no build entry point at all.</p>
+<p>Thirteen phony targets: <code>all</code>, <code>data</code>, <code>db</code>, <code>docs</code>, <code>report</code>, <code>viewer</code>, <code>validate</code>, <code>lint</code>, <code>test</code>, <code>app</code>, <code>notebook</code>, <code>ci</code>, <code>clean</code>.</p>
+<h2 id="the-idea-worth-stealing-split-targets-by-what-they-can-access" class="h-anch"><a class="hlink" href="#the-idea-worth-stealing-split-targets-by-what-they-can-access" aria-label="Link to this section">#</a>The idea worth stealing: split targets by what they can access</h2>
+<p>The pipeline reads a private document corpus that exists on one machine. Rather than let a reader discover that by running something and watching it fail, the file says so at the top and names exactly which half works:</p>
+<blockquote><p>&quot;Targets that read the PRIVATE source (data, report, viewer) only work where that source + src/scrub_rules.local.py exist. On a clean clone, data/ and docs/ are already the safe output; use <code>db</code>, <code>docs</code>, <code>validate</code>, <code>test</code>, <code>app</code>, <code>notebook</code>.&quot;</p><cite>labour-fraud-analysis-a-forensic-data-investigation/Makefile, 2026-07-11</cite></blockquote>
+<p>Then the split is <strong>encoded as a target</strong>, not just documented:</p>
+<blockquote><p>&quot;ci: db docs validate lint test ## what CI runs on a clean clone (no private source)&quot;</p><cite>labour-fraud-analysis-a-forensic-data-investigation/Makefile, 2026-07-11</cite></blockquote>
+<p><code>make ci</code> is the clean-clone contract. Anyone can run it, and it is the same list <a class="wl" href="github-actions.html">github-actions</a> executes, so a green local run means something. <code>make all</code> is the private superset. The Makefile is the one place where the boundary between &quot;reproducible by anyone&quot; and &quot;reproducible by one person&quot; is written down — see <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a>.</p>
+<h2 id="self-documenting-help" class="h-anch"><a class="hlink" href="#self-documenting-help" aria-label="Link to this section">#</a>Self-documenting help</h2>
+<pre><code class="lang-make">help:
+	@grep -E &#x27;^[a-z].*:.*##&#x27; $(MAKEFILE_LIST) | sed &#x27;s/:.*## /\t/&#x27; | sort</code></pre>
+<p>Every target carries a <code>##</code> comment; <code>make help</code> greps them out of the file itself. The documentation cannot drift from the target list because it <em>is</em> the target list — the same instinct as <a class="wl" href="generated-docs-checked-by-ci-diff.html">generated-docs-checked-by-ci-diff</a>, applied to the build file. Compare <a class="wl" href="documentation-drift.html">documentation-drift</a>, which is what happens everywhere this trick is not used.</p>
+<h2 id="overridable-variables-not-hard-coded-paths" class="h-anch"><a class="hlink" href="#overridable-variables-not-hard-coded-paths" aria-label="Link to this section">#</a>Overridable variables, not hard-coded paths</h2>
+<p><code>PY ?= python</code>, plus <code>SOURCE ?=</code>, <code>REPORT ?=</code> and <code>VIEWER ?=</code> defaulting to sibling-directory paths outside the repo. <code>?=</code> means an environment variable wins, so the private source can live anywhere without editing the file — and no absolute path is committed.</p>
+<h2 id="targets-that-assert-rather-than-build" class="h-anch"><a class="hlink" href="#targets-that-assert-rather-than-build" aria-label="Link to this section">#</a>Targets that assert rather than build</h2>
+<p>Several targets exist to make a check runnable by name, which is what turns a claim into a command:</p>
+<ul><li><code>db</code> — &quot;load data/csv -&gt; data/data.sqlite (asserts 0 FK violations)&quot;</li><li><code>validate</code> — &quot;the leak-gate — must print RESULT: PASS&quot;, the <a class="wl" href="disclosure-gate.html">disclosure-gate</a></li><li><code>docs</code> — regenerates the artefacts CI then diffs</li></ul>
+<p>That is <a class="wl" href="verify-the-load-dont-declare-it.html">verify-the-load-dont-declare-it</a> wired into the entry point. <code>clean</code> removes only the regenerated database, never <code>data/csv</code> — the published dataset is an input to the clean-clone path, not an output of it.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> · <a class="wl" href="github-actions.html">github-actions</a> · <a class="wl" href="disclosure-gate.html">disclosure-gate</a> · <a class="wl" href="generated-docs-checked-by-ci-diff.html">generated-docs-checked-by-ci-diff</a> · <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a></p></div>
+  <div class="tags"><span class="tag">devops</span><span class="tag">ci-cd</span><span class="tag">documentation</span><span class="tag">bash</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/Makefile</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/.github/workflows/ci.yml</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="disclosure-gate.html"><span class="kind k-concept">concept</span><span class="rel-t">Disclosure Gate</span><span class="rel-g">A build step that must pass before anything derived from sensitive input may be published</span></a><a class="rel" href="reproducible-analysis.html"><span class="kind k-concept">concept</span><span class="rel-t">Reproducible Analysis</span><span class="rel-g">An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="generated-docs-checked-by-ci-diff.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Docs Checked by CI Diff</span><span class="rel-g">Generate documentation from the data, commit the output, and then have CI regenerate it and fail the build if the result differs</span></a><a class="rel" href="verify-the-load-dont-declare-it.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Verify the Load, Don&#x27;t Declare It</span><span class="rel-g">A data pipeline ends with a query whose result can be wrong, not with a status row saying it went fine</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="data-warehousing-and-business-intelligence.html"><span class="kind k-project">project</span><span class="rel-t">Data Warehousing and Business Intelligence</span><span class="rel-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a><a class="rel" href="github-actions.html"><span class="kind k-tech">tech</span><span class="rel-t">GitHub Actions</span><span class="rel-g">GitHub&#x27;s hosted CI</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Synthesise Rather Than Redact · Glass Box</title>
+<meta name="description" content="Do not publish the sensitive corpus with identifying values blacked out">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Synthesise Rather Than Redact · Glass Box">
+<meta property="og:description" content="Do not publish the sensitive corpus with identifying values blacked out">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why","Alternatives rejected","What makes it defensible rather than a claim","The costs, stated","Publish stance","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["labour-fraud-analysis-a-forensic-data-investigation/docs/methodology.md","labour-fraud-analysis-a-forensic-data-investigation/NOTICE","labour-fraud-analysis-a-forensic-data-investigation/LICENSE-DATA","labour-fraud-analysis-a-forensic-data-investigation/src/anonymize.py","labour-fraud-analysis-a-forensic-data-investigation/src/fiction.py"],"dateModified":"2026-07-28","description":"Do not publish the sensitive corpus with identifying values blacked out","headline":"Synthesise Rather Than Redact","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["privacy","forensics","investigation","data-analysis","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">labour-fraud-analysis-a-forensic-data-investigation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Do not publish the sensitive corpus with identifying values blacked out</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why">Why</a></li><li><a href="#alternatives-rejected">Alternatives rejected</a></li><li><a href="#what-makes-it-defensible-rather-than-a-claim">What makes it defensible rather than a claim</a></li><li><a href="#the-costs-stated">The costs, stated</a></li><li><a href="#publish-stance">Publish stance</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="synthesise-rather-than-redact">Synthesise Rather Than Redact</h1>
+<p><strong>Decision.</strong> Do not publish the sensitive corpus with identifying values blacked out. Publish a <strong>wholly invented dataset</strong> whose every value is generated, and whose relational structure and statistical patterns are carried over from the real matter unchanged.</p>
+<p><strong>Date.</strong> 2026-07-11, <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a>. This is the repository&#x27;s central methodological choice — everything in <code>src/</code> exists to execute it.</p>
+<h2 id="why" class="h-anch"><a class="hlink" href="#why" aria-label="Link to this section">#</a>Why</h2>
+<p>Two requirements pull in opposite directions, and the repo states both as hard rules:</p>
+<blockquote><p>&quot;<strong>No real value may ever reach version control</strong> — not in the data, not in the docs, and <em>not in the code that does the anonymizing.</em>&quot;</p><cite>labour-fraud-analysis-a-forensic-data-investigation/docs/methodology.md, 2026-07-11</cite></blockquote>
+<blockquote><p>&quot;<strong>The result must stay analytically honest</strong> — same relational structure, same statistical patterns (bulk permits, entity succession, shared-contact control, financial anomalies), so the analysis demonstrates real skill rather than toy data.&quot;</p><cite>labour-fraud-analysis-a-forensic-data-investigation/docs/methodology.md, 2026-07-11</cite></blockquote>
+<p>Redaction satisfies the first and destroys the second. A blacked-out contact field cannot show that sixty-six workers share two inboxes; a blacked-out permit number cannot show that a day&#x27;s batch runs contiguous. The signals in this case <strong>are</strong> the identifiers&#x27; relationships to each other, so removing the identifiers removes the case. Synthesis is what reconciles the two constraints:</p>
+<blockquote><p>&quot;Reconciling those is the whole trick: replace every <em>value</em>, preserve every <em>relationship</em>.&quot;</p><cite>labour-fraud-analysis-a-forensic-data-investigation/docs/methodology.md, 2026-07-11</cite></blockquote>
+<p>That reconciliation is <a class="wl" href="structure-preserving-anonymisation.html">structure-preserving-anonymisation</a>, made consistent across tables and free text by <a class="wl" href="deterministic-seeded-substitution.html">deterministic-seeded-substitution</a> and kept parseable by <a class="wl" href="format-preserving-invalid-identifiers.html">format-preserving-invalid-identifiers</a>. The signals that survive are the subject of <a class="wl" href="shared-identifier-clustering.html">shared-identifier-clustering</a> and <a class="wl" href="convergent-evidence.html">convergent-evidence</a>.</p>
+<h2 id="alternatives-rejected" class="h-anch"><a class="hlink" href="#alternatives-rejected" aria-label="Link to this section">#</a>Alternatives rejected</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Option</th>
+<th>Why not</th>
+</tr></thead><tbody>
+<tr><td><strong>Publish the redacted source</strong></td><td>the source <em>was already</em> a redacted real-world matter; redaction leaves the analytical patterns unreadable, which is the requirement above</td></tr>
+<tr><td><strong>Generate toy data from scratch</strong></td><td>named explicitly as the failure mode — an analysis over invented-from-nothing data &quot;demonstrates real skill&quot; of nobody</td></tr>
+<tr><td><strong>Publish nothing; describe the work in prose</strong></td><td>leaves no artefact to run, review, or verify; the pipeline and its gate <em>are</em> the deliverable</td></tr>
+<tr><td><strong>Aggregate/statistical release only</strong></td><td>not named in the repo. <strong>TODO:</strong> unrecorded whether it was considered</td></tr>
+</tbody></table></div>
+<h2 id="what-makes-it-defensible-rather-than-a-claim" class="h-anch"><a class="hlink" href="#what-makes-it-defensible-rather-than-a-claim" aria-label="Link to this section">#</a>What makes it defensible rather than a claim</h2>
+<p>Synthesis on its own is an assertion. What makes it checkable is that a separate program tries to break it: the <a class="wl" href="disclosure-gate.html">disclosure-gate</a> rebuilds a blocklist from the private source at run time and greps the entire published tree for survivors, backed by a stem guard, a regex sweep and structural integrity checks. The scrubbing code is careful not to become the leak it prevents:</p>
+<blockquote><p>&quot;This script may reference real strings <em>at run time</em> because it reads them from the private source; it contains none in its own text.&quot;</p><cite>labour-fraud-analysis-a-forensic-data-investigation/src/anonymize.py, 2026-07-11</cite></blockquote>
+<h2 id="the-costs-stated" class="h-anch"><a class="hlink" href="#the-costs-stated" aria-label="Link to this section">#</a>The costs, stated</h2>
+<ul><li><strong>The gate&#x27;s strongest checks cannot run in public CI.</strong> The leak scan and stem guard need the private corpus, which no public runner has. The README&#x27;s &quot;test-verified in CI&quot; claim is therefore stronger than what a clean runner enforces. <code>confidence: high</code>, interview-confirmed 2026-07-28 — see <a class="wl" href="github-actions.html">github-actions</a> and <a class="wl" href="generated-docs-checked-by-ci-diff.html">generated-docs-checked-by-ci-diff</a>.</li><li><strong>Synthesis is not total.</strong> Column names retaining source-jurisdiction registers, an allow-list naming a country and its adjective, a national-ID regex, a country-code phone pattern and a locale string in the viewer all survive in committed code. None is a person-like value; together they narrow the source jurisdiction and the worker-origin corridor, which sits against the methodology&#x27;s claim that no origin-signalling scrap survives.</li><li><strong>Every specific case number is prose.</strong> The narrative&#x27;s figures are typed into <code>docs/</code>, and only some are recomputed by the notebook or dashboard. See <a class="wl" href="chain-of-custody.html">chain-of-custody</a> for what <em>is</em> anchored.</li><li><strong>Verification is one-machine.</strong> Re-running the pipeline end-to-end needs the private source, so nobody else can confirm the published data is what the committed seed and code would produce — <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a>.</li></ul>
+<h2 id="publish-stance" class="h-anch"><a class="hlink" href="#publish-stance" aria-label="Link to this section">#</a>Publish stance</h2>
+<p>Every wiki page for this repository was <code>publish: false</code>, per the interview. <strong>That blanket was lifted on 2026-07-30</strong>; what it was standing in for was not.</p>
+<p>The synthesis decision does <strong>not</strong> by itself establish a right to republish the derived form: the underlying matter is described in the repo as live and under review, and no clearance from the corpus holder is evidenced anywhere. What is public now is the method — seeded substitution, the disclosure gate, the verification step — and not the matter, the corpus, or the dataset the method produced. See the open gaps on <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="structure-preserving-anonymisation.html">structure-preserving-anonymisation</a> · <a class="wl" href="disclosure-gate.html">disclosure-gate</a> · <a class="wl" href="deterministic-seeded-substitution.html">deterministic-seeded-substitution</a> · <a class="wl" href="format-preserving-invalid-identifiers.html">format-preserving-invalid-identifiers</a> · <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> · <a class="wl" href="dual-license-mit-plus-cc-by.html">dual-license-mit-plus-cc-by</a> · <a class="wl" href="convergent-evidence.html">convergent-evidence</a></p></div>
+  <div class="tags"><span class="tag">privacy</span><span class="tag">forensics</span><span class="tag">investigation</span><span class="tag">data-analysis</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/docs/methodology.md</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/NOTICE</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/LICENSE-DATA</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/anonymize.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/fiction.py</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="chain-of-custody.html"><span class="kind k-concept">concept</span><span class="rel-t">Chain of Custody</span><span class="rel-g">In forensic work, a claim is only as good as the trail from the claim back to the artefact it came from</span></a><a class="rel" href="convergent-evidence.html"><span class="kind k-concept">concept</span><span class="rel-t">Convergent Evidence</span><span class="rel-g">An argument built from several independently weak signals that point the same way, rather than from one decisive test</span></a><a class="rel" href="deterministic-seeded-substitution.html"><span class="kind k-concept">concept</span><span class="rel-t">Deterministic Seeded Substitution</span><span class="rel-g">The mechanism that makes structure-preserving-anonymisation work</span></a><a class="rel" href="disclosure-gate.html"><span class="kind k-concept">concept</span><span class="rel-t">Disclosure Gate</span><span class="rel-g">A build step that must pass before anything derived from sensitive input may be published</span></a><a class="rel" href="format-preserving-invalid-identifiers.html"><span class="kind k-concept">concept</span><span class="rel-t">Format-Preserving Invalid Identifiers</span><span class="rel-g">A replacement identifier has two jobs that pull against each other</span></a><a class="rel" href="reproducible-analysis.html"><span class="kind k-concept">concept</span><span class="rel-t">Reproducible Analysis</span><span class="rel-g">An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose</span></a><a class="rel" href="shared-identifier-clustering.html"><span class="kind k-concept">concept</span><span class="rel-t">Shared-Identifier Clustering</span><span class="rel-g">When records that are supposed to be independent share a contact point — one inbox, one phone, one address, one bank account — the sharing is a claim about control</span></a><a class="rel" href="structure-preserving-anonymisation.html"><span class="kind k-concept">concept</span><span class="rel-t">Structure-Preserving Anonymisation</span><span class="rel-g">Redaction destroys the thing being studied</span></a><a class="rel" href="dual-license-mit-plus-cc-by.html"><span class="kind k-decision">decision</span><span class="rel-t">Dual License — MIT Code, CC BY Data</span><span class="rel-g">License the repository under two licences at once: MIT for everything executable, Creative Commons Attribution 4.0 for the dataset and the written analysis</span></a><a class="rel" href="generated-docs-checked-by-ci-diff.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Docs Checked by CI Diff</span><span class="rel-g">Generate documentation from the data, commit the output, and then have CI regenerate it and fail the build if the result differs</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a><a class="rel" href="github-actions.html"><span class="kind k-tech">tech</span><span class="rel-t">GitHub Actions</span><span class="rel-g">GitHub&#x27;s hosted CI</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

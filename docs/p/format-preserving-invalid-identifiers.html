@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Format-Preserving Invalid Identifiers · Glass Box</title>
+<meta name="description" content="A replacement identifier has two jobs that pull against each other">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Format-Preserving Invalid Identifiers · Glass Box">
+<meta property="og:description" content="A replacement identifier has two jobs that pull against each other">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why the permit offset matters","Assert the invalidity, do not assume it","Transferable rule","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["labour-fraud-analysis-a-forensic-data-investigation/src/fiction.py","labour-fraud-analysis-a-forensic-data-investigation/src/validate_anonymization.py","labour-fraud-analysis-a-forensic-data-investigation/src/tests/test_dataset.py"],"dateModified":"2026-07-28","description":"A replacement identifier has two jobs that pull against each other","headline":"Format-Preserving Invalid Identifiers","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["privacy","forensics","data-engineering","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">labour-fraud-analysis-a-forensic-data-investigation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A replacement identifier has two jobs that pull against each other</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why-the-permit-offset-matters">Why the permit offset matters</a></li><li><a href="#assert-the-invalidity-do-not-assume-it">Assert the invalidity, do not assume it</a></li><li><a href="#transferable-rule">Transferable rule</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="format-preserving-invalid-identifiers">Format-Preserving Invalid Identifiers</h1>
+<p>A replacement identifier has two jobs that pull against each other. It must <strong>look like</strong> the thing it replaces, or every parser, regex, column width and human reader downstream breaks. It must <strong>not be</strong> a valid instance of that thing, or you have minted an identifier that could collide with a real person&#x27;s.</p>
+<p>The resolution used in <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a>: keep the shape, break the checksum.</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Identifier class</th>
+<th>Shape kept</th>
+<th>Validity broken by</th>
+</tr></thead><tbody>
+<tr><td>Travel document</td><td>letter prefix + fixed-length digit body</td><td>no issuing-authority range, no check digit</td></tr>
+<tr><td>National identity number</td><td>correct digit count</td><td>no checksum, and no date of birth encoded in the leading digits</td></tr>
+<tr><td>Tax number</td><td>correct digit count</td><td>no checksum</td></tr>
+<tr><td>Permit reference</td><td>serial / year / authority-suffix structure</td><td>fictional authority; serials offset by a constant</td></tr>
+</tbody></table></div>
+<p>The national identity number is the instructive case. Real numbers of that family encode a date of birth in their leading digits and end in a check digit. The synthetic version has the right length and nothing else — so it sorts, joins, displays and matches a length regex, while carrying no birth date and failing any checksum routine. It is a <em>shape</em>, not an <em>identity</em>.</p>
+<h2 id="why-the-permit-offset-matters" class="h-anch"><a class="hlink" href="#why-the-permit-offset-matters" aria-label="Link to this section">#</a>Why the permit offset matters</h2>
+<p>Permit serials in a bulk filing are consecutive in the source, and that contiguity is a load-bearing part of the <a class="wl" href="convergent-evidence.html">convergent-evidence</a> argument. A random remapping would destroy it. Adding a constant offset to the whole batch preserves the <em>differences</em> between serials — the property the analysis reads — while changing every value. Structure survives, identity does not: <a class="wl" href="structure-preserving-anonymisation.html">structure-preserving-anonymisation</a>.</p>
+<h2 id="assert-the-invalidity-do-not-assume-it" class="h-anch"><a class="hlink" href="#assert-the-invalidity-do-not-assume-it" aria-label="Link to this section">#</a>Assert the invalidity, do not assume it</h2>
+<p>The property is only worth claiming if something checks it. Three tests in the suite do:</p>
+<ul><li>national identifiers must not match a valid-checksum pattern (shape only — see the limitation below),</li><li>no phone number may match the source-region shape,</li><li>the currency in the dataset must be a fictional one.</li></ul>
+<p>These run on every push through <a class="wl" href="github-actions.html">github-actions</a>, unlike the parts of the <a class="wl" href="disclosure-gate.html">disclosure-gate</a> that need the private source. Note the limitation plainly: the identity-number test checks a <em>shape</em>, not that the value fails a real checksum algorithm — a value could in principle pass a real validator and still pass this test. Recorded as a limit of the check, not a known failure.</p>
+<h2 id="transferable-rule" class="h-anch"><a class="hlink" href="#transferable-rule" aria-label="Link to this section">#</a>Transferable rule</h2>
+<p>When you must publish surrogate identifiers, decide up front which of the identifier&#x27;s properties are <strong>syntactic</strong> (length, alphabet, separators, sort order, adjacency) and which are <strong>semantic</strong> (checksum, embedded date, issuing range, registry lookup). Preserve the first set; deliberately break the second; then write a test for each break.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="structure-preserving-anonymisation.html">structure-preserving-anonymisation</a> · <a class="wl" href="deterministic-seeded-substitution.html">deterministic-seeded-substitution</a> · <a class="wl" href="disclosure-gate.html">disclosure-gate</a> · <a class="wl" href="synthesise-rather-than-redact.html">synthesise-rather-than-redact</a> · <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a></p></div>
+  <div class="tags"><span class="tag">privacy</span><span class="tag">forensics</span><span class="tag">data-engineering</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/fiction.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/validate_anonymization.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/tests/test_dataset.py</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="convergent-evidence.html"><span class="kind k-concept">concept</span><span class="rel-t">Convergent Evidence</span><span class="rel-g">An argument built from several independently weak signals that point the same way, rather than from one decisive test</span></a><a class="rel" href="deterministic-seeded-substitution.html"><span class="kind k-concept">concept</span><span class="rel-t">Deterministic Seeded Substitution</span><span class="rel-g">The mechanism that makes structure-preserving-anonymisation work</span></a><a class="rel" href="disclosure-gate.html"><span class="kind k-concept">concept</span><span class="rel-t">Disclosure Gate</span><span class="rel-g">A build step that must pass before anything derived from sensitive input may be published</span></a><a class="rel" href="structure-preserving-anonymisation.html"><span class="kind k-concept">concept</span><span class="rel-t">Structure-Preserving Anonymisation</span><span class="rel-g">Redaction destroys the thing being studied</span></a><a class="rel" href="synthesise-rather-than-redact.html"><span class="kind k-decision">decision</span><span class="rel-t">Synthesise Rather Than Redact</span><span class="rel-g">Do not publish the sensitive corpus with identifying values blacked out</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a><a class="rel" href="github-actions.html"><span class="kind k-tech">tech</span><span class="rel-t">GitHub Actions</span><span class="rel-g">GitHub&#x27;s hosted CI</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

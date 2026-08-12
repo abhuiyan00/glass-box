@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research Methodologies — Open-Set Recognition · Glass Box</title>
+<meta name="description" content="Despite the course name, this repo does not teach research methods — it applies one">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Research Methodologies — Open-Set Recognition · Glass Box">
+<meta property="og:description" content="Despite the course name, this repo does not teach research methods — it applies one">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Shape","The method it actually used","Content recorded as concepts","Findings","Open gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Research Methodologies/README.md","Research Methodologies/docs/01-open-set-recognition.md","Research Methodologies/docs/02-gans-and-opengan.md","Research Methodologies/NOTICE","Research Methodologies/figures/opengan-auroc.png","Research Methodologies/slides/open-set-recognition.pptx"],"dateModified":"2026-07-28","description":"Despite the course name, this repo does not teach research methods — it applies one","headline":"Research Methodologies — Open-Set Recognition","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["research-methods","ml","coursework","documentation"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">Research Methodologies</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Despite the course name, this repo does not teach research methods — it applies one</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#shape">Shape</a></li><li><a href="#the-method-it-actually-used">The method it actually used</a></li><li><a href="#content-recorded-as-concepts">Content recorded as concepts</a></li><li><a href="#findings">Findings</a></li><li><a href="#open-gaps">Open gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="research-methodologies-open-set-recognition">Research Methodologies — Open-Set Recognition</h1>
+<p>Despite the course name, this repo does <strong>not</strong> teach research methods — it <em>applies</em> one. It is a <strong>written literature study on <a class="wl" href="open-set-recognition.html">open-set-recognition</a> culminating in OpenGAN</strong>, produced for the <em>Research Methodologies</em> course (WUST, Electronic Media in Business and Commerce, 2026). 9 files, 31 KB of prose across three markdown documents.</p>
+<p><strong>It is the only two-author repository in the source set.</strong> Wuxi Bao and Alimuzzaman Bhuiyan are credited jointly in <code>README.md</code> §9 and in the <code>NOTICE</code> copyright line.</p>
+<p><strong>Status: coursework, finished and frozen at last commit 2026-07-11.</strong> &quot;All finished and frozen&quot; (interview, 2026-07-28).</p>
+<h2 id="shape" class="h-anch"><a class="hlink" href="#shape" aria-label="Link to this section">#</a>Shape</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>File</th>
+<th>Is</th>
+</tr></thead><tbody>
+<tr><td><code>README.md</code> (14.2 KB)</td><td>the report itself — 10 numbered sections, six mermaid diagrams, the LaTeX minimax objective, a results table, 9 references</td></tr>
+<tr><td><code>docs/01-open-set-recognition.md</code> (7.8 KB)</td><td>foundations and the three-family taxonomy — traditional / statistical / deep</td></tr>
+<tr><td><code>docs/02-gans-and-opengan.md</code> (9.4 KB)</td><td><a class="wl" href="generative-adversarial-network.html">generative-adversarial-network</a> mechanics, the minibatch-SGD training loop, OpenGAN&#x27;s design, benchmarks</td></tr>
+<tr><td><code>figures/opengan-auroc.png</code></td><td>the AUROC chart, redrawn rather than reproduced</td></tr>
+<tr><td><code>slides/open-set-recognition.pptx</code> (68 KB)</td><td>the original seminar deck — inventoried only, not read</td></tr>
+<tr><td><code>NOTICE</code></td><td>the third-party attribution ledger — <a class="wl" href="provenance-notice-file.html">provenance-notice-file</a></td></tr>
+</tbody></table></div>
+<p>The report post-dates the presentations and says so:</p>
+<blockquote><p>&quot;It grew out of two seminar presentations&quot;</p><cite>Research Methodologies/README.md, 2026-07-11</cite></blockquote>
+<h2 id="the-method-it-actually-used" class="h-anch"><a class="hlink" href="#the-method-it-actually-used" aria-label="Link to this section">#</a>The method it actually used</h2>
+<p><a class="wl" href="literature-review-synthesis.html">literature-review-synthesis</a>, not experimentation. No dataset, no code, no sampling frame, no hypothesis test. The design is: frame the problem → map the method families → deep-dive the generative family → spotlight one method → compare on benchmarks <strong>taken from the source paper</strong>. Quality control is a stated provenance boundary rather than reproduction — <a class="wl" href="report-cites-benchmarks-rather-than-reproducing.html">report-cites-benchmarks-rather-than-reproducing</a>.</p>
+<h2 id="content-recorded-as-concepts" class="h-anch"><a class="hlink" href="#content-recorded-as-concepts" aria-label="Link to this section">#</a>Content recorded as concepts</h2>
+<p><a class="wl" href="open-set-recognition.html">open-set-recognition</a> (closed-set vs open-set, rejection as a valid answer) · <a class="wl" href="openmax-and-extreme-value-theory.html">openmax-and-extreme-value-theory</a> (Weibull tail fit redistributing softmax mass) · <a class="wl" href="generative-adversarial-network.html">generative-adversarial-network</a> (the minimax objective, Wasserstein loss as the stability alternative) · <a class="wl" href="literature-review-synthesis.html">literature-review-synthesis</a> (the method itself).</p>
+<p>OpenGAN&#x27;s two moves are the report&#x27;s payload: discriminate in <strong>feature space</strong> rather than pixel space, and select the checkpoint on a small held-out open set. The report is explicit that without the second move performance is &quot;essentially random&quot;.</p>
+<h2 id="findings" class="h-anch"><a class="hlink" href="#findings" aria-label="Link to this section">#</a>Findings</h2>
+<ul><li><strong>Five commits in 16 seconds</strong> on 2026-07-11, in publish order — scaffolding + slides, figure, both chapters, the main report, licence + NOTICE. <a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a> in its purest form; the work itself has no git trace at all.</li><li><strong>This is the only repo in the group with no <code>origin/HEAD</code> set</strong> — a small tell that the remote was created differently from <a class="wl" href="computer-project-management.html">computer-project-management</a>, <a class="wl" href="physics-exam-prep.html">physics-exam-prep</a> and <a class="wl" href="privacy-policy-template.html">privacy-policy-template</a>.</li><li><strong>The provenance boundary is the repo&#x27;s strongest engineering habit.</strong> <code>NOTICE</code>, the inline &quot;not experiments run for this coursework&quot; note under the results table, and the licence footer all say the same thing three times in three places. See <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>.</li><li><strong>A stated finding the report deliberately keeps in tension with its own conclusion.</strong> The report spotlights OpenGAN while also quoting Vaze et al.&#x27;s result that &quot;a good closed-set classifier is already a good open-set detector&quot; — an argument that a stronger baseline may close much of the gap. Both claims are left standing; neither is resolved. Recorded rather than tidied, in the spirit of <a class="wl" href="multiple-solutions-side-by-side.html">multiple-solutions-side-by-side</a>.</li></ul>
+<h2 id="open-gaps" class="h-anch"><a class="hlink" href="#open-gaps" aria-label="Link to this section">#</a>Open gaps</h2>
+<ul><li><strong>TODO:</strong> the two authors are credited jointly but <strong>all five commits are from one account</strong>, and which sections each author wrote is unrecoverable from the repo. Whether the <code>.pptx</code> carries the co-author&#x27;s half is unverifiable — the deck was inventoried, not read. <code>confidence: low</code> on any attribution split.</li><li><strong>TODO:</strong> why OpenGAN was chosen as the spotlight over OpenMax, CROSR, C2AE or the Vaze et al. line — all cited — is not recorded. §5 asserts it &quot;reaches state-of-the-art&quot; but states no selection criterion. Not asked at interview. <code>confidence: low</code>.</li><li><strong>TODO:</strong> <code>docs/02</code> §2 flags Wasserstein loss as the fix for unstable minimax training and never returns to it. Whether a WGAN section was drafted and cut is unrecorded.</li><li><strong>TODO:</strong> <code>docs/02</code> §5.2 introduces &quot;the key semantic loss&quot;, &quot;feature-conditional normalisation&quot; and &quot;split representation&quot; as OpenGAN&#x27;s &quot;core innovation&quot;. These terms appear nowhere else in the file and are tied to no citation. Source unidentified — <code>confidence: low</code> on that subsection specifically, while the rest of the chapter is <code>confidence: high</code>.</li><li><strong>TODO:</strong> reference 9 (Gao Fei et al., <em>Journal of Nanjing University</em>) is listed in both the README and <code>docs/01</code> but never quoted or tied to a claim.</li><li><strong>TODO:</strong> whether a reproduction of OpenGAN was attempted before falling back to citing Table 1 is not recorded. See <a class="wl" href="report-cites-benchmarks-rather-than-reproducing.html">report-cites-benchmarks-rather-than-reproducing</a>.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="open-set-recognition.html">open-set-recognition</a> · <a class="wl" href="generative-adversarial-network.html">generative-adversarial-network</a> · <a class="wl" href="openmax-and-extreme-value-theory.html">openmax-and-extreme-value-theory</a> · <a class="wl" href="literature-review-synthesis.html">literature-review-synthesis</a> · <a class="wl" href="provenance-notice-file.html">provenance-notice-file</a> · <a class="wl" href="report-cites-benchmarks-rather-than-reproducing.html">report-cites-benchmarks-rather-than-reproducing</a> · <a class="wl" href="it-applications-in-business-and-commerce.html">it-applications-in-business-and-commerce</a></p></div>
+  <div class="tags"><span class="tag">research-methods</span><span class="tag">ml</span><span class="tag">coursework</span><span class="tag">documentation</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Research Methodologies</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Research Methodologies</span><span class="src-p">/docs/01-open-set-recognition.md</span></code></li><li><code><span class="src-r">Research Methodologies</span><span class="src-p">/docs/02-gans-and-opengan.md</span></code></li><li><code><span class="src-r">Research Methodologies</span><span class="src-p">/NOTICE</span></code></li><li><code><span class="src-r">Research Methodologies</span><span class="src-p">/figures/opengan-auroc.png</span></code></li><li><code><span class="src-r">Research Methodologies</span><span class="src-p">/slides/open-set-recognition.pptx</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="generative-adversarial-network.html"><span class="kind k-concept">concept</span><span class="rel-t">Generative Adversarial Network</span><span class="rel-g">Two networks trained against each other as a two-player game</span></a><a class="rel" href="literature-review-synthesis.html"><span class="kind k-concept">concept</span><span class="rel-t">Literature Review Synthesis</span><span class="rel-g">Narrative synthesis of an existing literature into one argued account, as opposed to producing new data</span></a><a class="rel" href="open-set-recognition.html"><span class="kind k-concept">concept</span><span class="rel-t">Open-Set Recognition</span><span class="rel-g">A classifier trained on K categories must, by construction, map every input onto one of them</span></a><a class="rel" href="openmax-and-extreme-value-theory.html"><span class="kind k-concept">concept</span><span class="rel-t">OpenMax and Extreme Value Theory</span><span class="rel-g">The statistical family&#x27;s answer to open-set-recognition: instead of thresholding a confidence score by eye, model the tail of the score distribution — the rare, extreme…</span></a><a class="rel" href="report-cites-benchmarks-rather-than-reproducing.html"><span class="kind k-decision">decision</span><span class="rel-t">Report Cites Benchmarks Rather Than Reproducing</span><span class="rel-g">Scope research-methodologies-open-set-recognition as a written synthesis</span></a><a class="rel" href="import-finished-work-into-git.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Import Finished Work Into Git</span><span class="rel-g">Work is built to completion outside version control, then imported in a burst</span></a><a class="rel" href="multiple-solutions-side-by-side.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Multiple Solutions Side by Side</span><span class="rel-g">The same problem is solved two or three ways in one deliverable, and the trade-off between them is the point</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="provenance-notice-file.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance NOTICE File</span><span class="rel-g">A separate, plain-text NOTICE at the repository root whose only job is to draw the line between what the author made and what the author borrowed</span></a><a class="rel" href="computer-project-management.html"><span class="kind k-project">project</span><span class="rel-t">Computer Project Management</span><span class="rel-g">Coursework for the Computer Project Management course at Wrocław University of Science and Technology, 2026</span></a><a class="rel" href="it-applications-in-business-and-commerce.html"><span class="kind k-project">project</span><span class="rel-t">IT Applications in Business and Commerce</span><span class="rel-g">This repository is not business analytics</span></a><a class="rel" href="physics-exam-prep.html"><span class="kind k-project">project</span><span class="rel-t">Physics Exam Prep</span><span class="rel-g">Not a generated static site and not an asset dump: a hand-written, zero-dependency, offline-first single-page web app — an installable PWA — built from one Physics…</span></a><a class="rel" href="privacy-policy-template.html"><span class="kind k-project">project</span><span class="rel-t">Privacy Policy Template</span><span class="rel-g">Six files, ~25 KB</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

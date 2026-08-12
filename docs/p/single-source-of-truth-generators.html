@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Single-Source-of-Truth Generators · Glass Box</title>
+<meta name="description" content="Hold the facts once, in a plain data structure, and emit every deliverable from it — including deliverables in different formats and for different audiences">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Single-Source-of-Truth Generators · Glass Box">
+<meta property="og:description" content="Hold the facts once, in a plain data structure, and emit every deliverable from it — including deliverables in different formats and for different audiences">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Lab 7 — one spec, three artefacts","Lab 6 — one dataset, two RDF syntaxes","Why it keeps appearing next to zero-dependency Node","The limit of the pattern in this repo","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Information-Systems-Modelling/lab6/app/","Information-Systems-Modelling/lab6/app/README.md","Information-Systems-Modelling/lab7/","Information-Systems-Modelling/lab7/README.md","Information-Systems-Modelling/lab7/src/specs.js"],"dateModified":"2026-07-28","description":"Hold the facts once, in a plain data structure, and emit every deliverable from it — including deliverables in different formats and for different audiences","headline":"Single-Source-of-Truth Generators","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["architecture","documentation","javascript"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-09</span>
+    <span class="repos">Information-Systems-Modelling</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Hold the facts once, in a plain data structure, and emit every deliverable from it — including deliverables in different formats and for different audiences</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#lab-7-one-spec-three-artefacts">Lab 7 — one spec, three artefacts</a></li><li><a href="#lab-6-one-dataset-two-rdf-syntaxes">Lab 6 — one dataset, two RDF syntaxes</a></li><li><a href="#why-it-keeps-appearing-next-to-zero-dependency-node">Why it keeps appearing next to zero-dependency Node</a></li><li><a href="#the-limit-of-the-pattern-in-this-repo">The limit of the pattern in this repo</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="single-source-of-truth-generators">Single-Source-of-Truth Generators</h1>
+<p>Hold the facts <strong>once</strong>, in a plain data structure, and emit every deliverable from it — including deliverables in different formats and for different audiences. The test of the pattern is not &quot;is there a generator&quot;; it is <strong>can any two outputs disagree</strong>. If they can, it is not this pattern.</p>
+<p>Confirmed twice in <code>Information-Systems-Modelling</code>, in two consecutive labs written the same day.</p>
+<h2 id="lab-7-one-spec-three-artefacts" class="h-anch"><a class="hlink" href="#lab-7-one-spec-three-artefacts" aria-label="Link to this section">#</a>Lab 7 — one spec, three artefacts</h2>
+<p><code>lab7/src/specs.js</code> (605 lines) declares each of eight business processes once: pools, lanes, nodes with event markers, sequence flows, message flows. A zero-dependency Node generator (<code>layout.js</code> 307 · <code>svg.js</code> 298 · <code>bpmn.js</code> 134 · <code>report-text.js</code> 49) turns each spec into a rendered <strong>SVG</strong>, a Camunda-compatible <strong><code>.bpmn</code> file with diagram interchange</strong>, and a section of the <strong>PDF report</strong>. The README states the reason in the same breath as the mechanism:</p>
+<blockquote><p>&quot;A zero-dependency Node generator holds the eight processes <strong>once</strong> as a data model and emits the diagrams, the BPMN files and the report from it, so the rendered SVG and the <code>.bpmn</code> diagram interchange can never drift.&quot;</p><cite>Information-Systems-Modelling/lab7/README.md, 2026-07-09</cite></blockquote>
+<p>&quot;Can never drift&quot; is the load-bearing claim, and here it is structurally true: the SVG and the <code>.bpmn</code> are two renderings of one object, not two documents about one process. See <a class="wl" href="bpmn-process-modelling.html">bpmn-process-modelling</a>.</p>
+<h2 id="lab-6-one-dataset-two-rdf-syntaxes" class="h-anch"><a class="hlink" href="#lab-6-one-dataset-two-rdf-syntaxes" aria-label="Link to this section">#</a>Lab 6 — one dataset, two RDF syntaxes</h2>
+<p><code>lab6/app/data/*.json</code> holds the instance data; one renderer emits <strong>RDFa 1.1</strong> in the body and <strong>JSON-LD</strong> in the head of every page, plus the static site and the SSR responses. The README is explicit that this replaced a hand-written version, and names the failure it was replacing:</p>
+<blockquote><p>&quot;The old approach hand-wrote the same data into six HTML files <strong>twice</strong> (RDFa in the body + JSON-LD in the head), so every fact lived in 2–4 places and could drift. This app makes the data the single source of truth and <strong>generates</strong> the markup.&quot;</p><cite>Information-Systems-Modelling/lab6/app/README.md, 2026-07-09</cite></blockquote>
+<p>The switch is a recorded decision with a deletion behind it — see <a class="wl" href="generate-markup-instead-of-hand-writing-it.html">generate-markup-instead-of-hand-writing-it</a> — and it is the only place in the fifteen-repo source set where a superseded version was <strong>deleted</strong> rather than kept.</p>
+<p><code>src/rdf/vocabmap.js</code> extends the idea to the documentation <em>about</em> the output: the <code>VOCAB MAP</code> comment at the top of each page is generated by walking that page&#x27;s own graph, so a term added to the data cannot leave the comment stale. See <a class="wl" href="linked-data-publishing.html">linked-data-publishing</a> and <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>.</p>
+<h2 id="why-it-keeps-appearing-next-to-zero-dependency-node" class="h-anch"><a class="hlink" href="#why-it-keeps-appearing-next-to-zero-dependency-node" aria-label="Link to this section">#</a>Why it keeps appearing next to zero-dependency Node</h2>
+<p>Both instances are <code>dependencies: {}</code> with <code>node:</code> builtins only, and so is the exam trainer in the same repo — see <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a>. That is not a coincidence: a generator you own end to end has no upstream to track, so the cost of <em>not</em> taking a diagramming library or a templating engine is one afternoon of <code>layout.js</code>, and the benefit is that the pipeline still runs in five years.</p>
+<h2 id="the-limit-of-the-pattern-in-this-repo" class="h-anch"><a class="hlink" href="#the-limit-of-the-pattern-in-this-repo" aria-label="Link to this section">#</a>The limit of the pattern in this repo</h2>
+<p>Lab 6&#x27;s headline principle is that no fact should be written twice. Meanwhile <code>ontology.ttl</code> exists as <strong>byte-identical copies</strong> in <code>lab5/.../resources/</code> and <code>lab6/vocabulary/</code> — the one fact the generators do not own is duplicated across the lab boundary, and the prose does not mention it. The generators guarantee consistency <em>within</em> a lab, not <em>across</em> the repo. Compare <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a>, which explains why nothing gets deduplicated here.</p>
+<p>The narrower sibling pattern — where the generated file and its <em>input</em> both live in the tree, with a DO-NOT-EDIT banner on the output — is <a class="wl" href="generated-artifact-with-pristine-source.html">generated-artifact-with-pristine-source</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="information-systems-modelling.html">information-systems-modelling</a> · <a class="wl" href="generate-markup-instead-of-hand-writing-it.html">generate-markup-instead-of-hand-writing-it</a> · <a class="wl" href="bpmn-process-modelling.html">bpmn-process-modelling</a> · <a class="wl" href="linked-data-publishing.html">linked-data-publishing</a> · <a class="wl" href="generated-artifact-with-pristine-source.html">generated-artifact-with-pristine-source</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a></p></div>
+  <div class="tags"><span class="tag">architecture</span><span class="tag">documentation</span><span class="tag">javascript</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab6/app/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab6/app/README.md</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab7/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab7/README.md</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab7/src/specs.js</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="bpmn-process-modelling.html"><span class="kind k-concept">concept</span><span class="rel-t">BPMN Process Modelling</span><span class="rel-g">BPMN 2.0 (OMG Business Process Model and Notation — not UML) models the work that happens around a system rather than inside it: who does what, in which order, who waits…</span></a><a class="rel" href="linked-data-publishing.html"><span class="kind k-concept">concept</span><span class="rel-t">Linked Data Publishing</span><span class="rel-g">Publishing linked data means shipping a web page that is simultaneously readable by a person and parseable as a graph by a machine, with every entity identified by an…</span></a><a class="rel" href="generate-markup-instead-of-hand-writing-it.html"><span class="kind k-decision">decision</span><span class="rel-t">Generate Markup Instead of Hand-Writing It</span><span class="rel-g">Delete six hand-written HTML pages carrying RDFa and JSON-LD, and generate both syntaxes from a single JSON dataset instead</span></a><a class="rel" href="generated-artifact-with-pristine-source.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Artifact with a Pristine Source</span><span class="rel-g">The file the application loads is generated, carries a DO-NOT-EDIT banner naming its generator, and its input is committed beside it</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="information-systems-modelling.html"><span class="kind k-project">project</span><span class="rel-t">Information Systems Modelling</span><span class="rel-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

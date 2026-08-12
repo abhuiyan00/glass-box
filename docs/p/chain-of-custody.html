@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chain of Custody · Glass Box</title>
+<meta name="description" content="In forensic work, a claim is only as good as the trail from the claim back to the artefact it came from">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chain of Custody · Glass Box">
+<meta property="og:description" content="In forensic work, a claim is only as good as the trail from the claim back to the artefact it came from">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["How it is built","Three mechanisms worth separating","Data-quality errors are kept, not cleaned","The limit of custody through an anonymiser","Gap","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["labour-fraud-analysis-a-forensic-data-investigation/docs/investigation.md","labour-fraud-analysis-a-forensic-data-investigation/docs/case-file-full.md","labour-fraud-analysis-a-forensic-data-investigation/src/build_db.py"],"dateModified":"2026-07-28","description":"In forensic work, a claim is only as good as the trail from the claim back to the artefact it came from","headline":"Chain of Custody","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["forensics","investigation","data-modelling","research-methods"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">labour-fraud-analysis-a-forensic-data-investigation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>In forensic work, a claim is only as good as the trail from the claim back to the artefact it came from</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#how-it-is-built">How it is built</a></li><li><a href="#three-mechanisms-worth-separating">Three mechanisms worth separating</a></li><li><a href="#data-quality-errors-are-kept-not-cleaned">Data-quality errors are kept, not cleaned</a></li><li><a href="#the-limit-of-custody-through-an-anonymiser">The limit of custody through an anonymiser</a></li><li><a href="#gap">Gap</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="chain-of-custody">Chain of Custody</h1>
+<p>In forensic work, a claim is only as good as the trail from the claim back to the artefact it came from. Modelled in data, that means every assertion must resolve to a <strong>document row</strong>, and every document row must carry enough to identify the original page.</p>
+<h2 id="how-it-is-built" class="h-anch"><a class="hlink" href="#how-it-is-built" aria-label="Link to this section">#</a>How it is built</h2>
+<p>In <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a>, the <code>document</code> table carries a source path, a content hash, a duplicate count and a document class. Three junction tables — document↔person, document↔company, document↔worksite — record which parties each document touches. Nothing in the narrative is supposed to exist without a row behind it.</p>
+<blockquote><p>&quot;no single date or number here is load-bearing without the underlying page.&quot;</p><cite>labour-fraud-analysis-a-forensic-data-investigation/docs/investigation.md, 2026-07-11</cite></blockquote>
+<p>That sentence is the whole discipline compressed. It says two things at once: the numbers are evidence, and no individual number is <em>the</em> evidence — which is why the argument is built as <a class="wl" href="convergent-evidence.html">convergent-evidence</a> rather than as a single decisive figure.</p>
+<h2 id="three-mechanisms-worth-separating" class="h-anch"><a class="hlink" href="#three-mechanisms-worth-separating" aria-label="Link to this section">#</a>Three mechanisms worth separating</h2>
+<ul><li><strong>Content hashing for deduplication.</strong> The corpus folds ~2,456 originals down to 512 distinct records by content hash. This is an <strong>ingestion step</strong>, not an analytic finding — a scanned page filed three times is one document. Do not read it as duplicate-record fraud detection; no such analytic exists here.</li><li><strong>Provenance junctions.</strong> Because the document↔party links are tables rather than prose, &quot;what does this claim rest on&quot; is a query. This is where <a class="wl" href="third-normal-form.html">third-normal-form</a> pays for itself.</li><li><strong>Tiered reliability.</strong> Claims are graded up front: official documents, single-source testimony, and inference. The tier travels with the claim, so a reader can discount without re-deriving.</li></ul>
+<h2 id="data-quality-errors-are-kept-not-cleaned" class="h-anch"><a class="hlink" href="#data-quality-errors-are-kept-not-cleaned" aria-label="Link to this section">#</a>Data-quality errors are kept, not cleaned</h2>
+<p>The corpus contains extraction errors — wrong dates from OCR — and they are <strong>preserved deliberately</strong> in both the private source and the synthetic derivative. Two reasons, both real: cleaning a value is an unrecorded edit to evidence, and a dataset without the original&#x27;s defects does not exercise the same cleaning problems. See <a class="wl" href="structure-preserving-anonymisation.html">structure-preserving-anonymisation</a> and <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>.</p>
+<h2 id="the-limit-of-custody-through-an-anonymiser" class="h-anch"><a class="hlink" href="#the-limit-of-custody-through-an-anonymiser" aria-label="Link to this section">#</a>The limit of custody through an anonymiser</h2>
+<p>Once the corpus passes through the pipeline, the chain leads back to a <strong>synthetic</strong> document row, and the link to the real page exists only in the git-ignored mapping. The published artefact is therefore internally auditable and externally unverifiable — a deliberate trade, and one more reason every page for this repo stays <code>publish: false</code>. See <a class="wl" href="disclosure-gate.html">disclosure-gate</a> and <a class="wl" href="synthesise-rather-than-redact.html">synthesise-rather-than-redact</a>.</p>
+<h2 id="gap" class="h-anch"><a class="hlink" href="#gap" aria-label="Link to this section">#</a>Gap</h2>
+<ul><li><strong>TODO:</strong> whether every narrative claim resolves to a document id that actually exists is not asserted by any test — the discipline appears to be manual. <code>confidence: low</code> on completeness of the chain, as opposed to its design.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="convergent-evidence.html">convergent-evidence</a> · <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a> · <a class="wl" href="third-normal-form.html">third-normal-form</a> · <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> · <a class="wl" href="shared-identifier-clustering.html">shared-identifier-clustering</a></p></div>
+  <div class="tags"><span class="tag">forensics</span><span class="tag">investigation</span><span class="tag">data-modelling</span><span class="tag">research-methods</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/docs/investigation.md</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/docs/case-file-full.md</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/build_db.py</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="convergent-evidence.html"><span class="kind k-concept">concept</span><span class="rel-t">Convergent Evidence</span><span class="rel-g">An argument built from several independently weak signals that point the same way, rather than from one decisive test</span></a><a class="rel" href="disclosure-gate.html"><span class="kind k-concept">concept</span><span class="rel-t">Disclosure Gate</span><span class="rel-g">A build step that must pass before anything derived from sensitive input may be published</span></a><a class="rel" href="reproducible-analysis.html"><span class="kind k-concept">concept</span><span class="rel-t">Reproducible Analysis</span><span class="rel-g">An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose</span></a><a class="rel" href="shared-identifier-clustering.html"><span class="kind k-concept">concept</span><span class="rel-t">Shared-Identifier Clustering</span><span class="rel-g">When records that are supposed to be independent share a contact point — one inbox, one phone, one address, one bank account — the sharing is a claim about control</span></a><a class="rel" href="structure-preserving-anonymisation.html"><span class="kind k-concept">concept</span><span class="rel-t">Structure-Preserving Anonymisation</span><span class="rel-g">Redaction destroys the thing being studied</span></a><a class="rel" href="third-normal-form.html"><span class="kind k-concept">concept</span><span class="rel-t">Third Normal Form</span><span class="rel-g">A relation is in 3NF when every non-key attribute depends on the key, the whole key, and nothing but the key</span></a><a class="rel" href="synthesise-rather-than-redact.html"><span class="kind k-decision">decision</span><span class="rel-t">Synthesise Rather Than Redact</span><span class="rel-g">Do not publish the sensitive corpus with identifying values blacked out</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

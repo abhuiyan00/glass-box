@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python Programming Laboratories · Glass Box</title>
+<meta name="description" content="Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python Programming Laboratories · Glass Box">
+<meta property="og:description" content="Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Status — a §10 contradiction, both claims recorded","Shape","Git history — the pure publishing-dump case","Findings","Decisions recorded","Open gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Python-Programming-Laboratories/README.md","Python-Programming-Laboratories/pyproject.toml","Python-Programming-Laboratories/src/weblog/","Python-Programming-Laboratories/tests/","Python-Programming-Laboratories/labs/"],"dateModified":"2026-08-05","description":"Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…","headline":"Python Programming Laboratories","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["python","architecture","testing","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-05 · in force since 2026-07-25</span>
+    <span class="repos">Python-Programming-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#status-a-10-contradiction-both-claims-recorded">Status — a §10 contradiction, both claims recorded</a></li><li><a href="#shape">Shape</a></li><li><a href="#git-history-the-pure-publishing-dump-case">Git history — the pure publishing-dump case</a></li><li><a href="#findings">Findings</a></li><li><a href="#decisions-recorded">Decisions recorded</a></li><li><a href="#open-gaps">Open gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="python-programming-laboratories">Python Programming Laboratories</h1>
+<p>Twelve laboratories from the <em>Script Languages</em> course at Wrocław University of Science and Technology, deliberately refactored into <strong>one installable project</strong> instead of twelve loose scripts. Nine labs read the same Apache access log, so parsing, reading, aggregation and config live once in a <code>weblog</code> package and each lab is a thin script over it — the organising move recorded on <a class="wl" href="extract-the-shared-core.html">extract-the-shared-core</a>.</p>
+<p>75 files, Python ≥3.10, setuptools with a <code>src/</code> layout, MIT, remote over SSH.</p>
+<h2 id="status-a-10-contradiction-both-claims-recorded" class="h-anch"><a class="hlink" href="#status-a-10-contradiction-both-claims-recorded" aria-label="Link to this section">#</a>Status — a §10 contradiction, both claims recorded</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>#</th>
+<th>Claim</th>
+<th>Source</th>
+<th><code>valid_from</code></th>
+<th><code>valid_to</code></th>
+</tr></thead><tbody>
+<tr><td>1</td><td>Coursework, <strong>finished and frozen at last commit 2026-07-25</strong>, 12 commits</td><td>interview</td><td>2026-07-28</td><td>2026-08-01</td></tr>
+<tr><td>2</td><td>Frozen as coursework; <strong>a 13th commit repaired the packaging defect recorded below</strong></td><td><code>git log</code>, read 2026-08-05</td><td>2026-08-01</td><td>null</td></tr>
+</tbody></table></div>
+<p>No course material was added. The 13th commit declares dependencies that were already being imported — see the first finding.</p>
+<h2 id="shape" class="h-anch"><a class="hlink" href="#shape" aria-label="Link to this section">#</a>Shape</h2>
+<ul><li><code>src/weblog/</code> — <code>entry</code>, <code>reader</code>, <code>stats</code>, <code>config</code>, <code>cli</code>. Declares <code>dependencies = []</code>.</li><li><code>tests/</code> — 6 <a class="wl" href="pytest.html">pytest</a> files, 75 <code>def test_</code> plus 5 <code>parametrize</code> decorators.</li><li><code>labs/01_first_steps/</code> … <code>labs/13_sqlite_and_gui/</code> — each with its own README carrying the engineering narrative. See <a class="wl" href="numbered-stages-in-directory-names.html">numbered-stages-in-directory-names</a>.</li><li><code>data/</code> (2,039-line access log, a 2.7 MB tweet CSV, a JSON corpus), <code>assignments/lab-NN.pdf</code> × 12 as issued, <code>assets/</code> (4 PNGs + a provenance README).</li><li>No <code>docs/</code>, no <code>.gitattributes</code>, no <code>CLAUDE.md</code>, no CI, no Git LFS.</li></ul>
+<p>Concepts the labs actually teach: <a class="wl" href="common-log-format-parsing.html">common-log-format-parsing</a> · <a class="wl" href="pythons-data-model.html">pythons-data-model</a> · <a class="wl" href="separating-computation-from-io.html">separating-computation-from-io</a> · <a class="wl" href="idempotent-loading.html">idempotent-loading</a> · <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a>.</p>
+<p>Libraries in play: <a class="wl" href="click.html">click</a> · <a class="wl" href="argparse.html">argparse</a> · <a class="wl" href="factory-boy-and-faker.html">factory-boy-and-faker</a> · <a class="wl" href="beautifulsoup.html">beautifulsoup</a> · <a class="wl" href="pillow.html">pillow</a> · <a class="wl" href="matplotlib.html">matplotlib</a> · <a class="wl" href="sqlite.html">sqlite</a> · <a class="wl" href="tkinter.html">tkinter</a> · <a class="wl" href="setuptools-and-pyproject.html">setuptools-and-pyproject</a>.</p>
+<h2 id="git-history-the-pure-publishing-dump-case" class="h-anch"><a class="hlink" href="#git-history-the-pure-publishing-dump-case" aria-label="Link to this section">#</a>Git history — the pure publishing-dump case</h2>
+<p>The first 12 commits land <strong>all on 2026-07-25</strong>, strictly layer-ordered: <code>Add the weblog package</code> → <code>Add the test suite</code> → <code>Add the data files</code> → labs in four batches → assignment sheets → screenshots → <code>Add the README, licence and gitignore</code>. No fix commits, no refactors, no reverts, no message referring to anything already committed — and <strong>the tests are committed before most of the code they exercise</strong>.</p>
+<p>The 13th, on 2026-08-01, is the first commit in this repository&#x27;s history that refers to something already committed. It is a fix, and it is the only one — which is the pattern holding, not breaking: the publishing dump has no fix commits <em>because the fixing happened before the import</em>, and the one defect that survived the import needed a commit shaped like real work to remove.</p>
+<p>The real engineering history survives only as README prose: the Pillow-10 port, the BeautifulSoup 4.13 port, the restructured faculty site, the test that passed for the wrong reason. This repo is the clean confirmation of <a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a>, and the mirror image of <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a>, which contradicts it. The licence lands in a separate final commit exactly as in that repo — <a class="wl" href="presentation-polish-tail-commits.html">presentation-polish-tail-commits</a>.</p>
+<p>Because the failure modes are written beside their fixes rather than in commits, the READMEs carry what git does not: <a class="wl" href="document-the-failure-mode-next-to-the-fix.html">document-the-failure-mode-next-to-the-fix</a> and <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>.</p>
+<h2 id="findings" class="h-anch"><a class="hlink" href="#findings" aria-label="Link to this section">#</a>Findings</h2>
+<ul><li><strong>Confirmed defect, since fixed.</strong> <code>tests/test_lab09_insults.py</code> does <code>import factory</code> and uses <code>factory.Faker(...)</code>, and <code>pyproject.toml</code>&#x27;s <code>dev</code> extra listed only <code>pytest</code> and <code>pytest-cov</code>, so the README&#x27;s own quick start <strong>failed at collection in a clean virtualenv</strong>. <code>factory-boy</code>, <code>faker</code> and <code>click</code> were declared on 2026-08-01 in <code>385d0fd</code>, each with the reason inline. The repair found a second layer the original finding missed: the same test imports <code>labs/09_dataset_reports/insults.py</code>, which reaches <code>click</code> at module scope, so declaring the two obvious packages still did not collect. Measured after the fix — <strong>89 tests collected; a clean <code>pip install -e .[dev]</code> runs 88 and skips 1</strong>, the skip being <code>pytest.importorskip(&quot;openpyxl&quot;)</code>, which lives in the <code>labs</code> extra by design. <code>confidence: high</code>, both states read directly. Recorded on <a class="wl" href="factory-boy-and-faker.html">factory-boy-and-faker</a> and <a class="wl" href="documentation-drift.html">documentation-drift</a>.</li><li><strong>Namespace hazard.</strong> <code>labs/04_classes/requests.py</code> shadows the <code>requests</code> package that labs 10 and 11 import, if that directory ever lands on <code>sys.path</code>. <code>confidence: high</code>.</li><li>The README says &quot;Twelve laboratories&quot; while the directories number to 13/14 — labs 11–12 and 13–14 are merged into single directories. Minor drift.</li><li>The core package declares zero dependencies and pushes every library into an optional <code>labs</code> extra — see <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a>.</li><li>Generated outputs are gitignored (<code>build/</code>, <code>*.db</code>, <code>*.docx</code>, <code>*.xlsx</code>, <code>charts/</code>) as &quot;all reproducible from source&quot; — the deliberate opposite of <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a>.</li></ul>
+<h2 id="decisions-recorded" class="h-anch"><a class="hlink" href="#decisions-recorded" aria-label="Link to this section">#</a>Decisions recorded</h2>
+<p><a class="wl" href="click-versus-argparse.html">click-versus-argparse</a> · <a class="wl" href="regex-over-split-for-log-parsing.html">regex-over-split-for-log-parsing</a> · <a class="wl" href="keep-the-teaching-version.html">keep-the-teaching-version</a></p>
+<h2 id="open-gaps" class="h-anch"><a class="hlink" href="#open-gaps" aria-label="Link to this section">#</a>Open gaps</h2>
+<ul><li><strong>TODO:</strong> the README&#x27;s &quot;89 tests&quot; figure comes from a screenshot. 75 <code>def test_</code> plus parametrize expansions is consistent with it but not derivable without running the suite. <code>confidence: medium</code> on the count; the machine and date it was captured on are unrecorded.</li><li><strong>TODO:</strong> lab 09&#x27;s &quot;10,360 tweets against 868 distinct targets&quot; and lab 11&#x27;s &quot;41 chapters, 3,911 paragraphs&quot; are asserted in prose with no test or artifact pinning them. <code>confidence: low</code>.</li><li><strong>TODO:</strong> whether <code>weblog</code> existed from lab 02 or was extracted later once duplication became obvious cannot be distinguished — the single-day commit order destroys the evidence. The README frames extraction as the design.</li><li><strong>TODO:</strong> <code>ruff</code> is configured (<code>line-length = 90</code>) but never run in CI and never mentioned in the README. No recorded reason.</li><li><strong>TODO:</strong> why setuptools + src-layout rather than Poetry/Hatch/PDM is not recorded anywhere.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> · <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a> · <a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a></p></div>
+  <div class="tags"><span class="tag">python</span><span class="tag">architecture</span><span class="tag">testing</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/pyproject.toml</span></code></li><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/src/weblog/</span></code></li><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/tests/</span></code></li><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/labs/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="common-log-format-parsing.html"><span class="kind k-concept">concept</span><span class="rel-t">Common Log Format Parsing</span><span class="rel-g">Apache&#x27;s Common Log Format (CLF) and its Combined extension look space-separated and are not:</span></a><a class="rel" href="idempotent-loading.html"><span class="kind k-concept">concept</span><span class="rel-t">Idempotent Loading</span><span class="rel-g">A load script is idempotent when running it twice leaves the store exactly as running it once did</span></a><a class="rel" href="pythons-data-model.html"><span class="kind k-concept">concept</span><span class="rel-t">Python&#x27;s Data Model</span><span class="rel-g">Python&#x27;s protocols are duck typing with a contract: implement the right dunder methods and your class participates in ==, &lt;, in, len(), for, [], hashing and printing as…</span></a><a class="rel" href="separating-computation-from-io.html"><span class="kind k-concept">concept</span><span class="rel-t">Separating Computation from I/O</span><span class="rel-g">A function that computes and prints can only be tested by capturing stdout</span></a><a class="rel" href="tests-that-pass-for-the-wrong-reason.html"><span class="kind k-concept">concept</span><span class="rel-t">Tests That Pass for the Wrong Reason</span><span class="rel-g">A failing test tells you something is broken</span></a><a class="rel" href="click-versus-argparse.html"><span class="kind k-decision">decision</span><span class="rel-t">click Versus argparse</span><span class="rel-g">Ship both, on comparable problems, in the same repository — and say that the comparison is the point</span></a><a class="rel" href="keep-the-teaching-version.html"><span class="kind k-decision">decision</span><span class="rel-t">Keep the Teaching Version</span><span class="rel-g">Keep labs/04_classes/ — the hand-written HttpRequest / CorrectHttpRequest / MalformedHttpRequest hierarchy — in the tree alongside weblog.LogEntry, which does the same…</span></a><a class="rel" href="regex-over-split-for-log-parsing.html"><span class="kind k-decision">decision</span><span class="rel-t">Regex Over split() for Log Parsing</span><span class="rel-g">Parse Apache CLF/Combined lines with a single re.VERBOSE regular expression, not with line.split() and positional indexing</span></a><a class="rel" href="document-the-failure-mode-next-to-the-fix.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Document the Failure Mode Next to the Fix</span><span class="rel-g">Almost every note in these two repositories has the same shape: state the wrong-but-plausible alternative, name the concrete input that breaks it, then give the fix</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="extract-the-shared-core.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Extract the Shared Core</span><span class="rel-g">When several deliverables consume the same input, make the shared part a real package with tests and reduce each deliverable to a thin script over it — instead of twelve…</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="import-finished-work-into-git.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Import Finished Work Into Git</span><span class="rel-g">Work is built to completion outside version control, then imported in a burst</span></a><a class="rel" href="numbered-stages-in-directory-names.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Numbered Stages in Directory Names</span><span class="rel-g">Order is encoded in filenames and directory names, not in a table of contents</span></a><a class="rel" href="presentation-polish-tail-commits.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Presentation Polish Tail Commits</span><span class="rel-g">After the substance lands, a distinct tail of commits does nothing but presentation: screenshots, then a licence, then licence badges</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="data-warehousing-and-business-intelligence.html"><span class="kind k-project">project</span><span class="rel-t">Data Warehousing and Business Intelligence</span><span class="rel-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="oracle-database-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Oracle Database Laboratories</span><span class="rel-g">Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite</span></a><a class="rel" href="argparse.html"><span class="kind k-tech">tech</span><span class="rel-t">argparse</span><span class="rel-g">Python&#x27;s standard-library command-line parser</span></a><a class="rel" href="beautifulsoup.html"><span class="kind k-tech">tech</span><span class="rel-t">BeautifulSoup</span><span class="rel-g">HTML/XML parsing library, used in labs 10 and 11 of python-programming-laboratories for scraping and for a document pipeline that extracts 41 chapters of text</span></a><a class="rel" href="click.html"><span class="kind k-tech">tech</span><span class="rel-t">click</span><span class="rel-g">Third-party CLI framework for Python</span></a><a class="rel" href="factory-boy-and-faker.html"><span class="kind k-tech">tech</span><span class="rel-t">factory_boy and Faker</span><span class="rel-g">Faker generates plausible fake values — names, dates, text</span></a><a class="rel" href="matplotlib.html"><span class="kind k-tech">tech</span><span class="rel-t">matplotlib</span><span class="rel-g">Python&#x27;s plotting library</span></a><a class="rel" href="pillow.html"><span class="kind k-tech">tech</span><span class="rel-t">Pillow</span><span class="rel-g">Python&#x27;s imaging library</span></a><a class="rel" href="pytest.html"><span class="kind k-tech">tech</span><span class="rel-t">pytest</span><span class="rel-g">The test runner for python-programming-laboratories — and the only real test framework anywhere in the two lab repositories</span></a><a class="rel" href="setuptools-and-pyproject.html"><span class="kind k-tech">tech</span><span class="rel-t">setuptools and pyproject.toml</span><span class="rel-g">The packaging layer that turns twelve lab scripts into one installable project in python-programming-laboratories</span></a><a class="rel" href="sqlite.html"><span class="kind k-tech">tech</span><span class="rel-t">SQLite</span><span class="rel-g">An embedded SQL database: one file, no server, no configuration, and a driver in Python&#x27;s standard library as sqlite3</span></a><a class="rel" href="tkinter.html"><span class="kind k-tech">tech</span><span class="rel-t">Tkinter</span><span class="rel-g">Python&#x27;s standard-library GUI toolkit</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

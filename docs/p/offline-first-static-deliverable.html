@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Offline-First Static Deliverable · Glass Box</title>
+<meta name="description" content="The deliverable must work by double-clicking a file: no server, no install, no network">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Offline-First Static Deliverable · Glass Box">
+<meta property="og:description" content="The deliverable must work by double-clicking a file: no server, no install, no network">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Evidence","The instances","Why: `file://` is a real constraint that bites","The tension worth recording","Where it is contradicted","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Discrete-Mathematics-Laboratories/lab4_Complexity/part2/","Discrete-Mathematics-Laboratories/lab6_Neo4j/viewer/","Physics/exam_prep/sw.js","Farley/docs/VISION.md","labour-fraud-analysis-a-forensic-data-investigation/interactive/","privacy-policy/index.html","Information-Systems-Modelling/lab6/app/"],"dateModified":"2026-07-28","description":"The deliverable must work by double-clicking a file: no server, no install, no network","headline":"Offline-First Static Deliverable","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["architecture","web-dev"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-05-02</span>
+    <span class="repos">Discrete-Mathematics-Laboratories · Farley · Information-Systems-Modelling · Physics · labour-fraud-analysis-a-forensic-data-investigation · privacy-policy</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The deliverable must work by double-clicking a file: no server, no install, no network</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#evidence">Evidence</a></li><li><a href="#the-instances">The instances</a></li><li><a href="#why-file-is-a-real-constraint-that-bites">Why: `file://` is a real constraint that bites</a></li><li><a href="#the-tension-worth-recording">The tension worth recording</a></li><li><a href="#where-it-is-contradicted">Where it is contradicted</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="offline-first-static-deliverable">Offline-First Static Deliverable</h1>
+<p>The deliverable must work by <strong>double-clicking a file</strong>: no server, no install, no network. Seven repositories build this way, and in two of them it is stated as a value rather than a convenience.</p>
+<h2 id="evidence" class="h-anch"><a class="hlink" href="#evidence" aria-label="Link to this section">#</a>Evidence</h2>
+<blockquote><p>&quot;Farely runs <strong>fully on-device</strong>&quot;</p><cite>Farley/README.md, 2026-07-24</cite></blockquote>
+<blockquote><p>&quot;      // addAll is atomic; cache individually so one miss doesn&#x27;t abort install&quot;</p><cite>Physics/exam_prep/sw.js, 2026-07-10</cite></blockquote>
+<p>The second quote is the pattern taken seriously: an installable PWA whose service worker caches per-URL because one missing file would otherwise abort the whole offline install. See <a class="wl" href="cache-individually-not-addall.html">cache-individually-not-addall</a>.</p>
+<h2 id="the-instances" class="h-anch"><a class="hlink" href="#the-instances" aria-label="Link to this section">#</a>The instances</h2>
+<ul><li><code>Discrete-Mathematics-Laboratories</code> — <code>lab4_Complexity/part2</code> and <code>lab6_Neo4j/viewer/</code> contain zero external URLs; the lab-6 viewer reimplements every Cypher query in JS as &quot;the exact analogue&quot; so the graph can be explored without a database running. See <a class="wl" href="dual-implementation-as-cross-check.html">dual-implementation-as-cross-check</a>.</li><li><code>Physics</code> — a full installable PWA: <code>manifest.webmanifest</code>, hand-written <code>sw.js</code>, KaTeX vendored locally with 20 font files so no CDN is needed. See <a class="wl" href="vendor-katex-instead-of-cdn.html">vendor-katex-instead-of-cdn</a>.</li><li><code>labour-fraud-analysis</code> — a deliberate <em>second</em> entry point: <code>serve.py</code> is 60 lines of stdlib <code>http.server</code>, and <code>interactive/vendor/</code> commits all six third-party JS libraries so there is no npm.</li><li><code>privacy-policy</code> — one self-contained <code>index.html</code>, inline <code>&lt;style&gt;</code>, <code>prefers-color-scheme</code> light and dark, no assets, no JS. See <a class="wl" href="self-contained-single-file-html.html">self-contained-single-file-html</a>.</li><li><code>Information-Systems-Modelling/lab6/app/</code> — server-side rendering over <code>node:http</code> with <code>&quot;dependencies&quot;: {}</code>.</li></ul>
+<h2 id="why-file-is-a-real-constraint-that-bites" class="h-anch"><a class="hlink" href="#why-file-is-a-real-constraint-that-bites" aria-label="Link to this section">#</a>Why: <code>file://</code> is a real constraint that bites</h2>
+<p>This is not aesthetic. <code>Discrete-Mathematics-Laboratories</code> learned it the hard way:</p>
+<blockquote><p>&quot;It used to be loaded through the Babel CDN with <code>type=\&quot;text/babel\&quot;</code>, so opening it directly (<code>file://</code>) left a <strong>blank page</strong> — the browser blocks Babel from fetching the local <code>.jsx</code>, and there was no internet fallback.&quot;</p><cite>Discrete-Mathematics-Laboratories/lab5_GraphTheory/README.md, 2026-07-10</cite></blockquote>
+<p>The fix was to vendor React&#x27;s production UMD build and commit the precompiled JSX — 2,692 inserted lines in one commit. See <a class="wl" href="vendor-react-over-babel-cdn.html">vendor-react-over-babel-cdn</a>.</p>
+<h2 id="the-tension-worth-recording" class="h-anch"><a class="hlink" href="#the-tension-worth-recording" aria-label="Link to this section">#</a>The tension worth recording</h2>
+<p><code>Farley</code> demonstrates that &quot;offline-first&quot; can be a value the documentation <em>strengthens</em> while the code stays the same. The 2026-07-24 README rewrite demoted its cloud vision path from &quot;the one owner-chosen exception I switched on&quot; to &quot;ships off by default&quot; — making the claim less accurate, not more, since map tiles and a car-spec lookup are unconditional outbound requests. The value is real — <code>classifyScreen</code> genuinely falls back to on-device heuristics with no API key — but the headline overstates it. Covered on <a class="wl" href="on-device-first-inference.html">on-device-first-inference</a> and <a class="wl" href="opt-in-cloud-fallback.html">opt-in-cloud-fallback</a>.</p>
+<h2 id="where-it-is-contradicted" class="h-anch"><a class="hlink" href="#where-it-is-contradicted" aria-label="Link to this section">#</a>Where it is contradicted</h2>
+<p><code>Discrete-Mathematics-Laboratories</code>&#x27; Q-HYDRO app sits beside two offline apps and loads Leaflet, map tiles and fonts from CDNs, saying so plainly. <code>Optimization Methods</code> does the same for its route explorer. Neither hides it; both are documented as graceful-degradation cases. The pattern is a strong default, not a rule — as with <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> · <a class="wl" href="course-as-runnable-study-tool.html">course-as-runnable-study-tool</a> · <a class="wl" href="vendor-katex-instead-of-cdn.html">vendor-katex-instead-of-cdn</a> · <a class="wl" href="vendor-react-over-babel-cdn.html">vendor-react-over-babel-cdn</a> · <a class="wl" href="self-contained-single-file-html.html">self-contained-single-file-html</a> · <a class="wl" href="on-device-first-inference.html">on-device-first-inference</a></p></div>
+  <div class="tags"><span class="tag">architecture</span><span class="tag">web-dev</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab4_Complexity/part2/</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab6_Neo4j/viewer/</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/sw.js</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/VISION.md</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/interactive/</span></code></li><li><code><span class="src-r">privacy-policy</span><span class="src-p">/index.html</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab6/app/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="on-device-first-inference.html"><span class="kind k-concept">concept</span><span class="rel-t">On-Device-First Inference</span><span class="rel-g">Do the classification locally with cheap deterministic logic; treat a model call as an upgrade the owner may switch on, never as the default path</span></a><a class="rel" href="opt-in-cloud-fallback.html"><span class="kind k-concept">concept</span><span class="rel-t">Opt-In Cloud Fallback</span><span class="rel-g">A remote model call that is structurally optional: absent a key it does not exist, present a key it fires only for inputs a cheap local gate has already judged novel,…</span></a><a class="rel" href="cache-individually-not-addall.html"><span class="kind k-decision">decision</span><span class="rel-t">Cache Individually, Not addAll</span><span class="rel-g">In the service worker&#x27;s install handler, precache each URL with its own cache.add(url).catch(() =&gt; {}) inside a Promise.all, rather than the idiomatic cache.addAll(CORE)</span></a><a class="rel" href="vendor-katex-instead-of-cdn.html"><span class="kind k-decision">decision</span><span class="rel-t">Vendor KaTeX Instead of CDN</span><span class="rel-g">Copy katex — katex.min.js, katex.min.css, auto-render.min.js and all 20 KaTeX_*.woff2 font files — into exam_prep/vendor/katex/ and load them by relative path, rather…</span></a><a class="rel" href="vendor-react-over-babel-cdn.html"><span class="kind k-decision">decision</span><span class="rel-t">Vendor React Over the Babel CDN</span><span class="rel-g">Commit React and ReactDOM&#x27;s production UMD builds into the repository and precompile sn-app.jsx to sn-app.js ahead of time, rather than loading Babel from a CDN and…</span></a><a class="rel" href="course-as-runnable-study-tool.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Course as Runnable Study Tool</span><span class="rel-g">Four separate courses were revised by building the syllabus into a program rather than by reading notes</span></a><a class="rel" href="dual-implementation-as-cross-check.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Dual Implementation as Cross-Check</span><span class="rel-g">Build the same thing twice, in two different stacks, and keep both</span></a><a class="rel" href="self-contained-single-file-html.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Self-Contained Single-File HTML</span><span class="rel-g">One .html file that renders completely with zero outbound requests — styles inline in a &lt;style&gt; block, no scripts, no images, no fonts, no CDN</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

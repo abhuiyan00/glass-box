@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pytest · Glass Box</title>
+<meta name="description" content="The test runner for python-programming-laboratories — and the only real test framework anywhere in the two lab repositories">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytest · Glass Box">
+<meta property="og:description" content="The test runner for python-programming-laboratories — and the only real test framework anywhere in the two lab repositories">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Configuration","The suite","Two caveats on the headline number","Contrast","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Python-Programming-Laboratories/tests/","Python-Programming-Laboratories/pyproject.toml","Python-Programming-Laboratories/labs/07_testing/"],"dateModified":"2026-07-28","description":"The test runner for python-programming-laboratories — and the only real test framework anywhere in the two lab repositories","headline":"pytest","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["testing","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Python-Programming-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The test runner for python-programming-laboratories — and the only real test framework anywhere in the two lab repositories</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#configuration">Configuration</a></li><li><a href="#the-suite">The suite</a></li><li><a href="#two-caveats-on-the-headline-number">Two caveats on the headline number</a></li><li><a href="#contrast">Contrast</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="pytest">pytest</h1>
+<p>The test runner for <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> — and the only real test framework anywhere in the two lab repositories.</p>
+<h2 id="configuration" class="h-anch"><a class="hlink" href="#configuration" aria-label="Link to this section">#</a>Configuration</h2>
+<p>Declared in <code>pyproject.toml</code> rather than a separate <code>pytest.ini</code>:</p>
+<ul><li><strong><code>testpaths</code></strong> pins the suite to <code>tests/</code>, so a bare <code>pytest</code> never wanders into <code>labs/</code> and collects a script.</li><li><strong><code>pythonpath</code></strong> makes the <code>src/</code> layout importable without an editable install having to be in place first — see <a class="wl" href="setuptools-and-pyproject.html">setuptools-and-pyproject</a>.</li><li><code>pytest-cov</code> in the <code>dev</code> extra for coverage.</li></ul>
+<h2 id="the-suite" class="h-anch"><a class="hlink" href="#the-suite" aria-label="Link to this section">#</a>The suite</h2>
+<p>Six files: <code>conftest.py</code>, <code>test_config</code>, <code>test_entry</code>, <code>test_reader</code>, <code>test_stats</code>, <code>test_lab07_request_parser</code>, <code>test_lab09_insults</code>. <strong>75 <code>def test_</code> functions plus 5 <code>parametrize</code> decorators.</strong></p>
+<p>What is pinned:</p>
+<ul><li><strong>Round-trip parsing</strong> — parse then re-emit is an identity. A property, not a fixed expected string; see <a class="wl" href="common-log-format-parsing.html">common-log-format-parsing</a>.</li><li><strong>Config validation</strong>, including failing at load rather than at first use.</li><li><strong>Lab-07 exception ordering</strong> — the <em>order</em> validations fire, not just the outcome, so a refactor that reorders checks fails loudly.</li><li><code>parametrize</code> sweeps over HTTP methods and protocol versions.</li></ul>
+<p>What is not: labs 01–06, 08, 10, 11 and 13 have <strong>no tests at all</strong>. The tested surface is the <code>weblog</code> core plus two labs.</p>
+<h2 id="two-caveats-on-the-headline-number" class="h-anch"><a class="hlink" href="#two-caveats-on-the-headline-number" aria-label="Link to this section">#</a>Two caveats on the headline number</h2>
+<p><strong>TODO:</strong> the README&#x27;s &quot;<strong>89 tests</strong>&quot; figure comes from a screenshot. 75 test functions plus parametrize expansions is consistent with it, but the count is not derivable without running the suite, and no machine or date is recorded. <code>confidence: medium</code>.</p>
+<p><strong>The documented quick start does not work.</strong> <code>tests/test_lab09_insults.py</code> imports <code>factory</code> and uses <code>factory.Faker(...)</code>, but the <code>dev</code> extra declares only <code>pytest</code> and <code>pytest-cov</code> — so <code>pip install -e &quot;.[labs,dev]&quot;</code> followed by <code>pytest</code> <strong>fails at collection in a clean virtualenv</strong>. <code>confidence: high</code>. See <a class="wl" href="factory-boy-and-faker.html">factory-boy-and-faker</a> and <a class="wl" href="documentation-drift.html">documentation-drift</a>.</p>
+<p>Counting tests is the wrong measure anyway — <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a> is the lab&#x27;s own argument about that.</p>
+<h2 id="contrast" class="h-anch"><a class="hlink" href="#contrast" aria-label="Link to this section">#</a>Contrast</h2>
+<p><a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> has no pytest. Its single automated check is a hand-rolled <code>TestRunner</code> in <code>lab3_Sets/mandatory_tasks/test_suite.py</code> — boolean assertions and a ✓/✗ summary.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a> · <a class="wl" href="factory-boy-and-faker.html">factory-boy-and-faker</a> · <a class="wl" href="setuptools-and-pyproject.html">setuptools-and-pyproject</a> · <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> · <a class="wl" href="separating-computation-from-io.html">separating-computation-from-io</a></p></div>
+  <div class="tags"><span class="tag">testing</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/tests/</span></code></li><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/pyproject.toml</span></code></li><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/labs/07_testing/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="common-log-format-parsing.html"><span class="kind k-concept">concept</span><span class="rel-t">Common Log Format Parsing</span><span class="rel-g">Apache&#x27;s Common Log Format (CLF) and its Combined extension look space-separated and are not:</span></a><a class="rel" href="separating-computation-from-io.html"><span class="kind k-concept">concept</span><span class="rel-t">Separating Computation from I/O</span><span class="rel-g">A function that computes and prints can only be tested by capturing stdout</span></a><a class="rel" href="tests-that-pass-for-the-wrong-reason.html"><span class="kind k-concept">concept</span><span class="rel-t">Tests That Pass for the Wrong Reason</span><span class="rel-g">A failing test tells you something is broken</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="python-programming-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Python Programming Laboratories</span><span class="rel-g">Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…</span></a><a class="rel" href="factory-boy-and-faker.html"><span class="kind k-tech">tech</span><span class="rel-t">factory_boy and Faker</span><span class="rel-g">Faker generates plausible fake values — names, dates, text</span></a><a class="rel" href="setuptools-and-pyproject.html"><span class="kind k-tech">tech</span><span class="rel-t">setuptools and pyproject.toml</span><span class="rel-g">The packaging layer that turns twelve lab scripts into one installable project in python-programming-laboratories</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

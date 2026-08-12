@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hierarchical Queries · Glass Box</title>
+<meta name="description" content="Walking a tree that is stored in a single self-referencing column">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hierarchical Queries · Glass Box">
+<meta property="og:description" content="Walking a tree that is stored in a single self-referencing column">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The one thing that is easy to get backwards","The pseudocolumns","`WHERE` is applied after the walk","The same answer three ways","The same walk over pointers","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Oracle-Database-Laboratories/sql/02_queries/02_hierarchical_queries.sql","Oracle-Database-Laboratories/sql/04_object_relational/03_ref_navigation.sql","Oracle-Database-Laboratories/docs/schema.md"],"dateModified":"2026-07-28","description":"Walking a tree that is stored in a single self-referencing column","headline":"Hierarchical Queries","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["databases","sql","algorithms"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Oracle-Database-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Walking a tree that is stored in a single self-referencing column</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-one-thing-that-is-easy-to-get-backwards">The one thing that is easy to get backwards</a></li><li><a href="#the-pseudocolumns">The pseudocolumns</a></li><li><a href="#where-is-applied-after-the-walk">`WHERE` is applied after the walk</a></li><li><a href="#the-same-answer-three-ways">The same answer three ways</a></li><li><a href="#the-same-walk-over-pointers">The same walk over pointers</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="hierarchical-queries">Hierarchical Queries</h1>
+<p>Walking a tree that is stored in a single self-referencing column. One row per node, one column pointing at the parent&#x27;s key, and a query that traverses it to arbitrary depth without knowing the depth in advance. Oracle spells this <code>CONNECT BY</code>; ANSI SQL spells it as a recursive CTE.</p>
+<h2 id="the-one-thing-that-is-easy-to-get-backwards" class="h-anch"><a class="hlink" href="#the-one-thing-that-is-easy-to-get-backwards" aria-label="Link to this section">#</a>The one thing that is easy to get backwards</h2>
+<p>Direction lives entirely in which side of the join predicate carries <code>PRIOR</code>, and the source file states it at the top rather than leaving it to be discovered per query:</p>
+<pre><code>CONNECT BY PRIOR nickname = chief   walks DOWN  (root -&gt; subordinates)
+CONNECT BY PRIOR chief = nickname   walks UP    (leaf -&gt; chain of chiefs)</code></pre>
+<p>Both appear in <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a> against the same <code>CATS.chief</code> self-reference — see <a class="wl" href="circular-foreign-key.html">circular-foreign-key</a> for why a self-reference is <em>not</em> the awkward case.</p>
+<h2 id="the-pseudocolumns" class="h-anch"><a class="hlink" href="#the-pseudocolumns" aria-label="Link to this section">#</a>The pseudocolumns</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Construct</th>
+<th>What it gives</th>
+</tr></thead><tbody>
+<tr><td><code>LEVEL</code></td><td>depth <strong>relative to <code>START WITH</code></strong>, not to the top of the tree — 1 at whatever the start clause selected</td></tr>
+<tr><td><code>SYS_CONNECT_BY_PATH(col, sep)</code></td><td>the whole root-to-node path as one delimited string</td></tr>
+<tr><td><code>CONNECT_BY_ROOT col</code></td><td>the value of <code>col</code> at the row the walk started from</td></tr>
+</tbody></table></div>
+<p><code>LEVEL</code> is also how the tree gets <em>drawn</em>: <code>LPAD(&#x27; &#x27;, (LEVEL-1)*4) || …</code> renders the indentation, one of the cheapest ways to make a relational structure legible — the same instinct as <a class="wl" href="make-the-formal-object-observable.html">make-the-formal-object-observable</a> reached without any tooling.</p>
+<h2 id="where-is-applied-after-the-walk" class="h-anch"><a class="hlink" href="#where-is-applied-after-the-walk" aria-label="Link to this section">#</a><code>WHERE</code> is applied after the walk</h2>
+<p>The subtlety worth naming: filtering does not prune the subtree.</p>
+<blockquote><p>&quot;The WHERE clause is applied after the tree is walked, so pruning a cat here does not prune its subordinates -- which is exactly what is wanted: the shape of the hierarchy is preserved and only the display is filtered.&quot;</p><cite>Oracle-Database-Laboratories/sql/02_queries/02_hierarchical_queries.sql, 2026-07-25</cite></blockquote>
+<p>To prune the traversal itself you add the predicate to <code>CONNECT BY</code>, not to <code>WHERE</code>. Two clauses, two different meanings, and the difference is invisible on data whose filtered nodes happen to be leaves.</p>
+<h2 id="the-same-answer-three-ways" class="h-anch"><a class="hlink" href="#the-same-answer-three-ways" aria-label="Link to this section">#</a>The same answer three ways</h2>
+<p>&quot;The chain of chiefs above every rank-and-file cat&quot; is written three times in one file, and the comparison is the exercise — see <a class="wl" href="multiple-solutions-side-by-side.html">multiple-solutions-side-by-side</a>:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Formulation</th>
+<th>Behaviour</th>
+</tr></thead><tbody>
+<tr><td><strong>Repeated <code>LEFT JOIN</code></strong>, one per level</td><td>explicit and portable, but <strong>hard-codes the depth</strong>: a fourth tier needs another join</td></tr>
+<tr><td><strong><code>CONNECT BY</code> + <code>PIVOT</code></strong></td><td>adapts to any depth by adding a value to the <code>PIVOT</code> <code>IN</code> list; still one column per level</td></tr>
+<tr><td><strong><code>CONNECT BY</code> + <code>SYS_CONNECT_BY_PATH</code></strong></td><td>depth-independent, but the answer is one string, so downstream consumers must parse it</td></tr>
+</tbody></table></div>
+<p>There is no winner. The trade is <em>columns you can join against</em> versus <em>a shape that survives a deeper tree</em>, and picking one is a statement about what happens to the result next.</p>
+<h2 id="the-same-walk-over-pointers" class="h-anch"><a class="hlink" href="#the-same-walk-over-pointers" aria-label="Link to this section">#</a>The same walk over pointers</h2>
+<p><code>04_object_relational/03_ref_navigation.sql</code> runs <code>CONNECT BY PRIOR c.nickname = c.chief.nickname</code> over a <code>REF</code> column instead of a value-carrying foreign key. The traversal is unchanged; only the dereference differs — see <a class="wl" href="object-relational-model.html">object-relational-model</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="circular-foreign-key.html">circular-foreign-key</a> · <a class="wl" href="referential-integrity.html">referential-integrity</a> · <a class="wl" href="object-relational-model.html">object-relational-model</a> · <a class="wl" href="multiple-solutions-side-by-side.html">multiple-solutions-side-by-side</a> · <a class="wl" href="oracle-database.html">oracle-database</a> · <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a></p></div>
+  <div class="tags"><span class="tag">databases</span><span class="tag">sql</span><span class="tag">algorithms</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/02_queries/02_hierarchical_queries.sql</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/04_object_relational/03_ref_navigation.sql</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/docs/schema.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="circular-foreign-key.html"><span class="kind k-concept">concept</span><span class="rel-t">Circular Foreign Key</span><span class="rel-g">Two tables that reference each other</span></a><a class="rel" href="object-relational-model.html"><span class="kind k-concept">concept</span><span class="rel-t">Object-Relational Model</span><span class="rel-g">A relational database with user-defined types layered on top: rows are objects, columns can be pointers to other objects, types carry methods, and a join becomes a dot</span></a><a class="rel" href="referential-integrity.html"><span class="kind k-concept">concept</span><span class="rel-t">Referential Integrity</span><span class="rel-g">Every foreign-key value either matches an existing primary key or is NULL</span></a><a class="rel" href="make-the-formal-object-observable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Make the Formal Object Observable</span><span class="rel-g">Take a mathematical definition and build something that lets you watch it behave</span></a><a class="rel" href="multiple-solutions-side-by-side.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Multiple Solutions Side by Side</span><span class="rel-g">The same problem is solved two or three ways in one deliverable, and the trade-off between them is the point</span></a><a class="rel" href="oracle-database-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Oracle Database Laboratories</span><span class="rel-g">Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite</span></a><a class="rel" href="oracle-database.html"><span class="kind k-tech">tech</span><span class="rel-t">Oracle Database</span><span class="rel-g">Oracle&#x27;s relational database engine</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

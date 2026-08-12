@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metasploit Framework · Glass Box</title>
+<meta name="description" content="An exploitation framework: a catalogued library of exploit modules, payloads, encoders and auxiliary tools behind a common console (msfconsole)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Metasploit Framework · Glass Box">
+<meta property="og:description" content="An exploitation framework: a catalogued library of exploit modules, payloads, encoders and auxiliary tools behind a common console (msfconsole)">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The structure worth knowing","Where it sits in the chain","What actually happened in the lab","Scope","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Cybersecurity-Engineering-Laboratories/labs/12_reverse_shells/lab-12-report.pdf","Cybersecurity-Engineering-Laboratories/README.md"],"dateModified":"2026-07-28","description":"An exploitation framework: a catalogued library of exploit modules, payloads, encoders and auxiliary tools behind a common console (msfconsole)","headline":"Metasploit Framework","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["security","networking"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Cybersecurity-Engineering-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>An exploitation framework: a catalogued library of exploit modules, payloads, encoders and auxiliary tools behind a common console (msfconsole)</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-structure-worth-knowing">The structure worth knowing</a></li><li><a href="#where-it-sits-in-the-chain">Where it sits in the chain</a></li><li><a href="#what-actually-happened-in-the-lab">What actually happened in the lab</a></li><li><a href="#scope">Scope</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="metasploit-framework">Metasploit Framework</h1>
+<p>An exploitation framework: a catalogued library of exploit modules, payloads, encoders and auxiliary tools behind a common console (<code>msfconsole</code>). Appears in lab 12 of <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a>, against a deliberately vulnerable Metasploitable VM.</p>
+<p><strong>This page describes the tool&#x27;s structure and what the lab attempted. It contains no module names in use, no payload, no exploitation procedure and no privilege-escalation steps.</strong> See the redaction note on <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a>.</p>
+<h2 id="the-structure-worth-knowing" class="h-anch"><a class="hlink" href="#the-structure-worth-knowing" aria-label="Link to this section">#</a>The structure worth knowing</h2>
+<p>The framework&#x27;s design is the transferable part, because it is a clean separation of concerns:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Component</th>
+<th>Role</th>
+</tr></thead><tbody>
+<tr><td><strong>Exploit module</strong></td><td>the technique that gains code execution against a specific flaw</td></tr>
+<tr><td><strong>Payload</strong></td><td>what runs afterwards — the two are chosen independently</td></tr>
+<tr><td><strong>Encoder</strong></td><td>reshapes a payload to survive transport constraints or naive filtering</td></tr>
+<tr><td><strong>Auxiliary</strong></td><td>scanning, fingerprinting and enumeration that does not exploit</td></tr>
+<tr><td><strong>Post</strong></td><td>modules that run once access exists</td></tr>
+</tbody></table></div>
+<p>Decoupling exploit from payload is why one framework covers so much ground: <em>n</em> exploits and <em>m</em> payloads give <em>n × m</em> combinations without either side knowing about the other. It also explains the defensive posture — detecting the payload family is often easier and more durable than detecting each individual exploit.</p>
+<h2 id="where-it-sits-in-the-chain" class="h-anch"><a class="hlink" href="#where-it-sits-in-the-chain" aria-label="Link to this section">#</a>Where it sits in the chain</h2>
+<p>Lab 12 runs the standard sequence: enumerate with <a class="wl" href="nmap.html">nmap</a>, identify service versions, look up known vulnerabilities for those exact versions, then search the framework&#x27;s catalogue for a matching module. That is the value proposition — the framework is a <strong>searchable index</strong> from &quot;this version is running&quot; to &quot;this is known to be exploitable&quot;, which is what turns a version string from trivia into a finding. See <a class="wl" href="network-reconnaissance.html">network-reconnaissance</a>.</p>
+<h2 id="what-actually-happened-in-the-lab" class="h-anch"><a class="hlink" href="#what-actually-happened-in-the-lab" aria-label="Link to this section">#</a>What actually happened in the lab</h2>
+<p>The chain did not complete. The report records the port scan failing to return a version for a service that was demonstrably running, an unexpected port state, and the final step producing a connection that yielded nothing usable — the report&#x27;s own words are that the target directory came back empty. The privilege-escalation exercise that followed is not described here at all.</p>
+<p><strong>TODO:</strong> whether these were tooling problems, environment problems, or a conceptual gap is not diagnosed anywhere in the repository, and whether the exercise was retried is unrecorded. <code>confidence: low</code> on lab 12&#x27;s completion; <code>confidence: medium</code> on this page overall, since the framework&#x27;s role is documented in the README and its structure is not repo-specific.</p>
+<p>That an exploitation lab is the <em>least</em> complete in a fourteen-lab set is itself a finding — exploitation against a prepared target is fragile, version-sensitive and unforgiving of small environment differences, in a way that the measurement labs are not.</p>
+<h2 id="scope" class="h-anch"><a class="hlink" href="#scope" aria-label="Link to this section">#</a>Scope</h2>
+<p>Coursework, 2022, against Metasploitable and other deliberately vulnerable images provided for the purpose. The repository states that nothing was run against a system without authorisation and that none of it is written as an operational guide; this wiki keeps to the same boundary and narrows it.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="network-reconnaissance.html">network-reconnaissance</a> · <a class="wl" href="nmap.html">nmap</a> · <a class="wl" href="kali-linux.html">kali-linux</a> · <a class="wl" href="web-application-injection.html">web-application-injection</a> · <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a></p></div>
+  <div class="tags"><span class="tag">security</span><span class="tag">networking</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/12_reverse_shells/lab-12-report.pdf</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="network-reconnaissance.html"><span class="kind k-concept">concept</span><span class="rel-t">Network Reconnaissance</span><span class="rel-g">The information-gathering phase that precedes any assessment</span></a><a class="rel" href="web-application-injection.html"><span class="kind k-concept">concept</span><span class="rel-t">Web Application Injection</span><span class="rel-g">One root cause, many names</span></a><a class="rel" href="cybersecurity-engineering-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Cybersecurity Engineering Laboratories</span><span class="rel-g">Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026</span></a><a class="rel" href="kali-linux.html"><span class="kind k-tech">tech</span><span class="rel-t">Kali Linux</span><span class="rel-g">A Debian-derived distribution that ships several hundred security tools preinstalled and preconfigured</span></a><a class="rel" href="nmap.html"><span class="kind k-tech">tech</span><span class="rel-t">Nmap</span><span class="rel-g">The network mapper: send crafted packets to a target and characterise it from the responses</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

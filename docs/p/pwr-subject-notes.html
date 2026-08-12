@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PWR Subject Notes · Glass Box</title>
+<meta name="description" content="The knowledge in the coursework archive that has no repository, written down — plus the census that proves nothing was quietly left out">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PWR Subject Notes · Glass Box">
+<meta property="og:description" content="The knowledge in the coursework archive that has no repository, written down — plus the census that proves nothing was quietly left out">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The problem it solves","The census names its own gaps","Three things it found","What the notes are for","Proving the archive is intact","What is deliberately absent","2026-08-12 reference audit","Status","Branch status - a contradiction, both claims recorded"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["pwr-subject-notes/README.md","pwr-subject-notes/NOTICE","pwr-subject-notes/INDEX.md","pwr-subject-notes/assets/coverage.svg","pwr-subject-notes/scripts/census.py","pwr-subject-notes/scripts/render_coverage_chart.py","pwr-subject-notes/scripts/extract_archive.py","pwr-subject-notes/scripts/verify_archive_untouched.sh","pwr-subject-notes/notes/subjects-that-map-to-existing-repositories.md","pwr-subject-notes/notes/unclassified-and-duplicate-folders.md","pwr-subject-notes/notes/software-engineering-scope-boundary.md","pwr-subject-notes/notes/linux-laboratory.md"],"dateModified":"2026-08-12","description":"The knowledge in the coursework archive that has no repository, written down — plus the census that proves nothing was quietly left out","headline":"PWR Subject Notes","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["documentation","research-methods","python","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-12 · in force since 2026-08-04</span>
+    <span class="repos">pwr-subject-notes</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The knowledge in the coursework archive that has no repository, written down — plus the census that proves nothing was quietly left out</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-problem-it-solves">The problem it solves</a></li><li><a href="#the-census-names-its-own-gaps">The census names its own gaps</a></li><li><a href="#three-things-it-found">Three things it found</a></li><li><a href="#what-the-notes-are-for">What the notes are for</a></li><li><a href="#proving-the-archive-is-intact">Proving the archive is intact</a></li><li><a href="#what-is-deliberately-absent">What is deliberately absent</a></li><li><a href="#2026-08-12-reference-audit">2026-08-12 reference audit</a></li><li><a href="#status">Status</a></li><li><a href="#branch-status-a-contradiction-both-claims-recorded">Branch status - a contradiction, both claims recorded</a></li></ol></nav>
+  <div class="prose"><h1 id="pwr-subject-notes">PWR Subject Notes</h1>
+<p>The knowledge in the coursework archive that has no repository, written down — plus the census that proves nothing was quietly left out. Ten notes, one generated index over <strong>73 subject entries / 48,815 files / 11 GB</strong>, four scripts.</p>
+<h2 id="the-problem-it-solves" class="h-anch"><a class="hlink" href="#the-problem-it-solves" aria-label="Link to this section">#</a>The problem it solves</h2>
+<p>An archive of eight semesters does not divide cleanly into things worth building and things worth forgetting. Subjects with a runnable artefact became repositories; most subjects do not have one, and earlier passes handled that by leaving them out. The result was a coverage claim that was true about the repositories and silent about everything else.</p>
+<p>The rule here: <strong>every subject folder gets a disposition, and an exclusion is never silent.</strong></p>
+<h2 id="the-census-names-its-own-gaps" class="h-anch"><a class="hlink" href="#the-census-names-its-own-gaps" aria-label="Link to this section">#</a>The census names its own gaps</h2>
+<p><code>scripts/census.py</code> walks the archive and prints, by name, every subject folder for which no disposition has been recorded. That is the check — not a sentence in a README claiming completeness. It is <a class="wl" href="census-that-names-its-own-gaps.html">census-that-names-its-own-gaps</a>, and it is the same shape as <a class="wl" href="verify-the-load-dont-declare-it.html">verify-the-load-dont-declare-it</a> and <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a> applied to coverage rather than to data or documentation.</p>
+<p><code>INDEX.md</code> is generated by it. Editing the numbers by hand is not how it is updated.</p>
+<p><strong>It also resolves what it prints.</strong> A row reading <code>note: linux-laboratory</code> is checked against <code>notes/</code>, a row reading <code>repo: Physics</code> against the sibling directories, and every note file must be named by at least one row. Added 2026-08-05 after an audit found this repository&#x27;s own README claiming <strong>nine</strong> notes while <code>notes/</code> held <strong>ten</strong> — never true, since the first commit contained ten, and invisible because nothing counted them. Checking both directions is the point: a missing target is a broken row, and only an orphan note catches a count that has moved.</p>
+<p><strong>Re-running it writes nothing when nothing has moved.</strong> It used to stamp today&#x27;s date into <code>INDEX.md</code>, so running the check dirtied the artefact the check was about. The date now means <em>when these numbers last changed</em>, and a clean <code>git status</code> after a census run is itself the evidence — the same move as reporting two numbers in the integrity script below.</p>
+<h2 id="three-things-it-found" class="h-anch"><a class="hlink" href="#three-things-it-found" aria-label="Link to this section">#</a>Three things it found</h2>
+<p><strong>A census that walks subdirectories misses this archive.</strong> <code>2nd Semester</code> has no subject folders at all — 116 files sit loose at its root, including the only operating-systems coursework in the archive that is not a screenshot. An earlier pass counted subdirectories and reported 80 folders and 16,066 files; counting loose files at every semester root gives 54,034. Neither figure was dishonest. The first excluded what it could not classify and did not say so, which is <a class="wl" href="documentation-drift.html">documentation-drift</a> in a measurement rather than in prose.</p>
+<p><strong>Four &quot;unverified mapping&quot; rows were checkable in one pass.</strong> <code>7th/TP</code> was filed as <em>teaching material without an assessed artefact</em> and is in fact the requirements specification for <a class="wl" href="health-awareness-support-platform.html">health-awareness-support-platform</a>. <code>4th semester/Sys lab</code> was filed as unverified and its two CSV files are the inputs of <a class="wl" href="air-quality-public-health-analysis.html">air-quality-public-health-analysis</a>. A folder name is a hypothesis; checking it moved four subjects from unknown to covered — and <code>5th/MAAP</code> from assumed-covered to genuinely missing.</p>
+<p><strong>An exclusion by association excluded real work.</strong> <code>6th/SADiSM</code> was excluded from an earlier matrix because Bishop and Murphy sit in that folder. Excluding the textbooks was right; the four laboratory specifications and three completed solution trees beside them were excluded without being named. That folder is now <a class="wl" href="systems-analysis-and-decision-support.html">systems-analysis-and-decision-support</a>.</p>
+<h2 id="what-the-notes-are-for" class="h-anch"><a class="hlink" href="#what-the-notes-are-for" aria-label="Link to this section">#</a>What the notes are for</h2>
+<p>Not summaries of lecture material. Each says what a subject covered, what in it is worth carrying forward, and what was decided about it — including the decisions to build nothing:</p>
+<ul><li><code>linux-laboratory.md</code> — 320 terminal screenshots, and why rebuilding them into a shell script destroys the artefact rather than preserving it.</li><li><code>software-engineering-scope-boundary.md</code> — three folders and 1.6 M characters that would have become a third copy of <a class="wl" href="information-systems-modelling.html">information-systems-modelling</a>. The note narrows the scope to the one thing no existing repository does: requirements traceability, pointed at a real SRS and the system that implements it.</li><li><code>unclassified-and-duplicate-folders.md</code> — the four folders holding most of the archive by size, each unresolved in a different way, each counted rather than dropped.</li><li><code>advanced-web-technologies-and-engineering-ethics.md</code> — the counterweight. Everything else in this archive rests on checkable claims; the ethics notes are the one subject that cannot be tested and would misrepresent the education if omitted.</li></ul>
+<h2 id="proving-the-archive-is-intact" class="h-anch"><a class="hlink" href="#proving-the-archive-is-intact" aria-label="Link to this section">#</a>Proving the archive is intact</h2>
+<p><code>verify_archive_untouched.sh</code> checks the immutability claim rather than asserting it, and reports two numbers because they are different claims. In the prior archive snapshot, <strong>94 files</strong> under <code>5th/MAAP</code> carry modification times after the freeze — every one a <code>.git</code> index or <code>.gradle</code> lock refreshed by inspection tooling — and <strong>zero content files</strong> changed.</p>
+<p>&quot;Nothing was touched&quot; and &quot;no content was touched&quot; are not the same statement, and only the second one is true. Collapsing them into one reassuring number is the failure this script exists to avoid — <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>.</p>
+<h2 id="what-is-deliberately-absent" class="h-anch"><a class="hlink" href="#what-is-deliberately-absent" aria-label="Link to this section">#</a>What is deliberately absent</h2>
+<p>The ~33 million characters of extracted lecture text are a working cache and are committed nowhere: that text is the lecturers&#x27; expression. Four third-party textbooks are named and were not opened, including a 688-page pirated JEE algebra text watermarked <em>&quot;downloaded from jeemain.guru&quot;</em> on every page, found inside the algebra exercise folder. Personal, financial and assessment records are counted in the census and appear nowhere else — <a class="wl" href="provenance-notice-file.html">provenance-notice-file</a>.</p>
+<h2 id="2026-08-12-reference-audit" class="h-anch"><a class="hlink" href="#2026-08-12-reference-audit" aria-label="Link to this section">#</a>2026-08-12 reference audit</h2>
+<p>With the current configured PWR archive root, the census passed and regenerated its index at <strong>73 entries / 48,815 files / 11 GB / 10 notes</strong>, with all 73 entries carrying a stated disposition. The coverage chart regenerated from that index and was idempotent on a second run. The timestamp-based integrity check found <strong>zero files</strong> newer than the documented freeze, hence zero newer content files. The default archive paths in both check scripts now match the located archive; the WSL-provided <code>bash</code> cannot access Windows drive paths, so that timestamp result was verified with PowerShell using the script&#x27;s same subject and exclusion rules.</p>
+<h2 id="status" class="h-anch"><a class="hlink" href="#status" aria-label="Link to this section">#</a>Status</h2>
+<p>Committed locally on <code>main</code>. No remote. The census is re-runnable and is the way this page&#x27;s figures should be refreshed.</p>
+<h2 id="branch-status-a-contradiction-both-claims-recorded" class="h-anch"><a class="hlink" href="#branch-status-a-contradiction-both-claims-recorded" aria-label="Link to this section">#</a>Branch status - a contradiction, both claims recorded</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>#</th>
+<th>Claim</th>
+<th>Source</th>
+<th><code>valid_from</code></th>
+<th><code>valid_to</code></th>
+</tr></thead><tbody>
+<tr><td>1</td><td>Local branch was <code>master</code>.</td><td><code>git reflog</code></td><td>2026-08-05</td><td>2026-08-12</td></tr>
+<tr><td>2</td><td>Local branch is <code>main</code>.</td><td><code>git branch --show-current</code></td><td>2026-08-12</td><td>null</td></tr>
+</tbody></table></div>
+<p>The reflog records the local <code>master</code> -&gt; <code>main</code> rename; the current branch command reports <code>main</code>.</p></div>
+  <div class="tags"><span class="tag">documentation</span><span class="tag">research-methods</span><span class="tag">python</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">pwr-subject-notes</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">pwr-subject-notes</span><span class="src-p">/NOTICE</span></code></li><li><code><span class="src-r">pwr-subject-notes</span><span class="src-p">/INDEX.md</span></code></li><li><code><span class="src-r">pwr-subject-notes</span><span class="src-p">/assets/coverage.svg</span></code></li><li><code><span class="src-r">pwr-subject-notes</span><span class="src-p">/scripts/census.py</span></code></li><li><code><span class="src-r">pwr-subject-notes</span><span class="src-p">/scripts/render_coverage_chart.py</span></code></li><li><code><span class="src-r">pwr-subject-notes</span><span class="src-p">/scripts/extract_archive.py</span></code></li><li><code><span class="src-r">pwr-subject-notes</span><span class="src-p">/scripts/verify_archive_untouched.sh</span></code></li><li><code><span class="src-r">pwr-subject-notes</span><span class="src-p">/notes/subjects-that-map-to-existing-repositories.md</span></code></li><li><code><span class="src-r">pwr-subject-notes</span><span class="src-p">/notes/unclassified-and-duplicate-folders.md</span></code></li><li><code><span class="src-r">pwr-subject-notes</span><span class="src-p">/notes/software-engineering-scope-boundary.md</span></code></li><li><code><span class="src-r">pwr-subject-notes</span><span class="src-p">/notes/linux-laboratory.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="census-that-names-its-own-gaps.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Census That Names Its Own Gaps</span><span class="rel-g">When enumerating a large collection — subjects in an archive, tables in a warehouse, endpoints in an API — the failure that matters is not a wrong entry</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="provenance-notice-file.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance NOTICE File</span><span class="rel-g">A separate, plain-text NOTICE at the repository root whose only job is to draw the line between what the author made and what the author borrowed</span></a><a class="rel" href="verify-the-load-dont-declare-it.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Verify the Load, Don&#x27;t Declare It</span><span class="rel-g">A data pipeline ends with a query whose result can be wrong, not with a status row saying it went fine</span></a><a class="rel" href="air-quality-public-health-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Air Quality and Public Health Analysis</span><span class="rel-g">A dependency-free Python pipeline that asks one narrow question honestly: at the area-day level, how does the linear association between air-quality exposure and newly…</span></a><a class="rel" href="health-awareness-support-platform.html"><span class="kind k-project">project</span><span class="rel-t">Health Awareness Support Platform</span><span class="rel-g">Clearpath — a Django health-education product rebuilt from a bachelor capstone by the same author</span></a><a class="rel" href="information-systems-modelling.html"><span class="kind k-project">project</span><span class="rel-t">Information Systems Modelling</span><span class="rel-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span></a><a class="rel" href="systems-analysis-and-decision-support.html"><span class="kind k-project">project</span><span class="rel-t">Systems Analysis and Decision Support</span><span class="rel-g">Least squares and ridge regression, κ-NN, Bernoulli naive Bayes, and logistic regression fitted by both gradient ascent and IRLS — in pure Python with no NumPy</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

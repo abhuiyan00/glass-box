@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Measure vs Dimension · Glass Box</title>
+<meta name="description" content="In a star-schema, a measure is a number you aggregate; a dimension is a thing you aggregate by">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Measure vs Dimension · Glass Box">
+<meta property="og:description" content="In a star-schema, a measure is a number you aggregate; a dimension is a thing you aggregate by">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The worked argument","Two shapes of \"derived\"","The repository contradicts itself","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Data-Warehousing-and-Business-Intelligence/docs/star-schema.md","Data-Warehousing-and-Business-Intelligence/project/twtr/sql/03_technical_indicators.sql","Data-Warehousing-and-Business-Intelligence/project/twtr/ssas/"],"dateModified":"2026-07-28","description":"In a star-schema, a measure is a number you aggregate; a dimension is a thing you aggregate by","headline":"Measure vs Dimension","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["data-modelling","databases","sql"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Data-Warehousing-and-Business-Intelligence</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>In a star-schema, a measure is a number you aggregate; a dimension is a thing you aggregate by</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-worked-argument">The worked argument</a></li><li><a href="#two-shapes-of-derived">Two shapes of &quot;derived&quot;</a></li><li><a href="#the-repository-contradicts-itself">The repository contradicts itself</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="measure-vs-dimension">Measure vs Dimension</h1>
+<p>In a <a class="wl" href="star-schema.html">star-schema</a>, a <strong>measure</strong> is a number you aggregate; a <strong>dimension</strong> is a thing you aggregate <em>by</em>. The test is not the data type. It is whether the value describes an entity that exists independently of the fact, or is itself an observation made at the fact&#x27;s grain.</p>
+<p>A derived number computed from the fact&#x27;s own measures — a ratio, a moving average, an indicator — is still a measure. Giving it a dimension table inverts the arrow: the fact would then reference a table whose rows only exist because the fact does.</p>
+<h2 id="the-worked-argument" class="h-anch"><a class="hlink" href="#the-worked-argument" aria-label="Link to this section">#</a>The worked argument</h2>
+<p><a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> argues this at length for a technical indicator:</p>
+<blockquote><p>&quot;It is tempting to give an indicator its own dimension table, with the value and a pair of overbought/oversold flags. That inverts the star&quot;</p><cite>Data-Warehousing-and-Business-Intelligence/docs/star-schema.md, 2026-07-25</cite></blockquote>
+<p>The second half of the argument is about thresholds, and it generalises well beyond finance:</p>
+<blockquote><p>&quot;Storing them would freeze one analyst&#x27;s convention — 70 and 30 — into the warehouse, so moving the threshold would mean rewriting history.&quot;</p><cite>Data-Warehousing-and-Business-Intelligence/docs/star-schema.md, 2026-07-25</cite></blockquote>
+<p>A stored boolean is a <strong>materialised interpretation</strong>. Change the convention and every historic row is wrong. The repo&#x27;s answer is to store the continuous measure on the fact and derive the flags in a view, where the cut-points are one edit away. The cost is stated rather than hidden: reading a single day&#x27;s indicator now takes two joins.</p>
+<h2 id="two-shapes-of-derived" class="h-anch"><a class="hlink" href="#two-shapes-of-derived" aria-label="Link to this section">#</a>Two shapes of &quot;derived&quot;</h2>
+<div class="tw"><table>
+<thead><tr>
+<th></th>
+<th>Stored on the fact</th>
+<th>Derived at read time</th>
+</tr></thead><tbody>
+<tr><td>Example here</td><td>the indicator value, <code>DailyRange</code> as a <code>PERSISTED</code> computed column</td><td>the overbought/oversold flags, in a view</td></tr>
+<tr><td>Why</td><td>expensive to recompute, convention-free</td><td>cheap, and encodes a convention that may change</td></tr>
+</tbody></table></div>
+<p>The dividing line is whether the value embeds a judgement. Numbers are stored; judgements are derived. That is the transferable rule.</p>
+<h2 id="the-repository-contradicts-itself" class="h-anch"><a class="hlink" href="#the-repository-contradicts-itself" aria-label="Link to this section">#</a>The repository contradicts itself</h2>
+<p>The SQL side ships the argument&#x27;s winner. The SSAS side ships the loser: <code>Dim RSI.dim</code> exists with <code>RSIKey</code>, <code>IsOverbought</code>, <code>IsOversold</code> and <code>DateKey</code> attributes — exactly the design the document rejects — alongside a second cube built on it. See <a class="wl" href="rsi-as-measure-not-dimension.html">rsi-as-measure-not-dimension</a>, <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> and <a class="wl" href="documentation-drift.html">documentation-drift</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="star-schema.html">star-schema</a> · <a class="wl" href="fact-grain.html">fact-grain</a> · <a class="wl" href="relative-strength-index.html">relative-strength-index</a> · <a class="wl" href="window-function-frames.html">window-function-frames</a> · <a class="wl" href="ssas.html">ssas</a> · <a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a></p></div>
+  <div class="tags"><span class="tag">data-modelling</span><span class="tag">databases</span><span class="tag">sql</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/docs/star-schema.md</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/sql/03_technical_indicators.sql</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/ssas/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="fact-grain.html"><span class="kind k-concept">concept</span><span class="rel-t">Fact Grain</span><span class="rel-g">The grain of a fact table is the answer to &quot;what does one row mean?&quot;</span></a><a class="rel" href="relative-strength-index.html"><span class="kind k-concept">concept</span><span class="rel-t">Relative Strength Index</span><span class="rel-g">A bounded momentum indicator over a price series</span></a><a class="rel" href="star-schema.html"><span class="kind k-concept">concept</span><span class="rel-t">Star Schema</span><span class="rel-g">One fact table of measurements surrounded by denormalised dimension tables that describe them</span></a><a class="rel" href="window-function-frames.html"><span class="kind k-concept">concept</span><span class="rel-t">Window Function Frames</span><span class="rel-g">GROUP BY collapses rows</span></a><a class="rel" href="rsi-as-measure-not-dimension.html"><span class="kind k-decision">decision</span><span class="rel-t">RSI as Measure, Not Dimension</span><span class="rel-g">Store the 14-day relative strength index as a nullable numeric column on the fact table dw.FACT_QUOTES, and push the overbought/oversold interpretation into a view</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="data-warehousing-and-business-intelligence.html"><span class="kind k-project">project</span><span class="rel-t">Data Warehousing and Business Intelligence</span><span class="rel-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span></a><a class="rel" href="ssas.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server Analysis Services</span><span class="rel-g">Microsoft&#x27;s OLAP layer</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

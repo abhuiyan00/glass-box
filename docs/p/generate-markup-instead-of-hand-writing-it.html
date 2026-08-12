@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Generate Markup Instead of Hand-Writing It · Glass Box</title>
+<meta name="description" content="Delete six hand-written HTML pages carrying RDFa and JSON-LD, and generate both syntaxes from a single JSON dataset instead">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Generate Markup Instead of Hand-Writing It · Glass Box">
+<meta property="og:description" content="Delete six hand-written HTML pages carrying RDFa and JSON-LD, and generate both syntaxes from a single JSON dataset instead">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The rejected alternative, named with its failure mode","What replaced it","Why this commit is the most unusual in the source set","Costs and open threads","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Information-Systems-Modelling/lab6/app/README.md","Information-Systems-Modelling/lab6/app/src/","Information-Systems-Modelling/lab6/README.md"],"dateModified":"2026-07-28","description":"Delete six hand-written HTML pages carrying RDFa and JSON-LD, and generate both syntaxes from a single JSON dataset instead","headline":"Generate Markup Instead of Hand-Writing It","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["javascript","semantic-web","refactoring"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-09</span>
+    <span class="repos">Information-Systems-Modelling</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Delete six hand-written HTML pages carrying RDFa and JSON-LD, and generate both syntaxes from a single JSON dataset instead</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-rejected-alternative-named-with-its-failure-mode">The rejected alternative, named with its failure mode</a></li><li><a href="#what-replaced-it">What replaced it</a></li><li><a href="#why-this-commit-is-the-most-unusual-in-the-source-set">Why this commit is the most unusual in the source set</a></li><li><a href="#costs-and-open-threads">Costs and open threads</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="generate-markup-instead-of-hand-writing-it">Generate Markup Instead of Hand-Writing It</h1>
+<p><strong>Decision.</strong> Delete six hand-written HTML pages carrying RDFa and JSON-LD, and generate both syntaxes from a single JSON dataset instead.</p>
+<p><strong>Date.</strong> 2026-07-09 — the generator (<code>ef3b9f3</code>) and the deletion (<code>98fac45</code>) land the same day, −1268 / +222.</p>
+<h2 id="the-rejected-alternative-named-with-its-failure-mode" class="h-anch"><a class="hlink" href="#the-rejected-alternative-named-with-its-failure-mode" aria-label="Link to this section">#</a>The rejected alternative, named with its failure mode</h2>
+<p>The alternative was not hypothetical. It was the working implementation, and it was thrown away:</p>
+<blockquote><p>&quot;The old approach hand-wrote the same data into six HTML files <strong>twice</strong> (RDFa in the body + JSON-LD in the head), so every fact lived in 2–4 places and could drift. This app makes the data the single source of truth and <strong>generates</strong> the markup.&quot;</p><cite>Information-Systems-Modelling/lab6/app/README.md, 2026-07-09</cite></blockquote>
+<p>The commit message says the same thing in eight words:</p>
+<blockquote><p>&quot;refactor(lab6): drop hand-written snapshot pages, generate from the app&quot;</p><cite>Information-Systems-Modelling, git commit <code>98fac45</code>, 2026-07-09</cite></blockquote>
+<p>&quot;Every fact lived in 2–4 places&quot; is the diagnosis. A build with an RDFa <code>property</code> in the body and a JSON-LD key in the head is asserting the same triple twice, in two syntaxes, in one file — and a seventh page would have made it worse. See <a class="wl" href="linked-data-publishing.html">linked-data-publishing</a>.</p>
+<h2 id="what-replaced-it" class="h-anch"><a class="hlink" href="#what-replaced-it" aria-label="Link to this section">#</a>What replaced it</h2>
+<p><code>lab6/app/data/*.json</code> holds the instances; one renderer emits RDFa, JSON-LD, the SSR responses and the static <code>dist/</code> build. <code>src/rdf/vocabmap.js</code> extends the same rule to the documentation <em>about</em> the output — the <code>VOCAB MAP</code> provenance comment on each page is produced by walking that page&#x27;s own graph, so it cannot go stale. The general form is <a class="wl" href="single-source-of-truth-generators.html">single-source-of-truth-generators</a>, and the vocabulary rule it applies is <a class="wl" href="schema-org-first-custom-vocab-fallback.html">schema-org-first-custom-vocab-fallback</a>.</p>
+<h2 id="why-this-commit-is-the-most-unusual-in-the-source-set" class="h-anch"><a class="hlink" href="#why-this-commit-is-the-most-unusual-in-the-source-set" aria-label="Link to this section">#</a>Why this commit is the most unusual in the source set</h2>
+<p><code>98fac45</code> <strong>deletes a superseded version</strong>. Across all fifteen source repositories, that happens essentially nowhere else: the standing habit is <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a>, and <code>Information-Systems-Modelling</code> is itself the corpus&#x27;s four-way champion of keeping things — a dead nested Angular scaffold, an orphaned 557-line <code>instances.ttl</code>, byte-identical <code>ontology.ttl</code> copies, and three whole superseded backends under <a class="wl" href="forward-copy-lab-progression.html">forward-copy-lab-progression</a>.</p>
+<p>The same author, in the same repository, in the same fortnight, both kept everything and deleted something. Per §10 of this wiki&#x27;s schema that is a <strong>finding about the practice, not a contradiction to resolve</strong>: the deletion happens precisely where keeping the old copy would have <em>reintroduced the bug</em> — a stale hand-written page still serving stale triples is worse than no page. Where the old version is inert, it stays.</p>
+<h2 id="costs-and-open-threads" class="h-anch"><a class="hlink" href="#costs-and-open-threads" aria-label="Link to this section">#</a>Costs and open threads</h2>
+<ul><li>The hand-written pages are gone from HEAD, so the &quot;before&quot; is only reachable through git history. That is the trade the deletion makes deliberately.</li><li>The generated deliverable, <code>dist/</code>, is <strong>gitignored and untracked</strong>, while <code>lab6/README.md</code> calls it the thing to inspect. A reader cloning the repo gets the generator and not the output — <a class="wl" href="documentation-drift.html">documentation-drift</a>.</li><li><code>verify_jsonld.py</code> was deleted in the same commit, replaced by <code>scripts/validate.py</code>.</li></ul>
+<ul><li><strong>TODO:</strong> whether RDFa and JSON-LD had <em>actually</em> drifted before the rewrite — and whether <code>verify_jsonld.py</code> is what caught it — is unrecorded, and the interview did not cover it. The README states drift as a <em>risk</em> (&quot;could drift&quot;), not as an observed event. <code>confidence: low</code> on any claim that a real divergence occurred. Do not assert one.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="linked-data-publishing.html">linked-data-publishing</a> · <a class="wl" href="single-source-of-truth-generators.html">single-source-of-truth-generators</a> · <a class="wl" href="information-systems-modelling.html">information-systems-modelling</a> · <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> · <a class="wl" href="schema-org-first-custom-vocab-fallback.html">schema-org-first-custom-vocab-fallback</a> · <a class="wl" href="forward-copy-lab-progression.html">forward-copy-lab-progression</a></p></div>
+  <div class="tags"><span class="tag">javascript</span><span class="tag">semantic-web</span><span class="tag">refactoring</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab6/app/README.md</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab6/app/src/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab6/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="linked-data-publishing.html"><span class="kind k-concept">concept</span><span class="rel-t">Linked Data Publishing</span><span class="rel-g">Publishing linked data means shipping a web page that is simultaneously readable by a person and parseable as a graph by a machine, with every entity identified by an…</span></a><a class="rel" href="schema-org-first-custom-vocab-fallback.html"><span class="kind k-decision">decision</span><span class="rel-t">schema.org First, Custom Vocabulary as Fallback</span><span class="rel-g">Describe every entity with schema.org terms wherever schema.org has one, and reach for the project&#x27;s own mc: vocabulary only where it does not</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="forward-copy-lab-progression.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Forward-Copy Lab Progression</span><span class="rel-g">Each lab is a whole copy of the previous lab plus one new capability, committed as a new directory</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="single-source-of-truth-generators.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Single-Source-of-Truth Generators</span><span class="rel-g">Hold the facts once, in a plain data structure, and emit every deliverable from it — including deliverables in different formats and for different audiences</span></a><a class="rel" href="information-systems-modelling.html"><span class="kind k-project">project</span><span class="rel-t">Information Systems Modelling</span><span class="rel-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

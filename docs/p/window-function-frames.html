@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Window Function Frames · Glass Box</title>
+<meta name="description" content="GROUP BY collapses rows">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Window Function Frames · Glass Box">
+<meta property="og:description" content="GROUP BY collapses rows">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The frame is the whole indicator","Ranking frames, elsewhere in the same repo","Portability","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Data-Warehousing-and-Business-Intelligence/project/twtr/sql/03_technical_indicators.sql","Data-Warehousing-and-Business-Intelligence/project/twtr/rsi_reference.py","Data-Warehousing-and-Business-Intelligence/sql/01_analytics/"],"dateModified":"2026-07-28","description":"GROUP BY collapses rows","headline":"Window Function Frames","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["sql","databases","data-analysis"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Data-Warehousing-and-Business-Intelligence</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>GROUP BY collapses rows</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-frame-is-the-whole-indicator">The frame is the whole indicator</a></li><li><a href="#ranking-frames-elsewhere-in-the-same-repo">Ranking frames, elsewhere in the same repo</a></li><li><a href="#portability">Portability</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="window-function-frames">Window Function Frames</h1>
+<p><code>GROUP BY</code> collapses rows. A window function does not — it computes an aggregate <em>for each row</em>, over a set of rows defined relative to that row. The frame clause is what defines that set, and it is the part people skip.</p>
+<pre><code>AVG(x) OVER (PARTITION BY k ORDER BY t ROWS BETWEEN 13 PRECEDING AND CURRENT ROW)</code></pre>
+<ul><li><code>PARTITION BY</code> — restart the calculation per key. Without it, one series bleeds into the next.</li><li><code>ORDER BY</code> — establish what &quot;preceding&quot; means. A frame without an order is meaningless.</li><li><code>ROWS BETWEEN … AND …</code> — the frame proper: how many neighbours participate.</li></ul>
+<p><code>ROWS</code> counts <strong>physical rows</strong>; <code>RANGE</code> counts <strong>logical peers</strong> by the ordering value and folds ties together. For a series with one row per key per period they behave identically, which is exactly why substituting one for the other is a bug that survives testing on tidy data.</p>
+<h2 id="the-frame-is-the-whole-indicator" class="h-anch"><a class="hlink" href="#the-frame-is-the-whole-indicator" aria-label="Link to this section">#</a>The frame is the whole indicator</h2>
+<p>In <a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a>, a 14-period moving indicator is not an algorithm so much as a frame. <code>LAG</code> supplies the previous value, a <code>CASE</code> splits the change into gain and loss components, and two <code>AVG(...) OVER (...)</code> calls over a 14-row trailing frame produce the ratio that becomes <a class="wl" href="relative-strength-index.html">relative-strength-index</a>.</p>
+<p><strong>Warm-up is handled by counting the frame, not by guessing.</strong> A <code>COUNT(*)</code> over the <em>same</em> frame returns fewer than 14 for the first thirteen rows of each partition, and the write gates on it, storing <code>NULL</code> rather than a number computed from a short window. That is the transferable trick: the frame can tell you how full it is, so a partial window never silently becomes a wrong answer. See <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a> for the general shape of that hazard.</p>
+<h2 id="ranking-frames-elsewhere-in-the-same-repo" class="h-anch"><a class="hlink" href="#ranking-frames-elsewhere-in-the-same-repo" aria-label="Link to this section">#</a>Ranking frames, elsewhere in the same repo</h2>
+<p>The analytics scripts use the other family of window functions — <code>ROW_NUMBER() OVER (PARTITION BY … ORDER BY …)</code> for profiling and de-duplication — alongside <code>PIVOT</code>, <code>ROLLUP</code>, <code>GROUPING SETS</code> and <code>GROUPING()</code>. Same mental model: partition, order, then read one row&#x27;s position within its group without collapsing the group.</p>
+<h2 id="portability" class="h-anch"><a class="hlink" href="#portability" aria-label="Link to this section">#</a>Portability</h2>
+<p>The reference implementation re-expresses the same frame in <a class="wl" href="sqlite.html">sqlite</a>, &quot;chosen because its window-function syntax matches and it needs no server&quot;. Window syntax is one of the more portable corners of SQL — the frame clause is standard, the surrounding date and string functions are not. See <span class="unpub" title="named in the source wiki; not published">reference-implementation-as-specification</span>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="relative-strength-index.html">relative-strength-index</a> · <a class="wl" href="measure-vs-dimension.html">measure-vs-dimension</a> · <a class="wl" href="fact-grain.html">fact-grain</a> · <a class="wl" href="sql-server.html">sql-server</a> · <a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a></p></div>
+  <div class="tags"><span class="tag">sql</span><span class="tag">databases</span><span class="tag">data-analysis</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/sql/03_technical_indicators.sql</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/rsi_reference.py</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/sql/01_analytics/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="fact-grain.html"><span class="kind k-concept">concept</span><span class="rel-t">Fact Grain</span><span class="rel-g">The grain of a fact table is the answer to &quot;what does one row mean?&quot;</span></a><a class="rel" href="measure-vs-dimension.html"><span class="kind k-concept">concept</span><span class="rel-t">Measure vs Dimension</span><span class="rel-g">In a star-schema, a measure is a number you aggregate; a dimension is a thing you aggregate by</span></a><a class="rel" href="relative-strength-index.html"><span class="kind k-concept">concept</span><span class="rel-t">Relative Strength Index</span><span class="rel-g">A bounded momentum indicator over a price series</span></a><a class="rel" href="tests-that-pass-for-the-wrong-reason.html"><span class="kind k-concept">concept</span><span class="rel-t">Tests That Pass for the Wrong Reason</span><span class="rel-g">A failing test tells you something is broken</span></a><a class="rel" href="data-warehousing-and-business-intelligence.html"><span class="kind k-project">project</span><span class="rel-t">Data Warehousing and Business Intelligence</span><span class="rel-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span></a><a class="rel" href="sql-server.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server</span><span class="rel-g">Microsoft&#x27;s relational engine, driven here as T-SQL on SQL Server 2019 across seven annotated scripts in data-warehousing-and-business-intelligence — two analytics labs,…</span></a><a class="rel" href="sqlite.html"><span class="kind k-tech">tech</span><span class="rel-t">SQLite</span><span class="rel-g">An embedded SQL database: one file, no server, no configuration, and a driver in Python&#x27;s standard library as sqlite3</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

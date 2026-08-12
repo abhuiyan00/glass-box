@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OWASP ZAP · Glass Box</title>
+<meta name="description" content="The Zed Attack Proxy — an open-source web application security scanner maintained by OWASP volunteers, usable both as an automated scanner and as a manual testing proxy">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OWASP ZAP · Glass Box">
+<meta property="og:description" content="The Zed Attack Proxy — an open-source web application security scanner maintained by OWASP volunteers, usable both as an automated scanner and as a manual testing proxy">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The proxy is the whole idea","What the labs used it for","Where the labs stopped short","Automated scanning is a floor, not a ceiling","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Cybersecurity-Engineering-Laboratories/labs/13_web_security_tooling/lab-13-report.pdf","Cybersecurity-Engineering-Laboratories/labs/14_web_security_injection/lab-14-report.pdf"],"dateModified":"2026-07-28","description":"The Zed Attack Proxy — an open-source web application security scanner maintained by OWASP volunteers, usable both as an automated scanner and as a manual testing proxy","headline":"OWASP ZAP","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["security","web-dev","testing"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Cybersecurity-Engineering-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The Zed Attack Proxy — an open-source web application security scanner maintained by OWASP volunteers, usable both as an automated scanner and as a manual testing proxy</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-proxy-is-the-whole-idea">The proxy is the whole idea</a></li><li><a href="#what-the-labs-used-it-for">What the labs used it for</a></li><li><a href="#where-the-labs-stopped-short">Where the labs stopped short</a></li><li><a href="#automated-scanning-is-a-floor-not-a-ceiling">Automated scanning is a floor, not a ceiling</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="owasp-zap">OWASP ZAP</h1>
+<p>The Zed Attack Proxy — an open-source web application security scanner maintained by OWASP volunteers, usable both as an automated scanner and as a manual testing proxy. It carries labs 13 and 14 of <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a>, alongside Burp Suite and Postman, against the deliberately vulnerable OWASP Juice Shop.</p>
+<h2 id="the-proxy-is-the-whole-idea" class="h-anch"><a class="hlink" href="#the-proxy-is-the-whole-idea" aria-label="Link to this section">#</a>The proxy is the whole idea</h2>
+<p>Configure the browser to route through ZAP and every request is captured <strong>after it leaves the browser</strong>. The tester can then read it, modify it, and forward it.</p>
+<p>The lab reports name the structural point directly: this is a <a class="wl" href="man-in-the-middle-attack.html">man-in-the-middle-attack</a> where the tester holds both roles. And the consequence is the single most important finding in lab 13:</p>
+<p><strong>Every validation performed only in client-side JavaScript is advisory.</strong> Length limits, format checks, hidden fields, disabled controls, price values in a form — all of it is editable in the proxy after the client-side code has run and before the server sees it. Client-side validation is a UX feature; it is not a security control. Everything that matters must be re-checked server-side.</p>
+<h2 id="what-the-labs-used-it-for" class="h-anch"><a class="hlink" href="#what-the-labs-used-it-for" aria-label="Link to this section">#</a>What the labs used it for</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Capability</th>
+<th>Exercised on</th>
+</tr></thead><tbody>
+<tr><td>Intercepting proxy</td><td>modifying requests to bypass client-side validation</td></tr>
+<tr><td>Spider / passive scan</td><td>mapping the application surface</td></tr>
+<tr><td>Active scan</td><td>automated probing for known vulnerability classes</td></tr>
+<tr><td>Request replay / manual edit</td><td>broken authentication and broken access control, including object-identifier enumeration</td></tr>
+<tr><td>Fuzzer</td><td>substituting payload lists into a parameter position</td></tr>
+</tbody></table></div>
+<p>The vulnerability classes themselves are covered on <a class="wl" href="web-application-injection.html">web-application-injection</a> — injection, broken authentication, broken access control, improper input validation, security misconfiguration — without any payload strings.</p>
+<h2 id="where-the-labs-stopped-short" class="h-anch"><a class="hlink" href="#where-the-labs-stopped-short" aria-label="Link to this section">#</a>Where the labs stopped short</h2>
+<p>The fuzzing exercises did not complete. The lab-13 report records the fuzzer not running and the author following the task sheet, then outside instructions, without success; the lab-14 report records a local instance that would not start and a task the author records not understanding.</p>
+<p><strong>TODO:</strong> whether these were completed later is unrecorded. <code>confidence: low</code> on the completeness of the tooling exercises; <code>confidence: high</code> on the proxy-interception findings, which the reports document working.</p>
+<h2 id="automated-scanning-is-a-floor-not-a-ceiling" class="h-anch"><a class="hlink" href="#automated-scanning-is-a-floor-not-a-ceiling" aria-label="Link to this section">#</a>Automated scanning is a floor, not a ceiling</h2>
+<p>Worth stating because the tool invites the opposite belief. An active scan finds known patterns: reflected inputs, missing headers, default files, obvious injection points. It does not find business logic flaws, and broken access control — the class the lab exercised most successfully — is almost entirely invisible to it, because <em>the request is well-formed and the response is a valid 200</em>. Only someone who knows which identifier belongs to whom can tell that the answer was wrong. The manual proxy work, not the scanner, is where the lab&#x27;s real findings came from.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="web-application-injection.html">web-application-injection</a> · <a class="wl" href="man-in-the-middle-attack.html">man-in-the-middle-attack</a> · <a class="wl" href="cia-triad.html">cia-triad</a> · <a class="wl" href="network-reconnaissance.html">network-reconnaissance</a> · <a class="wl" href="kali-linux.html">kali-linux</a> · <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a></p></div>
+  <div class="tags"><span class="tag">security</span><span class="tag">web-dev</span><span class="tag">testing</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/13_web_security_tooling/lab-13-report.pdf</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/14_web_security_injection/lab-14-report.pdf</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="cia-triad.html"><span class="kind k-concept">concept</span><span class="rel-t">CIA Triad</span><span class="rel-g">Confidentiality, Integrity, Availability — the three properties any security control is ultimately defending</span></a><a class="rel" href="man-in-the-middle-attack.html"><span class="kind k-concept">concept</span><span class="rel-t">Man-in-the-Middle Attack</span><span class="rel-g">A class of attack in which the attacker sits between two communicating parties, relaying traffic while both believe they are talking directly to each other</span></a><a class="rel" href="network-reconnaissance.html"><span class="kind k-concept">concept</span><span class="rel-t">Network Reconnaissance</span><span class="rel-g">The information-gathering phase that precedes any assessment</span></a><a class="rel" href="web-application-injection.html"><span class="kind k-concept">concept</span><span class="rel-t">Web Application Injection</span><span class="rel-g">One root cause, many names</span></a><a class="rel" href="cybersecurity-engineering-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Cybersecurity Engineering Laboratories</span><span class="rel-g">Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026</span></a><a class="rel" href="kali-linux.html"><span class="kind k-tech">tech</span><span class="rel-t">Kali Linux</span><span class="rel-g">A Debian-derived distribution that ships several hundred security tools preinstalled and preconfigured</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Idempotent Loading · Glass Box</title>
+<meta name="description" content="A load script is idempotent when running it twice leaves the store exactly as running it once did">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Idempotent Loading · Glass Box">
+<meta property="og:description" content="A load script is idempotent when running it twice leaves the store exactly as running it once did">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Relational: constraint plus conflict clause","Graph: MERGE plus uniqueness constraints","The general rule","Contrast","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Python-Programming-Laboratories/labs/13_sqlite_and_gui/","Discrete-Mathematics-Laboratories/lab6_Neo4j/"],"dateModified":"2026-07-28","description":"A load script is idempotent when running it twice leaves the store exactly as running it once did","headline":"Idempotent Loading","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["data-engineering","databases","python","cypher"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">Discrete-Mathematics-Laboratories · Python-Programming-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A load script is idempotent when running it twice leaves the store exactly as running it once did</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#relational-constraint-plus-conflict-clause">Relational: constraint plus conflict clause</a></li><li><a href="#graph-merge-plus-uniqueness-constraints">Graph: MERGE plus uniqueness constraints</a></li><li><a href="#the-general-rule">The general rule</a></li><li><a href="#contrast">Contrast</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="idempotent-loading">Idempotent Loading</h1>
+<p>A load script is <strong>idempotent</strong> when running it twice leaves the store exactly as running it once did. This is the difference between a script you can re-run while developing and a script you must remember to precede with a manual wipe.</p>
+<p>Two repositories solve it two ways, and the pairing is what makes the concept transferable — this is one of the few concepts spanning both <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> and <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a>.</p>
+<h2 id="relational-constraint-plus-conflict-clause" class="h-anch"><a class="hlink" href="#relational-constraint-plus-conflict-clause" aria-label="Link to this section">#</a>Relational: constraint plus conflict clause</h2>
+<pre><code class="lang-sql">UNIQUE(context, knowledge, response)
+INSERT OR IGNORE INTO ...</code></pre>
+<p>The <strong>database</strong> enforces the identity; the insert declares what to do when it is violated. Lab 13 loads 610 rows; the second run inserts 0. That number is the test — an idempotent loader is one you can <em>observe</em> being idempotent, which is why the row count is reported rather than assumed.</p>
+<p>The critical part is that uniqueness lives in the schema, not in the loader. A loader-side &quot;check then insert&quot; is a race and a lie: it works until two processes run it. <code>INSERT OR IGNORE</code> delegates the decision to the only component that can make it atomically. See <a class="wl" href="sqlite.html">sqlite</a>.</p>
+<h2 id="graph-merge-plus-uniqueness-constraints" class="h-anch"><a class="hlink" href="#graph-merge-plus-uniqueness-constraints" aria-label="Link to this section">#</a>Graph: MERGE plus uniqueness constraints</h2>
+<p><a class="wl" href="cypher.html">cypher</a>&#x27;s <code>MERGE</code> is match-or-create against a pattern. Lab 6 uses it with node uniqueness constraints so that re-running the <code>LOAD CSV</code> import re-attaches to existing nodes instead of duplicating them — one <code>:Object</code> per CSV row regardless of how many times the script runs. The repo records the payoff explicitly when the dataset count was corrected:</p>
+<blockquote><p>&quot;<strong>Data note.</strong> The dataset holds <strong>39</strong> countries; earlier drafts of the guide said 38 (and 950 <code>HAS_VALUE</code>). The numbers were corrected to <strong>39 objects / 975 edges</strong> throughout — the import logic itself was already correct (it <code>MERGE</code>s one object per row).&quot;</p><cite>Discrete-Mathematics-Laboratories/lab6_Neo4j/README.md, 2026-07-10</cite></blockquote>
+<p>The documentation was wrong; the loader was not. That is exactly what idempotence buys — the fix was a text edit, not a reload. See <a class="wl" href="pawlak-information-system.html">pawlak-information-system</a> and <a class="wl" href="neo4j.html">neo4j</a>.</p>
+<h2 id="the-general-rule" class="h-anch"><a class="hlink" href="#the-general-rule" aria-label="Link to this section">#</a>The general rule</h2>
+<ul><li>Declare the <strong>natural key</strong> in the schema (<code>UNIQUE</code>, a node constraint), never only in the loader.</li><li>Make the write express its conflict behaviour (<code>INSERT OR IGNORE</code>, <code>MERGE</code>, <code>ON CONFLICT</code>).</li><li><strong>Report what changed</strong> — rows inserted, nodes merged — so the second run <em>demonstrates</em> zero work rather than merely not crashing.</li></ul>
+<h2 id="contrast" class="h-anch"><a class="hlink" href="#contrast" aria-label="Link to this section">#</a>Contrast</h2>
+<p><a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> approaches the same problem from the verification side rather than the constraint side. Both are answers to &quot;how do I know the load is right?&quot;; only the constraint version survives being run by someone who forgot to check.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="sqlite.html">sqlite</a> · <a class="wl" href="cypher.html">cypher</a> · <a class="wl" href="pawlak-information-system.html">pawlak-information-system</a> · <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> · <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a></p></div>
+  <div class="tags"><span class="tag">data-engineering</span><span class="tag">databases</span><span class="tag">python</span><span class="tag">cypher</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/labs/13_sqlite_and_gui/</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab6_Neo4j/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="pawlak-information-system.html"><span class="kind k-concept">concept</span><span class="rel-t">Pawlak Information System</span><span class="rel-g">A Pawlak information system is the pair S = (U, A): a universe U of objects, a set A of attributes, and for each attribute a ∈ A a function a: U → V_a assigning every…</span></a><a class="rel" href="data-warehousing-and-business-intelligence.html"><span class="kind k-project">project</span><span class="rel-t">Data Warehousing and Business Intelligence</span><span class="rel-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="python-programming-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Python Programming Laboratories</span><span class="rel-g">Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…</span></a><a class="rel" href="cypher.html"><span class="kind k-tech">tech</span><span class="rel-t">Cypher</span><span class="rel-g">neo4j&#x27;s declarative query language</span></a><a class="rel" href="neo4j.html"><span class="kind k-tech">tech</span><span class="rel-t">Neo4j</span><span class="rel-g">Native property-graph database</span></a><a class="rel" href="sqlite.html"><span class="kind k-tech">tech</span><span class="rel-t">SQLite</span><span class="rel-g">An embedded SQL database: one file, no server, no configuration, and a driver in Python&#x27;s standard library as sqlite3</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

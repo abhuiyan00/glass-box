@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQL Server · Glass Box</title>
+<meta name="description" content="Microsoft&#x27;s relational engine, driven here as T-SQL on SQL Server 2019 across seven annotated scripts in data-warehousing-and-business-intelligence — two analytics labs,…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL Server · Glass Box">
+<meta property="og:description" content="Microsoft&#x27;s relational engine, driven here as T-SQL on SQL Server 2019 across seven annotated scripts in data-warehousing-and-business-intelligence — two analytics labs,…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The analytics surface","Locale is a correctness problem, not a display problem","Types chosen against the default","`ISNULL`, not `DEFAULT`","Other engine features leaned on","The cost","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Data-Warehousing-and-Business-Intelligence/sql/01_analytics/","Data-Warehousing-and-Business-Intelligence/sql/02_star_schema/","Data-Warehousing-and-Business-Intelligence/project/twtr/sql/","Data-Warehousing-and-Business-Intelligence/docs/star-schema.md"],"dateModified":"2026-07-28","description":"Microsoft's relational engine, driven here as T-SQL on SQL Server 2019 across seven annotated scripts in data-warehousing-and-business-intelligence — two analytics labs,…","headline":"SQL Server","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["databases","sql","data-engineering","data-modelling"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Data-Warehousing-and-Business-Intelligence</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Microsoft&#x27;s relational engine, driven here as T-SQL on SQL Server 2019 across seven annotated scripts in data-warehousing-and-business-intelligence — two analytics labs,…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-analytics-surface">The analytics surface</a></li><li><a href="#locale-is-a-correctness-problem-not-a-display-problem">Locale is a correctness problem, not a display problem</a></li><li><a href="#types-chosen-against-the-default">Types chosen against the default</a></li><li><a href="#isnull-not-default">`ISNULL`, not `DEFAULT`</a></li><li><a href="#other-engine-features-leaned-on">Other engine features leaned on</a></li><li><a href="#the-cost">The cost</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="sql-server">SQL Server</h1>
+<p>Microsoft&#x27;s relational engine, driven here as <strong>T-SQL on SQL Server 2019</strong> across seven annotated scripts in <a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> — two analytics labs, a star-schema DDL/ETL pair, and a three-script pipeline for the price mart.</p>
+<h2 id="the-analytics-surface" class="h-anch"><a class="hlink" href="#the-analytics-surface" aria-label="Link to this section">#</a>The analytics surface</h2>
+<p><code>sql/01_analytics/</code> is a tour of the reporting operators the engine provides and portable SQL does not: <code>PIVOT</code> for months-across-years-down crosstabs, <code>ROLLUP</code> and <code>GROUPING SETS</code> for subtotal rows, <code>GROUPING()</code> to tell a subtotal <code>NULL</code> apart from a data <code>NULL</code>, <code>CASE</code> banding, and <code>ROW_NUMBER</code> for profiling. These are the operators that make a BI query one statement instead of a union of five.</p>
+<h2 id="locale-is-a-correctness-problem-not-a-display-problem" class="h-anch"><a class="hlink" href="#locale-is-a-correctness-problem-not-a-display-problem" aria-label="Link to this section">#</a>Locale is a correctness problem, not a display problem</h2>
+<p>Two comments in the repo make the same point about the same class of bug — functions whose output depends on server configuration rather than on the data:</p>
+<ul><li><code>DATENAME(MONTH, ...)</code> returns the session language&#x27;s month name, so a <code>PIVOT</code> whose <code>IN</code> list is a set of English literals silently produces all-<code>NULL</code> columns on a differently configured server. The fix used is <code>CHOOSE(MONTH(...), &#x27;January&#x27;, ...)</code> — an explicit mapping.</li><li><code>DATEPART(WEEKDAY, ...)</code> depends on <code>SET DATEFIRST</code>.</li></ul>
+<blockquote><p>&quot;DATEPART(WEEKDAY) depends on SET DATEFIRST, which varies by server language. This form is absolute: 1 = Monday, 7 = Sunday, everywhere.&quot;</p><cite>Data-Warehousing-and-Business-Intelligence/sql/02_star_schema/02_load_star_schema.sql, 2026-07-25</cite></blockquote>
+<p>The replacement is <code>(DATEDIFF(DAY, &#x27;19000101&#x27;, d.[Date]) % 7) + 1</code> — arithmetic on a fixed epoch, which no session setting can move. Both fixes trade a readable builtin for a form whose result is a function of the input alone.</p>
+<h2 id="types-chosen-against-the-default" class="h-anch"><a class="hlink" href="#types-chosen-against-the-default" aria-label="Link to this section">#</a>Types chosen against the default</h2>
+<p>Prices are <code>DECIMAL(18, 6)</code>, never <code>FLOAT</code>, and the reason is written down: binary floating point cannot represent a decimal price exactly, so sums drift and equality comparisons stop being reliable. The AdventureWorks fact carries <code>DECIMAL(19,4)</code> money columns and a <code>DECIMAL(38,6)</code> line total for the same reason. <code>DailyRange AS (High - Low) PERSISTED</code> is a computed column materialised on write — derived data that cannot drift out of sync with its inputs.</p>
+<h2 id="isnull-not-default" class="h-anch"><a class="hlink" href="#isnull-not-default" aria-label="Link to this section">#</a><code>ISNULL</code>, not <code>DEFAULT</code></h2>
+<blockquote><p>&quot;ISNULL, not the column DEFAULT. A DEFAULT applies only when no value is supplied; selecting an explicit NULL into the column bypasses it, so the declared &#x27;Unknown&#x27; would never take effect.&quot;</p><cite>Data-Warehousing-and-Business-Intelligence/sql/02_star_schema/02_load_star_schema.sql, 2026-07-25</cite></blockquote>
+<p>A <code>DEFAULT</code> constraint is a property of the <em>insert statement</em>, not of the column. An ETL that projects a source column straight into the target never triggers it. This is the kind of thing that looks fine in a schema review and produces a dimension full of nulls in production.</p>
+<h2 id="other-engine-features-leaned-on" class="h-anch"><a class="hlink" href="#other-engine-features-leaned-on" aria-label="Link to this section">#</a>Other engine features leaned on</h2>
+<p><code>OUTER APPLY</code> to pull one correlated row per customer (a primary address) without a window function or a subquery-in-select. <code>IDENTITY(1,1)</code> for the repo&#x27;s single true surrogate key — see <a class="wl" href="surrogate-vs-natural-keys.html">surrogate-vs-natural-keys</a>. Window frames with <code>ROWS BETWEEN 13 PRECEDING AND CURRENT ROW</code> carry the whole moving-average indicator: <a class="wl" href="window-function-frames.html">window-function-frames</a> and <a class="wl" href="relative-strength-index.html">relative-strength-index</a>. Foreign keys and <code>CHECK</code> constraints are declared and relied on rather than enforced in application code — see <a class="wl" href="verify-the-load-dont-declare-it.html">verify-the-load-dont-declare-it</a>.</p>
+<h2 id="the-cost" class="h-anch"><a class="hlink" href="#the-cost" aria-label="Link to this section">#</a>The cost</h2>
+<p>SQL Server is the heaviest environment in the source set. Running any of this needs a live SQL Server 2019 instance with both <code>AdventureWorks2019</code> and <code>AdventureWorksDW2019</code> attached, plus SQL Server Data Tools for the <a class="wl" href="ssis.html">ssis</a> and <a class="wl" href="ssas.html">ssas</a> projects. Nothing in the repo executes on a clean clone, and no query output is committed. That is precisely why the price indicator was re-expressed in Python over <a class="wl" href="sqlite.html">sqlite</a> as a runnable specification — <span class="unpub" title="named in the source wiki; not published">reference-implementation-as-specification</span> — and it is the sharpest contrast in the source set with <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> · <a class="wl" href="star-schema.html">star-schema</a> · <a class="wl" href="ssis.html">ssis</a> · <a class="wl" href="ssas.html">ssas</a> · <a class="wl" href="sqlite.html">sqlite</a> · <a class="wl" href="etl-load-order.html">etl-load-order</a> · <a class="wl" href="measure-vs-dimension.html">measure-vs-dimension</a></p></div>
+  <div class="tags"><span class="tag">databases</span><span class="tag">sql</span><span class="tag">data-engineering</span><span class="tag">data-modelling</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/sql/01_analytics/</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/sql/02_star_schema/</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/sql/</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/docs/star-schema.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="etl-load-order.html"><span class="kind k-concept">concept</span><span class="rel-t">ETL Load Order</span><span class="rel-g">Load order in a star-schema is not a style choice</span></a><a class="rel" href="measure-vs-dimension.html"><span class="kind k-concept">concept</span><span class="rel-t">Measure vs Dimension</span><span class="rel-g">In a star-schema, a measure is a number you aggregate; a dimension is a thing you aggregate by</span></a><a class="rel" href="relative-strength-index.html"><span class="kind k-concept">concept</span><span class="rel-t">Relative Strength Index</span><span class="rel-g">A bounded momentum indicator over a price series</span></a><a class="rel" href="star-schema.html"><span class="kind k-concept">concept</span><span class="rel-t">Star Schema</span><span class="rel-g">One fact table of measurements surrounded by denormalised dimension tables that describe them</span></a><a class="rel" href="surrogate-vs-natural-keys.html"><span class="kind k-concept">concept</span><span class="rel-t">Surrogate vs Natural Keys</span><span class="rel-g">A natural key is the identifier the source system already uses — a product id, a customer id, an order-line id</span></a><a class="rel" href="window-function-frames.html"><span class="kind k-concept">concept</span><span class="rel-t">Window Function Frames</span><span class="rel-g">GROUP BY collapses rows</span></a><a class="rel" href="verify-the-load-dont-declare-it.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Verify the Load, Don&#x27;t Declare It</span><span class="rel-g">A data pipeline ends with a query whose result can be wrong, not with a status row saying it went fine</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="data-warehousing-and-business-intelligence.html"><span class="kind k-project">project</span><span class="rel-t">Data Warehousing and Business Intelligence</span><span class="rel-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span></a><a class="rel" href="sqlite.html"><span class="kind k-tech">tech</span><span class="rel-t">SQLite</span><span class="rel-g">An embedded SQL database: one file, no server, no configuration, and a driver in Python&#x27;s standard library as sqlite3</span></a><a class="rel" href="ssas.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server Analysis Services</span><span class="rel-g">Microsoft&#x27;s OLAP layer</span></a><a class="rel" href="ssis.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server Integration Services</span><span class="rel-g">Microsoft&#x27;s ETL tool: packages authored as .dtsx in Visual Studio / SSDT, built from a control flow of tasks and, inside a Data Flow Task, a data flow of typed sources,…</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

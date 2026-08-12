@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verify the Load, Don&#x27;t Declare It · Glass Box</title>
+<meta name="description" content="A data pipeline ends with a query whose result can be wrong, not with a status row saying it went fine">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Verify the Load, Don&#x27;t Declare It · Glass Box">
+<meta property="og:description" content="A data pipeline ends with a query whose result can be wrong, not with a status row saying it went fine">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Both sides of the argument are in one repository","Why the checks live *inside* the load script","The same discipline, enforced rather than written","The honest limit","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Data-Warehousing-and-Business-Intelligence/sql/02_star_schema/02_load_star_schema.sql","Data-Warehousing-and-Business-Intelligence/project/twtr/sql/03_technical_indicators.sql","Data-Warehousing-and-Business-Intelligence/etl/ssis/Package.dtsx","labour-fraud-analysis-a-forensic-data-investigation/src/build_db.py","labour-fraud-analysis-a-forensic-data-investigation/src/tests/test_dataset.py","labour-fraud-analysis-a-forensic-data-investigation/Makefile"],"dateModified":"2026-07-28","description":"A data pipeline ends with a query whose result can be wrong, not with a status row saying it went fine","headline":"Verify the Load, Don't Declare It","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["testing","data-engineering","data-modelling","sql","ci-cd"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">Data-Warehousing-and-Business-Intelligence · labour-fraud-analysis-a-forensic-data-investigation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A data pipeline ends with a query whose result can be wrong, not with a status row saying it went fine</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#both-sides-of-the-argument-are-in-one-repository">Both sides of the argument are in one repository</a></li><li><a href="#why-the-checks-live-inside-the-load-script">Why the checks live *inside* the load script</a></li><li><a href="#the-same-discipline-enforced-rather-than-written">The same discipline, enforced rather than written</a></li><li><a href="#the-honest-limit">The honest limit</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="verify-the-load-dont-declare-it">Verify the Load, Don&#x27;t Declare It</h1>
+<p>A data pipeline ends with a <strong>query whose result can be wrong</strong>, not with a status row saying it went fine. The distinction sounds pedantic until you have shipped an empty warehouse that logged <code>&#x27;Success&#x27;</code> five times.</p>
+<blockquote><p>&quot;A row count is a fact; a status table populated with &#x27;Success&#x27; literals is a claim. These queries are cheap and they fail loudly.&quot;</p><cite>Data-Warehousing-and-Business-Intelligence/sql/02_star_schema/02_load_star_schema.sql, 2026-07-25</cite></blockquote>
+<h2 id="both-sides-of-the-argument-are-in-one-repository" class="h-anch"><a class="hlink" href="#both-sides-of-the-argument-are-in-one-repository" aria-label="Link to this section">#</a>Both sides of the argument are in one repository</h2>
+<p>The unusual thing about <a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> is that it ships the counter-example alongside the pattern. <code>etl/ssis/Package.dtsx</code> creates a <code>load_status</code> table and inserts one <code>&#x27;Success&#x27;</code> literal per table, unconditionally — see <a class="wl" href="ssis.html">ssis</a>. The hand-written <code>sql/02_star_schema/</code> version deletes that idea and replaces it with three things that can fail:</p>
+<ol><li><strong>A row-count roll-call</strong> — a <code>UNION ALL</code> returning the count of all five tables in one result set. Zero rows anywhere is visible at a glance.</li><li><strong>Anti-join integrity checks</strong> — <code>NOT EXISTS</code> against the parent dimension for orphaned order dates and for fact rows with no product, each returning a <code>Failures</code> count. The comment beside them reads &quot;Referential integrity actually holds, rather than being asserted.&quot;</li><li><strong>Property checks on the derived column</strong>, in the price mart:</li></ol>
+<blockquote><p>&quot;A working RSI spends most of its life between 30 and 70. If nearly every row sits at an extreme, the window frame is not doing its job.&quot;</p><cite>Data-Warehousing-and-Business-Intelligence/project/twtr/sql/03_technical_indicators.sql, 2026-07-25</cite></blockquote>
+<p>That third one is the strongest form. A row count catches an empty load; a foreign-key check catches a broken join; only a <strong>property of the output distribution</strong> catches a load that ran, joined cleanly, and computed the wrong thing. The same script also asserts the exact warm-up count — thirteen rows with no indicator, the days before the first full window — which is a check on <a class="wl" href="window-function-frames.html">window-function-frames</a> rather than on the data.</p>
+<h2 id="why-the-checks-live-inside-the-load-script" class="h-anch"><a class="hlink" href="#why-the-checks-live-inside-the-load-script" aria-label="Link to this section">#</a>Why the checks live <em>inside</em> the load script</h2>
+<p>The verification is section 6 of the load, not a separate file someone might not run. It is also the reason the dimension is built from the source rather than from the fact table — the load script&#x27;s own header explains that the alternative would &quot;build cleanly and contain nothing&quot;, which is precisely the failure a <code>&#x27;Success&#x27;</code> row cannot see. See <a class="wl" href="etl-load-order.html">etl-load-order</a> and <a class="wl" href="fact-grain.html">fact-grain</a>.</p>
+<h2 id="the-same-discipline-enforced-rather-than-written" class="h-anch"><a class="hlink" href="#the-same-discipline-enforced-rather-than-written" aria-label="Link to this section">#</a>The same discipline, enforced rather than written</h2>
+<p><a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> takes the pattern the rest of the way, because it has somewhere to enforce it:</p>
+<ul><li><code>build_db.py</code> loads with <code>PRAGMA foreign_keys = ON</code>, so a successful build <strong>is</strong> the FK proof.</li><li><code>test_counts_match_manifest</code> reconciles every CSV&#x27;s row count against a committed manifest — a real count-vs-expectation check, not a self-report.</li><li><code>make validate</code> &quot;must print RESULT: PASS&quot; — the privacy analogue, <a class="wl" href="disclosure-gate.html">disclosure-gate</a>.</li><li>All of it runs on every push via <a class="wl" href="github-actions.html">github-actions</a>.</li></ul>
+<h2 id="the-honest-limit" class="h-anch"><a class="hlink" href="#the-honest-limit" aria-label="Link to this section">#</a>The honest limit</h2>
+<p>In the warehousing repo the pattern is <strong>written but never executed and recorded</strong>. Every check is a query needing a live <a class="wl" href="sql-server.html">sql-server</a> with both AdventureWorks databases attached; no output, log or expected-count file is committed anywhere in the tree. &quot;0 orphans&quot; is a query, not a result. The difference between the two repositories is not the idea — it is whether a machine other than the author&#x27;s ever runs it. See <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a> and <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> · <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> · <a class="wl" href="etl-load-order.html">etl-load-order</a> · <a class="wl" href="disclosure-gate.html">disclosure-gate</a> · <a class="wl" href="sql-server.html">sql-server</a> · <a class="wl" href="ssis.html">ssis</a> · <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a> · <a class="wl" href="fact-grain.html">fact-grain</a></p></div>
+  <div class="tags"><span class="tag">testing</span><span class="tag">data-engineering</span><span class="tag">data-modelling</span><span class="tag">sql</span><span class="tag">ci-cd</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/sql/02_star_schema/02_load_star_schema.sql</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/sql/03_technical_indicators.sql</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/etl/ssis/Package.dtsx</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/build_db.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/tests/test_dataset.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/Makefile</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="disclosure-gate.html"><span class="kind k-concept">concept</span><span class="rel-t">Disclosure Gate</span><span class="rel-g">A build step that must pass before anything derived from sensitive input may be published</span></a><a class="rel" href="etl-load-order.html"><span class="kind k-concept">concept</span><span class="rel-t">ETL Load Order</span><span class="rel-g">Load order in a star-schema is not a style choice</span></a><a class="rel" href="fact-grain.html"><span class="kind k-concept">concept</span><span class="rel-t">Fact Grain</span><span class="rel-g">The grain of a fact table is the answer to &quot;what does one row mean?&quot;</span></a><a class="rel" href="reproducible-analysis.html"><span class="kind k-concept">concept</span><span class="rel-t">Reproducible Analysis</span><span class="rel-g">An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose</span></a><a class="rel" href="window-function-frames.html"><span class="kind k-concept">concept</span><span class="rel-t">Window Function Frames</span><span class="rel-g">GROUP BY collapses rows</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="data-warehousing-and-business-intelligence.html"><span class="kind k-project">project</span><span class="rel-t">Data Warehousing and Business Intelligence</span><span class="rel-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a><a class="rel" href="github-actions.html"><span class="kind k-tech">tech</span><span class="rel-t">GitHub Actions</span><span class="rel-g">GitHub&#x27;s hosted CI</span></a><a class="rel" href="sql-server.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server</span><span class="rel-g">Microsoft&#x27;s relational engine, driven here as T-SQL on SQL Server 2019 across seven annotated scripts in data-warehousing-and-business-intelligence — two analytics labs,…</span></a><a class="rel" href="ssis.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server Integration Services</span><span class="rel-g">Microsoft&#x27;s ETL tool: packages authored as .dtsx in Visual Studio / SSDT, built from a control flow of tasks and, inside a Data Flow Task, a data flow of typed sources,…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

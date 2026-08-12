@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Multiple Solutions Side by Side · Glass Box</title>
+<meta name="description" content="The same problem is solved two or three ways in one deliverable, and the trade-off between them is the point">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Multiple Solutions Side by Side · Glass Box">
+<meta property="og:description" content="The same problem is solved two or three ways in one deliverable, and the trade-off between them is the point">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The instances","What it is for","Cost","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Oracle-Database-Laboratories/sql/02_queries/04_subqueries_and_top_n.sql","Oracle-Database-Laboratories/sql/03_plsql/04_triggers.sql","Python-Programming-Laboratories/labs/09_dataset_reports/README.md","Discrete-Mathematics-Laboratories/lab6_Neo4j/viewer/","Data-Warehousing-and-Business-Intelligence/project/twtr/rsi_reference.py","Optimization Methods/first_project/"],"dateModified":"2026-07-28","description":"The same problem is solved two or three ways in one deliverable, and the trade-off between them is the point","headline":"Multiple Solutions Side by Side","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["documentation","testing","algorithms"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-04-07</span>
+    <span class="repos">Data-Warehousing-and-Business-Intelligence · Discrete-Mathematics-Laboratories · Optimization Methods · Oracle-Database-Laboratories · Python-Programming-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The same problem is solved two or three ways in one deliverable, and the trade-off between them is the point</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-instances">The instances</a></li><li><a href="#what-it-is-for">What it is for</a></li><li><a href="#cost">Cost</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="multiple-solutions-side-by-side">Multiple Solutions Side by Side</h1>
+<p>The same problem is solved two or three ways in one deliverable, and the <strong>trade-off between them is the point</strong>. Distinct from <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a>: there, one version is wrong or retired; here, all of them work.</p>
+<h2 id="the-instances" class="h-anch"><a class="hlink" href="#the-instances" aria-label="Link to this section">#</a>The instances</h2>
+<p><strong>Oracle: three formulations per question.</strong> Top-N is written with <code>ROWNUM</code>, with a <code>WITH</code> clause, and with <code>FETCH FIRST … WITH TIES</code> — including a note on the <code>ROWNUM</code>-applied-before-<code>ORDER BY</code> trap. &quot;Empty bands&quot; is written as a <code>LEFT JOIN</code> anti-join, as <code>MINUS</code>, and as <code>NOT EXISTS</code>. Chain-of-chiefs is written three ways over the self-referencing hierarchy. One rule is implemented twice as a trigger, with the inferior version labelled — see <a class="wl" href="database-triggers.html">database-triggers</a>.</p>
+<blockquote><p>&quot;The branches are disjoint by construction, so UNION ALL is used instead of UNION: there are no duplicates for UNION to remove, and skipping the sort and de-duplication pass is free.&quot;</p><cite>Oracle-Database-Laboratories/sql/02_queries/03_joins_and_sets.sql, 2026-07-25</cite></blockquote>
+<p><strong>Python labs: a deliberate CLI A/B.</strong> Lab 09 ships <code>click</code> while the core package ships <code>argparse</code>, on comparable problems, and says why:</p>
+<blockquote><p>&quot;<strong><code>click</code> against <code>argparse</code>.</strong> This lab uses <code>click</code>; the core CLI in <code>weblog.cli</code> uses <code>argparse</code>. Comparing the two on the same kind of problem is the point — <code>click</code>&#x27;s decorators are terser for flag soup, <code>argparse</code>&#x27;s subparsers give more control over a command hierarchy.&quot;</p><cite>Python-Programming-Laboratories/labs/09_dataset_reports/README.md, 2026-07-25</cite></blockquote>
+<p>See <a class="wl" href="click-versus-argparse.html">click-versus-argparse</a>. The same repo keeps a hand-written &quot;teaching version&quot; of a parser beside the production one, for the same reason — see <a class="wl" href="keep-the-teaching-version.html">keep-the-teaching-version</a>.</p>
+<p><strong>Warehouse: a second implementation as the specification.</strong> <code>rsi_reference.py</code> computes the RSI in Python over SQLite specifically because SQLite&#x27;s window syntax matches T-SQL&#x27;s, making it a portable cross-check on the warehouse implementation. See <span class="unpub" title="named in the source wiki; not published">reference-implementation-as-specification</span>. The wiki records one caveat: the script only <em>prints</em>, so the two-implementation diff was never actually asserted.</p>
+<p><strong>Discrete maths: the same system in two stacks.</strong> Lab 6 exists as Cypher against Neo4j and as an offline JS viewer that reimplements every query, rendering the graph beside the Cypher that produces it. Lab 4 exists in Python and in the browser. See <a class="wl" href="dual-implementation-as-cross-check.html">dual-implementation-as-cross-check</a>.</p>
+<p><strong>Optimisation: five algorithms on one benchmark.</strong> Greedy, Random Search, GA, Tabu Search and Iterated Local Search all race on the same six Taillard instances with a shared evaluator and a shared CSV contract, so the convergence plots are directly comparable. See <span class="unpub" title="named in the source wiki; not published">permutation-flow-shop-scheduling</span> and <a class="wl" href="iterated-local-search.html">iterated-local-search</a>.</p>
+<h2 id="what-it-is-for" class="h-anch"><a class="hlink" href="#what-it-is-for" aria-label="Link to this section">#</a>What it is for</h2>
+<p>Two things, and they are different:</p>
+<ol><li><strong>Teaching a trade-off.</strong> The Oracle and Python cases exist to show that a choice was available.</li><li><strong>Cross-checking a result.</strong> The RSI and Neo4j cases exist so that two independent paths must agree — a cheap substitute for a test suite in repos that have none. This is the same motive as <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a>, reached without any tooling.</li></ol>
+<h2 id="cost" class="h-anch"><a class="hlink" href="#cost" aria-label="Link to this section">#</a>Cost</h2>
+<p>Duplication drifts. <code>Discrete-Mathematics-Laboratories</code> had to correct a count from 38 objects to 39 &quot;throughout&quot; after its guide and README disagreed, and its <code>guide.txt</code> checklist still says 38 — see <a class="wl" href="documentation-drift.html">documentation-drift</a>. Two implementations mean two things to keep true.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> · <a class="wl" href="dual-implementation-as-cross-check.html">dual-implementation-as-cross-check</a> · <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a> · <a class="wl" href="click-versus-argparse.html">click-versus-argparse</a> · <span class="unpub" title="named in the source wiki; not published">reference-implementation-as-specification</span> · <a class="wl" href="documentation-drift.html">documentation-drift</a></p></div>
+  <div class="tags"><span class="tag">documentation</span><span class="tag">testing</span><span class="tag">algorithms</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/02_queries/04_subqueries_and_top_n.sql</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/03_plsql/04_triggers.sql</span></code></li><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/labs/09_dataset_reports/README.md</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab6_Neo4j/viewer/</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/rsi_reference.py</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/first_project/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="database-triggers.html"><span class="kind k-concept">concept</span><span class="rel-t">Database Triggers</span><span class="rel-g">Procedural code the database runs on your behalf when a table changes</span></a><a class="rel" href="iterated-local-search.html"><span class="kind k-concept">concept</span><span class="rel-t">Iterated Local Search</span><span class="rel-g">A metaheuristic with exactly four moving parts: an initial solution, a local search that descends to a local optimum, a perturbation that kicks the solution far enough…</span></a><a class="rel" href="click-versus-argparse.html"><span class="kind k-decision">decision</span><span class="rel-t">click Versus argparse</span><span class="rel-g">Ship both, on comparable problems, in the same repository — and say that the comparison is the point</span></a><a class="rel" href="keep-the-teaching-version.html"><span class="kind k-decision">decision</span><span class="rel-t">Keep the Teaching Version</span><span class="rel-g">Keep labs/04_classes/ — the hand-written HttpRequest / CorrectHttpRequest / MalformedHttpRequest hierarchy — in the tree alongside weblog.LogEntry, which does the same…</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="dual-implementation-as-cross-check.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Dual Implementation as Cross-Check</span><span class="rel-g">Build the same thing twice, in two different stacks, and keep both</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

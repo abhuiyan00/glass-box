@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Database Triggers · Glass Box</title>
+<meta name="description" content="Procedural code the database runs on your behalf when a table changes">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Database Triggers · Glass Box">
+<meta property="og:description" content="Procedural code the database runs on your behalf when a table changes">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The four kinds, and what each is for","The mutating-table restriction","State that spans a statement","Autonomous transactions — audit that survives a rollback","Three naming hazards the file records","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Oracle-Database-Laboratories/sql/03_plsql/04_triggers.sql","Oracle-Database-Laboratories/docs/schema.md"],"dateModified":"2026-07-28","description":"Procedural code the database runs on your behalf when a table changes","headline":"Database Triggers","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["databases","plsql","architecture"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Oracle-Database-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Procedural code the database runs on your behalf when a table changes</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-four-kinds-and-what-each-is-for">The four kinds, and what each is for</a></li><li><a href="#the-mutating-table-restriction">The mutating-table restriction</a></li><li><a href="#state-that-spans-a-statement">State that spans a statement</a></li><li><a href="#autonomous-transactions-audit-that-survives-a-rollback">Autonomous transactions — audit that survives a rollback</a></li><li><a href="#three-naming-hazards-the-file-records">Three naming hazards the file records</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="database-triggers">Database Triggers</h1>
+<p>Procedural code the database runs on your behalf when a table changes. Triggers enforce the cross-table and cross-row invariants that <code>CHECK</code> and foreign keys cannot reach — see <a class="wl" href="referential-integrity.html">referential-integrity</a> — and every one of their difficulties comes from the fact that they execute <em>inside</em> the statement that fired them.</p>
+<h2 id="the-four-kinds-and-what-each-is-for" class="h-anch"><a class="hlink" href="#the-four-kinds-and-what-each-is-for" aria-label="Link to this section">#</a>The four kinds, and what each is for</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Kind</th>
+<th>Fires</th>
+<th>Can see</th>
+</tr></thead><tbody>
+<tr><td><strong>Row-level</strong> (<code>FOR EACH ROW</code>)</td><td>once per affected row</td><td><code>:OLD</code> and <code>:NEW</code> for that row; <strong>not</strong> the table it fires on</td></tr>
+<tr><td><strong>Statement-level</strong></td><td>once per statement</td><td>the table, but no per-row values</td></tr>
+<tr><td><strong>Compound</strong></td><td>at up to four timing points in one object</td><td>both, with state declared once and reinitialised per statement</td></tr>
+<tr><td><strong>Autonomous</strong> (<code>PRAGMA AUTONOMOUS_TRANSACTION</code>)</td><td>as above, in its own transaction</td><td>commits independently of the caller</td></tr>
+</tbody></table></div>
+<h2 id="the-mutating-table-restriction" class="h-anch"><a class="hlink" href="#the-mutating-table-restriction" aria-label="Link to this section">#</a>The mutating-table restriction</h2>
+<p>A row-level trigger may not query or modify the table it fires on. Oracle raises ORA-04091, because the table is mid-change and any read would see an undefined state. Every trigger in <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a> is built to stay clear of it, and the comments say how.</p>
+<p>The cleanest example is band numbering. The naive implementation reads <code>MAX(band_no) + 1</code> from the table it is inserting into — which is both illegal and wrong:</p>
+<blockquote><p>&quot;A sequence, not SELECT MAX(band_no) + 1. Reading Bands from a row-level trigger on Bands is the textbook mutating-table error, and MAX + 1 is also wrong under concurrency: two sessions inserting at once would compute the same number.&quot;</p><cite>Oracle-Database-Laboratories/sql/03_plsql/04_triggers.sql, 2026-07-25</cite></blockquote>
+<p>Two independent objections to the same line. A sequence is transactional and never touches the table, so it answers both at once.</p>
+<h2 id="state-that-spans-a-statement" class="h-anch"><a class="hlink" href="#state-that-spans-a-statement" aria-label="Link to this section">#</a>State that spans a statement</h2>
+<p>Some rules need the value of something read <strong>once before any row changed</strong> plus totals accumulated <strong>across all rows</strong> — a per-row trigger cannot hold either. Historically the workaround is three triggers sharing package variables: <code>BEFORE STATEMENT</code> initialises, <code>BEFORE EACH ROW</code> accumulates, <code>AFTER STATEMENT</code> settles up.</p>
+<p>That version is implemented, kept in the tree, and labelled inferior:</p>
+<blockquote><p>&quot;This works, but it is fragile in a way worth naming ... The guard flag below is what stops that recursion. Version (b) has no such problem and is the one to prefer.&quot;</p><cite>Oracle-Database-Laboratories/sql/03_plsql/04_triggers.sql, 2026-07-25</cite></blockquote>
+<p>The fragility is re-entrancy: the <code>AFTER STATEMENT</code> trigger updates the very column its own <code>BEFORE UPDATE OF</code> trigger watches, so it fires itself, and only a hand-managed boolean flag stops the recursion. A <strong>compound trigger</strong> holds the same state in its own declaration section, reinitialised per statement automatically, with no package globals leaking between statements. Recorded as <a class="wl" href="compound-trigger-over-package-state.html">compound-trigger-over-package-state</a>; both versions retained side by side per <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> and <a class="wl" href="multiple-solutions-side-by-side.html">multiple-solutions-side-by-side</a>.</p>
+<h2 id="autonomous-transactions-audit-that-survives-a-rollback" class="h-anch"><a class="hlink" href="#autonomous-transactions-audit-that-survives-a-rollback" aria-label="Link to this section">#</a>Autonomous transactions — audit that survives a rollback</h2>
+<p>Two triggers here declare <code>PRAGMA AUTONOMOUS_TRANSACTION</code> so their log write commits independently of the transaction being audited. That is exactly what you want for &quot;record that someone attempted this&quot; — the attempt happened even though the change was rejected. It is exactly what you do <strong>not</strong> want for anything the caller&#x27;s transaction should be able to undo, and the pragma gives no warning either way.</p>
+<p>The validation trigger pairs it with <code>RAISE_APPLICATION_ERROR</code>: log the attempt in the autonomous transaction, commit that, then raise so the offending statement fails. Two outcomes from one trigger, which is only possible because the two live in different transactions.</p>
+<h2 id="three-naming-hazards-the-file-records" class="h-anch"><a class="hlink" href="#three-naming-hazards-the-file-records" aria-label="Link to this section">#</a>Three naming hazards the file records</h2>
+<ul><li><strong>No reserved words as column names.</strong> <code>when</code> and <code>for</code> read naturally for an audit table and neither can be used unquoted.</li><li><strong><code>INTO</code> targets named apart from the columns they read.</strong> Naming them alike makes PL/SQL resolve the <code>WHERE</code> clause against the variables, matching nothing — the same collision as in <a class="wl" href="plsql-exception-handling.html">plsql-exception-handling</a>.</li><li><strong><code>RAISE_APPLICATION_ERROR</code> takes -20000 to -20999.</strong> Any other code raises ORA-21000 in place of the intended message.</li></ul>
+<p><code>ORA_LOGIN_USER</code> gives the session user inside a trigger; outside one it is <code>SYS_CONTEXT(&#x27;USERENV&#x27;,&#x27;SESSION_USER&#x27;)</code>. And the insert-or-update in the audit path is a single <code>MERGE</code> rather than a count followed by a branch, closing the race between checking and writing.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="compound-trigger-over-package-state.html">compound-trigger-over-package-state</a> · <a class="wl" href="plsql.html">plsql</a> · <a class="wl" href="plsql-exception-handling.html">plsql-exception-handling</a> · <a class="wl" href="referential-integrity.html">referential-integrity</a> · <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> · <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a></p></div>
+  <div class="tags"><span class="tag">databases</span><span class="tag">plsql</span><span class="tag">architecture</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/03_plsql/04_triggers.sql</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/docs/schema.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="plsql-exception-handling.html"><span class="kind k-concept">concept</span><span class="rel-t">PL/SQL Exception Handling</span><span class="rel-g">PL/SQL reports failure by raising, not by returning</span></a><a class="rel" href="referential-integrity.html"><span class="kind k-concept">concept</span><span class="rel-t">Referential Integrity</span><span class="rel-g">Every foreign-key value either matches an existing primary key or is NULL</span></a><a class="rel" href="compound-trigger-over-package-state.html"><span class="kind k-decision">decision</span><span class="rel-t">Compound Trigger Over Package State</span><span class="rel-g">Implement a statement-spanning trigger rule as a single compound trigger rather than as three separate triggers sharing variables in a package — and keep the rejected…</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="multiple-solutions-side-by-side.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Multiple Solutions Side by Side</span><span class="rel-g">The same problem is solved two or three ways in one deliverable, and the trade-off between them is the point</span></a><a class="rel" href="oracle-database-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Oracle Database Laboratories</span><span class="rel-g">Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite</span></a><a class="rel" href="plsql.html"><span class="kind k-tech">tech</span><span class="rel-t">PL/SQL</span><span class="rel-g">Oracle&#x27;s procedural extension to SQL: block-structured, statically typed against the schema, and executed inside the database rather than in a client</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

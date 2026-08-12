@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Orchestrator · Glass Box</title>
+<meta name="description" content="A VS Code extension that turns one request into a plan and runs it across the coding CLIs the author already pays for">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agent Orchestrator · Glass Box">
+<meta property="og:description" content="A VS Code extension that turns one request into a plan and runs it across the coding CLIs the author already pays for">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Shape","The split","Durable goals and portable replay","Autonomy","Verification","Status","Git and documentation","Related"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["vs-llm-orchestrator/README.md","vs-llm-orchestrator/docs/SRS.md","vs-llm-orchestrator/docs/ARCHITECTURE.md","vs-llm-orchestrator/docs/SECURITY_MODEL.md","vs-llm-orchestrator/docs/TEST_PLAN.md","vs-llm-orchestrator/docs/RISK_REGISTER.md","vs-llm-orchestrator/docs/RELEASING.md","vs-llm-orchestrator/docs/adr/","vs-llm-orchestrator/agent-orchestrator/README.md","vs-llm-orchestrator/agent-orchestrator/backend/graph.py","vs-llm-orchestrator/agent-orchestrator/extension/src/extension.ts","vs-llm-orchestrator/agent-orchestrator/extension/media/panel.html","vs-llm-orchestrator/agent-orchestrator/extension/harness/fixtures/dag-waves.jsonl","vs-llm-orchestrator/agent-orchestrator/extension/CHANGELOG.md"],"dateModified":"2026-08-12","description":"A VS Code extension that turns one request into a plan and runs it across the coding CLIs the author already pays for","headline":"Agent Orchestrator","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["product","in-progress","architecture","python","typescript","testing"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-12 · in force since 2026-08-08</span>
+    <span class="repos">vs-llm-orchestrator</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A VS Code extension that turns one request into a plan and runs it across the coding CLIs the author already pays for</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#shape">Shape</a></li><li><a href="#the-split">The split</a></li><li><a href="#durable-goals-and-portable-replay">Durable goals and portable replay</a></li><li><a href="#autonomy">Autonomy</a></li><li><a href="#verification">Verification</a></li><li><a href="#status">Status</a></li><li><a href="#git-and-documentation">Git and documentation</a></li><li><a href="#related">Related</a></li></ol></nav>
+  <div class="prose"><h1 id="agent-orchestrator">Agent Orchestrator</h1>
+<p>A VS Code extension that turns one request into a plan and runs it across the coding CLIs the author already pays for. An <a class="wl" href="openrouter.html">openrouter</a> model reads the workspace, decides whether the request needs one answer or several agents, splits it into a DAG of subtasks, routes each to <a class="wl" href="claude-code-cli.html">claude-code-cli</a> or <a class="wl" href="codex-cli.html">codex-cli</a> at a chosen model and reasoning effort, runs independent work in parallel (<a class="wl" href="dag-scheduling-in-waves.html">dag-scheduling-in-waves</a>), and merges the results.</p>
+<p>The repository folder is <code>vs-llm-orchestrator</code>; the product inside it is <code>agent-orchestrator</code>. One repository holds both, for reasons recorded in <a class="wl" href="one-repository-at-the-workspace-folder.html">one-repository-at-the-workspace-folder</a>.</p>
+<h2 id="shape" class="h-anch"><a class="hlink" href="#shape" aria-label="Link to this section">#</a>Shape</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Part</th>
+<th>Language</th>
+<th>Lines</th>
+<th>Responsibility</th>
+</tr></thead><tbody>
+<tr><td><code>backend/graph.py</code></td><td>Python + <a class="wl" href="langgraph.html">langgraph</a></td><td>5,332</td><td>reconnaissance, planning, scheduling, CLI execution, fallback, merge, durable goals, and the stdio protocol</td></tr>
+<tr><td><code>extension/src/extension.ts</code></td><td>TypeScript, <a class="wl" href="vs-code-extension-api.html">vs-code-extension-api</a></td><td>895</td><td>backend lifecycle, SecretStorage, configuration, event fan-out, and replay recording</td></tr>
+<tr><td><code>extension/media/panel.html</code></td><td>one file</td><td>2,815</td><td>markup, CSS, and the event reducer for both surfaces -- <a class="wl" href="self-contained-single-file-html.html">self-contained-single-file-html</a></td></tr>
+<tr><td><code>skills/</code></td><td>markdown</td><td>30 skills</td><td>vendored playbooks granted per session, installed nowhere</td></tr>
+</tbody></table></div>
+<p>Three processes share one machine. Nothing is hosted and no component listens on a socket. The extension has zero runtime dependencies and the webview has no build step (<a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a>).</p>
+<h2 id="the-split" class="h-anch"><a class="hlink" href="#the-split" aria-label="Link to this section">#</a>The split</h2>
+<p>LangGraph is Python and the extension API is TypeScript, so the graph runs as a subprocess. That leaves the graph runnable and testable without VS Code, while the extension spawns it, forwards events, and renders them. One JSON object per line in each direction is the complete protocol, which is what makes <a class="wl" href="replay-a-recorded-run.html">replay-a-recorded-run</a> possible.</p>
+<h2 id="durable-goals-and-portable-replay" class="h-anch"><a class="hlink" href="#durable-goals-and-portable-replay" aria-label="Link to this section">#</a>Durable goals and portable replay</h2>
+<p>Each request belongs to a durable goal. <strong>Send</strong> continues the active goal; <strong>New goal</strong> explicitly starts a replacement. Acceptance criteria and verified evidence survive a backend restart or panel reload, so a reader can distinguish a continuing task from a new one.</p>
+<p>Large input is staged in chunks before planning. Input, prompts, provider events, tool events, and results enter a redacted durable trace before the equivalent live event is forwarded. The panel loads retained trace records on demand and preserves which details the reader expanded. The recorded <code>dag-waves</code> fixture keeps a real run&#x27;s event order while using portable paths: <code>/workspace/dag-waves/scratchpad/ws5</code>, <code>/usr/local/bin/claude</code>, and <code>/usr/local/bin/codex</code>.</p>
+<h2 id="autonomy" class="h-anch"><a class="hlink" href="#autonomy" aria-label="Link to this section">#</a>Autonomy</h2>
+<p>Both CLIs run non-interactively, so the autonomy level is chosen before the run and passed as flags (<a class="wl" href="autonomy-decided-before-the-run.html">autonomy-decided-before-the-run</a>). <code>readonly</code> maps to plan/read-only modes; <code>auto</code> maps to accept-edits/workspace-write with a build, test, and inspect allow-list; and <code>full</code> maps to bypass-permissions/danger-full-access. Since 0.10.0, <code>full</code> is the shipped default. It is stated plainly as a choice, not presented as a sandbox.</p>
+<p>The router is the only component that sees every subtask output and has no tools. A prompt can persuade it to produce a wrong answer, but cannot directly produce an action.</p>
+<h2 id="verification" class="h-anch"><a class="hlink" href="#verification" aria-label="Link to this section">#</a>Verification</h2>
+<p>The 2026-08-12 local audit passed 345 backend tests, 44 recorded-run panel checks, TypeScript compilation, and 25 repository guards. Extension-host coverage has 33 checks for both source and installed builds. The sandbox could not read the owner&#x27;s default pytest temporary directory, so that audit supplied an external writable temporary root; that is an execution-host limit, not a product failure. The real CLIs, OpenRouter API, and live permission behaviour were not exercised by this non-display audit.</p>
+<h2 id="status" class="h-anch"><a class="hlink" href="#status" aria-label="Link to this section">#</a>Status</h2>
+<p>Version 0.10.0 is working and not published. Marketplace publication remains blocked by a rotated-key requirement, placeholder publisher metadata, no repository field or Marketplace PNG icon, and no Marketplace screenshots until a repository URL exists. <code>docs/RELEASING.md</code> section 3 is the current checklist.</p>
+<h2 id="git-and-documentation" class="h-anch"><a class="hlink" href="#git-and-documentation" aria-label="Link to this section">#</a>Git and documentation</h2>
+<p>The product was imported into Git at <code>vs-llm-orchestrator/</code> on 2026-08-08 after existing as a folder. At that point, <code>brain.py verify-sources</code> changed from reporting it as not a Git repository to reporting it clean; source cleanliness is now checked separately for each audit.</p>
+<p>The repository has an ISO/IEC/IEEE 29148 requirements specification (162 functional and 8 non-functional requirements), architecture and security documents, a test plan, risk register, release procedure, and 19 ADRs. The 60-plus-image screenshot matrix is generated from recorded runs, so a figure is a repeatable visual check rather than an illustrative mockup (<a class="wl" href="readme-as-guided-tour.html">readme-as-guided-tour</a>).</p>
+<p>The 30 vendored skills retain their upstream URL, license, and exact commit in a <code>NOTICE</code> file: <a class="wl" href="agent-skills-checked-into-the-repo.html">agent-skills-checked-into-the-repo</a> and <a class="wl" href="provenance-notice-file.html">provenance-notice-file</a>.</p>
+<h2 id="related" class="h-anch"><a class="hlink" href="#related" aria-label="Link to this section">#</a>Related</h2>
+<ul><li><a class="wl" href="drive-the-clis-not-the-apis.html">drive-the-clis-not-the-apis</a> -- the product&#x27;s execution boundary</li><li><a class="wl" href="one-command-surface-two-dispatchers.html">one-command-surface-two-dispatchers</a> -- <code>make</code> and <code>orc.ps1</code> expose the same command surface</li><li><a class="wl" href="dual-implementation-as-cross-check.html">dual-implementation-as-cross-check</a> -- independently routed executors can corroborate work</li></ul></div>
+  <div class="tags"><span class="tag">product</span><span class="tag">in-progress</span><span class="tag">architecture</span><span class="tag">python</span><span class="tag">typescript</span><span class="tag">testing</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/docs/SRS.md</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/docs/ARCHITECTURE.md</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/docs/SECURITY_MODEL.md</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/docs/TEST_PLAN.md</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/docs/RISK_REGISTER.md</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/docs/RELEASING.md</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/docs/adr/</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/agent-orchestrator/README.md</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/agent-orchestrator/backend/graph.py</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/agent-orchestrator/extension/src/extension.ts</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/agent-orchestrator/extension/media/panel.html</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/agent-orchestrator/extension/harness/fixtures/dag-waves.jsonl</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/agent-orchestrator/extension/CHANGELOG.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="dag-scheduling-in-waves.html"><span class="kind k-concept">concept</span><span class="rel-t">DAG Scheduling in Waves</span><span class="rel-g">Given a plan whose subtasks declare depends_on, release every subtask whose dependencies are already finished, all at once, as one parallel wave</span></a><a class="rel" href="autonomy-decided-before-the-run.html"><span class="kind k-decision">decision</span><span class="rel-t">Autonomy Decided Before the Run</span><span class="rel-g">Three levels — readonly, auto (default), full — chosen in settings or from the panel before a task starts, and passed to both executors as flags</span></a><a class="rel" href="drive-the-clis-not-the-apis.html"><span class="kind k-decision">decision</span><span class="rel-t">Drive the CLIs, Not the APIs</span><span class="rel-g">agent-orchestrator spawns claude and codex as subprocesses in structured streaming mode and treats their output as the authoritative answer</span></a><a class="rel" href="one-repository-at-the-workspace-folder.html"><span class="kind k-decision">decision</span><span class="rel-t">One Repository at the Workspace Folder</span><span class="rel-g">git init went at vs-llm-orchestrator/, one level above the product folder agent-orchestrator/, and one repository holds the product, the documentation set and the tooling</span></a><a class="rel" href="agent-skills-checked-into-the-repo.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Agent Skills Checked Into the Repo</span><span class="rel-g">The tooling that builds the product is committed alongside the product, versioned with it and reviewed like it</span></a><a class="rel" href="dual-implementation-as-cross-check.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Dual Implementation as Cross-Check</span><span class="rel-g">Build the same thing twice, in two different stacks, and keep both</span></a><a class="rel" href="one-command-surface-two-dispatchers.html"><span class="kind k-pattern">pattern</span><span class="rel-t">One Command Surface, Two Dispatchers</span><span class="rel-g">Publish one vocabulary of verbs — test, package, lint, shots, clean — and implement it twice: a Makefile for anyone with make, and a PowerShell script with the same…</span></a><a class="rel" href="provenance-notice-file.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance NOTICE File</span><span class="rel-g">A separate, plain-text NOTICE at the repository root whose only job is to draw the line between what the author made and what the author borrowed</span></a><a class="rel" href="readme-as-guided-tour.html"><span class="kind k-pattern">pattern</span><span class="rel-t">README as Guided Tour</span><span class="rel-g">The README is written for a reader being shown around, not for a user trying to run something</span></a><a class="rel" href="replay-a-recorded-run.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Replay a Recorded Run</span><span class="rel-g">Record every event of one real run to a JSONL file</span></a><a class="rel" href="self-contained-single-file-html.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Self-Contained Single-File HTML</span><span class="rel-g">One .html file that renders completely with zero outbound requests — styles inline in a &lt;style&gt; block, no scripts, no images, no fonts, no CDN</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="claude-code-cli.html"><span class="kind k-tech">tech</span><span class="rel-t">Claude Code CLI</span><span class="rel-g">Anthropic&#x27;s terminal coding agent</span></a><a class="rel" href="codex-cli.html"><span class="kind k-tech">tech</span><span class="rel-t">Codex CLI</span><span class="rel-g">OpenAI&#x27;s terminal coding agent, and the second executor in agent-orchestrator</span></a><a class="rel" href="langgraph.html"><span class="kind k-tech">tech</span><span class="rel-t">LangGraph</span><span class="rel-g">A Python library for building stateful, multi-step graphs of function calls</span></a><a class="rel" href="openrouter.html"><span class="kind k-tech">tech</span><span class="rel-t">OpenRouter</span><span class="rel-g">A single OpenAI-compatible HTTP endpoint in front of many vendors&#x27; models, billed per token against one account</span></a><a class="rel" href="vs-code-extension-api.html"><span class="kind k-tech">tech</span><span class="rel-t">VS Code Extension API</span><span class="rel-g">The TypeScript surface an editor extension is written against: contribution points declared in package.json, an activate(ctx) entry point, and a vscode module available…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

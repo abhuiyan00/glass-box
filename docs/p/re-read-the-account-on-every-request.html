@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Re-read the Account on Every Request · Glass Box</title>
+<meta name="description" content="project-management-web-platform verifies a session token and then loads the account named by its claims for every authenticated request">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Re-read the Account on Every Request · Glass Box">
+<meta property="og:description" content="project-management-web-platform verifies a session token and then loads the account named by its claims for every authenticated request">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The authentication flow","Observable session behaviour","Cost and scaling boundary","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["project-management-web-platform/src/service/auth.ts","project-management-web-platform/src/http/middleware.ts","project-management-web-platform/test/http-auth.test.ts"],"dateModified":"2026-08-12","description":"project-management-web-platform verifies a session token and then loads the account named by its claims for every authenticated request","headline":"Re-read the Account on Every Request","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["security","architecture","web-dev"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-12 · in force since 2026-08-02</span>
+    <span class="repos">project-management-web-platform</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>project-management-web-platform verifies a session token and then loads the account named by its claims for every authenticated request</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-authentication-flow">The authentication flow</a></li><li><a href="#observable-session-behaviour">Observable session behaviour</a></li><li><a href="#cost-and-scaling-boundary">Cost and scaling boundary</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="re-read-the-account-on-every-request">Re-read the Account on Every Request</h1>
+<p><strong>Decision.</strong> <a class="wl" href="project-management-web-platform.html">project-management-web-platform</a> verifies a session token and then loads the account named by its claims for every authenticated request. Authorisation receives the actor created from that current account record, rather than treating the token&#x27;s role claim as the current source of authority.</p>
+<p>One store lookup per authenticated request is an intentional part of the contract.</p>
+<h2 id="the-authentication-flow" class="h-anch"><a class="hlink" href="#the-authentication-flow" aria-label="Link to this section">#</a>The authentication flow</h2>
+<p>The authenticate service performs the steps in order:</p>
+<ol><li>verify the token&#x27;s HMAC, structure, and expiry;</li><li>load the user by the verified identifier;</li><li>reject a missing or blocked account;</li><li>derive an actor from the loaded user and pass it to policy code.</li></ol>
+<p>A valid signature proves that this service issued the credential; it does not by itself prove that the named account is still active or holds the same role. Reloading the account gives the service current state when it makes the access decision.</p>
+<p>The HTTP middleware keeps that verified actor and user in a WeakMap keyed by the request object. Client-controlled request JSON is therefore separate from authenticated identity.</p>
+<h2 id="observable-session-behaviour" class="h-anch"><a class="hlink" href="#observable-session-behaviour" aria-label="Link to this section">#</a>Observable session behaviour</h2>
+<p>The HTTP authentication tests cover the resulting guarantees:</p>
+<ul><li>blocking an account takes effect on its next request;</li><li>deleting an account makes a still-unexpired credential unusable;</li><li>granting or removing an administrative role changes the next authorisation decision;</li><li>a token for a missing account is rejected as an authentication failure.</li></ul>
+<p>These are properties of the current account record, not promises embedded in a credential at issuance time.</p>
+<h2 id="cost-and-scaling-boundary" class="h-anch"><a class="hlink" href="#cost-and-scaling-boundary" aria-label="Link to this section">#</a>Cost and scaling boundary</h2>
+<p>The cost is one additional lookup for each authenticated request. At this repository&#x27;s scale, that direct lookup keeps the policy simple: there is no token denylist, token-version store, or separate revocation state to reconcile.</p>
+<p>A higher-throughput service may cache accounts for a short TTL and accept a bounded delay before a state change takes effect. That is a different contract and should state both the TTL and the acceptable revocation window. This API chooses immediate use of the stored state instead.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="hmac-session-tokens-over-jwt.html">hmac-session-tokens-over-jwt</a> · <a class="wl" href="stateless-jwt-authentication.html">stateless-jwt-authentication</a> · <a class="wl" href="authorization-in-the-query-predicate.html">authorization-in-the-query-predicate</a> · <a class="wl" href="project-management-web-platform.html">project-management-web-platform</a> · <a class="wl" href="cia-triad.html">cia-triad</a> · <a class="wl" href="disclosure-gate.html">disclosure-gate</a></p></div>
+  <div class="tags"><span class="tag">security</span><span class="tag">architecture</span><span class="tag">web-dev</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">project-management-web-platform</span><span class="src-p">/src/service/auth.ts</span></code></li><li><code><span class="src-r">project-management-web-platform</span><span class="src-p">/src/http/middleware.ts</span></code></li><li><code><span class="src-r">project-management-web-platform</span><span class="src-p">/test/http-auth.test.ts</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="authorization-in-the-query-predicate.html"><span class="kind k-concept">concept</span><span class="rel-t">Authorisation in the Query Predicate</span><span class="rel-g">Authorisation is a domain decision: the system determines whether an authenticated actor may operate on a loaded resource, then performs the requested operation</span></a><a class="rel" href="cia-triad.html"><span class="kind k-concept">concept</span><span class="rel-t">CIA Triad</span><span class="rel-g">Confidentiality, Integrity, Availability — the three properties any security control is ultimately defending</span></a><a class="rel" href="disclosure-gate.html"><span class="kind k-concept">concept</span><span class="rel-t">Disclosure Gate</span><span class="rel-g">A build step that must pass before anything derived from sensitive input may be published</span></a><a class="rel" href="stateless-jwt-authentication.html"><span class="kind k-concept">concept</span><span class="rel-t">Stateless JWT Authentication</span><span class="rel-g">The server keeps no session</span></a><a class="rel" href="hmac-session-tokens-over-jwt.html"><span class="kind k-decision">decision</span><span class="rel-t">HMAC Session Tokens Over JWT</span><span class="rel-g">project-management-web-platform issues session credentials as a base64url JSON payload and an HMAC-SHA256 tag, using node:crypto rather than a JWT library</span></a><a class="rel" href="project-management-web-platform.html"><span class="kind k-project">project</span><span class="rel-t">Project Management Web Platform</span><span class="rel-g">A TypeScript API for projects, tasks, accounts, and session-based access control</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

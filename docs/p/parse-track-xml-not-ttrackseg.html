@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parse Track XML Instead of tTrackSeg · Glass Box</title>
+<meta name="description" content="Reconstruct the track centreline offline, by parsing the track&#x27;s XML definition, instead of reading TORCS&#x27;s own tTrackSeg geometry at runtime">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Parse Track XML Instead of tTrackSeg · Glass Box">
+<meta property="og:description" content="Reconstruct the track centreline offline, by parsing the track&#x27;s XML definition, instead of reading TORCS&#x27;s own tTrackSeg geometry at runtime">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The rejected alternative, and why it fails","What replaced it","The consequence nobody planned: this became the house style","Costs accepted","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["IT Applications in Business and Commerce/project/code/a.bhuiyan/guide.txt","IT Applications in Business and Commerce/project/code/a.bhuiyan/gym_torcs/racing_line.py","IT Applications in Business and Commerce/project/code/a.bhuiyan/gym_torcs/car_spec.py"],"dateModified":"2026-07-28","description":"Reconstruct the track centreline offline, by parsing the track's XML definition, instead of reading TORCS's own tTrackSeg geometry at runtime","headline":"Parse Track XML Instead of tTrackSeg","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["python","algorithms","reinforcement-learning"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">IT Applications in Business and Commerce</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Reconstruct the track centreline offline, by parsing the track&#x27;s XML definition, instead of reading TORCS&#x27;s own tTrackSeg geometry at runtime</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-rejected-alternative-and-why-it-fails">The rejected alternative, and why it fails</a></li><li><a href="#what-replaced-it">What replaced it</a></li><li><a href="#the-consequence-nobody-planned-this-became-the-house-style">The consequence nobody planned: this became the house style</a></li><li><a href="#costs-accepted">Costs accepted</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="parse-track-xml-instead-of-ttrackseg">Parse Track XML Instead of tTrackSeg</h1>
+<p><strong>Decision.</strong> Reconstruct the track centreline <strong>offline, by parsing the track&#x27;s XML definition</strong>, instead of reading TORCS&#x27;s own <code>tTrackSeg</code> geometry at runtime.</p>
+<p><strong>Date.</strong> Recorded in <code>guide.txt</code> §0, published 2026-07-10. The work it governs (<code>racing_line.py</code>) predates publication — the branch it comes from has upstream commits from 2026-04-19 onward, and the generated racing line is dated 2026-06-04/05.</p>
+<h2 id="the-rejected-alternative-and-why-it-fails" class="h-anch"><a class="hlink" href="#the-rejected-alternative-and-why-it-fails" aria-label="Link to this section">#</a>The rejected alternative, and why it fails</h2>
+<p>The original plan said to relax the racing line along <code>tTrackSeg</code> coordinates — the natural choice, since that is the simulator&#x27;s own internal representation of the track. It is unreachable:</p>
+<blockquote><p>&quot;The plan says &#x27;run the relaxation along the tTrackSeg coordinates.&#x27; <code>tTrackSeg</code> is a TORCS C++ runtime structure. It is ONLY visible to a robot compiled inside TORCS. Our agent talks to TORCS over the SCR UDP protocol (snakeoil3_gym.py) and CANNOT see tTrackSeg.&quot;</p><cite>IT Applications in Business and Commerce/project/code/a.bhuiyan/guide.txt, 2026-07-10</cite></blockquote>
+<p>Taking <code>tTrackSeg</code> would have meant abandoning <a class="wl" href="torcs-scr-protocol.html">torcs-scr-protocol</a> and compiling the agent into the simulator as a C++ robot — which would also mean abandoning Python, <a class="wl" href="pytorch.html">pytorch</a> and the entire training stack. The alternative was rejected on reachability, not on quality.</p>
+<h2 id="what-replaced-it" class="h-anch"><a class="hlink" href="#what-replaced-it" aria-label="Link to this section">#</a>What replaced it</h2>
+<blockquote><p>&quot;Fix: get the identical geometry OFFLINE by parsing the track XML (torcs/tracks/road/&lt;track&gt;/&lt;track&gt;.xml). It encodes the track as an ordered list of segments: straights (lg) and arcs (radius, arc, lft/rgt). Integrate those to rebuild the centerline, then relax. Same math, a source we can actually reach from Python.&quot;</p><cite>IT Applications in Business and Commerce/project/code/a.bhuiyan/guide.txt, 2026-07-10</cite></blockquote>
+<p><code>racing_line.py</code> (507 lines) does exactly that: arc-length integration over straights and arcs including clothoid transitions (<code>r0</code>/<code>r1</code>), then periodic Laplacian relaxation inside a <code>±(w/2 − 1.5 m)</code> corridor. See <a class="wl" href="minimum-curvature-racing-line.html">minimum-curvature-racing-line</a>.</p>
+<p>Runtime localisation then uses only sensors the UDP protocol <em>does</em> expose — <code>distFromStart</code> as arc length, <code>trackPos</code> as lateral offset, <code>angle</code> as heading error, <code>speedX</code> as speed. The precomputed line becomes a lookup keyed on <code>distFromStart</code>, which is what makes the tracking-error state of <a class="wl" href="residual-reinforcement-learning.html">residual-reinforcement-learning</a> possible at all.</p>
+<h2 id="the-consequence-nobody-planned-this-became-the-house-style" class="h-anch"><a class="hlink" href="#the-consequence-nobody-planned-this-became-the-house-style" aria-label="Link to this section">#</a>The consequence nobody planned: this became the house style</h2>
+<p>Having established that vendor XML is the reachable source of truth, the same move was applied to the car. <code>car_spec.py</code> walks <code>practice.xml</code> → <code>scr_server.xml</code> → the car XML to pull gear ratios, final drive, tyre radius, the rpm→torque curve and the rev limiter — see <a class="wl" href="data-driven-gearing-over-hand-tuned-rpm-bands.html">data-driven-gearing-over-hand-tuned-rpm-bands</a>. Two independent subsystems, one technique: <strong>parse the simulator&#x27;s configuration files rather than guess at, or try to reach, its runtime state.</strong></p>
+<h2 id="costs-accepted" class="h-anch"><a class="hlink" href="#costs-accepted" aria-label="Link to this section">#</a>Costs accepted</h2>
+<ul><li><strong>The line is per-track and precomputed.</strong> Change the track in the TORCS GUI and the <code>.npz</code> must be regenerated; the guide says so explicitly.</li><li><strong>Offline geometry has no ground-truth alignment to the runtime <code>s</code> origin.</strong> <code>guide.txt</code> gotcha G5 flags that <code>distFromStart</code> may not coincide with XML <code>segment[0]</code>, and gotcha G4 names a <code>recon_lap.py</code> calibration tool — <strong>which does not exist in the tree</strong>.</li></ul>
+<ul><li><strong>TODO:</strong> how the <code>trackPos</code> sign convention and the <code>distFromStart</code> offset were actually calibrated is unrecorded, since the tool the guide points at was never committed. <code>confidence: low</code> on the calibration story. Do not invent one. See <a class="wl" href="documentation-drift.html">documentation-drift</a>.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="minimum-curvature-racing-line.html">minimum-curvature-racing-line</a> · <a class="wl" href="torcs-scr-protocol.html">torcs-scr-protocol</a> · <a class="wl" href="it-applications-in-business-and-commerce.html">it-applications-in-business-and-commerce</a> · <a class="wl" href="residual-reinforcement-learning.html">residual-reinforcement-learning</a> · <a class="wl" href="data-driven-gearing-over-hand-tuned-rpm-bands.html">data-driven-gearing-over-hand-tuned-rpm-bands</a></p></div>
+  <div class="tags"><span class="tag">python</span><span class="tag">algorithms</span><span class="tag">reinforcement-learning</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/a.bhuiyan/guide.txt</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/a.bhuiyan/gym_torcs/racing_line.py</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/a.bhuiyan/gym_torcs/car_spec.py</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="minimum-curvature-racing-line.html"><span class="kind k-concept">concept</span><span class="rel-t">Minimum-Curvature Racing Line</span><span class="rel-g">The fastest path around a circuit is not the shortest one</span></a><a class="rel" href="residual-reinforcement-learning.html"><span class="kind k-concept">concept</span><span class="rel-t">Residual Reinforcement Learning</span><span class="rel-g">A deterministic controller does the driving; the learned policy only outputs a bounded correction on top of it</span></a><a class="rel" href="data-driven-gearing-over-hand-tuned-rpm-bands.html"><span class="kind k-decision">decision</span><span class="rel-t">Data-Driven Gearing over Hand-Tuned RPM Bands</span><span class="rel-g">Choose gears from the car&#x27;s own engine data — parsed out of the TORCS car XML — rather than from tuned rpm thresholds or from a learned reward term</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="it-applications-in-business-and-commerce.html"><span class="kind k-project">project</span><span class="rel-t">IT Applications in Business and Commerce</span><span class="rel-g">This repository is not business analytics</span></a><a class="rel" href="pytorch.html"><span class="kind k-tech">tech</span><span class="rel-t">PyTorch</span><span class="rel-g">torch==2.11.0</span></a><a class="rel" href="torcs-scr-protocol.html"><span class="kind k-tech">tech</span><span class="rel-t">TORCS and the SCR Protocol</span><span class="rel-g">TORCS is an open-source racing simulator</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

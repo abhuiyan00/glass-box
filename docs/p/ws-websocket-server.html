@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ws (WebSocket Server) · Glass Box</title>
+<meta name="description" content="The Node WebSocket implementation, ^8.21.1">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ws (WebSocket Server) · Glass Box">
+<meta property="og:description" content="The Node WebSocket implementation, ^8.21.1">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The wire format","Connection handling worth copying","The abstraction that made the swap cheap","TCP, knowingly","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["browser_game_stickfps/server/package.json","browser_game_stickfps/server/src/net/wsServer.ts","browser_game_stickfps/server/src/net/transport.ts","browser_game_stickfps/client/src/net/netClient.ts","browser_game_stickfps/client/src/net/transport.ts","browser_game_stickfps/PROGRESS.md"],"dateModified":"2026-07-28","description":"The Node WebSocket implementation, ^8.21.1","headline":"ws (WebSocket Server)","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["networking","web-dev","typescript","security"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-24</span>
+    <span class="repos">browser_game_stickfps</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The Node WebSocket implementation, ^8.21.1</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-wire-format">The wire format</a></li><li><a href="#connection-handling-worth-copying">Connection handling worth copying</a></li><li><a href="#the-abstraction-that-made-the-swap-cheap">The abstraction that made the swap cheap</a></li><li><a href="#tcp-knowingly">TCP, knowingly</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="ws-websocket-server">ws (WebSocket Server)</h1>
+<p>The Node WebSocket implementation, <code>^8.21.1</code>. In <a class="wl" href="stickfps.html">stickfps</a> it is the entire transport, serving <code>/ws</code> on the same <code>express ^5.2.1</code> server that answers <code>/healthz</code>. It replaced geckos.io (UDP-over-WebRTC) in the final build round — <a class="wl" href="websocket-tcp-over-geckos-udp.html">websocket-tcp-over-geckos-udp</a>.</p>
+<h2 id="the-wire-format" class="h-anch"><a class="hlink" href="#the-wire-format" aria-label="Link to this section">#</a>The wire format</h2>
+<p>Compact JSON frames shaped <code>{ e: event, d: data }</code> — event name plus payload, nothing else. Frames are small by construction because the client only ever sends intent under <a class="wl" href="server-authoritative-netcode.html">server-authoritative-netcode</a>, and the server&#x27;s per-tick broadcast is a batched position snapshot rather than one message per entity.</p>
+<h2 id="connection-handling-worth-copying" class="h-anch"><a class="hlink" href="#connection-handling-worth-copying" aria-label="Link to this section">#</a>Connection handling worth copying</h2>
+<ul><li><strong>Origin check in <code>verifyClient</code></strong>, against <code>CORS_ORIGIN</code>, before the upgrade completes. Cheaper than authenticating after the socket is open, and it is the reason <a class="wl" href="stickfps.html">stickfps</a> keeps <code>express</code> and <code>cors</code> for a service with one HTTP route.</li><li><strong>64 KB maximum payload.</strong> A hard ceiling on any single frame limits the cheapest denial-of-service shape without any rate-limiting logic. (Per-connection <em>rate</em> limiting is still absent and is listed as a known gap.)</li><li><strong>The server issues the identity.</strong> Each connection gets a fresh <code>crypto.randomUUID()</code> delivered in a <code>connection-ready</code> frame, and the client&#x27;s <code>connectToServer</code> promise resolves only once that id arrives. Anything the client believed about who it was before connecting is irrelevant — which is why <span class="unpub" title="named in the source wiki; not published">supabase</span>&#x27;s anonymous id is not the player id.</li><li><strong>Reconnect with capped jittered exponential backoff</strong>, 500 ms → 8 s. Jitter matters: without it every client dropped by one server restart returns in the same instant.</li></ul>
+<h2 id="the-abstraction-that-made-the-swap-cheap" class="h-anch"><a class="hlink" href="#the-abstraction-that-made-the-swap-cheap" aria-label="Link to this section">#</a>The abstraction that made the swap cheap</h2>
+<p>Rather than rewrite gameplay code against <code>ws</code>, the build introduced <code>NetChannel</code> / <code>NetServer</code> — an interface shaped to mirror <strong>only the slice of the geckos.io API the code actually used</strong>. No gameplay code changed when the transport was replaced.</p>
+<p>The transferable point is the sizing rule: the wrapper was written to the <em>observed usage</em>, not to the vendor&#x27;s full surface, and not speculatively in advance. A transport interface designed up front to cover everything either transport might do would have been larger and would still have leaked.</p>
+<h2 id="tcp-knowingly" class="h-anch"><a class="hlink" href="#tcp-knowingly" aria-label="Link to this section">#</a>TCP, knowingly</h2>
+<p>WebSocket is TCP, so a lost packet blocks everything behind it — head-of-line blocking that UDP would not have. Accepted explicitly and called &quot;unnoticeable at hobby scale&quot;. Under this transport, <a class="wl" href="entity-interpolation.html">entity-interpolation</a>&#x27;s 100 ms buffer is doing more work than it would over UDP.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="websocket-tcp-over-geckos-udp.html">websocket-tcp-over-geckos-udp</a> · <a class="wl" href="server-authoritative-netcode.html">server-authoritative-netcode</a> · <a class="wl" href="render-hosting.html">render-hosting</a> · <a class="wl" href="split-frontend-backend-hosting.html">split-frontend-backend-hosting</a> · <a class="wl" href="stickfps.html">stickfps</a></p></div>
+  <div class="tags"><span class="tag">networking</span><span class="tag">web-dev</span><span class="tag">typescript</span><span class="tag">security</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/server/package.json</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/server/src/net/wsServer.ts</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/server/src/net/transport.ts</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/client/src/net/netClient.ts</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/client/src/net/transport.ts</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/PROGRESS.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="entity-interpolation.html"><span class="kind k-concept">concept</span><span class="rel-t">Entity Interpolation</span><span class="rel-g">Snapshots arrive at the tick rate and at the mercy of the network; frames render at whatever the monitor does</span></a><a class="rel" href="server-authoritative-netcode.html"><span class="kind k-concept">concept</span><span class="rel-t">Server-Authoritative Netcode</span><span class="rel-g">The client is an input device and a renderer</span></a><a class="rel" href="split-frontend-backend-hosting.html"><span class="kind k-decision">decision</span><span class="rel-t">Split Frontend and Backend Hosting</span><span class="rel-g">Decision: deploy the stickfps client as a static bundle on one host and the game server as a long-lived process on another, rather than shipping one application</span></a><a class="rel" href="websocket-tcp-over-geckos-udp.html"><span class="kind k-decision">decision</span><span class="rel-t">WebSocket Over TCP Instead of Geckos.io UDP</span><span class="rel-g">Decision (2026-07-24, round 11): replace geckos.io — UDP over WebRTC data channels — with plain WebSocket over TCP (ws), across the whole of stickfps</span></a><a class="rel" href="stickfps.html"><span class="kind k-project">project</span><span class="rel-t">Stickfps</span><span class="rel-g">A 5v5 round-based browser tactical FPS: Counter-Strike round/economy structure, Krunker-style movement feel, procedurally-generated low-poly stickmen</span></a><a class="rel" href="render-hosting.html"><span class="kind k-tech">tech</span><span class="rel-t">Render</span><span class="rel-g">Managed application hosting with a free tier that does not require a credit card</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

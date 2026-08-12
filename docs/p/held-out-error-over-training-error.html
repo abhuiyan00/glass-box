@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Held-Out Error over Training Error · Glass Box</title>
+<meta name="description" content="Training error cannot select a model, and the reason is structural rather than statistical: for nested model families it is monotonically non-increasing in complexity by…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Held-Out Error over Training Error · Glass Box">
+<meta property="og:description" content="Training error cannot select a model, and the reason is structural rather than statistical: for nested model families it is monotonically non-increasing in complexity by…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The measurement","The same trap without a degree","The guarantee has a precondition","Replacing a discrete search with a continuous one","Where this appears"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["systems-analysis-and-decision-support/src/decision_support/regression.py","systems-analysis-and-decision-support/tests/test_regression.py","systems-analysis-and-decision-support/tests/test_classification.py"],"dateModified":"2026-08-04","description":"Training error cannot select a model, and the reason is structural rather than statistical: for nested model families it is monotonically non-increasing in complexity by…","headline":"Held-Out Error over Training Error","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["ml","research-methods","testing","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-04 · in force since 2026-08-04</span>
+    <span class="repos">systems-analysis-and-decision-support</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Training error cannot select a model, and the reason is structural rather than statistical: for nested model families it is monotonically non-increasing in complexity by…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-measurement">The measurement</a></li><li><a href="#the-same-trap-without-a-degree">The same trap without a degree</a></li><li><a href="#the-guarantee-has-a-precondition">The guarantee has a precondition</a></li><li><a href="#replacing-a-discrete-search-with-a-continuous-one">Replacing a discrete search with a continuous one</a></li><li><a href="#where-this-appears">Where this appears</a></li></ol></nav>
+  <div class="prose"><h1 id="held-out-error-over-training-error">Held-Out Error over Training Error</h1>
+<p>Training error cannot select a model, and the reason is structural rather than statistical: for nested model families it is <strong>monotonically non-increasing in complexity by construction</strong>.</p>
+<p>A degree-<code>d+1</code> polynomial can reproduce any degree-<code>d</code> one by setting the leading coefficient to zero. So the best degree-<code>d+1</code> fit is at least as good as the best degree-<code>d</code> fit, on <em>any</em> data, always. Selecting on training error therefore picks the largest candidate in the list — and it does so for a reason that has nothing to do with the data.</p>
+<h2 id="the-measurement" class="h-anch"><a class="hlink" href="#the-measurement" aria-label="Link to this section">#</a>The measurement</h2>
+<pre><code>     degree        train   validation
+          0      0.47624      0.40153
+          1      0.27474      0.24176
+          3      0.01360      0.01025
+          5      0.00568      0.01165
+          7      0.00512      0.01015  &lt;- chosen
+          9      0.00264      0.01315</code></pre>
+<p>Training error falls all the way to degree 9. Validation error does not — it bottoms out and comes back up, and that <strong>non-monotonicity is the entire product</strong> of holding data out. A split that produced a monotone validation curve would have bought nothing.</p>
+<p>Both facts are assertions in the test suite rather than observations in a comment: the monotonicity of the training column is asserted, and so is the non-monotonicity of the validation column.</p>
+<h2 id="the-same-trap-without-a-degree" class="h-anch"><a class="hlink" href="#the-same-trap-without-a-degree" aria-label="Link to this section">#</a>The same trap without a degree</h2>
+<p>Model complexity does not have to be a visible parameter for this to bite.</p>
+<p>κ-NN at <code>k = 1</code> has zero training error by construction, because every training point is its own nearest neighbour at distance zero. A <code>k</code> chosen on training error is always 1 — again, for reasons unrelated to the data. See <a class="wl" href="lazy-versus-eager-learners.html">lazy-versus-eager-learners</a>.</p>
+<p>The general form: <strong>any metric that a model can drive to its optimum by memorising cannot distinguish memorising from learning.</strong> Test-set accuracy on a set that was consulted while tuning has the same defect and is harder to notice.</p>
+<h2 id="the-guarantee-has-a-precondition" class="h-anch"><a class="hlink" href="#the-guarantee-has-a-precondition" aria-label="Link to this section">#</a>The guarantee has a precondition</h2>
+<p>κ-NN&#x27;s zero-training-error property holds only while no two identical feature vectors carry different labels. With a contradictory duplicate, <code>k = 1</code> scores 0.8 rather than 1.0 — one of the two identical points must be wrong whatever the classifier does.</p>
+<p>Real text data is full of duplicate feature vectors, so this is not a corner case. It was found by writing a test that assumed the guarantee and measuring 0.8, which is the useful direction for a precondition to be discovered in.</p>
+<h2 id="replacing-a-discrete-search-with-a-continuous-one" class="h-anch"><a class="hlink" href="#replacing-a-discrete-search-with-a-continuous-one" aria-label="Link to this section">#</a>Replacing a discrete search with a continuous one</h2>
+<p>Once ridge regression is available, the degree stops needing to be guessed correctly: fix a generously large degree and select λ instead. One continuous parameter replaces one discrete one and is easier to search — see <a class="wl" href="condition-number-as-digits-lost.html">condition-number-as-digits-lost</a> for what λ is doing to the solve while it does that.</p>
+<h2 id="where-this-appears" class="h-anch"><a class="hlink" href="#where-this-appears" aria-label="Link to this section">#</a>Where this appears</h2>
+<p>Implemented in <a class="wl" href="systems-analysis-and-decision-support.html">systems-analysis-and-decision-support</a> with both selection sweeps keeping every candidate they rejected rather than returning only the winner. The wider habit — <a class="wl" href="blind-baseline-comparison.html">blind-baseline-comparison</a> — is the same argument applied to whether a model beats doing nothing at all.</p></div>
+  <div class="tags"><span class="tag">ml</span><span class="tag">research-methods</span><span class="tag">testing</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/src/decision_support/regression.py</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/tests/test_regression.py</span></code></li><li><code><span class="src-r">systems-analysis-and-decision-support</span><span class="src-p">/tests/test_classification.py</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="blind-baseline-comparison.html"><span class="kind k-concept">concept</span><span class="rel-t">Blind Baseline Comparison</span><span class="rel-g">Deliberately withhold the domain heuristic from the metaheuristic so that the comparison against that heuristic measures something</span></a><a class="rel" href="condition-number-as-digits-lost.html"><span class="kind k-concept">concept</span><span class="rel-t">Condition Number as Digits Lost</span><span class="rel-g">&quot;Ill-conditioned&quot; is a word that does no work</span></a><a class="rel" href="lazy-versus-eager-learners.html"><span class="kind k-concept">concept</span><span class="rel-t">Lazy versus Eager Learners</span><span class="rel-g">Two classifiers taught in the same course sit at opposite ends of one trade, and the trade is a pair of counts rather than a pair of adjectives</span></a><a class="rel" href="systems-analysis-and-decision-support.html"><span class="kind k-project">project</span><span class="rel-t">Systems Analysis and Decision Support</span><span class="rel-g">Least squares and ridge regression, κ-NN, Bernoulli naive Bayes, and logistic regression fitted by both gradient ascent and IRLS — in pure Python with no NumPy</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

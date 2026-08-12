@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fitts&#x27;s Law · Glass Box</title>
+<meta name="description" content="Paul Fitts, 1954">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fitts&#x27;s Law · Glass Box">
+<meta property="og:description" content="Paul Fitts, 1954">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Two consequences worth more than the formula","Why this is in the wiki and the Gestalt principles are not","The limit of the law","Source"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["pwr-subject-notes/notes/human-computer-interaction.md","pwr-subject-notes/INDEX.md"],"dateModified":"2026-08-04","description":"Paul Fitts, 1954","headline":"Fitts's Law","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["research-methods","documentation","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-08-04 · in force since 2026-08-04</span>
+    <span class="repos">pwr-subject-notes</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Paul Fitts, 1954</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#two-consequences-worth-more-than-the-formula">Two consequences worth more than the formula</a></li><li><a href="#why-this-is-in-the-wiki-and-the-gestalt-principles-are-not">Why this is in the wiki and the Gestalt principles are not</a></li><li><a href="#the-limit-of-the-law">The limit of the law</a></li><li><a href="#source">Source</a></li></ol></nav>
+  <div class="prose"><h1 id="fittss-law">Fitts&#x27;s Law</h1>
+<p>Paul Fitts, 1954. The time to point at a target depends on how far away it is and how big it is, logarithmically:</p>
+<pre><code>MT = a + b · log₂(2D / W)</code></pre>
+<p><code>D</code> is the distance to the target, <code>W</code> its width along the axis of movement, and <code>a</code> and <code>b</code> are fitted constants for the device and the person.</p>
+<h2 id="two-consequences-worth-more-than-the-formula" class="h-anch"><a class="hlink" href="#two-consequences-worth-more-than-the-formula" aria-label="Link to this section">#</a>Two consequences worth more than the formula</h2>
+<p><strong>Doubling the width buys the same as halving the distance.</strong> Both change <code>D/W</code> by a factor of two, so both save <code>b</code> milliseconds. Layout arguments about proximity and arguments about size are the same argument, and they can be traded against each other quantitatively.</p>
+<p><strong>A target at a screen edge is effectively infinitely wide.</strong> The pointer cannot overshoot past the edge, so <code>W</code> in the direction of travel is unbounded and the log term collapses. That is why menu bars sit flush against edges and corners, and why a one-pixel gap below a bar destroys the advantage completely — the target stops being an edge target and becomes an ordinary one.</p>
+<p>The edge case <em>is</em> the design. This is the same shape of reasoning as the boundary conditions that carry the weight in <a class="wl" href="computer-arithmetic-and-number-representation.html">computer-arithmetic-and-number-representation</a> — the p&#x27;s complement of zero, the most negative two&#x27;s-complement value, the smallest subnormal. Interesting behaviour lives at the limits of the range.</p>
+<h2 id="why-this-is-in-the-wiki-and-the-gestalt-principles-are-not" class="h-anch"><a class="hlink" href="#why-this-is-in-the-wiki-and-the-gestalt-principles-are-not" aria-label="Link to this section">#</a>Why this is in the wiki and the Gestalt principles are not</h2>
+<p>Fitts&#x27;s Law makes a numeric prediction about a specific interface, so it can be <strong>wrong</strong> about that interface, and being wrong is checkable. &quot;Apply the principle of closure&quot; cannot be wrong about anything.</p>
+<p>Both belong in a human-computer interaction course and only one belongs in a test suite. Knowing which is which is the transferable skill, and it generalises well past interface design: the same distinction separates <a class="wl" href="counted-complexity-assertions.html">counted-complexity-assertions</a> from a docstring claiming an algorithm is fast.</p>
+<h2 id="the-limit-of-the-law" class="h-anch"><a class="hlink" href="#the-limit-of-the-law" aria-label="Link to this section">#</a>The limit of the law</h2>
+<p>It predicts <em>pointing</em> time. It says nothing about whether the user knew which target to point at, whether the target was the right one to offer, or whether the task should have existed. A layout optimised purely on Fitts&#x27;s Law can be measurably fast and useless.</p>
+<p>That boundary is why the concept sits at <code>confidence: medium</code> and why no repository was built from it: a formula is not an artefact, and the assessed half of the course — heuristic evaluation — is a rubric applied by a person, which rebuilds into a form rather than a program.</p>
+<h2 id="source" class="h-anch"><a class="hlink" href="#source" aria-label="Link to this section">#</a>Source</h2>
+<p>The archive&#x27;s HCI material teaches it with the equation rather than as a slogan, and works the edge-target argument through real sites. Recorded in <a class="wl" href="pwr-subject-notes.html">pwr-subject-notes</a>; the folder produced no repository and the reason is written down there rather than left implicit.</p></div>
+  <div class="tags"><span class="tag">research-methods</span><span class="tag">documentation</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">pwr-subject-notes</span><span class="src-p">/notes/human-computer-interaction.md</span></code></li><li><code><span class="src-r">pwr-subject-notes</span><span class="src-p">/INDEX.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="counted-complexity-assertions.html"><span class="kind k-concept">concept</span><span class="rel-t">Counted Complexity Assertions</span><span class="rel-g">Turning an asymptotic claim into an ordinary unit-test assertion by counting operations instead of measuring time</span></a><a class="rel" href="computer-arithmetic-and-number-representation.html"><span class="kind k-project">project</span><span class="rel-t">Computer Arithmetic and Number Representation</span><span class="rel-g">Positional systems, the four conversion methods, the binary codes for decimal digits, sign-magnitude and both complements, arithmetic performed inside a code, and…</span></a><a class="rel" href="pwr-subject-notes.html"><span class="kind k-project">project</span><span class="rel-t">PWR Subject Notes</span><span class="rel-g">The knowledge in the coursework archive that has no repository, written down — plus the census that proves nothing was quietly left out</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

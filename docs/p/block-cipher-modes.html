@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Block Cipher Modes · Glass Box</title>
+<meta name="description" content="A block cipher encrypts one fixed-size block">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Block Cipher Modes · Glass Box">
+<meta property="og:description" content="A block cipher encrypts one fixed-size block">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The five modes","ECB is the one that matters pedagogically","Error propagation — the property the lab actually measured","Entropy does not distinguish them","Tooling constraint worth recording","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Cybersecurity-Engineering-Laboratories/labs/03_symmetric_ciphers/lab-03-report.pdf"],"dateModified":"2026-07-28","description":"A block cipher encrypts one fixed-size block","headline":"Block Cipher Modes","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["cryptography","security"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Cybersecurity-Engineering-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A block cipher encrypts one fixed-size block</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-five-modes">The five modes</a></li><li><a href="#ecb-is-the-one-that-matters-pedagogically">ECB is the one that matters pedagogically</a></li><li><a href="#error-propagation-the-property-the-lab-actually-measured">Error propagation — the property the lab actually measured</a></li><li><a href="#entropy-does-not-distinguish-them">Entropy does not distinguish them</a></li><li><a href="#tooling-constraint-worth-recording">Tooling constraint worth recording</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="block-cipher-modes">Block Cipher Modes</h1>
+<p>A block cipher encrypts one fixed-size block. A <strong>mode of operation</strong> is the rule for extending it to a message of arbitrary length — and the choice of rule, not the cipher, is where most real-world failures live. AES is not broken; ECB-mode AES is.</p>
+<p>Lab 03 of <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a> compares the five standard modes across DES, 3DES and AES.</p>
+<h2 id="the-five-modes" class="h-anch"><a class="hlink" href="#the-five-modes" aria-label="Link to this section">#</a>The five modes</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Mode</th>
+<th>Construction</th>
+<th>Key property</th>
+</tr></thead><tbody>
+<tr><td><strong>ECB</strong> — electronic codebook</td><td>each block encrypted independently</td><td>identical plaintext blocks → identical ciphertext blocks. Structure survives encryption</td></tr>
+<tr><td><strong>CBC</strong> — cipher block chaining</td><td>each block XORed with the previous ciphertext block; an IV starts the chain</td><td>randomises repeats; encryption is inherently serial</td></tr>
+<tr><td><strong>CFB</strong> — cipher feedback</td><td>turns the block cipher into a self-synchronising stream cipher</td><td>no full block needed before decryption starts</td></tr>
+<tr><td><strong>OFB</strong> — output feedback</td><td>like CFB, but feeds back the <em>cipher output</em> rather than the ciphertext</td><td>a bit error stays in its own block instead of propagating</td></tr>
+<tr><td><strong>CTR</strong> — counter</td><td>encrypts a counter plus a nonce, XORs the result onto the plaintext</td><td>fully parallelisable and seekable; a repeated (key, counter) pair is catastrophic</td></tr>
+</tbody></table></div>
+<h2 id="ecb-is-the-one-that-matters-pedagogically" class="h-anch"><a class="hlink" href="#ecb-is-the-one-that-matters-pedagogically" aria-label="Link to this section">#</a>ECB is the one that matters pedagogically</h2>
+<p>ECB fails because it is a deterministic map from block to block. Repeated plaintext blocks produce repeated ciphertext blocks, so the <em>shape</em> of the plaintext leaks — which is why the canonical demonstration is an image that remains recognisable after encryption. This is a <a class="wl" href="cryptanalysis-by-measurement.html">cryptanalysis-by-measurement</a> result: frequency analysis, the tool that breaks a simple substitution cipher, applies unchanged to ECB at block granularity. ECB is a substitution cipher whose alphabet is 2^128 symbols wide.</p>
+<p>Every other mode exists to destroy that determinism, by chaining (CBC, CFB), by feeding back independent keystream (OFB), or by never encrypting the plaintext at all (CTR).</p>
+<h2 id="error-propagation-the-property-the-lab-actually-measured" class="h-anch"><a class="hlink" href="#error-propagation-the-property-the-lab-actually-measured" aria-label="Link to this section">#</a>Error propagation — the property the lab actually measured</h2>
+<p>Flip a bit in the ciphertext and see how far the damage spreads on decryption:</p>
+<ul><li><strong>ECB</strong> — damage confined to its own block.</li><li><strong>CBC</strong> — the damaged block, plus the corresponding bit in the next block; recovery afterwards.</li><li><strong>CFB</strong> — propagates forward through subsequent blocks.</li><li><strong>OFB</strong> — confined to the flipped bit; the keystream does not depend on the ciphertext.</li><li><strong>CTR</strong> — confined to the flipped bit, same reason.</li></ul>
+<p>This is a <strong>reliability</strong> property, not a security one, and confusing the two is a standard error: none of these modes detect the tampering. Bit-flipping in CTR or OFB is a <em>precise</em> modification primitive for an attacker who knows the plaintext layout. Confidentiality without integrity is not enough — which is why authenticated encryption (GCM, CCM, encrypt-then-MAC) is what modern protocols actually deploy. The 2022 lab predates none of that but does not cover it; the modes here are the classical five only.</p>
+<h2 id="entropy-does-not-distinguish-them" class="h-anch"><a class="hlink" href="#entropy-does-not-distinguish-them" aria-label="Link to this section">#</a>Entropy does not distinguish them</h2>
+<p>The lab&#x27;s own measurements are the useful negative result: three plaintexts of entropy 0.00, 4.04 and 3.97 all yield ciphertext around 7.80–7.83 bits/symbol under both AES-CBC and DES-CBC. Output entropy is therefore <strong>not</strong> a mode-identification tool, and not a cipher-strength tool either — it tells you only that some modern cipher was used. Identifying the mode requires structural evidence: repeated blocks (ECB), a leading IV, a padding pattern, a ciphertext length that is not a block multiple (stream-like modes).</p>
+<h2 id="tooling-constraint-worth-recording" class="h-anch"><a class="hlink" href="#tooling-constraint-worth-recording" aria-label="Link to this section">#</a>Tooling constraint worth recording</h2>
+<p>CrypTool 1 exposes only CBC and ECB; the lab reached OFB and CFB through an online encryption tool. <strong>TODO:</strong> whether that was a deliberate choice or a gap-filler is unrecorded — see <a class="wl" href="cryptool.html">cryptool</a>. Note the practice hazard independently of intent: pushing key material through a third-party web service is exactly what the same course&#x27;s <a class="wl" href="cia-triad.html">cia-triad</a> material argues against.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="cryptanalysis-by-measurement.html">cryptanalysis-by-measurement</a> · <a class="wl" href="symmetric-vs-asymmetric-cryptography.html">symmetric-vs-asymmetric-cryptography</a> · <a class="wl" href="cia-triad.html">cia-triad</a> · <a class="wl" href="cryptool.html">cryptool</a> · <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a></p></div>
+  <div class="tags"><span class="tag">cryptography</span><span class="tag">security</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/03_symmetric_ciphers/lab-03-report.pdf</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="cia-triad.html"><span class="kind k-concept">concept</span><span class="rel-t">CIA Triad</span><span class="rel-g">Confidentiality, Integrity, Availability — the three properties any security control is ultimately defending</span></a><a class="rel" href="cryptanalysis-by-measurement.html"><span class="kind k-concept">concept</span><span class="rel-t">Cryptanalysis by Measurement</span><span class="rel-g">Identifying and attacking a cipher by measuring statistical properties of its output rather than by reasoning about its construction</span></a><a class="rel" href="symmetric-vs-asymmetric-cryptography.html"><span class="kind k-concept">concept</span><span class="rel-t">Symmetric vs Asymmetric Cryptography</span><span class="rel-g">Two families with different guarantees and wildly different costs</span></a><a class="rel" href="cybersecurity-engineering-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Cybersecurity Engineering Laboratories</span><span class="rel-g">Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026</span></a><a class="rel" href="cryptool.html"><span class="kind k-tech">tech</span><span class="rel-t">CrypTool</span><span class="rel-g">A free cryptography teaching application developed by German universities, built to make cryptographic mechanisms visible rather than merely available</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

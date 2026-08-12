@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gaps · Glass Box</title>
+<meta name="description" content="What this knowledge base cannot answer, counted.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gaps · Glass Box">
+<meta property="og:description" content="What this knowledge base cannot answer, counted.">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="index.html">Ask</a><a href="browse.html">Browse</a><a href="map.html">Map</a><a href="receipts.html">Receipts</a><a href="gaps.html" aria-current="page">Gaps</a><a href="how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<section class="page-head">
+  <h1>What it does not know</h1>
+  <p class="lede">A knowledge base that only advertises its coverage is a brochure. These
+    figures come out of the same build as every other number here, and not one of them
+    flatters it. Raise any of them in the source and it drops on the next build — nothing on
+    this page is written by hand.</p>
+</section>
+<section class="band"><div class="tw"><table class="receipts"><thead><tr><th></th><th>Counts</th><th>How it is counted</th></tr></thead><tbody><tr><td class="fig">42</td><td>percent of unseen phrasings that return nothing at all</td><td class="how">The inverse of the held-out score on the <a href="receipts.html">receipts</a> page. Roughly one question in three, asked in words the pages do not use, comes back empty.</td></tr><tr><td class="fig">238</td><td>gaps written into the pages themselves</td><td class="how">Each one sits next to the claim it qualifies rather than in a list at the back. They render on the page as a marked block, not as hidden text.</td></tr><tr><td class="fig">44</td><td>published pages carrying a stated limit</td><td class="how">Drawn from the repository, with no second source and no confirmation from the author. They open with a block saying so. The gate admitted them because the alternative was hiding a page rather than its limit — but the count belongs here, not only on the page.</td></tr><tr><td class="fig">7</td><td>claims held at low confidence, and not published</td><td class="how">Single-sourced, or resting on a question that was asked and not answered. These are the pages the gate still refuses: publishing one would ship the absence of a fact in the shape of one.</td></tr><tr><td class="fig">25</td><td>pages that exist privately and are not here</td><td class="how">The low-confidence set above, plus one session record, which is categorically unpublishable. Everything else the wiki holds is on this site.</td></tr><tr><td class="fig">146</td><td>published pages findable only if your words match theirs</td><td class="how">A page named for its conclusion is asked for by its symptom. Without alternative phrasings recorded, such a page scores zero against the question it exists to answer — and most misses in the evaluation are one of these.</td></tr><tr><td class="fig">41</td><td>links from a public page to a private one</td><td class="how">Counted once per page per distinct target. The build log counts every marker it writes instead, so it reports a larger number for the same fact — the two are labelled differently now rather than left to look like a contradiction. Each renders as plain text, never as a dead link: the private wiki is one connected web, and publishing a slice of it necessarily cuts edges.</td></tr><tr><td class="fig">34</td><td>public pages carrying at least one of those</td><td class="how">The row above spread over pages. Two hundred of the pages here name no private page at all, which is the fact that count on its own hides.</td></tr></tbody></table></div></section>
+<section class="band closing">
+  <h2>Two limits worth stating plainly</h2>
+  <p><strong>It is one person's account.</strong> Every page was written from repositories
+    the author built, and where a reason was not recorded anywhere it is marked as missing
+    rather than reconstructed. An invented reason is indistinguishable from a real one
+    later, which is why none were invented.</p>
+  <p><strong>The search is words, not meaning.</strong> There is no model and no embedding
+    behind the box on the front page — it matches terms, weights fields, and follows one
+    link. Ask it something in vocabulary the pages never use and it will tell you it found
+    nothing, which is the correct answer and an unhelpful one.</p>
+</section>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="browse.html">Browse everything</a>
+    <a href="receipts.html">The numbers, and how each is counted</a>
+    <a href="gaps.html">What it does not know</a>
+    <a href="how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

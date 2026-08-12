@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Generate Fixtures Rather Than Commit Them · Glass Box</title>
+<meta name="description" content="Ship a four-line generator for the 1 MB / 5 MB / 10 MB inputs used to time RSA, and .gitignore the outputs — rather than committing 16 MB of filler">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Generate Fixtures Rather Than Commit Them · Glass Box">
+<meta property="og:description" content="Ship a four-line generator for the 1 MB / 5 MB / 10 MB inputs used to time RSA, and .gitignore the outputs — rather than committing 16 MB of filler">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why","Alternatives rejected","What the script gets right beyond the decision","The general form","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Cybersecurity-Engineering-Laboratories/labs/04_asymmetric_ciphers/generate_test_files.py","Cybersecurity-Engineering-Laboratories/README.md","Cybersecurity-Engineering-Laboratories/.gitignore"],"dateModified":"2026-07-28","description":"Ship a four-line generator for the 1 MB / 5 MB / 10 MB inputs used to time RSA, and .gitignore the outputs — rather than committing 16 MB of filler","headline":"Generate Fixtures Rather Than Commit Them","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["security","python","documentation","testing"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Cybersecurity-Engineering-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Ship a four-line generator for the 1 MB / 5 MB / 10 MB inputs used to time RSA, and .gitignore the outputs — rather than committing 16 MB of filler</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why">Why</a></li><li><a href="#alternatives-rejected">Alternatives rejected</a></li><li><a href="#what-the-script-gets-right-beyond-the-decision">What the script gets right beyond the decision</a></li><li><a href="#the-general-form">The general form</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="generate-fixtures-rather-than-commit-them">Generate Fixtures Rather Than Commit Them</h1>
+<p><strong>Decision.</strong> Ship a four-line generator for the 1 MB / 5 MB / 10 MB inputs used to time RSA, and <code>.gitignore</code> the outputs — rather than committing 16 MB of filler.</p>
+<p><strong>Date.</strong> 2026-07-25 (the publishing commit), <code>labs/04_asymmetric_ciphers/</code> of <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a>.</p>
+<h2 id="why" class="h-anch"><a class="hlink" href="#why" aria-label="Link to this section">#</a>Why</h2>
+<p>The argument is written in the script&#x27;s own docstring and turns on a property of the measurement rather than on repository hygiene generally:</p>
+<blockquote><p>&quot;each file is a single character repeated to the required length ... they are generated rather than committed: 16 MB of a repeated character is the largest thing that could go in this repository and the least informative.&quot;</p><cite>Cybersecurity-Engineering-Laboratories/labs/04_asymmetric_ciphers/generate_test_files.py, 2026-07-25</cite></blockquote>
+<p><strong>Largest and least informative</strong> is the whole case. Lab 04 measures how RSA encryption cost scales with input size, so the <em>content</em> of the input is irrelevant by construction — see <a class="wl" href="symmetric-vs-asymmetric-cryptography.html">symmetric-vs-asymmetric-cryptography</a>. A fixture whose content does not matter is a fixture that should be described rather than stored, and four lines of Python describe it exactly.</p>
+<p>The README states the rule in the same section as the two key-material rules, which is where it belongs — all three are about what does not go in a repository:</p>
+<blockquote><p>&quot;Fixtures are generated, not stored. Lab 4 times RSA against 1 MB, 5 MB and 10 MB inputs whose content is irrelevant to the measurement.&quot;</p><cite>Cybersecurity-Engineering-Laboratories/README.md, 2026-07-25</cite></blockquote>
+<h2 id="alternatives-rejected" class="h-anch"><a class="hlink" href="#alternatives-rejected" aria-label="Link to this section">#</a>Alternatives rejected</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Option</th>
+<th>Why not</th>
+</tr></thead><tbody>
+<tr><td><strong>Commit the three files</strong></td><td>16 MB of a repeated character; every clone pays for it forever, and git stores it in history even if later deleted</td></tr>
+<tr><td><strong>Git LFS</strong></td><td>infrastructure and a dependency for data that can be recreated in a second — and this repo has no <code>.gitattributes</code> at all</td></tr>
+<tr><td><strong>Commit smaller files and scale the results</strong></td><td>changes the measurement; the whole experiment is about size</td></tr>
+<tr><td><strong>Document the sizes in prose and generate by hand</strong></td><td>the reader would have to reconstruct the fixtures from a description, which is what the script already is — only unreliable</td></tr>
+</tbody></table></div>
+<p><strong>TODO:</strong> only the first is evidenced as considered (&quot;the largest thing that could go in this repository&quot;). The rest are stated here as the alternatives, not as recorded deliberation.</p>
+<h2 id="what-the-script-gets-right-beyond-the-decision" class="h-anch"><a class="hlink" href="#what-the-script-gets-right-beyond-the-decision" aria-label="Link to this section">#</a>What the script gets right beyond the decision</h2>
+<p>It is 50 lines of stdlib-only Python and worth reading as a small example of the repo&#x27;s habits:</p>
+<ul><li><strong>Writes in 1 MB chunks</strong>, so producing the 10 MB file does not need 10 MB of memory — the docstring says so at the function that does it.</li><li><strong><code>pathlib</code> throughout</strong>, with the destination as an optional argument defaulting to the script&#x27;s own directory.</li><li><strong>Returns an exit code from <code>main</code></strong> and prints the byte count of each file written, so a run is self-verifying.</li><li><strong><code>.gitignore</code> carries <code>*mb.txt</code></strong> with a comment naming the script that produces them — the ignore rule and the generator point at each other, so neither can be found without the other.</li></ul>
+<p>That last detail is what makes this durable rather than merely tidy. An ignore rule with no stated producer becomes a mystery within a year; here the tree explains itself. Compare <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>.</p>
+<h2 id="the-general-form" class="h-anch"><a class="hlink" href="#the-general-form" aria-label="Link to this section">#</a>The general form</h2>
+<p><strong>If an artefact is deterministic and cheap to reproduce, commit the producer, not the product.</strong> The same reasoning appears elsewhere in this source set from the opposite direction — see <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a>, where the output <em>is</em> committed precisely because it is the evidence rather than an input. The test is what the artefact is for: an input that only needs to exist should be generated; an output that needs to be reviewable should be committed.</p>
+<p>The sibling decision in the same README section is <a class="wl" href="omit-rsa-private-key-screenshot.html">omit-rsa-private-key-screenshot</a> — the other half of &quot;what does not belong in this repository&quot;.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="symmetric-vs-asymmetric-cryptography.html">symmetric-vs-asymmetric-cryptography</a> · <a class="wl" href="omit-rsa-private-key-screenshot.html">omit-rsa-private-key-screenshot</a> · <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> · <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a></p></div>
+  <div class="tags"><span class="tag">security</span><span class="tag">python</span><span class="tag">documentation</span><span class="tag">testing</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/04_asymmetric_ciphers/generate_test_files.py</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/.gitignore</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="symmetric-vs-asymmetric-cryptography.html"><span class="kind k-concept">concept</span><span class="rel-t">Symmetric vs Asymmetric Cryptography</span><span class="rel-g">Two families with different guarantees and wildly different costs</span></a><a class="rel" href="omit-rsa-private-key-screenshot.html"><span class="kind k-decision">decision</span><span class="rel-t">Omit the RSA Private-Key Screenshot</span><span class="rel-g">Do not use the natural illustration for the applied-cryptography lab, because that page prints a private key</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="cybersecurity-engineering-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Cybersecurity Engineering Laboratories</span><span class="rel-g">Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

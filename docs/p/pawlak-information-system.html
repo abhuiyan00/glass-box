@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pawlak Information System · Glass Box</title>
+<meta name="description" content="A Pawlak information system is the pair S = (U, A): a universe U of objects, a set A of attributes, and for each attribute a ∈ A a function a: U → V_a assigning every…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pawlak Information System · Glass Box">
+<meta property="og:description" content="A Pawlak information system is the pair S = (U, A): a universe U of objects, a set A of attributes, and for each attribute a ∈ A a function a: U → V_a assigning every…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Indiscernibility","As a property graph","Where it stops","Twice over","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Discrete-Mathematics-Laboratories/lab6_Neo4j/","Discrete-Mathematics-Laboratories/lab6_Neo4j/viewer/"],"dateModified":"2026-07-28","description":"A Pawlak information system is the pair S = (U, A): a universe U of objects, a set A of attributes, and for each attribute a ∈ A a function a: U → V_a assigning every…","headline":"Pawlak Information System","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["discrete-math","data-modelling","databases","cypher"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">Discrete-Mathematics-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A Pawlak information system is the pair S = (U, A): a universe U of objects, a set A of attributes, and for each attribute a ∈ A a function a: U → V_a assigning every…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#indiscernibility">Indiscernibility</a></li><li><a href="#as-a-property-graph">As a property graph</a></li><li><a href="#where-it-stops">Where it stops</a></li><li><a href="#twice-over">Twice over</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="pawlak-information-system">Pawlak Information System</h1>
+<p>A <strong>Pawlak information system</strong> is the pair <code>S = (U, A)</code>: a universe <code>U</code> of objects, a set <code>A</code> of attributes, and for each attribute <code>a ∈ A</code> a function <code>a: U → V_a</code> assigning every object a value. It is the formal substrate of <strong>rough set theory</strong> — deliberately weaker than a relational schema, because the point is what you can say when objects are only distinguishable through their attribute values.</p>
+<h2 id="indiscernibility" class="h-anch"><a class="hlink" href="#indiscernibility" aria-label="Link to this section">#</a>Indiscernibility</h2>
+<p>For any attribute subset <code>B ⊆ A</code>, the <strong>indiscernibility relation</strong> <code>IND(B)</code> holds between two objects when they agree on every attribute in <code>B</code>. It is an equivalence relation, so it partitions <code>U</code> into equivalence classes — the finest distinctions <code>B</code> can make. Rough set theory builds lower and upper approximations of a target set from those classes: what <code>B</code> <em>definitely</em> proves, versus what it merely <em>permits</em>.</p>
+<h2 id="as-a-property-graph" class="h-anch"><a class="hlink" href="#as-a-property-graph" aria-label="Link to this section">#</a>As a property graph</h2>
+<p>Lab 6 of <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> models <code>S = (U, A)</code> as a <strong>bipartite graph</strong> rather than a table:</p>
+<pre><code>(:Object)-[:HAS_VALUE {value}]-&gt;(:Attribute)</code></pre>
+<p>39 objects × 25 attributes = <strong>975 <code>HAS_VALUE</code> edges</strong>. Putting the value on the <em>relationship</em> rather than on the object is the modelling move that makes it an information system rather than a row: attributes become first-class, so &quot;which objects agree on this attribute&quot; is a one-hop traversal instead of a column scan.</p>
+<p>These counts are real. The Cypher was executed against a live Neo4j Desktop instance:</p>
+<blockquote><p>&quot;Yes — ran it, screenshots just weren&#x27;t committed.&quot;</p><cite>interview, 2026-07-28</cite></blockquote>
+<p><code>confidence: high</code> on 39 / 25 / 975. Note that the screenshots in the repo are all <code>viewer-*.png</code> from the offline JS reimplementation — the Neo4j Browser captures were taken outside the repo.</p>
+<p>An optional hierarchy layers <code>Object → Group(grade) → Group(class)</code> over the base graph, 14 grades and 2 classes, materialising one particular indiscernibility partition as actual nodes. Q0–Q6 report queries then read the structure back out.</p>
+<h2 id="where-it-stops" class="h-anch"><a class="hlink" href="#where-it-stops" aria-label="Link to this section">#</a>Where it stops</h2>
+<p>The dataset is <code>global_finance.csv</code> — 39 countries × 25 financial indicators — and the README calls the <code>Credit_Rating</code> partition &quot;the entry point to rough-set indiscernibility&quot;. <strong>TODO:</strong> lower and upper approximations are never defined or computed anywhere in the lab. Whether the assignment stopped there is unrecorded; <code>confidence: low</code> on any claim that rough-set approximation was taught. <strong>TODO:</strong> why a financial-indicators dataset was chosen, and whether <code>Credit_Rating</code> was picked because it partitions cleanly or for a rough-set-theoretic reason, is not recorded.</p>
+<h2 id="twice-over" class="h-anch"><a class="hlink" href="#twice-over" aria-label="Link to this section">#</a>Twice over</h2>
+<p>The same system is implemented twice: in <a class="wl" href="cypher.html">cypher</a> against <a class="wl" href="neo4j.html">neo4j</a>, and again in plain JavaScript in <code>lab6_Neo4j/viewer/</code>, where <code>pawlak.js</code> reimplements each query as &quot;the exact analogue&quot; and renders the result beside the Cypher that produces it. See <a class="wl" href="dual-implementation-as-cross-check.html">dual-implementation-as-cross-check</a> and <a class="wl" href="offline-first-static-deliverable.html">offline-first-static-deliverable</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="neo4j.html">neo4j</a> · <a class="wl" href="cypher.html">cypher</a> · <a class="wl" href="characteristic-functions.html">characteristic-functions</a> · <a class="wl" href="idempotent-loading.html">idempotent-loading</a> · <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a></p></div>
+  <div class="tags"><span class="tag">discrete-math</span><span class="tag">data-modelling</span><span class="tag">databases</span><span class="tag">cypher</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab6_Neo4j/</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab6_Neo4j/viewer/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="characteristic-functions.html"><span class="kind k-concept">concept</span><span class="rel-t">Characteristic Functions</span><span class="rel-g">The characteristic function χ_A(x) of a set A over a universe U returns 1 when x ∈ A and 0 otherwise</span></a><a class="rel" href="idempotent-loading.html"><span class="kind k-concept">concept</span><span class="rel-t">Idempotent Loading</span><span class="rel-g">A load script is idempotent when running it twice leaves the store exactly as running it once did</span></a><a class="rel" href="dual-implementation-as-cross-check.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Dual Implementation as Cross-Check</span><span class="rel-g">Build the same thing twice, in two different stacks, and keep both</span></a><a class="rel" href="offline-first-static-deliverable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Offline-First Static Deliverable</span><span class="rel-g">The deliverable must work by double-clicking a file: no server, no install, no network</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="cypher.html"><span class="kind k-tech">tech</span><span class="rel-t">Cypher</span><span class="rel-g">neo4j&#x27;s declarative query language</span></a><a class="rel" href="neo4j.html"><span class="kind k-tech">tech</span><span class="rel-t">Neo4j</span><span class="rel-g">Native property-graph database</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

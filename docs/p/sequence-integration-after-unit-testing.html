@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sequence Integration After Unit Testing · Glass Box</title>
+<meta name="description" content="Re-link integration testing to start after unit testing with a Finish-to-Start dependency, instead of running the two in parallel, to clear an over-allocation of the…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sequence Integration After Unit Testing · Glass Box">
+<meta property="og:description" content="Re-link integration testing to start after unit testing with a Finish-to-Start dependency, instead of running the two in parallel, to clear an over-allocation of the…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why","Alternatives rejected","The defensible part, technically","Recorded gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Computer Project Management/lab5-6_Baseline_and_Tracking/README.md","Computer Project Management/README.md","Computer Project Management/seminar/README.md"],"dateModified":"2026-07-28","description":"Re-link integration testing to start after unit testing with a Finish-to-Start dependency, instead of running the two in parallel, to clear an over-allocation of the…","headline":"Sequence Integration After Unit Testing","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["project-management","testing"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">Computer Project Management</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Re-link integration testing to start after unit testing with a Finish-to-Start dependency, instead of running the two in parallel, to clear an over-allocation of the…</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why">Why</a></li><li><a href="#alternatives-rejected">Alternatives rejected</a></li><li><a href="#the-defensible-part-technically">The defensible part, technically</a></li><li><a href="#recorded-gaps">Recorded gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="sequence-integration-after-unit-testing">Sequence Integration After Unit Testing</h1>
+<p><strong>Decision.</strong> Re-link <em>integration testing</em> to start <strong>after</strong> <em>unit testing</em> with a Finish-to-Start dependency, instead of running the two in parallel, to clear an over-allocation of the Backend Developer. Accept the resulting slip rather than compress or resource around it.</p>
+<p><strong>Date.</strong> Recorded in lab 5–6 of <a class="wl" href="computer-project-management.html">computer-project-management</a>, committed 2026-07-10.</p>
+<h2 id="why" class="h-anch"><a class="hlink" href="#why" aria-label="Link to this section">#</a>Why</h2>
+<p>The conflict is a resourcing problem; the fix is a scheduling one.</p>
+<blockquote><p>&quot;an <strong>over-allocation of the Backend Developer</strong> was fixed by re-linking <em>integration testing</em> to start <strong>after</strong> <em>unit testing</em> (FS) instead of in parallel. The&quot;</p><cite>Computer Project Management/lab5-6_Baseline_and_Tracking/README.md, 2026-07-10</cite></blockquote>
+<p>Combined with four task extensions — most importantly unit testing at <strong>+16 days</strong> for real test coverage — the cascade moved the finish from the baseline&#x27;s 24 Aug to 8 Sep:</p>
+<blockquote><p>&quot;| Duration | 123 d | 134 d | <strong>+11 d</strong> |&quot;</p><cite>Computer Project Management/lab5-6_Baseline_and_Tracking/README.md, 2026-07-10</cite></blockquote>
+<p>Sixteen days of extension producing eleven days of slip is float being consumed; the residue propagates because the newly-serialised pair now sits on the <a class="wl" href="critical-path-method.html">critical path</a>, which from the reporting date runs <em>integration testing → UAT → deployment → documentation → closure</em>. See <a class="wl" href="schedule-baseline-and-variance.html">schedule-baseline-and-variance</a> for the full delta.</p>
+<h2 id="alternatives-rejected" class="h-anch"><a class="hlink" href="#alternatives-rejected" aria-label="Link to this section">#</a>Alternatives rejected</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Option</th>
+<th>Why not, per the repo</th>
+</tr></thead><tbody>
+<tr><td><strong>Keep both tests in parallel</strong></td><td>the incumbent — leaves the Backend Developer double-booked, i.e. a plan that cannot execute</td></tr>
+<tr><td><strong>Add a second Backend Developer</strong></td><td>not taken. The repo&#x27;s own seminar argues against it: Brooks&#x27; Law, slide 11 — see <a class="wl" href="project-environment-factors.html">project-environment-factors</a></td></tr>
+<tr><td><strong>Crash or fast-track the chain</strong></td><td>never costed in any readable file</td></tr>
+<tr><td><strong>Automatic leveling instead of a manual re-link</strong></td><td>leveling was used one lab earlier (<a class="wl" href="resource-leveling.html">resource-leveling</a>); here the conflict is resolved by hand, as a dependency edit</td></tr>
+</tbody></table></div>
+<p>The second row is the interesting one. The same repository contains both the resource conflict and the argument for why throwing a person at it would not have helped — in two artefacts that never cross-reference each other.</p>
+<h2 id="the-defensible-part-technically" class="h-anch"><a class="hlink" href="#the-defensible-part-technically" aria-label="Link to this section">#</a>The defensible part, technically</h2>
+<p>Serialising unit before integration is not merely a scheduling convenience: integration testing against components that have not passed their own unit tests produces failures whose cause is ambiguous. The FS link buys diagnostic clarity as well as an unbooked resource.</p>
+<p><strong>TODO:</strong> the repo does <strong>not</strong> make that argument. It gives one reason — the over-allocation — and nothing more. The testing-order justification above is reconstructed, not recorded; do not cite it as the author&#x27;s rationale. <code>confidence: low</code> on any motive beyond the stated one.</p>
+<h2 id="recorded-gaps" class="h-anch"><a class="hlink" href="#recorded-gaps" aria-label="Link to this section">#</a>Recorded gaps</h2>
+<ul><li><strong>TODO:</strong> whether any recovery action was attempted before the slip was accepted is unrecorded, and was not asked at interview.</li><li><code>confidence: medium</code> overall: the decision and its stated reason are read directly from the lab README, but the underlying <code>.mpp</code> is unread by policy, so nothing confirms the link type actually changed in the file. See <a class="wl" href="microsoft-project.html">microsoft-project</a>.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="computer-project-management.html">computer-project-management</a> · <a class="wl" href="critical-path-method.html">critical-path-method</a> · <a class="wl" href="schedule-baseline-and-variance.html">schedule-baseline-and-variance</a> · <a class="wl" href="resource-leveling.html">resource-leveling</a> · <a class="wl" href="project-environment-factors.html">project-environment-factors</a> · <a class="wl" href="work-breakdown-structure.html">work-breakdown-structure</a></p></div>
+  <div class="tags"><span class="tag">project-management</span><span class="tag">testing</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Computer Project Management</span><span class="src-p">/lab5-6_Baseline_and_Tracking/README.md</span></code></li><li><code><span class="src-r">Computer Project Management</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Computer Project Management</span><span class="src-p">/seminar/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="critical-path-method.html"><span class="kind k-concept">concept</span><span class="rel-t">Critical Path Method</span><span class="rel-g">The longest chain of dependent tasks through a network, and therefore the shortest possible project duration</span></a><a class="rel" href="project-environment-factors.html"><span class="kind k-concept">concept</span><span class="rel-t">Project Environment Factors</span><span class="rel-g">The forces surrounding a project that determine whether it succeeds, independent of how good the engineering is</span></a><a class="rel" href="resource-leveling.html"><span class="kind k-concept">concept</span><span class="rel-t">Resource Leveling</span><span class="rel-g">Resolving over-allocation by moving tasks in time rather than by adding capacity</span></a><a class="rel" href="schedule-baseline-and-variance.html"><span class="kind k-concept">concept</span><span class="rel-t">Schedule Baseline and Variance</span><span class="rel-g">A baseline is a frozen copy of the plan, taken before tracking starts, that later reality is measured against</span></a><a class="rel" href="work-breakdown-structure.html"><span class="kind k-concept">concept</span><span class="rel-t">Work Breakdown Structure</span><span class="rel-g">Hierarchical decomposition of a project&#x27;s total scope into progressively smaller deliverables, until the leaves are units small enough to estimate, assign and schedule</span></a><a class="rel" href="computer-project-management.html"><span class="kind k-project">project</span><span class="rel-t">Computer Project Management</span><span class="rel-g">Coursework for the Computer Project Management course at Wrocław University of Science and Technology, 2026</span></a><a class="rel" href="microsoft-project.html"><span class="kind k-tech">tech</span><span class="rel-t">Microsoft Project</span><span class="rel-g">Desktop scheduling tool; the primary artefact format of computer-project-management and the only piece of proprietary tooling in the source set</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

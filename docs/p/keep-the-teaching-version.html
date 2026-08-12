@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keep the Teaching Version · Glass Box</title>
+<meta name="description" content="Keep labs/04_classes/ — the hand-written HttpRequest / CorrectHttpRequest / MalformedHttpRequest hierarchy — in the tree alongside weblog.LogEntry, which does the same…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Keep the Teaching Version · Glass Box">
+<meta property="og:description" content="Keep labs/04_classes/ — the hand-written HttpRequest / CorrectHttpRequest / MalformedHttpRequest hierarchy — in the tree alongside weblog.LogEntry, which does the same…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why","What makes it safe rather than confusing","Alternatives rejected","The residual hazard","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Python-Programming-Laboratories/labs/04_classes/README.md","Python-Programming-Laboratories/src/weblog/entry.py"],"dateModified":"2026-07-28","description":"Keep labs/04_classes/ — the hand-written HttpRequest / CorrectHttpRequest / MalformedHttpRequest hierarchy — in the tree alongside weblog.LogEntry, which does the same…","headline":"Keep the Teaching Version","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["python","documentation","architecture","refactoring"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Python-Programming-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Keep labs/04_classes/ — the hand-written HttpRequest / CorrectHttpRequest / MalformedHttpRequest hierarchy — in the tree alongside weblog.LogEntry, which does the same…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why">Why</a></li><li><a href="#what-makes-it-safe-rather-than-confusing">What makes it safe rather than confusing</a></li><li><a href="#alternatives-rejected">Alternatives rejected</a></li><li><a href="#the-residual-hazard">The residual hazard</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="keep-the-teaching-version">Keep the Teaching Version</h1>
+<p><strong>Decision.</strong> Keep <code>labs/04_classes/</code> — the hand-written <code>HttpRequest</code> / <code>CorrectHttpRequest</code> / <code>MalformedHttpRequest</code> hierarchy — in the tree alongside <code>weblog.LogEntry</code>, which does the same job better and is what everything else actually imports.</p>
+<p><strong>Date.</strong> 2026-07-25, <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a>.</p>
+<h2 id="why" class="h-anch"><a class="hlink" href="#why" aria-label="Link to this section">#</a>Why</h2>
+<blockquote><p>&quot;<code>weblog.LogEntry</code> is the version the rest of the repository uses; the classes here are the teaching version, kept because writing the special methods by hand is the exercise.&quot;</p><cite>Python-Programming-Laboratories/labs/04_classes/README.md, 2026-07-25</cite></blockquote>
+<p>The two are not competing implementations where one won. <code>weblog.LogEntry</code> is <code>@dataclass(frozen=True, slots=True)</code> — the decorator generates <code>__eq__</code> and <code>__hash__</code> consistently and blocks mutation, in one line. The lab-04 classes write <code>__eq__</code> (returning <code>NotImplemented</code> for foreign types), an explicit <code>__hash__</code>, <code>total_ordering</code>, and a <code>from_line</code> classmethod factory by hand. See <a class="wl" href="pythons-data-model.html">pythons-data-model</a>.</p>
+<p>Deleting the hand-written version once the dataclass exists would delete the <strong>reason the dataclass is correct</strong>. The generated version is only trustworthy to someone who knows what it generates.</p>
+<h2 id="what-makes-it-safe-rather-than-confusing" class="h-anch"><a class="hlink" href="#what-makes-it-safe-rather-than-confusing" aria-label="Link to this section">#</a>What makes it safe rather than confusing</h2>
+<p>The redundancy is <strong>declared and directional</strong>. The README states which one is authoritative and why the other exists, in the directory where a reader would otherwise be misled. An undocumented second implementation is a trap; a labelled one is a reference.</p>
+<p>This is <a class="wl" href="dual-implementation-as-cross-check.html">dual-implementation-as-cross-check</a> applied for pedagogy rather than verification, and a close relative of <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> — with the difference that nothing here is superseded. Both remain correct; only one is used.</p>
+<h2 id="alternatives-rejected" class="h-anch"><a class="hlink" href="#alternatives-rejected" aria-label="Link to this section">#</a>Alternatives rejected</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Option</th>
+<th>Why not</th>
+</tr></thead><tbody>
+<tr><td><strong>Delete lab 04 after extracting <code>weblog</code></strong></td><td>destroys the exercise the lab exists to record</td></tr>
+<tr><td><strong>Rewrite lab 04 to import <code>LogEntry</code></strong></td><td>the whole point is writing the dunders by hand</td></tr>
+<tr><td><strong>Leave both with no note</strong></td><td>a reader cannot tell which is authoritative — the actual failure mode</td></tr>
+</tbody></table></div>
+<p><strong>TODO:</strong> only the reason for keeping it is evidenced. The three rejections above state what the alternatives are, not that they were deliberated.</p>
+<h2 id="the-residual-hazard" class="h-anch"><a class="hlink" href="#the-residual-hazard" aria-label="Link to this section">#</a>The residual hazard</h2>
+<p><code>labs/04_classes/requests.py</code> shadows the <code>requests</code> package that labs 10 and 11 import, if that directory ever lands on <code>sys.path</code>. <code>confidence: high</code> — a real cost of keeping a parallel tree, and the one thing about this decision that is not free. See <a class="wl" href="beautifulsoup.html">beautifulsoup</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="pythons-data-model.html">pythons-data-model</a> · <a class="wl" href="dual-implementation-as-cross-check.html">dual-implementation-as-cross-check</a> · <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> · <a class="wl" href="click-versus-argparse.html">click-versus-argparse</a> · <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a></p></div>
+  <div class="tags"><span class="tag">python</span><span class="tag">documentation</span><span class="tag">architecture</span><span class="tag">refactoring</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/labs/04_classes/README.md</span></code></li><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/src/weblog/entry.py</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="pythons-data-model.html"><span class="kind k-concept">concept</span><span class="rel-t">Python&#x27;s Data Model</span><span class="rel-g">Python&#x27;s protocols are duck typing with a contract: implement the right dunder methods and your class participates in ==, &lt;, in, len(), for, [], hashing and printing as…</span></a><a class="rel" href="click-versus-argparse.html"><span class="kind k-decision">decision</span><span class="rel-t">click Versus argparse</span><span class="rel-g">Ship both, on comparable problems, in the same repository — and say that the comparison is the point</span></a><a class="rel" href="dual-implementation-as-cross-check.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Dual Implementation as Cross-Check</span><span class="rel-g">Build the same thing twice, in two different stacks, and keep both</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="python-programming-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Python Programming Laboratories</span><span class="rel-g">Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…</span></a><a class="rel" href="beautifulsoup.html"><span class="kind k-tech">tech</span><span class="rel-t">BeautifulSoup</span><span class="rel-g">HTML/XML parsing library, used in labs 10 and 11 of python-programming-laboratories for scraping and for a document pipeline that extracts 41 chapters of text</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

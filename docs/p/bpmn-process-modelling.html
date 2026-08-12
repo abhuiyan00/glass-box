@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BPMN Process Modelling · Glass Box</title>
+<meta name="description" content="BPMN 2.0 (OMG Business Process Model and Notation — not UML) models the work that happens around a system rather than inside it: who does what, in which order, who waits…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BPMN Process Modelling · Glass Box">
+<meta property="og:description" content="BPMN 2.0 (OMG Business Process Model and Notation — not UML) models the work that happens around a system rather than inside it: who does what, in which order, who waits…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The eight processes","Three artefacts from one specification","What was checked, and what could not be","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Information-Systems-Modelling/lab7/bpmn/","Information-Systems-Modelling/lab7/diagrams/","Information-Systems-Modelling/lab7/src/specs.js","Information-Systems-Modelling/lab7/README.md"],"dateModified":"2026-07-28","description":"BPMN 2.0 (OMG Business Process Model and Notation — not UML) models the work that happens around a system rather than inside it: who does what, in which order, who waits…","headline":"BPMN Process Modelling","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["bpmn","architecture","javascript"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-09</span>
+    <span class="repos">Information-Systems-Modelling</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>BPMN 2.0 (OMG Business Process Model and Notation — not UML) models the work that happens around a system rather than inside it: who does what, in which order, who waits…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-eight-processes">The eight processes</a></li><li><a href="#three-artefacts-from-one-specification">Three artefacts from one specification</a></li><li><a href="#what-was-checked-and-what-could-not-be">What was checked, and what could not be</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="bpmn-process-modelling">BPMN Process Modelling</h1>
+<p>BPMN 2.0 (OMG Business Process Model and Notation — <strong>not</strong> UML) models the work that happens <em>around</em> a system rather than inside it: who does what, in which order, who waits on whom, and what happens when a step fails. A model is a <strong>collaboration</strong> when it spans more than one participant: each participant is a <em>pool</em>, roles inside a pool are <em>lanes</em>, sequence flows may not leave a pool, and anything crossing a pool boundary must be a <em>message flow</em>.</p>
+<p><code>Information-Systems-Modelling</code> lab 7 ships <strong>8 collaborations</strong> covering the ModellingClub platform&#x27;s operational life cycle. This is the only place in the source set where formal process models exist as real artefacts rather than as prose.</p>
+<h2 id="the-eight-processes" class="h-anch"><a class="hlink" href="#the-eight-processes" aria-label="Link to this section">#</a>The eight processes</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>#</th>
+<th>Process</th>
+<th>Theme</th>
+<th>Notation exercised</th>
+</tr></thead><tbody>
+<tr><td>1</td><td>Scheduled Backup &amp; Verification</td><td>maintenance</td><td>timer start, parallel split/join, boundary error, error end</td></tr>
+<tr><td>2</td><td>Software Upgrade / Dependency Patch</td><td>maintenance</td><td>message start, severity gateway, staging loop-back, rollback</td></tr>
+<tr><td>3</td><td>Release &amp; Blue-Green Deployment</td><td>deployment</td><td>parallel build+test, approval gate, 5 lanes</td></tr>
+<tr><td>4</td><td>H2 → PostgreSQL Migration</td><td>deployment</td><td>maintenance-window timer, reversible cut-over</td></tr>
+<tr><td>5</td><td>Data Archiving, Retention &amp; GDPR Erasure</td><td>data / security</td><td>two start events, legal-hold gateway, 30-day boundary timer</td></tr>
+<tr><td>6</td><td>Security Incident Response</td><td>data / security</td><td>signal start, 3-way severity, 72 h GDPR timer</td></tr>
+<tr><td>7</td><td>Member Onboarding &amp; Provisioning</td><td>business</td><td>3-pool collaboration, boundary timer, SLA accept/reject</td></tr>
+<tr><td>8</td><td>System Decommissioning / End-of-Life</td><td>business</td><td>notice timers, <strong>terminate end</strong>, contract-termination message flow</td></tr>
+</tbody></table></div>
+<p>Participants reach well beyond the application&#x27;s own actors — DevOps, Release Manager, DBA, Data Protection Officer, security on-call, an Operations Committee, the cloud provider, offsite storage and the GDPR supervisory authority. Several are modelled as <strong>black-box pools</strong>: present, addressed by message flow, with no internal detail. That is the correct BPMN treatment of a party whose internals you do not control.</p>
+<p>Process 4 is a quiet cross-reference: the thing being migrated is <a class="wl" href="h2-database.html">h2-database</a>, the actual dev database of labs 3 and 4.</p>
+<h2 id="three-artefacts-from-one-specification" class="h-anch"><a class="hlink" href="#three-artefacts-from-one-specification" aria-label="Link to this section">#</a>Three artefacts from one specification</h2>
+<p>Each process exists once, as a JavaScript object in <code>lab7/src/specs.js</code> (605 lines), declaring pools, lanes, nodes with event markers, sequence flows and message flows. A ~1,400-line zero-dependency Node generator turns that into three deliverables: a self-contained <strong>SVG</strong> diagram, a Camunda-compatible <strong><code>.bpmn</code> XML file including diagram interchange (DI)</strong>, and a section of the PDF report. See <a class="wl" href="single-source-of-truth-generators.html">single-source-of-truth-generators</a> and <a class="wl" href="generate-markup-instead-of-hand-writing-it.html">generate-markup-instead-of-hand-writing-it</a>.</p>
+<p>Diagram interchange matters here: a <code>.bpmn</code> file without DI carries the semantics but not the layout, so a modeller re-opening it gets a valid process arranged as a heap. <code>lab7/src/layout.js</code> (307 lines) computes a layered auto-layout so that the SVG a reader sees and the <code>.bpmn</code> a modeller opens show the same picture.</p>
+<p>Files are numbered <code>p1-backup</code> … <code>p8-eol</code> across <code>bpmn/</code>, <code>diagrams/</code> and the <code>P1</code>…<code>P8</code> constants in <code>specs.js</code> — see <a class="wl" href="numbered-stages-in-directory-names.html">numbered-stages-in-directory-names</a>.</p>
+<h2 id="what-was-checked-and-what-could-not-be" class="h-anch"><a class="hlink" href="#what-was-checked-and-what-could-not-be" aria-label="Link to this section">#</a>What was checked, and what could not be</h2>
+<blockquote><p>&quot;Every model was checked against BPMN execution semantics: each path reaches an end event; parallel splits are matched by parallel joins; exclusive / event-based gateways carry mutually-exclusive conditions; message flows only ever cross a pool boundary.&quot;</p><cite>Information-Systems-Modelling/lab7/README.md, 2026-07-09</cite></blockquote>
+<p>That is a real correctness checklist, and it is the right one. But the same README also asserts all eight files import warning-free in <code>bpmn-moddle</code>, and <strong><code>bpmn-moddle</code> appears in no <code>package.json</code> and no script anywhere in the repo</strong>.</p>
+<ul><li><strong>TODO:</strong> the warning-free import claim is unreproducible from the tree. It may have been checked out-of-repo with <code>npx</code> or Camunda Modeler; nothing records it. <code>confidence: low</code> on that one claim. The models themselves are present and inspectable, so the notation coverage above is not in doubt.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="information-systems-modelling.html">information-systems-modelling</a> · <a class="wl" href="single-source-of-truth-generators.html">single-source-of-truth-generators</a> · <a class="wl" href="generate-markup-instead-of-hand-writing-it.html">generate-markup-instead-of-hand-writing-it</a> · <a class="wl" href="numbered-stages-in-directory-names.html">numbered-stages-in-directory-names</a> · <a class="wl" href="h2-database.html">h2-database</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a></p></div>
+  <div class="tags"><span class="tag">bpmn</span><span class="tag">architecture</span><span class="tag">javascript</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab7/bpmn/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab7/diagrams/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab7/src/specs.js</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab7/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="generate-markup-instead-of-hand-writing-it.html"><span class="kind k-decision">decision</span><span class="rel-t">Generate Markup Instead of Hand-Writing It</span><span class="rel-g">Delete six hand-written HTML pages carrying RDFa and JSON-LD, and generate both syntaxes from a single JSON dataset instead</span></a><a class="rel" href="numbered-stages-in-directory-names.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Numbered Stages in Directory Names</span><span class="rel-g">Order is encoded in filenames and directory names, not in a table of contents</span></a><a class="rel" href="single-source-of-truth-generators.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Single-Source-of-Truth Generators</span><span class="rel-g">Hold the facts once, in a plain data structure, and emit every deliverable from it — including deliverables in different formats and for different audiences</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="information-systems-modelling.html"><span class="kind k-project">project</span><span class="rel-t">Information Systems Modelling</span><span class="rel-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span></a><a class="rel" href="h2-database.html"><span class="kind k-tech">tech</span><span class="rel-t">H2 Database</span><span class="rel-g">An embedded Java SQL database that runs inside the application process</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

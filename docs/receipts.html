@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Receipts · Glass Box</title>
+<meta name="description" content="Every figure on this site, and how each one is counted.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Receipts · Glass Box">
+<meta property="og:description" content="Every figure on this site, and how each one is counted.">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="index.html">Ask</a><a href="browse.html">Browse</a><a href="map.html">Map</a><a href="receipts.html" aria-current="page">Receipts</a><a href="gaps.html">Gaps</a><a href="how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<section class="page-head">
+  <h1>The numbers, and how each one is counted</h1>
+  <p class="lede">Every figure below is computed when this site is built, from the same
+    files the pages are written from. None of them is typed into a template. Where something
+    has not been measured the cell says so — an unmeasured value is never shown as a zero.</p>
+</section>
+
+<section class="band">
+  <h2>What is in here</h2>
+  <div class="tw"><table class="receipts"><thead><tr><th></th><th>Counts</th><th>How it is counted</th></tr></thead><tbody><tr><td class="fig">28</td><td>source repositories read</td><td class="how">Distinct first path segments of every page's <code>sources:</code> field. There is no list of repositories in any code — a sixteenth appears the moment a page cites it.</td></tr><tr><td class="fig">306</td><td>pages in the private wiki</td><td class="how">Every markdown page under <code>wiki/</code> carrying one of the six page types. Catalogue and index files are not counted.</td></tr><tr><td class="fig">288</td><td>pages that <em>may</em> be published</td><td class="how">Session records are categorically unpublishable, so the publishable universe is smaller than the wiki. The difference is not an oversight; it is a rule.</td></tr><tr><td class="fig">281</td><td>pages public on this site</td><td class="how">Flipping a page public is a human decision made once per page, and it is the one step in the whole pipeline that is never automated.</td></tr><tr><td class="fig">45</td><td>decisions recorded</td><td class="how">Pages of type <code>decision</code>: one choice each, with a date.</td></tr><tr><td class="fig">36</td><td>of those that name the alternative they rejected</td><td class="how">Counted structurally — the page must carry a rejected-alternatives heading or table, not merely mention a rejection in prose. An earlier hand count said 35 and was wrong in the flattering direction.</td></tr><tr><td class="fig">11</td><td>claims retired since they were first written</td><td class="how">Rows in a dated claim table whose validity has an end date. The old claim is never deleted — it keeps its dates and the page says what changed.</td></tr></tbody></table></div>
+</section>
+
+<section class="band">
+  <h2>Does the search actually work</h2>
+  <p class="band-b">The honest figure is the first one, and it is not flattering. It is the
+    one printed largest anyway.</p>
+  <div class="tw"><table class="receipts"><thead><tr><th></th><th>Counts</th><th>How it is counted</th></tr></thead><tbody><tr><td class="fig">0.58</td><td>hit@5 on phrasings the search has never seen</td><td class="how">Of 31 held-out questions, the share where the right page came back in the top five. The gate is 0.70. <strong>The questions were written by the author</strong>, so this is reproducible, not independent — it is the direction of travel, not a benchmark.</td></tr><tr><td class="fig">1.00</td><td>hit@5 on the set the search was tuned against</td><td class="how">34 questions. Anyone can publish this number; it proves only that nothing regressed.</td></tr><tr><td class="fig"><span class="gap-cell" title="not measured">not measured</span></td><td>share of unanswerable questions it correctly refuses</td><td class="how">Held back on purpose. It measures 5 cases and the gate is 0.90 — a perfect score on that few reads as a proven property and is not one. The cell fills in when the negative set reaches 20.</td></tr><tr><td class="fig">2</td><td>changes the evaluation rejected that looked like wins</td><td class="how">A word-stemming change that read as obviously better and measured worse, and a scoring path whose ties were broken by set iteration, so identical code scored 0.73, 0.53 and 0.60 on three runs. The evaluation outranks the author.</td></tr></tbody></table></div>
+</section>
+
+<section class="band">
+  <h2>What it costs to run</h2>
+  <div class="tw"><table class="receipts"><thead><tr><th></th><th>Counts</th><th>How it is counted</th></tr></thead><tbody><tr><td class="fig">2.80</td><td>US dollars spent on model calls, total</td><td class="how">Every metered call appends to a ledger; this is its sum. Building and searching this site costs nothing — no model runs at request time.</td></tr><tr><td class="fig">20.00</td><td>hard spending cap</td><td class="how">Reached, the tooling aborts rather than continuing.</td></tr><tr><td class="fig">0.50</td><td>single-call ceiling</td><td class="how">Refused before the call rather than discovered after it.</td></tr></tbody></table></div>
+</section>
+
+<section class="band closing">
+  <h2>What this page does not prove</h2>
+  <p>That the pages are <em>correct</em>. These figures measure coverage, retrieval and
+    process — whether a claim can be traced to a source, not whether the source was right.
+    The pages carry their own confidence levels and name their own gaps; see
+    <a href="gaps.html">what it does not know</a>.</p>
+</section>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="browse.html">Browse everything</a>
+    <a href="receipts.html">The numbers, and how each is counted</a>
+    <a href="gaps.html">What it does not know</a>
+    <a href="how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

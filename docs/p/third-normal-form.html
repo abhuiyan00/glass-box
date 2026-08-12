@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Third Normal Form · Glass Box</title>
+<meta name="description" content="A relation is in 3NF when every non-key attribute depends on the key, the whole key, and nothing but the key">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Third Normal Form · Glass Box">
+<meta property="og:description" content="A relation is in 3NF when every non-key attribute depends on the key, the whole key, and nothing but the key">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The normalised side — a forensic dataset","The denormalised side — a warehouse, deliberately","Gap in the 3NF claim","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["labour-fraud-analysis-a-forensic-data-investigation/src/build_db.py","labour-fraud-analysis-a-forensic-data-investigation/docs/schema.md","Data-Warehousing-and-Business-Intelligence/sql/02_star_schema/01_create_star_schema.sql"],"dateModified":"2026-07-28","description":"A relation is in 3NF when every non-key attribute depends on the key, the whole key, and nothing but the key","headline":"Third Normal Form","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["data-modelling","databases","sql"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">Data-Warehousing-and-Business-Intelligence · labour-fraud-analysis-a-forensic-data-investigation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A relation is in 3NF when every non-key attribute depends on the key, the whole key, and nothing but the key</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-normalised-side-a-forensic-dataset">The normalised side — a forensic dataset</a></li><li><a href="#the-denormalised-side-a-warehouse-deliberately">The denormalised side — a warehouse, deliberately</a></li><li><a href="#gap-in-the-3nf-claim">Gap in the 3NF claim</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="third-normal-form">Third Normal Form</h1>
+<p>A relation is in 3NF when every non-key attribute depends on the key, the whole key, and nothing but the key. In practice: no repeating groups, no partial dependency on part of a composite key, and no attribute that is really a fact about <em>another</em> attribute rather than about the row&#x27;s identity. Lookup values move to reference tables; many-to-many relationships get junction tables.</p>
+<h2 id="the-normalised-side-a-forensic-dataset" class="h-anch"><a class="hlink" href="#the-normalised-side-a-forensic-dataset" aria-label="Link to this section">#</a>The normalised side — a forensic dataset</h2>
+<p><a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> ships twenty tables with four reference lookups and three junction tables (<code>document_person</code>, <code>document_company</code>, <code>document_worksite</code>) implementing the many-to-many links that carry <a class="wl" href="chain-of-custody.html">chain-of-custody</a>. Foreign-key closure is asserted in two places: the database build runs with <code>PRAGMA foreign_keys = ON</code>, so a clean build implies zero violations, and the test suite checks primary-key uniqueness on six tables and FK closure over eight pairs. See <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a> and <a class="wl" href="sqlite.html">sqlite</a>.</p>
+<p>Normalisation is doing real work here, not decoration. Because a person, a company and a document are separate entities joined through junctions, the same document can support claims about several parties, and the <a class="wl" href="shared-identifier-clustering.html">shared-identifier-clustering</a> signal is a group-by rather than a text search.</p>
+<h2 id="the-denormalised-side-a-warehouse-deliberately" class="h-anch"><a class="hlink" href="#the-denormalised-side-a-warehouse-deliberately" aria-label="Link to this section">#</a>The denormalised side — a warehouse, deliberately</h2>
+<p><a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> goes the other way on purpose. <code>DIM_PRODUCT</code> collapses a three-level <code>Product → Subcategory → Category</code> snowflake into one wide table, repeating category text on every product row. That is a textbook transitive dependency and it is correct for the workload: analytical reads, no updates, one join per dimension. See <a class="wl" href="star-schema.html">star-schema</a>.</p>
+<p><strong>The rule the two repos jointly demonstrate:</strong> normalise where the data is written and audited, denormalise where it is only ever read in aggregate. Normal form is a property you choose per workload, not a virtue you maximise.</p>
+<h2 id="gap-in-the-3nf-claim" class="h-anch"><a class="hlink" href="#gap-in-the-3nf-claim" aria-label="Link to this section">#</a>Gap in the 3NF claim</h2>
+<ul><li><strong>TODO:</strong> the fraud repo&#x27;s README and generated schema both assert &quot;3NF&quot;, but no file argues the normal form, and <code>person</code> carries the contact attributes the analysis explicitly treats as <strong>shared across people</strong> — which is the signal, not an error. Whether that is an accepted violation, a different reading of the dependency, or an unexamined label is unrecorded. <code>confidence: low</code> on the &quot;3NF&quot; label specifically; the table structure itself is read directly from the DDL and is not in doubt.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="star-schema.html">star-schema</a> · <a class="wl" href="fact-grain.html">fact-grain</a> · <a class="wl" href="surrogate-vs-natural-keys.html">surrogate-vs-natural-keys</a> · <a class="wl" href="chain-of-custody.html">chain-of-custody</a> · <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> · <a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a></p></div>
+  <div class="tags"><span class="tag">data-modelling</span><span class="tag">databases</span><span class="tag">sql</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/build_db.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/docs/schema.md</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/sql/02_star_schema/01_create_star_schema.sql</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="chain-of-custody.html"><span class="kind k-concept">concept</span><span class="rel-t">Chain of Custody</span><span class="rel-g">In forensic work, a claim is only as good as the trail from the claim back to the artefact it came from</span></a><a class="rel" href="fact-grain.html"><span class="kind k-concept">concept</span><span class="rel-t">Fact Grain</span><span class="rel-g">The grain of a fact table is the answer to &quot;what does one row mean?&quot;</span></a><a class="rel" href="reproducible-analysis.html"><span class="kind k-concept">concept</span><span class="rel-t">Reproducible Analysis</span><span class="rel-g">An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose</span></a><a class="rel" href="shared-identifier-clustering.html"><span class="kind k-concept">concept</span><span class="rel-t">Shared-Identifier Clustering</span><span class="rel-g">When records that are supposed to be independent share a contact point — one inbox, one phone, one address, one bank account — the sharing is a claim about control</span></a><a class="rel" href="star-schema.html"><span class="kind k-concept">concept</span><span class="rel-t">Star Schema</span><span class="rel-g">One fact table of measurements surrounded by denormalised dimension tables that describe them</span></a><a class="rel" href="surrogate-vs-natural-keys.html"><span class="kind k-concept">concept</span><span class="rel-t">Surrogate vs Natural Keys</span><span class="rel-g">A natural key is the identifier the source system already uses — a product id, a customer id, an order-line id</span></a><a class="rel" href="data-warehousing-and-business-intelligence.html"><span class="kind k-project">project</span><span class="rel-t">Data Warehousing and Business Intelligence</span><span class="rel-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a><a class="rel" href="sqlite.html"><span class="kind k-tech">tech</span><span class="rel-t">SQLite</span><span class="rel-g">An embedded SQL database: one file, no server, no configuration, and a driver in Python&#x27;s standard library as sqlite3</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

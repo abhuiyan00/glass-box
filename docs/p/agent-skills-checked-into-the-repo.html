@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Skills Checked Into the Repo · Glass Box</title>
+<meta name="description" content="The tooling that builds the product is committed alongside the product, versioned with it and reviewed like it">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agent Skills Checked Into the Repo · Glass Box">
+<meta property="og:description" content="The tooling that builds the product is committed alongside the product, versioned with it and reviewed like it">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why commit it","The cost: vendored knowledge drifts too","Confidence","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["browser_game_stickfps/.tooling/skills/","browser_game_stickfps/.tooling/agents/","browser_game_stickfps/.tooling/commands/game-loop.md","browser_game_stickfps/files/"],"dateModified":"2026-07-28","description":"The tooling that builds the product is committed alongside the product, versioned with it and reviewed like it","headline":"Agent Skills Checked Into the Repo","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["architecture","documentation","devops"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-14</span>
+    <span class="repos">browser_game_stickfps</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The tooling that builds the product is committed alongside the product, versioned with it and reviewed like it</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why-commit-it">Why commit it</a></li><li><a href="#the-cost-vendored-knowledge-drifts-too">The cost: vendored knowledge drifts too</a></li><li><a href="#confidence">Confidence</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="agent-skills-checked-into-the-repo">Agent Skills Checked Into the Repo</h1>
+<p>The tooling that <em>builds</em> the product is committed <strong>alongside</strong> the product, versioned with it and reviewed like it. In <a class="wl" href="stickfps.html">stickfps</a> that is 91 files under <code>.tooling/</code> — more files than the server source directory.</p>
+<p>Two different things live there, and the distinction matters:</p>
+<p><strong>Vendored (87 files).</strong> Nineteen Three.js skill packs, each a <code>SKILL.md</code> plus <code>references/{methods,examples,anti-patterns}.md</code>. Third-party, with provenance in frontmatter — <code>license: MIT</code>, <code>metadata.author: OpenAEC-Foundation</code>. Taxonomy is five prefixes: <code>core-</code> (math, raycaster, renderer, scene-graph), <code>syntax-</code> (geometries, materials, shaders, controls), <code>impl-</code> (react-three-fiber, drei, lighting, shadows, animation, audio, post-processing), <code>errors-</code> (performance, rendering), <code>agents-</code> (scene-builder, model-optimizer). The content is reference tables and NEVER/ALWAYS rules aimed squarely at model failure modes rather than at human learning:</p>
+<blockquote><p>&quot;Designed for AI coding agents.&quot;</p><cite>browser_game_stickfps/.tooling/skills/ (SKILL.md frontmatter), 2026-07-25</cite></blockquote>
+<p><strong>Authored (4 files).</strong> Three subagent definitions and one orchestration command — see <a class="wl" href="architect-coder-tester-loop.html">architect-coder-tester-loop</a>, which is where the role separation is documented.</p>
+<h2 id="why-commit-it" class="h-anch"><a class="hlink" href="#why-commit-it" aria-label="Link to this section">#</a>Why commit it</h2>
+<p>Committing the tooling makes the build process <em>reproducible</em> in the same sense the code is: a later session, or another person, starts from the same instructions rather than from whatever the model happens to know. It also makes the instructions <strong>reviewable</strong> — a wrong rule in a skill pack is a diff, not an invisible habit.</p>
+<p>The seed directory <code>files/</code> extends the same idea backwards: pristine copies of <code>TASKS.md</code>, an empty <code>PROGRESS.md</code> skeleton and the four agent files, all stamped 2026-07-14, kept in the repo as a bootstrap kit. <code>TODO:</code> whether <code>files/</code> is a deliberate reusable kit for future projects or leftover scaffolding was not resolved at interview — no intent is asserted here.</p>
+<h2 id="the-cost-vendored-knowledge-drifts-too" class="h-anch"><a class="hlink" href="#the-cost-vendored-knowledge-drifts-too" aria-label="Link to this section">#</a>The cost: vendored knowledge drifts too</h2>
+<p>Skill packs are pinned text about a moving dependency, and nothing checks them against the lockfile. The R3F pack states a version floor the project has already passed:</p>
+<blockquote><p>&quot;Requires @react-three/fiber 8.x+&quot;</p><cite>browser_game_stickfps/.tooling/skills/impl-react-three-fiber/SKILL.md, 2026-07-25</cite></blockquote>
+<p>More seriously, all four <strong>authored</strong> files still instruct agents to use Geckos.io and Fly.io, months after both were replaced in <a class="wl" href="websocket-tcp-over-geckos-udp.html">websocket-tcp-over-geckos-udp</a> and <a class="wl" href="render-over-fly-io.html">render-over-fly-io</a>. Guidance that is confidently wrong is worse than absent guidance, because the loop reads it as authoritative. Catalogued with the rest in <a class="wl" href="documentation-drift.html">documentation-drift</a>.</p>
+<h2 id="confidence" class="h-anch"><a class="hlink" href="#confidence" aria-label="Link to this section">#</a>Confidence</h2>
+<p><code>confidence: medium</code> — the artefacts are directly observed and unambiguous, but this appears in <strong>one repository only</strong> so far, which is thin evidence for a <em>pattern</em> in the user&#x27;s practice rather than a one-off. <code>TODO:</code> whether the skill packs actually changed what got written, and where the 19 packs came from, is unanswered.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="architect-coder-tester-loop.html">architect-coder-tester-loop</a> · <a class="wl" href="spec-driven-development.html">spec-driven-development</a> · <a class="wl" href="three-js.html">three-js</a> · <a class="wl" href="react-three-fiber.html">react-three-fiber</a> · <a class="wl" href="documentation-drift.html">documentation-drift</a> · <a class="wl" href="stickfps.html">stickfps</a></p></div>
+  <div class="tags"><span class="tag">architecture</span><span class="tag">documentation</span><span class="tag">devops</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/.tooling/skills/</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/.tooling/agents/</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/.tooling/commands/game-loop.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/files/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="spec-driven-development.html"><span class="kind k-concept">concept</span><span class="rel-t">Spec-Driven Development</span><span class="rel-g">Write the specification before the code, at two levels: one document for the whole system, one document per unit of work</span></a><a class="rel" href="render-over-fly-io.html"><span class="kind k-decision">decision</span><span class="rel-t">Render Over Fly.io</span><span class="rel-g">Decision (2026-07-24, round 11): host the stickfps game server on Render</span></a><a class="rel" href="websocket-tcp-over-geckos-udp.html"><span class="kind k-decision">decision</span><span class="rel-t">WebSocket Over TCP Instead of Geckos.io UDP</span><span class="rel-g">Decision (2026-07-24, round 11): replace geckos.io — UDP over WebRTC data channels — with plain WebSocket over TCP (ws), across the whole of stickfps</span></a><a class="rel" href="architect-coder-tester-loop.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Architect / Coder / Tester Loop</span><span class="rel-g">Three roles, one task at a time: architect writes the spec, coder implements it, tester verifies it independently</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="stickfps.html"><span class="kind k-project">project</span><span class="rel-t">Stickfps</span><span class="rel-g">A 5v5 round-based browser tactical FPS: Counter-Strike round/economy structure, Krunker-style movement feel, procedurally-generated low-poly stickmen</span></a><a class="rel" href="react-three-fiber.html"><span class="kind k-tech">tech</span><span class="rel-t">React Three Fiber</span><span class="rel-g">A React renderer for three-js: the scene graph is expressed as JSX components and reconciled like a DOM tree</span></a><a class="rel" href="three-js.html"><span class="kind k-tech">tech</span><span class="rel-t">Three.js</span><span class="rel-g">WebGL scene-graph library</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Streamlit · Glass Box</title>
+<meta name="description" content="A Python framework that renders a script top-to-bottom as a web app, re-running the whole script on every interaction">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Streamlit · Glass Box">
+<meta property="og:description" content="A Python framework that renders a script top-to-bottom as a web app, re-running the whole script on every interaction">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Shape of the app","The disclosure banner is part of the app, not the README","What it costs, and the deliberate second door","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["labour-fraud-analysis-a-forensic-data-investigation/src/app.py","labour-fraud-analysis-a-forensic-data-investigation/Makefile","labour-fraud-analysis-a-forensic-data-investigation/requirements.txt","labour-fraud-analysis-a-forensic-data-investigation/README.md"],"dateModified":"2026-07-28","description":"A Python framework that renders a script top-to-bottom as a web app, re-running the whole script on every interaction","headline":"Streamlit","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["python","data-analysis","web-dev","forensics"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">labour-fraud-analysis-a-forensic-data-investigation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A Python framework that renders a script top-to-bottom as a web app, re-running the whole script on every interaction</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#shape-of-the-app">Shape of the app</a></li><li><a href="#the-disclosure-banner-is-part-of-the-app-not-the-readme">The disclosure banner is part of the app, not the README</a></li><li><a href="#what-it-costs-and-the-deliberate-second-door">What it costs, and the deliberate second door</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="streamlit">Streamlit</h1>
+<p>A Python framework that renders a script top-to-bottom as a web app, re-running the whole script on every interaction. In <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> it is the <strong>anomaly console</strong> — 219 lines in <code>src/app.py</code>, launched by <code>make app</code>, and the surface where the investigation&#x27;s four signals are meant to be read.</p>
+<h2 id="shape-of-the-app" class="h-anch"><a class="hlink" href="#shape-of-the-app" aria-label="Link to this section">#</a>Shape of the app</h2>
+<ul><li><code>st.set_page_config(layout=&quot;wide&quot;)</code>, then a hand-written HTML title block through <code>st.markdown(unsafe_allow_html=True)</code> — the framework&#x27;s default chrome overridden rather than accepted.</li><li><code>@st.cache_data</code> on a single loader that reads every CSV in <code>data/csv</code> into a dict of frames. The cache is what makes the re-run-everything model affordable: twenty tables parse once, not once per click. See <a class="wl" href="pandas.html">pandas</a>.</li><li>A five-metric row via <code>st.columns(5)</code> — people, companies, permits, documents, total structured rows — every one computed as a <code>len()</code> rather than typed in.</li><li><code>st.tabs([&quot;Overview&quot;, &quot;Anomaly dashboard&quot;, &quot;Entity network&quot;, &quot;Finances&quot;, &quot;Documents&quot;])</code>. The anomaly tab is the analytical core; the network tab renders the <a class="wl" href="networkx.html">networkx</a> graph; the documents tab is the <a class="wl" href="chain-of-custody.html">chain-of-custody</a> surface.</li><li>One <code>style(fig)</code> helper applied to every plotly figure, holding the whole palette in five module constants. A single styling function is what keeps a five-tab dashboard looking like one artefact.</li></ul>
+<h2 id="the-disclosure-banner-is-part-of-the-app-not-the-readme" class="h-anch"><a class="hlink" href="#the-disclosure-banner-is-part-of-the-app-not-the-readme" aria-label="Link to this section">#</a>The disclosure banner is part of the app, not the README</h2>
+<p><code>st.info</code> renders a synthetic-data notice on the page itself, above the first chart. Someone who arrives at a screenshot or a shared browser tab, having never opened the repository, still sees the disclosure. That is <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> applied to a running UI, and it is the right place for it given <a class="wl" href="synthesise-rather-than-redact.html">synthesise-rather-than-redact</a>.</p>
+<h2 id="what-it-costs-and-the-deliberate-second-door" class="h-anch"><a class="hlink" href="#what-it-costs-and-the-deliberate-second-door" aria-label="Link to this section">#</a>What it costs, and the deliberate second door</h2>
+<p>Streamlit needs a Python process, a port, and twelve pip packages. It cannot be emailed, cannot be opened from a USB stick, and cannot be handed to a reviewer who does not run Python. That is exactly why the same twenty tables are also served by a hand-written vanilla-JS viewer with all libraries vendored and no build step — <a class="wl" href="offline-first-static-deliverable.html">offline-first-static-deliverable</a> and <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> — and by a notebook that CI executes end-to-end (<a class="wl" href="reproducible-analysis.html">reproducible-analysis</a>).</p>
+<p>Three surfaces over one dataset is a real cost: the four signals are implemented three times, and the bulk-permit threshold is hard-coded identically in all of them plus the test suite.</p>
+<p><strong>TODO:</strong> why all three exist, and which came first, is stated nowhere in the repo. <code>confidence: low</code> on any ordering or division of labour between them — do not infer it from the commit sequence.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> · <a class="wl" href="pandas.html">pandas</a> · <a class="wl" href="networkx.html">networkx</a> · <a class="wl" href="offline-first-static-deliverable.html">offline-first-static-deliverable</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> · <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a> · <a class="wl" href="make.html">make</a></p></div>
+  <div class="tags"><span class="tag">python</span><span class="tag">data-analysis</span><span class="tag">web-dev</span><span class="tag">forensics</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/app.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/Makefile</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/requirements.txt</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="chain-of-custody.html"><span class="kind k-concept">concept</span><span class="rel-t">Chain of Custody</span><span class="rel-g">In forensic work, a claim is only as good as the trail from the claim back to the artefact it came from</span></a><a class="rel" href="reproducible-analysis.html"><span class="kind k-concept">concept</span><span class="rel-t">Reproducible Analysis</span><span class="rel-g">An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose</span></a><a class="rel" href="synthesise-rather-than-redact.html"><span class="kind k-decision">decision</span><span class="rel-t">Synthesise Rather Than Redact</span><span class="rel-g">Do not publish the sensitive corpus with identifying values blacked out</span></a><a class="rel" href="offline-first-static-deliverable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Offline-First Static Deliverable</span><span class="rel-g">The deliverable must work by double-clicking a file: no server, no install, no network</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a><a class="rel" href="make.html"><span class="kind k-tech">tech</span><span class="rel-t">Make</span><span class="rel-g">The old dependency-graph task runner, used here purely as a named-command registry rather than for incremental rebuilds</span></a><a class="rel" href="networkx.html"><span class="kind k-tech">tech</span><span class="rel-t">NetworkX</span><span class="rel-g">Pure-Python graph library</span></a><a class="rel" href="pandas.html"><span class="kind k-tech">tech</span><span class="rel-t">pandas</span><span class="rel-g">Python&#x27;s in-memory dataframe library</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

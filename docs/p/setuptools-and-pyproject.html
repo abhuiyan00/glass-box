@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>setuptools and pyproject.toml · Glass Box</title>
+<meta name="description" content="The packaging layer that turns twelve lab scripts into one installable project in python-programming-laboratories">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="setuptools and pyproject.toml · Glass Box">
+<meta property="og:description" content="The packaging layer that turns twelve lab scripts into one installable project in python-programming-laboratories">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["src-layout","The extras split","Also declared","The split has a hole","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Python-Programming-Laboratories/pyproject.toml","Python-Programming-Laboratories/src/weblog/"],"dateModified":"2026-07-28","description":"The packaging layer that turns twelve lab scripts into one installable project in python-programming-laboratories","headline":"setuptools and pyproject.toml","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["python","architecture","devops"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Python-Programming-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The packaging layer that turns twelve lab scripts into one installable project in python-programming-laboratories</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#src-layout">src-layout</a></li><li><a href="#the-extras-split">The extras split</a></li><li><a href="#also-declared">Also declared</a></li><li><a href="#the-split-has-a-hole">The split has a hole</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="setuptools-and-pyprojecttoml">setuptools and pyproject.toml</h1>
+<p>The packaging layer that turns twelve lab scripts into one installable project in <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a>. This is the mechanism behind <a class="wl" href="extract-the-shared-core.html">extract-the-shared-core</a> — without it, &quot;shared core&quot; would just mean a file everyone copies.</p>
+<h2 id="src-layout" class="h-anch"><a class="hlink" href="#src-layout" aria-label="Link to this section">#</a>src-layout</h2>
+<p>The package lives at <code>src/weblog/</code>, not <code>weblog/</code> at the repo root. The difference matters: with a root-level package, <code>import weblog</code> in a test picks up the working directory copy whether or not the install succeeded, so a broken package configuration passes tests locally and fails for everyone else. Under src-layout the only importable <code>weblog</code> is the installed one.</p>
+<p><code>pyproject.toml</code> sets <code>pythonpath</code> for <a class="wl" href="pytest.html">pytest</a> so the suite still resolves imports without an editable install already in place.</p>
+<h2 id="the-extras-split" class="h-anch"><a class="hlink" href="#the-extras-split" aria-label="Link to this section">#</a>The extras split</h2>
+<pre><code class="lang-toml">dependencies = []</code></pre>
+<blockquote><p>&quot;# Only the later laboratories need these; the core package has no dependencies.&quot;</p><cite>Python-Programming-Laboratories/pyproject.toml, 2026-07-25</cite></blockquote>
+<p>The core — parsing, reading, stats, config, CLI — is stdlib only, using <a class="wl" href="argparse.html">argparse</a> rather than <a class="wl" href="click.html">click</a> for exactly this reason. Everything else goes into optional extras:</p>
+<ul><li><strong><code>labs</code></strong> — <a class="wl" href="click.html">click</a>, openpyxl, <a class="wl" href="factory-boy-and-faker.html">factory-boy-and-faker</a>, requests, <a class="wl" href="beautifulsoup.html">beautifulsoup</a>, <a class="wl" href="matplotlib.html">matplotlib</a>, <a class="wl" href="pillow.html">pillow</a>, python-docx.</li><li><strong><code>dev</code></strong> — <code>pytest</code>, <code>pytest-cov</code>.</li></ul>
+<p>Installing the core installs nothing else, which is <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> expressed as metadata rather than as a claim.</p>
+<h2 id="also-declared" class="h-anch"><a class="hlink" href="#also-declared" aria-label="Link to this section">#</a>Also declared</h2>
+<ul><li><strong><code>requires-python = &quot;&gt;=3.10&quot;</code></strong>, consistent with the <code>slots=True</code> dataclasses in the core. <strong>TODO:</strong> whether this was a course constraint or driven by the features used is not recorded.</li><li>A <strong>console script</strong> entry point, so <code>weblog</code> is a command after install — originally the lab-03 packaging exercise.</li><li><strong><code>ruff</code></strong> with <code>line-length = 90</code>. <strong>TODO:</strong> configured but never run in CI (there is no CI) and never mentioned in the README. <code>confidence: low</code> on any claim that it was used.</li></ul>
+<h2 id="the-split-has-a-hole" class="h-anch"><a class="hlink" href="#the-split-has-a-hole" aria-label="Link to this section">#</a>The split has a hole</h2>
+<p>The <code>dev</code> extra omits <code>factory_boy</code> and <code>Faker</code>, which <code>tests/test_lab09_insults.py</code> imports — so the README&#x27;s documented quick start fails at collection in a clean virtualenv. Recorded in full on <a class="wl" href="factory-boy-and-faker.html">factory-boy-and-faker</a>. Declaring dependencies precisely is the whole value of this file, and this is the one place it is wrong.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="extract-the-shared-core.html">extract-the-shared-core</a> · <a class="wl" href="pytest.html">pytest</a> · <a class="wl" href="factory-boy-and-faker.html">factory-boy-and-faker</a> · <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> · <a class="wl" href="argparse.html">argparse</a></p></div>
+  <div class="tags"><span class="tag">python</span><span class="tag">architecture</span><span class="tag">devops</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/pyproject.toml</span></code></li><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/src/weblog/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="extract-the-shared-core.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Extract the Shared Core</span><span class="rel-g">When several deliverables consume the same input, make the shared part a real package with tests and reduce each deliverable to a thin script over it — instead of twelve…</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="python-programming-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Python Programming Laboratories</span><span class="rel-g">Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…</span></a><a class="rel" href="argparse.html"><span class="kind k-tech">tech</span><span class="rel-t">argparse</span><span class="rel-g">Python&#x27;s standard-library command-line parser</span></a><a class="rel" href="beautifulsoup.html"><span class="kind k-tech">tech</span><span class="rel-t">BeautifulSoup</span><span class="rel-g">HTML/XML parsing library, used in labs 10 and 11 of python-programming-laboratories for scraping and for a document pipeline that extracts 41 chapters of text</span></a><a class="rel" href="click.html"><span class="kind k-tech">tech</span><span class="rel-t">click</span><span class="rel-g">Third-party CLI framework for Python</span></a><a class="rel" href="factory-boy-and-faker.html"><span class="kind k-tech">tech</span><span class="rel-t">factory_boy and Faker</span><span class="rel-g">Faker generates plausible fake values — names, dates, text</span></a><a class="rel" href="matplotlib.html"><span class="kind k-tech">tech</span><span class="rel-t">matplotlib</span><span class="rel-g">Python&#x27;s plotting library</span></a><a class="rel" href="pillow.html"><span class="kind k-tech">tech</span><span class="rel-t">Pillow</span><span class="rel-g">Python&#x27;s imaging library</span></a><a class="rel" href="pytest.html"><span class="kind k-tech">tech</span><span class="rel-t">pytest</span><span class="rel-g">The test runner for python-programming-laboratories — and the only real test framework anywhere in the two lab repositories</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

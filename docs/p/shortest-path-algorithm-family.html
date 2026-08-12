@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Shortest-Path Algorithm Family · Glass Box</title>
+<meta name="description" content="Four algorithms, one problem, four different sets of assumptions">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Shortest-Path Algorithm Family · Glass Box">
+<meta property="og:description" content="Four algorithms, one problem, four different sets of assumptions">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The TSP tail — and a correction","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Discrete-Mathematics-Laboratories/lab5_GraphTheory/SentinelNet/sn-algo.js","Discrete-Mathematics-Laboratories/lab5_GraphTheory/Q-HYDRO Wrocław/"],"dateModified":"2026-07-28","description":"Four algorithms, one problem, four different sets of assumptions","headline":"The Shortest-Path Algorithm Family","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["algorithms","discrete-math","javascript","performance"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-05-29</span>
+    <span class="repos">Discrete-Mathematics-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Four algorithms, one problem, four different sets of assumptions</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  
+  <div class="prose"><h1 id="the-shortest-path-algorithm-family">The Shortest-Path Algorithm Family</h1>
+<p>Four algorithms, one problem, four different sets of assumptions. SentinelNet in <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> implements all four against the same graph, which is the only way the trade-offs stop being a table to memorise — an instance of <a class="wl" href="multiple-solutions-side-by-side.html">multiple-solutions-side-by-side</a>.</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Algorithm</th>
+<th>Scope</th>
+<th>Complexity</th>
+<th>Requires</th>
+<th>Gives you</th>
+</tr></thead><tbody>
+<tr><td><strong>Dijkstra</strong></td><td>single source</td><td><code>O((V+E) log V)</code> with a heap</td><td>non-negative weights</td><td>the default</td></tr>
+<tr><td><strong>Bellman–Ford</strong></td><td>single source</td><td><code>O(V·E)</code></td><td>nothing</td><td>negative weights <strong>and negative-cycle detection</strong></td></tr>
+<tr><td><strong>A\</strong>*</td><td>single pair</td><td>Dijkstra-bounded</td><td>an admissible heuristic</td><td>far fewer expansions when geometry is known</td></tr>
+<tr><td><strong>Floyd–Warshall</strong></td><td>all pairs</td><td><code>O(V³)</code></td><td>nothing</td><td>the full distance matrix, and transitive closure for free</td></tr>
+</tbody></table></div>
+<p>The choices that matter in practice:</p>
+<ul><li><strong>Bellman–Ford is not a slower Dijkstra.</strong> Its extra pass exists to <em>detect</em> negative cycles — a distance that keeps improving after <code>V−1</code> relaxations means no shortest path exists. Dijkstra cannot express that question.</li><li><strong>A\* is Dijkstra plus a lower bound.</strong> SentinelNet uses the <strong>Haversine</strong> great-circle distance as the heuristic. It is admissible because straight-line distance over the sphere can never exceed travel along edges, and admissibility is precisely what preserves optimality.</li><li><strong>Floyd–Warshall wins when you need every pair.</strong> Running Dijkstra <code>V</code> times is asymptotically better on sparse graphs but loses on dense ones and costs far more code.</li></ul>
+<p>SentinelNet backs Dijkstra with a <strong>hand-written binary MinHeap</strong> rather than a library priority queue, which is the difference between <code>O((V+E) log V)</code> and the naive <code>O(V²)</code>.</p>
+<p>Q-HYDRO, at 25 nodes, deliberately does not bother, and says why:</p>
+<blockquote><p>&quot;Note: Prim and Dijkstra use simple <code>O(V·E)</code> / <code>O(V²)</code> implementations for readability. At <code>|V| = 25</code> this is instant; swap in a binary heap for scale.&quot;</p><cite>Discrete-Mathematics-Laboratories/lab5_GraphTheory/Q-HYDRO Wrocław/README.md, 2026-06-09</cite></blockquote>
+<p>Two implementations of the same algorithm in one repo under opposite priorities, each stating its reason — see <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>.</p>
+<h2 id="the-tsp-tail-and-a-correction" class="h-anch"><a class="hlink" href="#the-tsp-tail-and-a-correction" aria-label="Link to this section">#</a>The TSP tail — and a correction</h2>
+<p>Beyond shortest paths, SentinelNet attempts tours: <strong>nearest-neighbour</strong> construction, <strong>2-opt</strong> improvement, and a function named <code>tspChristofides</code>.</p>
+<p><strong>That function is not Christofides.</strong> Christofides guarantees a tour within 1.5× optimal by taking a minimum spanning tree, finding a <strong>minimum-weight perfect matching</strong> on the odd-degree vertices, combining them into an Eulerian multigraph and short-cutting the Euler tour. <code>sn-algo.js</code> matches the odd-degree vertices <strong>greedily</strong>. Greedy matching can be arbitrarily worse than optimal, so the 1.5-approximation bound is lost — what remains is a <em>Christofides-shaped heuristic</em> with no proven ratio. <code>confidence: high</code>, read directly from source. It should not be cited as Christofides.</p>
+<p><strong>TODO:</strong> Q-HYDRO also exposes a &quot;quantum-optimised&quot; TSP lens. What it computes differently from classical nearest-neighbour + 2-opt is not documented. <code>confidence: low</code> — treat the label as presentation framing until confirmed.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="graph-connectivity-and-resilience.html">graph-connectivity-and-resilience</a> · <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> · <a class="wl" href="multiple-solutions-side-by-side.html">multiple-solutions-side-by-side</a> · <a class="wl" href="optimization-methods.html">optimization-methods</a> · <a class="wl" href="react.html">react</a></p></div>
+  <div class="tags"><span class="tag">algorithms</span><span class="tag">discrete-math</span><span class="tag">javascript</span><span class="tag">performance</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab5_GraphTheory/SentinelNet/sn-algo.js</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab5_GraphTheory/Q-HYDRO Wrocław/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="graph-connectivity-and-resilience.html"><span class="kind k-concept">concept</span><span class="rel-t">Graph Connectivity and Resilience</span><span class="rel-g">&quot;Is this network connected?&quot; is a yes/no question</span></a><a class="rel" href="multiple-solutions-side-by-side.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Multiple Solutions Side by Side</span><span class="rel-g">The same problem is solved two or three ways in one deliverable, and the trade-off between them is the point</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="optimization-methods.html"><span class="kind k-project">project</span><span class="rel-t">Optimization Methods</span><span class="rel-g">Master&#x27;s Optimization Methods course at Wrocław University of Science and Technology (FICT, lectures by M. Przewoźniczek)</span></a><a class="rel" href="react.html"><span class="kind k-tech">tech</span><span class="rel-t">React</span><span class="rel-g">Component library for building UIs from declarative state-to-markup functions</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

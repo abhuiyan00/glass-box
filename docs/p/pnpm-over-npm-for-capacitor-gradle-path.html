@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pnpm Over npm For The Capacitor Gradle Path · Glass Box</title>
+<meta name="description" content="Declare the farely monorepo as a pnpm workspace so that @capacitor/android resolves to apps/android/node_modules, where the gradle project&#x27;s relative ../node_modules…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pnpm Over npm For The Capacitor Gradle Path · Glass Box">
+<meta property="og:description" content="Declare the farely monorepo as a pnpm workspace so that @capacitor/android resolves to apps/android/node_modules, where the gradle project&#x27;s relative ../node_modules…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The reason, as written","Alternative rejected","The contradiction — decision recorded, not enacted","Related unexplained choices","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Farley/CONTRIBUTING.md","Farley/pnpm-workspace.yaml","Farley/package.json","Farley/package-lock.json","Farley/README.md"],"dateModified":"2026-07-28","description":"Declare the farely monorepo as a pnpm workspace so that @capacitor/android resolves to apps/android/node_modules, where the gradle project's relative ../node_modules…","headline":"pnpm Over npm For The Capacitor Gradle Path","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["devops","javascript","mobile"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-13</span>
+    <span class="repos">Farley</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Declare the farely monorepo as a pnpm workspace so that @capacitor/android resolves to apps/android/node_modules, where the gradle project&#x27;s relative ../node_modules…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-reason-as-written">The reason, as written</a></li><li><a href="#alternative-rejected">Alternative rejected</a></li><li><a href="#the-contradiction-decision-recorded-not-enacted">The contradiction — decision recorded, not enacted</a></li><li><a href="#related-unexplained-choices">Related unexplained choices</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="pnpm-over-npm-for-the-capacitor-gradle-path">pnpm Over npm For The Capacitor Gradle Path</h1>
+<p><strong>Decision.</strong> Declare the <a class="wl" href="farely.html">farely</a> monorepo as a <a class="wl" href="pnpm.html">pnpm</a> workspace so that <code>@capacitor/android</code> resolves to <code>apps/android/node_modules</code>, where the gradle project&#x27;s relative <code>../node_modules</code> reference expects it.</p>
+<p><strong>Date.</strong> 2026-07-13, recorded in <code>CONTRIBUTING.md</code>.</p>
+<h2 id="the-reason-as-written" class="h-anch"><a class="hlink" href="#the-reason-as-written" aria-label="Link to this section">#</a>The reason, as written</h2>
+<blockquote><p>&quot;<strong>pnpm vs npm:</strong> the repo declares a pnpm workspace, so <code>pnpm install</code> places <code>@capacitor/android</code> under <code>apps/android/node_modules</code> where the gradle project&#x27;s <code>../node_modules</code> reference expects it. With plain npm&#x27;s hoisting you may need to ensure that path exists before building the APK.&quot;</p><cite>Farley/CONTRIBUTING.md, 2026-07-13</cite></blockquote>
+<p>This is a rare thing in the source set: a package-manager choice with its actual cause written down. The cause is not ergonomics or disk space — it is that <a class="wl" href="capacitor.html">capacitor</a>&#x27;s generated gradle project resolves a Node dependency by <strong>filesystem path</strong>, which turns <code>node_modules</code> layout into part of the build contract. npm hoists shared dependencies to the workspace root; pnpm&#x27;s non-flat store leaves each package&#x27;s dependencies under that package. Only one of those layouts satisfies a hardcoded <code>../node_modules</code>.</p>
+<h2 id="alternative-rejected" class="h-anch"><a class="hlink" href="#alternative-rejected" aria-label="Link to this section">#</a>Alternative rejected</h2>
+<p><strong>npm workspaces.</strong> Rejected for the hoisting behaviour above — and notably not rejected <em>cleanly</em>, see below. The failure mode it produces is nasty: nothing breaks at install time, and the error surfaces much later at <code>gradlew assembleDebug</code> as a missing gradle project, far from its cause. The CONTRIBUTING note exists precisely to shorten that debugging path.</p>
+<h2 id="the-contradiction-decision-recorded-not-enacted" class="h-anch"><a class="hlink" href="#the-contradiction-decision-recorded-not-enacted" aria-label="Link to this section">#</a>The contradiction — decision recorded, not enacted</h2>
+<p>The decision is documented and its alternative is named, but the repository does not implement it:</p>
+<ul><li>The <strong>only committed lockfile is <code>package-lock.json</code></strong>. No <code>pnpm-lock.yaml</code> exists in the tree.</li><li><code>package.json</code> declares npm <code>workspaces: [&quot;apps/*&quot;]</code> alongside <code>pnpm-workspace.yaml</code>.</li><li><strong>Every root script is <code>npm --prefix …</code></strong> — <code>dev</code>, <code>build</code>, <code>sync</code>, <code>apk</code>, <code>cap:open</code>.</li></ul>
+<p>So the repo instructs <code>pnpm install</code>, ships an npm lockfile, and drives every task through npm. A contributor following the README produces a lockfile the repo does not track; a contributor running the scripts gets exactly the hoisting the note warns about. Both claims are recorded here rather than resolved — the documented decision and the committed reality disagree, which is <a class="wl" href="documentation-drift.html">documentation-drift</a> reaching into the build system.</p>
+<p>Practically it has not bitten: the debug APK built successfully on the author&#x27;s machine, and since Farely never ran on a live shift, that machine is the only environment the path has ever seen.</p>
+<h2 id="related-unexplained-choices" class="h-anch"><a class="hlink" href="#related-unexplained-choices" aria-label="Link to this section">#</a>Related unexplained choices</h2>
+<ul><li><code>TODO:</code> <code>pnpm-workspace.yaml</code> sets <code>minimumReleaseAge: 10080</code> (refuse packages under 7 days old) with every dependency exact-pinned. No incident or policy is recorded, and it appears in no sibling project. <code>confidence: low</code> on the reason — not asked at interview.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="pnpm.html">pnpm</a> · <a class="wl" href="capacitor.html">capacitor</a> · <a class="wl" href="farely.html">farely</a> · <a class="wl" href="documentation-drift.html">documentation-drift</a> · <a class="wl" href="stickfps.html">stickfps</a></p></div>
+  <div class="tags"><span class="tag">devops</span><span class="tag">javascript</span><span class="tag">mobile</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Farley</span><span class="src-p">/CONTRIBUTING.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/pnpm-workspace.yaml</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/package.json</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/package-lock.json</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="farely.html"><span class="kind k-project">project</span><span class="rel-t">Farely</span><span class="rel-g">A personal Android rideshare/delivery driver assistant for Wrocław</span></a><a class="rel" href="stickfps.html"><span class="kind k-project">project</span><span class="rel-t">Stickfps</span><span class="rel-g">A 5v5 round-based browser tactical FPS: Counter-Strike round/economy structure, Krunker-style movement feel, procedurally-generated low-poly stickmen</span></a><a class="rel" href="capacitor.html"><span class="kind k-tech">tech</span><span class="rel-t">Capacitor</span><span class="rel-g">Native runtime that wraps a web build in a WebView and exposes native capability through plugins</span></a><a class="rel" href="pnpm.html"><span class="kind k-tech">tech</span><span class="rel-t">pnpm</span><span class="rel-g">Content-addressed package manager whose defining property is that it does not flatten node_modules</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

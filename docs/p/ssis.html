@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQL Server Integration Services · Glass Box</title>
+<meta name="description" content="Microsoft&#x27;s ETL tool: packages authored as .dtsx in Visual Studio / SSDT, built from a control flow of tasks and, inside a Data Flow Task, a data flow of typed sources,…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL Server Integration Services · Glass Box">
+<meta property="og:description" content="Microsoft&#x27;s ETL tool: packages authored as .dtsx in Visual Studio / SSDT, built from a control flow of tasks and, inside a Data Flow Task, a data flow of typed sources,…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Package 1 — control flow only","Package 2 — a real data flow","Working with `.dtsx` in version control","Status","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Data-Warehousing-and-Business-Intelligence/etl/ssis/Package.dtsx","Data-Warehousing-and-Business-Intelligence/project/twtr/ssis/Package.dtsx","Data-Warehousing-and-Business-Intelligence/docs/star-schema.md"],"dateModified":"2026-07-28","description":"Microsoft's ETL tool: packages authored as .dtsx in Visual Studio / SSDT, built from a control flow of tasks and, inside a Data Flow Task, a data flow of typed sources,…","headline":"SQL Server Integration Services","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["data-engineering","databases","sql","devops"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Data-Warehousing-and-Business-Intelligence</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Microsoft&#x27;s ETL tool: packages authored as .dtsx in Visual Studio / SSDT, built from a control flow of tasks and, inside a Data Flow Task, a data flow of typed sources,…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#package-1-control-flow-only">Package 1 — control flow only</a></li><li><a href="#package-2-a-real-data-flow">Package 2 — a real data flow</a></li><li><a href="#working-with-dtsx-in-version-control">Working with `.dtsx` in version control</a></li><li><a href="#status">Status</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="sql-server-integration-services">SQL Server Integration Services</h1>
+<p>Microsoft&#x27;s ETL tool: packages authored as <code>.dtsx</code> in Visual Studio / SSDT, built from a <strong>control flow</strong> of tasks and, inside a Data Flow Task, a <strong>data flow</strong> of typed sources, transforms and destinations. <a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> ships two packages, and they use the tool in two different ways.</p>
+<h2 id="package-1-control-flow-only" class="h-anch"><a class="hlink" href="#package-1-control-flow-only" aria-label="Link to this section">#</a>Package 1 — control flow only</h2>
+<p><code>etl/ssis/Package.dtsx</code> builds a <code>list_four</code> schema entirely out of Execute SQL tasks. SSIS is doing orchestration here, not transformation: the SQL is the deliverable and the package is the runner. Two things about it are worth recording.</p>
+<ul><li>Its <code>DIM_CUSTOMER</code> load joins addresses through the store id only, where the hand-written <code>sql/02_star_schema/</code> version uses a coalesce across store and person and says why.</li><li>It creates a <code>load_status</code> table and populates it with <code>&#x27;Success&#x27;</code> string literals — a row per table, written unconditionally. The hand-written load replaces exactly this with row counts and anti-join integrity checks, and argues the case in a comment. That contrast is the whole of <a class="wl" href="verify-the-load-dont-declare-it.html">verify-the-load-dont-declare-it</a>, and it is unusual to have both the pattern and its counter-example in one repository.</li></ul>
+<p>The two schemas disagree on column set and defaults and were never reconciled — one of four recorded instances of <a class="wl" href="documentation-drift.html">documentation-drift</a> in this repo, and an example of <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a>.</p>
+<h2 id="package-2-a-real-data-flow" class="h-anch"><a class="hlink" href="#package-2-a-real-data-flow" aria-label="Link to this section">#</a>Package 2 — a real data flow</h2>
+<p><code>project/twtr/ssis/Package.dtsx</code> is the conventional shape: a Flat File source and an OLE DB destination inside one Data Flow Task, landing a CSV of daily price bars into a <code>staging.quotes</code> table. The staging table carries two <code>CHECK</code> constraints at the door — a high/low ordering rule and a non-negative volume rule — so malformed rows fail at the boundary rather than propagating into the star. Loading order from there on is <a class="wl" href="etl-load-order.html">etl-load-order</a>; the destination model is <a class="wl" href="star-schema.html">star-schema</a>.</p>
+<p>The CSV itself is git-ignored, so the package is committed without the input it consumes.</p>
+<h2 id="working-with-dtsx-in-version-control" class="h-anch"><a class="hlink" href="#working-with-dtsx-in-version-control" aria-label="Link to this section">#</a>Working with <code>.dtsx</code> in version control</h2>
+<p>A package is XML, so it diffs — in principle. In practice a 23 KB and a 37 KB file of generated markup with embedded, newline-escaped SQL is not reviewable by reading the diff, and the SQL inside it is invisible to any tool that greps <code>*.sql</code>. That is a real argument for the shape this repo mostly settled on: keep the logic in <code>.sql</code> files, and let the package be a thin runner over them.</p>
+<h2 id="status" class="h-anch"><a class="hlink" href="#status" aria-label="Link to this section">#</a>Status</h2>
+<p>Both packages are Visual Studio project sources, not deployed to any SSIS catalog. <code>docs/star-schema.md</code> makes the same disclosure for the <a class="wl" href="ssas.html">ssas</a> side. Nothing here executes on a clean clone — it needs SSDT and a live <a class="wl" href="sql-server.html">sql-server</a> instance.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> · <a class="wl" href="sql-server.html">sql-server</a> · <a class="wl" href="ssas.html">ssas</a> · <a class="wl" href="etl-load-order.html">etl-load-order</a> · <a class="wl" href="verify-the-load-dont-declare-it.html">verify-the-load-dont-declare-it</a> · <a class="wl" href="star-schema.html">star-schema</a> · <a class="wl" href="documentation-drift.html">documentation-drift</a></p></div>
+  <div class="tags"><span class="tag">data-engineering</span><span class="tag">databases</span><span class="tag">sql</span><span class="tag">devops</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/etl/ssis/Package.dtsx</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/ssis/Package.dtsx</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/docs/star-schema.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="etl-load-order.html"><span class="kind k-concept">concept</span><span class="rel-t">ETL Load Order</span><span class="rel-g">Load order in a star-schema is not a style choice</span></a><a class="rel" href="star-schema.html"><span class="kind k-concept">concept</span><span class="rel-t">Star Schema</span><span class="rel-g">One fact table of measurements surrounded by denormalised dimension tables that describe them</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="verify-the-load-dont-declare-it.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Verify the Load, Don&#x27;t Declare It</span><span class="rel-g">A data pipeline ends with a query whose result can be wrong, not with a status row saying it went fine</span></a><a class="rel" href="data-warehousing-and-business-intelligence.html"><span class="kind k-project">project</span><span class="rel-t">Data Warehousing and Business Intelligence</span><span class="rel-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span></a><a class="rel" href="sql-server.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server</span><span class="rel-g">Microsoft&#x27;s relational engine, driven here as T-SQL on SQL Server 2019 across seven annotated scripts in data-warehousing-and-business-intelligence — two analytics labs,…</span></a><a class="rel" href="ssas.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server Analysis Services</span><span class="rel-g">Microsoft&#x27;s OLAP layer</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

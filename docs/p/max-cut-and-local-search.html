@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Max-Cut and Local Search · Glass Box</title>
+<meta name="description" content="Max-Cut: partition a graph&#x27;s vertices into two sets so that the weight of edges crossing between them is maximised">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Max-Cut and Local Search · Glass Box">
+<meta property="og:description" content="Max-Cut: partition a graph&#x27;s vertices into two sets so that the weight of edges crossing between them is maximised">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The heuristic actually used","Why it belongs in a discrete-maths course","Implementation notes","Related","Gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Discrete-Mathematics-Laboratories/lab1_Max_Cut/"],"dateModified":"2026-07-28","description":"Max-Cut: partition a graph's vertices into two sets so that the weight of edges crossing between them is maximised","headline":"Max-Cut and Local Search","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["discrete-math","algorithms","optimization","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-03-20</span>
+    <span class="repos">Discrete-Mathematics-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Max-Cut: partition a graph&#x27;s vertices into two sets so that the weight of edges crossing between them is maximised</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-heuristic-actually-used">The heuristic actually used</a></li><li><a href="#why-it-belongs-in-a-discrete-maths-course">Why it belongs in a discrete-maths course</a></li><li><a href="#implementation-notes">Implementation notes</a></li><li><a href="#related">Related</a></li><li><a href="#gaps">Gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="max-cut-and-local-search">Max-Cut and Local Search</h1>
+<p><strong>Max-Cut</strong>: partition a graph&#x27;s vertices into two sets so that the weight of edges crossing between them is maximised. NP-hard. With 127 vertices the space of partitions is <code>2^127</code>, which the lab states explicitly as the reason exhaustive search is off the table — the reasoning is recorded on <a class="wl" href="heuristic-over-exact-max-cut.html">heuristic-over-exact-max-cut</a>.</p>
+<h2 id="the-heuristic-actually-used" class="h-anch"><a class="hlink" href="#the-heuristic-actually-used" aria-label="Link to this section">#</a>The heuristic actually used</h2>
+<p><strong>Best-improvement local search with random restarts.</strong></p>
+<ol><li>Start from a random assignment of vertices to the two sides.</li><li>Compute, for every vertex, the gain from moving it to the other side.</li><li>Move the single vertex with the largest positive gain. Repeat until no move improves — a <strong>local optimum</strong>.</li><li>Restart from a fresh random assignment. Ten restarts; keep the best local optimum found.</li></ol>
+<p>The restart loop is the whole point: a single descent lands wherever its starting point drains to, so multi-start converts a deterministic local method into a crude global one. The repo records a conclusion about multi-start effectiveness in its own commit history (<code>Add conclusion about multi-start heuristic effectiveness</code>, 2026-03-20).</p>
+<p><em>Best-improvement</em> — scan all candidate moves, take the best — differs from <em>first-improvement</em>, which takes the first improving move found. Best-improvement costs a full scan per step and tends to need fewer steps; the lab uses it without recording a comparison.</p>
+<h2 id="why-it-belongs-in-a-discrete-maths-course" class="h-anch"><a class="hlink" href="#why-it-belongs-in-a-discrete-maths-course" aria-label="Link to this section">#</a>Why it belongs in a discrete-maths course</h2>
+<p>Max-Cut is the standard worked example of the gap between <em>stating</em> an optimisation problem and <em>solving</em> it. The definition is one line; the exact solution is intractable; a twenty-line heuristic gets useful answers. Running it and watching the cut value climb per restart is what <a class="wl" href="make-the-formal-object-observable.html">make-the-formal-object-observable</a> means in <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a>.</p>
+<h2 id="implementation-notes" class="h-anch"><a class="hlink" href="#implementation-notes" aria-label="Link to this section">#</a>Implementation notes</h2>
+<p>Pure Python stdlib — <code>random</code> and <code>re</code>, no numpy, no solver library. The graph arrives in a custom <code>V</code>/<code>E</code> text format parsed by a hand-written reader, so the lab also owns its input format rather than depending on DIMACS tooling.</p>
+<h2 id="related" class="h-anch"><a class="hlink" href="#related" aria-label="Link to this section">#</a>Related</h2>
+<p>Local search under a different name and a much larger apparatus appears in <a class="wl" href="optimization-methods.html">optimization-methods</a>, where the same restart-and-perturb idea drives vehicle routing and flow-shop scheduling. Max-Cut is the minimal version of that machinery.</p>
+<h2 id="gaps" class="h-anch"><a class="hlink" href="#gaps" aria-label="Link to this section">#</a>Gaps</h2>
+<ul><li><strong>TODO:</strong> no benchmark output, no comparison against a known optimum or a published bound, and no record of what cut values the ten restarts actually produced. The effectiveness conclusion lives in a commit message and prose only. <code>confidence: low</code> on any performance claim.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="heuristic-over-exact-max-cut.html">heuristic-over-exact-max-cut</a> · <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> · <a class="wl" href="make-the-formal-object-observable.html">make-the-formal-object-observable</a> · <a class="wl" href="graph-connectivity-and-resilience.html">graph-connectivity-and-resilience</a></p></div>
+  <div class="tags"><span class="tag">discrete-math</span><span class="tag">algorithms</span><span class="tag">optimization</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab1_Max_Cut/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="graph-connectivity-and-resilience.html"><span class="kind k-concept">concept</span><span class="rel-t">Graph Connectivity and Resilience</span><span class="rel-g">&quot;Is this network connected?&quot; is a yes/no question</span></a><a class="rel" href="heuristic-over-exact-max-cut.html"><span class="kind k-decision">decision</span><span class="rel-t">Heuristic Over Exact Max-Cut</span><span class="rel-g">Solve Max-Cut with best-improvement local search plus ten random restarts, instead of searching the partition space exhaustively</span></a><a class="rel" href="make-the-formal-object-observable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Make the Formal Object Observable</span><span class="rel-g">Take a mathematical definition and build something that lets you watch it behave</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="optimization-methods.html"><span class="kind k-project">project</span><span class="rel-t">Optimization Methods</span><span class="rel-g">Master&#x27;s Optimization Methods course at Wrocław University of Science and Technology (FICT, lectures by M. Przewoźniczek)</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

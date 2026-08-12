@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Authorisation in the Query Predicate · Glass Box</title>
+<meta name="description" content="Authorisation is a domain decision: the system determines whether an authenticated actor may operate on a loaded resource, then performs the requested operation">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Authorisation in the Query Predicate · Glass Box">
+<meta property="og:description" content="Authorisation is a domain decision: the system determines whether an authenticated actor may operate on a loaded resource, then performs the requested operation">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The explicit contract","Why queries are not policy","Visibility is part of the policy","Test the actor boundary","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["project-management-web-platform/src/domain/authz.ts","project-management-web-platform/test/http-access-control.test.ts","project-management-web-platform/README.md"],"dateModified":"2026-08-12","description":"Authorisation is a domain decision: the system determines whether an authenticated actor may operate on a loaded resource, then performs the requested operation","headline":"Authorisation in the Query Predicate","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["security","architecture","testing","web-dev"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-12 · in force since 2026-08-02</span>
+    <span class="repos">project-management-web-platform</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Authorisation is a domain decision: the system determines whether an authenticated actor may operate on a loaded resource, then performs the requested operation</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-explicit-contract">The explicit contract</a></li><li><a href="#why-queries-are-not-policy">Why queries are not policy</a></li><li><a href="#visibility-is-part-of-the-policy">Visibility is part of the policy</a></li><li><a href="#test-the-actor-boundary">Test the actor boundary</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="authorisation-in-the-query-predicate">Authorisation in the Query Predicate</h1>
+<p>Authorisation is a domain decision: the system determines whether an authenticated actor may operate on a loaded resource, then performs the requested operation. A persistence query can select the resource to write, but a zero-match query result must not be the only expression of that decision.</p>
+<h2 id="the-explicit-contract" class="h-anch"><a class="hlink" href="#the-explicit-contract" aria-label="Link to this section">#</a>The explicit contract</h2>
+<p>The project-management API follows <strong>load, decide, write</strong>. Its policy functions receive already-loaded entities and return a boolean or throw a policy-specific error:</p>
+<p>~~~ts const project = await store.projects.findById(projectId); if (project === null) throw new NotFoundError(&quot;Project&quot;); assertUpdateProject(actor, project); return store.projects.update(projectId, patch); ~~~</p>
+<p>The authz module keeps these rules pure: project owners and administrators may update a project; task permissions additionally account for assignment. The use case remains responsible for loading the entity and applying the resulting decision before it writes.</p>
+<p>This separation makes three outcomes explicit:</p>
+<ul><li>a resource is absent;</li><li>a resource exists but is not visible to this caller;</li><li>a visible resource is not permitted for a particular operation.</li></ul>
+<p>Each outcome has a deliberate HTTP response rather than inheriting whatever a storage adapter happens to report.</p>
+<h2 id="why-queries-are-not-policy" class="h-anch"><a class="hlink" href="#why-queries-are-not-policy" aria-label="Link to this section">#</a>Why queries are not policy</h2>
+<p>A predicate such as ownerId = actor.userId is still useful when listing a caller&#x27;s own resources. It is not enough on its own for an operation that must tell the caller whether the operation was refused. A policy assertion can be exercised without a database or HTTP response, and a use case can preserve the same rule when its storage implementation changes.</p>
+<p>Keeping the decision alongside the use case also makes new entry points less surprising. The same operation may be called by an HTTP route, a command, or a scheduled job; each obtains an actor and asks the same policy function.</p>
+<h2 id="visibility-is-part-of-the-policy" class="h-anch"><a class="hlink" href="#visibility-is-part-of-the-policy" aria-label="Link to this section">#</a>Visibility is part of the policy</h2>
+<p>The API returns 404 when an unrelated caller must not learn that a resource exists. That prevents identifier-taking endpoints from becoming discovery oracles. Administrators receive 403 for a denial because they are entitled to know the resource exists. An assignee who can read a task also receives 403 when attempting its deletion: claiming that a readable task is absent would contradict the API&#x27;s own view of the resource.</p>
+<p>The distinction belongs in the visibility assertion helpers, not in ad hoc route branches, so a caller sees a consistent contract across project and task operations.</p>
+<h2 id="test-the-actor-boundary" class="h-anch"><a class="hlink" href="#test-the-actor-boundary" aria-label="Link to this section">#</a>Test the actor boundary</h2>
+<p>The access-control suite constructs separate actors and checks both the refused response and the unchanged resource. Those tests cover ownership, assignment, administration, and resource visibility. They test the policy boundary rather than merely proving that an owner can complete a normal workflow.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a> · <a class="wl" href="project-management-web-platform.html">project-management-web-platform</a> · <a class="wl" href="cia-triad.html">cia-triad</a> · <a class="wl" href="contract-first-api-design.html">contract-first-api-design</a> · <a class="wl" href="layered-architecture.html">layered-architecture</a> · <a class="wl" href="re-read-the-account-on-every-request.html">re-read-the-account-on-every-request</a> · <a class="wl" href="referential-integrity.html">referential-integrity</a></p></div>
+  <div class="tags"><span class="tag">security</span><span class="tag">architecture</span><span class="tag">testing</span><span class="tag">web-dev</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">project-management-web-platform</span><span class="src-p">/src/domain/authz.ts</span></code></li><li><code><span class="src-r">project-management-web-platform</span><span class="src-p">/test/http-access-control.test.ts</span></code></li><li><code><span class="src-r">project-management-web-platform</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="cia-triad.html"><span class="kind k-concept">concept</span><span class="rel-t">CIA Triad</span><span class="rel-g">Confidentiality, Integrity, Availability — the three properties any security control is ultimately defending</span></a><a class="rel" href="contract-first-api-design.html"><span class="kind k-concept">concept</span><span class="rel-t">Contract-First API Design</span><span class="rel-g">Write the API specification first; generate the code from it</span></a><a class="rel" href="layered-architecture.html"><span class="kind k-concept">concept</span><span class="rel-t">Layered Architecture</span><span class="rel-g">Split the application into horizontal tiers where each layer may only call the one below it: api/ handles HTTP and nothing else, service/ holds the domain rules and…</span></a><a class="rel" href="referential-integrity.html"><span class="kind k-concept">concept</span><span class="rel-t">Referential Integrity</span><span class="rel-g">Every foreign-key value either matches an existing primary key or is NULL</span></a><a class="rel" href="tests-that-pass-for-the-wrong-reason.html"><span class="kind k-concept">concept</span><span class="rel-t">Tests That Pass for the Wrong Reason</span><span class="rel-g">A failing test tells you something is broken</span></a><a class="rel" href="re-read-the-account-on-every-request.html"><span class="kind k-decision">decision</span><span class="rel-t">Re-read the Account on Every Request</span><span class="rel-g">project-management-web-platform verifies a session token and then loads the account named by its claims for every authenticated request</span></a><a class="rel" href="project-management-web-platform.html"><span class="kind k-project">project</span><span class="rel-t">Project Management Web Platform</span><span class="rel-g">A TypeScript API for projects, tasks, accounts, and session-based access control</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

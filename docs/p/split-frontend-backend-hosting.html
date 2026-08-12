@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Split Frontend and Backend Hosting · Glass Box</title>
+<meta name="description" content="Decision: deploy the stickfps client as a static bundle on one host and the game server as a long-lived process on another, rather than shipping one application">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Split Frontend and Backend Hosting · Glass Box">
+<meta property="og:description" content="Decision: deploy the stickfps client as a static bundle on one host and the game server as a long-lived process on another, rather than shipping one application">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The reasoning generalises past Vercel","What the split costs","Status","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["browser_game_stickfps/PROJECT.md","browser_game_stickfps/docs/DEPLOYMENT.md","browser_game_stickfps/docs/SRS.md","browser_game_stickfps/TASKS.md"],"dateModified":"2026-07-28","description":"Decision: deploy the stickfps client as a static bundle on one host and the game server as a long-lived process on another, rather than shipping one application","headline":"Split Frontend and Backend Hosting","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["devops","architecture","networking","web-dev"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-14</span>
+    <span class="repos">browser_game_stickfps</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Decision: deploy the stickfps client as a static bundle on one host and the game server as a long-lived process on another, rather than shipping one application</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-reasoning-generalises-past-vercel">The reasoning generalises past Vercel</a></li><li><a href="#what-the-split-costs">What the split costs</a></li><li><a href="#status">Status</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="split-frontend-and-backend-hosting">Split Frontend and Backend Hosting</h1>
+<p><strong>Decision:</strong> deploy the <a class="wl" href="stickfps.html">stickfps</a> client as a static bundle on one host and the game server as a long-lived process on another, rather than shipping one application. Recorded as project constraint C5.</p>
+<blockquote><p>&quot;Vercel serverless functions time out at 10s and cannot hold a 60Hz authoritative loop — the game server needs a persistent process, so it&#x27;s split out.&quot;</p><cite>browser_game_stickfps/PROJECT.md, 2026-07-25</cite></blockquote>
+<h2 id="the-reasoning-generalises-past-vercel" class="h-anch"><a class="hlink" href="#the-reasoning-generalises-past-vercel" aria-label="Link to this section">#</a>The reasoning generalises past Vercel</h2>
+<p>A serverless function is billed and scheduled per request; it has an execution ceiling and no identity between invocations. An authoritative game server is the opposite on all three axes: it runs continuously, it <em>is</em> the state (<a class="wl" href="server-authoritative-netcode.html">server-authoritative-netcode</a> keeps every <code>Room</code> in memory), and its clock must not be interrupted (<a class="wl" href="fixed-timestep-simulation.html">fixed-timestep-simulation</a> at 60 Hz). Nothing about that is specific to one vendor — it disqualifies the whole serverless execution model, and it also rules out scaling by replicas without a room-affinity layer that does not exist here.</p>
+<p>The client, meanwhile, is the ideal serverless workload: a <a class="wl" href="vite.html">vite</a> build with no server-side logic at all, deployable to any static host or CDN.</p>
+<p>Splitting lets each half be hosted on what suits it, and it is what allowed the backend host to be swapped entirely in <a class="wl" href="render-over-fly-io.html">render-over-fly-io</a> without touching the frontend deployment.</p>
+<h2 id="what-the-split-costs" class="h-anch"><a class="hlink" href="#what-the-split-costs" aria-label="Link to this section">#</a>What the split costs</h2>
+<ul><li><strong>Two deployments, in order.</strong> The backend must exist first, because <code>VITE_*</code> variables are inlined at build time — see <a class="wl" href="vite.html">vite</a>. A server URL change is a frontend rebuild.</li><li><strong>Cross-origin by construction.</strong> The <code>CORS_ORIGIN</code> allowlist and the WebSocket <code>verifyClient</code> origin check exist because of this split (<a class="wl" href="ws-websocket-server.html">ws-websocket-server</a>).</li><li><strong>Two idle behaviours to reason about.</strong> A static bundle is always warm; a free backend instance is not (<a class="wl" href="render-hosting.html">render-hosting</a>).</li></ul>
+<h2 id="status" class="h-anch"><a class="hlink" href="#status" aria-label="Link to this section">#</a>Status</h2>
+<p>The split is real in the code and in the runbook. Whether both halves were ever deployed together is the open question on <a class="wl" href="stickfps.html">stickfps</a>: the interview confirms multiplayer play over a real network, while <code>docs/DEPLOYMENT.md</code> states no deploy had been run as of the last commit, and no <code>render.yaml</code> or <code>vercel.json</code> exists in the tree. <code>TODO:</code> the actual hosts of the live session are unevidenced — <code>confidence: low</code> on that sub-claim; the decision itself is well documented.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="render-over-fly-io.html">render-over-fly-io</a> · <a class="wl" href="render-hosting.html">render-hosting</a> · <a class="wl" href="ws-websocket-server.html">ws-websocket-server</a> · <a class="wl" href="vite.html">vite</a> · <a class="wl" href="duplicate-sim-code-over-shared-package.html">duplicate-sim-code-over-shared-package</a> · <a class="wl" href="stickfps.html">stickfps</a></p></div>
+  <div class="tags"><span class="tag">devops</span><span class="tag">architecture</span><span class="tag">networking</span><span class="tag">web-dev</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/PROJECT.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/docs/DEPLOYMENT.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/docs/SRS.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/TASKS.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="fixed-timestep-simulation.html"><span class="kind k-concept">concept</span><span class="rel-t">Fixed Timestep Simulation</span><span class="rel-g">Advance the simulation in constant-size steps regardless of how long a frame took</span></a><a class="rel" href="server-authoritative-netcode.html"><span class="kind k-concept">concept</span><span class="rel-t">Server-Authoritative Netcode</span><span class="rel-g">The client is an input device and a renderer</span></a><a class="rel" href="duplicate-sim-code-over-shared-package.html"><span class="kind k-decision">decision</span><span class="rel-t">Duplicated Sim Code Instead of a Shared Package</span><span class="rel-g">Decision: keep the shared simulation logic as two hand-synchronised copies — one in client/src, one in server/src — rather than extracting it into a workspace package…</span></a><a class="rel" href="render-over-fly-io.html"><span class="kind k-decision">decision</span><span class="rel-t">Render Over Fly.io</span><span class="rel-g">Decision (2026-07-24, round 11): host the stickfps game server on Render</span></a><a class="rel" href="stickfps.html"><span class="kind k-project">project</span><span class="rel-t">Stickfps</span><span class="rel-g">A 5v5 round-based browser tactical FPS: Counter-Strike round/economy structure, Krunker-style movement feel, procedurally-generated low-poly stickmen</span></a><a class="rel" href="render-hosting.html"><span class="kind k-tech">tech</span><span class="rel-t">Render</span><span class="rel-g">Managed application hosting with a free tier that does not require a credit card</span></a><a class="rel" href="vite.html"><span class="kind k-tech">tech</span><span class="rel-t">Vite</span><span class="rel-g">Build tool and dev server for the stickfps client — vite ^8.1.1 with @vitejs/plugin-react ^6.0.3, producing the static bundle that is deployed separately from the game…</span></a><a class="rel" href="ws-websocket-server.html"><span class="kind k-tech">tech</span><span class="rel-t">ws (WebSocket Server)</span><span class="rel-g">The Node WebSocket implementation, ^8.21.1</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

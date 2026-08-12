@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Symmetric vs Asymmetric Cryptography · Glass Box</title>
+<meta name="description" content="Two families with different guarantees and wildly different costs">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Symmetric vs Asymmetric Cryptography · Glass Box">
+<meta property="og:description" content="Two families with different guarantees and wildly different costs">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The two problems symmetric cryptography cannot solve","Why it is slow, and what \"slow\" means","The hybrid construction","Key-length intuition","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Cybersecurity-Engineering-Laboratories/labs/03_symmetric_ciphers/lab-03-report.pdf","Cybersecurity-Engineering-Laboratories/labs/04_asymmetric_ciphers/lab-04-report.pdf","Cybersecurity-Engineering-Laboratories/labs/06_hash_functions/lab-06-report.pdf"],"dateModified":"2026-07-28","description":"Two families with different guarantees and wildly different costs","headline":"Symmetric vs Asymmetric Cryptography","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["cryptography","security","performance"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Cybersecurity-Engineering-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Two families with different guarantees and wildly different costs</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-two-problems-symmetric-cryptography-cannot-solve">The two problems symmetric cryptography cannot solve</a></li><li><a href="#why-it-is-slow-and-what-slow-means">Why it is slow, and what &quot;slow&quot; means</a></li><li><a href="#the-hybrid-construction">The hybrid construction</a></li><li><a href="#key-length-intuition">Key-length intuition</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="symmetric-vs-asymmetric-cryptography">Symmetric vs Asymmetric Cryptography</h1>
+<p>Two families with different guarantees and wildly different costs. <strong>Neither replaces the other</strong> — every real protocol uses both, and understanding why is the point of labs 03–06 in <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a>.</p>
+<h2 id="the-two-problems-symmetric-cryptography-cannot-solve" class="h-anch"><a class="hlink" href="#the-two-problems-symmetric-cryptography-cannot-solve" aria-label="Link to this section">#</a>The two problems symmetric cryptography cannot solve</h2>
+<p>One shared secret used for both encryption and decryption is fast and simple, and fails twice:</p>
+<ol><li><strong>Key distribution.</strong> The recipient must already have the key, and getting it to them over the same untrusted channel is the original problem restated.</li><li><strong>Key count.</strong> Every <em>pair</em> of parties needs its own key, or a third party in the group can read traffic that is not theirs. <em>n</em> participants need <em>n(n−1)/2</em> keys.</li></ol>
+<p>Asymmetric cryptography dissolves both: each party publishes one key and keeps one, so <em>n</em> participants need <em>n</em> keypairs and the public half can travel over any channel. What it does <strong>not</strong> give you for free is knowing <em>whose</em> public key you hold — that is a trust problem, not a maths problem, and it is what <a class="wl" href="public-key-infrastructure.html">public-key-infrastructure</a> exists to answer.</p>
+<h2 id="why-it-is-slow-and-what-slow-means" class="h-anch"><a class="hlink" href="#why-it-is-slow-and-what-slow-means" aria-label="Link to this section">#</a>Why it is slow, and what &quot;slow&quot; means</h2>
+<p>Asymmetric schemes rest on one-way functions — problems easy in one direction and hard in reverse. RSA rests on integer factorisation (see <a class="wl" href="rsa-and-integer-factorization.html">rsa-and-integer-factorization</a>); Diffie–Hellman, DSA, ElGamal and the elliptic-curve family rest on discrete logarithms. Both involve modular exponentiation over very large integers, which is orders of magnitude more expensive per byte than a block cipher&#x27;s round function.</p>
+<p>Lab 04&#x27;s design is the right way to establish this. Encryption time is measured across <strong>two</strong> varying factors at once — RSA key length (512, 1024, 2048 bits) against input size (1, 5, 10 MB) — with input diversity held as a third axis carried over from lab 03. Varying both separates <em>what actually drives cost</em>: key length dominates per-operation cost, input size dominates total cost, and input entropy turns out to drive neither. A single-variable experiment would have conflated them.</p>
+<p>The fixtures for that measurement are generated rather than committed — see <a class="wl" href="generate-fixtures-not-commit.html">generate-fixtures-not-commit</a>.</p>
+<h2 id="the-hybrid-construction" class="h-anch"><a class="hlink" href="#the-hybrid-construction" aria-label="Link to this section">#</a>The hybrid construction</h2>
+<p>The resolution every deployed protocol reaches: <strong>encrypt the data with a symmetric cipher, encrypt only the symmetric key with the asymmetric one.</strong> One expensive public-key operation on a few hundred bits, then a fast block cipher on the payload. TLS, PGP, S/MIME and encrypted-messaging protocols are all this shape.</p>
+<p>The alternative to shipping a wrapped key is agreeing one: Diffie–Hellman derives a shared secret from public exchanges, so nothing secret crosses the wire at all. Lab 06 attempts DH both as a CrypTool demonstration and practically over OpenSSL between two VMs — and the OpenSSL half is one of the repository&#x27;s recorded failures (&quot;did not work&quot;, &quot;not resolved&quot;). <strong>TODO:</strong> whether it was later completed is unrecorded. The DH concept is evidenced from the lab&#x27;s written answers; the practical exchange is not evidenced as having succeeded. <code>confidence: low</code> on that specific exercise.</p>
+<p>DH&#x27;s own weakness is stated in the same report and is the reason the two labs that follow exist: unauthenticated key agreement is defeated by a <a class="wl" href="man-in-the-middle-attack.html">man-in-the-middle-attack</a>, so DH must be signed — which returns to <a class="wl" href="digital-signatures.html">digital-signatures</a> and <a class="wl" href="public-key-infrastructure.html">public-key-infrastructure</a>.</p>
+<h2 id="key-length-intuition" class="h-anch"><a class="hlink" href="#key-length-intuition" aria-label="Link to this section">#</a>Key-length intuition</h2>
+<p>Key lengths are not comparable across families. 128-bit symmetric ≈ 3072-bit RSA ≈ 256-bit elliptic curve, roughly, for equivalent work factor. The lab&#x27;s own answer puts 2048-bit RSA at &quot;generally secure for most purposes&quot; with 3072/4096 for stronger requirements — accurate for 2022, and the sort of claim that needs a date attached, which is why this page carries <code>valid_from</code>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="public-key-infrastructure.html">public-key-infrastructure</a> · <a class="wl" href="digital-signatures.html">digital-signatures</a> · <a class="wl" href="block-cipher-modes.html">block-cipher-modes</a> · <a class="wl" href="rsa-and-integer-factorization.html">rsa-and-integer-factorization</a> · <a class="wl" href="openssl.html">openssl</a> · <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a></p></div>
+  <div class="tags"><span class="tag">cryptography</span><span class="tag">security</span><span class="tag">performance</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/03_symmetric_ciphers/lab-03-report.pdf</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/04_asymmetric_ciphers/lab-04-report.pdf</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/06_hash_functions/lab-06-report.pdf</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="block-cipher-modes.html"><span class="kind k-concept">concept</span><span class="rel-t">Block Cipher Modes</span><span class="rel-g">A block cipher encrypts one fixed-size block</span></a><a class="rel" href="digital-signatures.html"><span class="kind k-concept">concept</span><span class="rel-t">Digital Signatures</span><span class="rel-g">Sign with the private key, verify with the public one — the reverse of encryption&#x27;s key usage, and the source of three properties encryption alone does not provide</span></a><a class="rel" href="man-in-the-middle-attack.html"><span class="kind k-concept">concept</span><span class="rel-t">Man-in-the-Middle Attack</span><span class="rel-g">A class of attack in which the attacker sits between two communicating parties, relaying traffic while both believe they are talking directly to each other</span></a><a class="rel" href="public-key-infrastructure.html"><span class="kind k-concept">concept</span><span class="rel-t">Public Key Infrastructure</span><span class="rel-g">The answer to the question asymmetric cryptography leaves open: you hold a public key, but whose is it? PKI is the set of roles, policies and formats that binds a public…</span></a><a class="rel" href="rsa-and-integer-factorization.html"><span class="kind k-concept">concept</span><span class="rel-t">RSA and Integer Factorization</span><span class="rel-g">RSA&#x27;s security rests on one asymmetry: multiplying two large primes is cheap, recovering them from the product is not</span></a><a class="rel" href="generate-fixtures-not-commit.html"><span class="kind k-decision">decision</span><span class="rel-t">Generate Fixtures Rather Than Commit Them</span><span class="rel-g">Ship a four-line generator for the 1 MB / 5 MB / 10 MB inputs used to time RSA, and .gitignore the outputs — rather than committing 16 MB of filler</span></a><a class="rel" href="cybersecurity-engineering-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Cybersecurity Engineering Laboratories</span><span class="rel-g">Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026</span></a><a class="rel" href="openssl.html"><span class="kind k-tech">tech</span><span class="rel-t">OpenSSL</span><span class="rel-g">The general-purpose cryptography toolkit — a library that most of the internet links against, plus a command-line front end that is the standard way to do PKI work by…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

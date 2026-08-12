@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>No External Assets · Glass Box</title>
+<meta name="description" content="Decision: every visual and audio asset in stickfps must be generated in code">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="No External Assets · Glass Box">
+<meta property="og:description" content="Decision: every visual and audio asset in stickfps must be generated in code">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["What that means concretely","Why it holds up","What it costs","Where it sits in the wider habit","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["browser_game_stickfps/DESIGN_PROMPT.md","browser_game_stickfps/client/src/game/environment/Environment.tsx","browser_game_stickfps/client/src/audio/sounds.ts","browser_game_stickfps/client/src/game/player/Stickman.tsx"],"dateModified":"2026-07-28","description":"Decision: every visual and audio asset in stickfps must be generated in code","headline":"No External Assets","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["game-dev","architecture","performance","web-dev"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-14</span>
+    <span class="repos">browser_game_stickfps</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Decision: every visual and audio asset in stickfps must be generated in code</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#what-that-means-concretely">What that means concretely</a></li><li><a href="#why-it-holds-up">Why it holds up</a></li><li><a href="#what-it-costs">What it costs</a></li><li><a href="#where-it-sits-in-the-wider-habit">Where it sits in the wider habit</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="no-external-assets">No External Assets</h1>
+<p><strong>Decision:</strong> every visual and audio asset in <a class="wl" href="stickfps.html">stickfps</a> must be generated in code. No model files, no texture files, no audio files, no font files. Stated as a hard filter on the design itself, not as a technique:</p>
+<blockquote><p>&quot;<strong>If a design needs an asset, it must be procedurally generatable in code, or it&#x27;s out.</strong>&quot;</p><cite>browser_game_stickfps/DESIGN_PROMPT.md, 2026-07-25</cite></blockquote>
+<h2 id="what-that-means-concretely" class="h-anch"><a class="hlink" href="#what-that-means-concretely" aria-label="Link to this section">#</a>What that means concretely</h2>
+<ul><li><strong>Geometry</strong> — the entire arena from box, plane and cylinder primitives in a 576-line <code>Environment.tsx</code>; stickmen generated procedurally. See <a class="wl" href="three-js.html">three-js</a>.</li><li><strong>Audio</strong> — all SFX synthesised with the Web Audio API in a 300-line <code>sounds.ts</code>. Zero audio files.</li><li><strong>Textures</strong> — inline SVG data URIs.</li><li><strong>Type</strong> — system UI fonts.</li></ul>
+<h2 id="why-it-holds-up" class="h-anch"><a class="hlink" href="#why-it-holds-up" aria-label="Link to this section">#</a>Why it holds up</h2>
+<p>It removes an entire class of work that a solo browser project cannot afford: sourcing, licensing, optimising, hosting and cache-busting binary assets. There is no asset pipeline, no CDN, no attribution ledger, and no licence question about anything shipped.</p>
+<p>It also makes the visual identity <strong>reviewable</strong>. Art becomes code that diffs, and a design change is an edit rather than a re-export from a tool the repo does not contain. When the film-noir grayscale identity was retired for full colour (<a class="wl" href="superseded-in-place-documentation.html">superseded-in-place-documentation</a>), the change was a code change — with no assets to re-author, reversing a whole art direction stayed cheap.</p>
+<h2 id="what-it-costs" class="h-anch"><a class="hlink" href="#what-it-costs" aria-label="Link to this section">#</a>What it costs</h2>
+<p>The art ceiling is set by what primitives can express, and everything renders from setup code rather than from optimised buffers. The bundle is still ~1.4 MB, so this bought no size win — the weight is <a class="wl" href="react-three-fiber.html">react-three-fiber</a> and its dependencies, not content. Some visual ideas are simply unavailable.</p>
+<h2 id="where-it-sits-in-the-wider-habit" class="h-anch"><a class="hlink" href="#where-it-sits-in-the-wider-habit" aria-label="Link to this section">#</a>Where it sits in the wider habit</h2>
+<p><a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> is contradicted at the toolchain level here — <a class="wl" href="stickfps.html">stickfps</a> has twelve runtime dependencies and two build pipelines (<a class="wl" href="vite.html">vite</a>). But the same instinct reappears one layer down as an absolute rule: <strong>refuse the asset pipeline wherever code can replace it.</strong> The coursework repositories refuse the build step; this one accepts the build step and refuses the content.</p>
+<p>That is the more precise statement of the pattern across the source set: the thing being avoided is a <em>fetched, opaque, unversioned input</em>, not tooling as such.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="three-js.html">three-js</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> · <a class="wl" href="react-three-fiber.html">react-three-fiber</a> · <a class="wl" href="superseded-in-place-documentation.html">superseded-in-place-documentation</a> · <a class="wl" href="stickfps.html">stickfps</a></p></div>
+  <div class="tags"><span class="tag">game-dev</span><span class="tag">architecture</span><span class="tag">performance</span><span class="tag">web-dev</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/DESIGN_PROMPT.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/client/src/game/environment/Environment.tsx</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/client/src/audio/sounds.ts</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/client/src/game/player/Stickman.tsx</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="superseded-in-place-documentation.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Superseded-in-Place Documentation</span><span class="rel-g">When a decision is reversed, the document is not rewritten</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="stickfps.html"><span class="kind k-project">project</span><span class="rel-t">Stickfps</span><span class="rel-g">A 5v5 round-based browser tactical FPS: Counter-Strike round/economy structure, Krunker-style movement feel, procedurally-generated low-poly stickmen</span></a><a class="rel" href="react-three-fiber.html"><span class="kind k-tech">tech</span><span class="rel-t">React Three Fiber</span><span class="rel-g">A React renderer for three-js: the scene graph is expressed as JSX components and reconciled like a DOM tree</span></a><a class="rel" href="three-js.html"><span class="kind k-tech">tech</span><span class="rel-t">Three.js</span><span class="rel-g">WebGL scene-graph library</span></a><a class="rel" href="vite.html"><span class="kind k-tech">tech</span><span class="rel-t">Vite</span><span class="rel-g">Build tool and dev server for the stickfps client — vite ^8.1.1 with @vitejs/plugin-react ^6.0.3, producing the static bundle that is deployed separately from the game…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

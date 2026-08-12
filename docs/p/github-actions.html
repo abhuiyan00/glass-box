@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GitHub Actions · Glass Box</title>
+<meta name="description" content="GitHub&#x27;s hosted CI">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GitHub Actions · Glass Box">
+<meta property="og:description" content="GitHub&#x27;s hosted CI">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The steps, and what each one actually asserts","The finding: the workflow is more honest than the README","Environment gaps CI does not close","Relationship to the Makefile","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["labour-fraud-analysis-a-forensic-data-investigation/.github/workflows/ci.yml","labour-fraud-analysis-a-forensic-data-investigation/Makefile","labour-fraud-analysis-a-forensic-data-investigation/requirements.txt","labour-fraud-analysis-a-forensic-data-investigation/pyproject.toml"],"dateModified":"2026-07-28","description":"GitHub's hosted CI","headline":"GitHub Actions","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["ci-cd","devops","testing","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">labour-fraud-analysis-a-forensic-data-investigation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>GitHub&#x27;s hosted CI</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-steps-and-what-each-one-actually-asserts">The steps, and what each one actually asserts</a></li><li><a href="#the-finding-the-workflow-is-more-honest-than-the-readme">The finding: the workflow is more honest than the README</a></li><li><a href="#environment-gaps-ci-does-not-close">Environment gaps CI does not close</a></li><li><a href="#relationship-to-the-makefile">Relationship to the Makefile</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="github-actions">GitHub Actions</h1>
+<p>GitHub&#x27;s hosted CI. <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> carries one workflow, <code>.github/workflows/ci.yml</code>, triggered on every push and pull request — the only CI across the repositories ingested with it. <code>ubuntu-latest</code>, <code>actions/setup-python@v5</code> pinned to 3.12 with the pip cache enabled, then six steps.</p>
+<h2 id="the-steps-and-what-each-one-actually-asserts" class="h-anch"><a class="hlink" href="#the-steps-and-what-each-one-actually-asserts" aria-label="Link to this section">#</a>The steps, and what each one actually asserts</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Step</th>
+<th>Enforces</th>
+</tr></thead><tbody>
+<tr><td><code>ruff check src</code></td><td>lint only</td></tr>
+<tr><td><code>python src/build_db.py</code></td><td>the SQLite build runs with foreign keys on, so <strong>0 FK violations</strong> across the dataset</td></tr>
+<tr><td><code>build_docs.py</code> then <code>git diff --exit-code</code> on four paths</td><td>the committed generated docs match what the data produces — <a class="wl" href="generated-docs-checked-by-ci-diff.html">generated-docs-checked-by-ci-diff</a></td></tr>
+<tr><td><code>validate_anonymization.py</code></td><td>structural integrity <strong>plus a regex PII sweep</strong> — and nothing more, see below</td></tr>
+<tr><td><code>pytest -q</code></td><td>primary-key uniqueness, foreign-key closure, row counts against the manifest, and two signal-preservation tests — <a class="wl" href="pytest.html">pytest</a></td></tr>
+<tr><td><code>nbconvert --execute</code></td><td>the analysis notebook runs end-to-end headless, 240-second timeout</td></tr>
+</tbody></table></div>
+<p>Two habits here are worth copying. <strong>Step names are assertions, not verbs</strong> — &quot;Build database — asserts 0 foreign-key violations&quot;, &quot;Derived docs are in sync with data/&quot;, &quot;Notebook executes end-to-end&quot;. A red build tells you what became false, from the run summary alone, before you open a log. And <strong>the notebook is executed in CI</strong>, which is rare: a stored notebook is a screenshot of a result, an executed one is a test of it. See <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a>.</p>
+<h2 id="the-finding-the-workflow-is-more-honest-than-the-readme" class="h-anch"><a class="hlink" href="#the-finding-the-workflow-is-more-honest-than-the-readme" aria-label="Link to this section">#</a>The finding: the workflow is more honest than the README</h2>
+<p><code>confidence: high</code> — interview-confirmed, 2026-07-28.</p>
+<p>The README claims no value in the published data identifies a real party, &quot;a claim that is test-verified in CI&quot;. The workflow&#x27;s own comment says otherwise:</p>
+<blockquote><p>&quot;On a clean runner the private source + rules are absent, so the leak/stem scans skip and this enforces structural integrity + the PII regex sweep.&quot;</p><cite>labour-fraud-analysis-a-forensic-data-investigation/.github/workflows/ci.yml, 2026-07-11</cite></blockquote>
+<p>Two of the <a class="wl" href="disclosure-gate.html">disclosure-gate</a>&#x27;s four checks — the run-time blocklist built from the private corpus, and the stem guard from a git-ignored rules module — <strong>cannot execute where their inputs do not exist</strong>. Public CI enforces the other two. This is a general property of secret-scanning gates rather than a local mistake, and the workflow states it in the place a reader will find it. The README does not. See <a class="wl" href="documentation-drift.html">documentation-drift</a>.</p>
+<h2 id="environment-gaps-ci-does-not-close" class="h-anch"><a class="hlink" href="#environment-gaps-ci-does-not-close" aria-label="Link to this section">#</a>Environment gaps CI does not close</h2>
+<ul><li>It installs <code>requirements.txt</code>, never the package. <code>pyproject.toml</code> declares no <code>dependencies</code> key at all, so <code>pip install -e .</code> would install nothing — <a class="wl" href="setuptools-and-pyproject.html">setuptools-and-pyproject</a>.</li><li>It runs <strong>3.12 only</strong>, while the project declares support from 3.10 and lints to a py310 target. The declared floor is never exercised by anything.</li><li>Dependencies are floor-pinned with no upper bound and no lockfile, so a green run today is not evidence about tomorrow&#x27;s resolution.</li></ul>
+<h2 id="relationship-to-the-makefile" class="h-anch"><a class="hlink" href="#relationship-to-the-makefile" aria-label="Link to this section">#</a>Relationship to the Makefile</h2>
+<p>CI&#x27;s step list is <code>make ci</code> spelled out in YAML rather than invoked — <code>db docs validate lint test</code>, plus lint first and the notebook last. The duplication is small and the <a class="wl" href="make.html">make</a> target is the documented clean-clone contract, so a developer can reproduce the pipeline locally with one command. Keeping them in sync is manual; nothing checks that they agree.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> · <a class="wl" href="make.html">make</a> · <a class="wl" href="disclosure-gate.html">disclosure-gate</a> · <a class="wl" href="generated-docs-checked-by-ci-diff.html">generated-docs-checked-by-ci-diff</a> · <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a> · <a class="wl" href="pytest.html">pytest</a> · <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a></p></div>
+  <div class="tags"><span class="tag">ci-cd</span><span class="tag">devops</span><span class="tag">testing</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/.github/workflows/ci.yml</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/Makefile</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/requirements.txt</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/pyproject.toml</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="disclosure-gate.html"><span class="kind k-concept">concept</span><span class="rel-t">Disclosure Gate</span><span class="rel-g">A build step that must pass before anything derived from sensitive input may be published</span></a><a class="rel" href="reproducible-analysis.html"><span class="kind k-concept">concept</span><span class="rel-t">Reproducible Analysis</span><span class="rel-g">An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="generated-docs-checked-by-ci-diff.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Docs Checked by CI Diff</span><span class="rel-g">Generate documentation from the data, commit the output, and then have CI regenerate it and fail the build if the result differs</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a><a class="rel" href="make.html"><span class="kind k-tech">tech</span><span class="rel-t">Make</span><span class="rel-g">The old dependency-graph task runner, used here purely as a named-command registry rather than for incremental rebuilds</span></a><a class="rel" href="pytest.html"><span class="kind k-tech">tech</span><span class="rel-t">pytest</span><span class="rel-g">The test runner for python-programming-laboratories — and the only real test framework anywhere in the two lab repositories</span></a><a class="rel" href="setuptools-and-pyproject.html"><span class="kind k-tech">tech</span><span class="rel-t">setuptools and pyproject.toml</span><span class="rel-g">The packaging layer that turns twelve lab scripts into one installable project in python-programming-laboratories</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

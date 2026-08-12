@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Soft Multiplicative Ban Penalty · Glass Box</title>
+<meta name="description" content="Charge a banned leg 3× its real length (LBBSParams::banned_mult = 3.0, applied in BannedDist) instead of adding a flat +1×10⁸ metres">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Soft Multiplicative Ban Penalty · Glass Box">
+<meta property="og:description" content="Charge a banned leg 3× its real length (LBBSParams::banned_mult = 3.0, applied in BannedDist) instead of adding a flat +1×10⁸ metres">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The symptom","The diagnosis","Why multiplicative, and why 3×","Result","The constraint that shaped it","Why it is on the wiki","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Optimization Methods/final_project/mdvrp/include/lbbs.hpp","Optimization Methods/final_project/output/experiments/lbbs/tuned/mod_note.md","Optimization Methods/final_project/output/experiments/lbbs/pilot/analysis.md","Optimization Methods/final_project/README.md"],"dateModified":"2026-07-28","description":"Charge a banned leg 3× its real length (LBBSParams::banned_mult = 3.0, applied in BannedDist) instead of adding a flat +1×10⁸ metres","headline":"Soft Multiplicative Ban Penalty","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["optimization","algorithms","debugging","cpp"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">Optimization Methods</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Charge a banned leg 3× its real length (LBBSParams::banned_mult = 3.0, applied in BannedDist) instead of adding a flat +1×10⁸ metres</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-symptom">The symptom</a></li><li><a href="#the-diagnosis">The diagnosis</a></li><li><a href="#why-multiplicative-and-why-3">Why multiplicative, and why 3×</a></li><li><a href="#result">Result</a></li><li><a href="#the-constraint-that-shaped-it">The constraint that shaped it</a></li><li><a href="#why-it-is-on-the-wiki">Why it is on the wiki</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="soft-multiplicative-ban-penalty">Soft Multiplicative Ban Penalty</h1>
+<p><strong>Decision.</strong> Charge a banned leg <strong>3× its real length</strong> (<code>LBBSParams::banned_mult = 3.0</code>, applied in <code>BannedDist</code>) instead of adding a flat <strong>+1×10⁸ metres</strong>.</p>
+<p><strong>Date.</strong> 2026-07-10 (committed); diagnosed during the P4 modification round in <a class="wl" href="optimization-methods.html">optimization-methods</a>.</p>
+<p><strong>Rejected alternative.</strong> The flat <code>+1e8</code> penalty that shipped first.</p>
+<h2 id="the-symptom" class="h-anch"><a class="hlink" href="#the-symptom" aria-label="Link to this section">#</a>The symptom</h2>
+<p>The <span class="unpub" title="named in the source wiki; not published">operator-bake-off</span> ranked all 32 operator combinations for the LBBS solver and produced a result that looked like a discovery and was actually a bug: <code>workload_imbalance</code> came out at <strong>~3.70 for every single combination</strong>. Thirty-two different search behaviours, one number. That is not what a hard objective looks like; that is what a constant looks like.</p>
+<h2 id="the-diagnosis" class="h-anch"><a class="hlink" href="#the-diagnosis" aria-label="Link to this section">#</a>The diagnosis</h2>
+<p>Per-vehicle workload is summed from leg distances scored <em>through</em> <code>BannedDist</code>. A flat +1e8 on the one banned leg made a single vehicle&#x27;s &quot;distance&quot; ≈1e8 while the other ~14 sat at ~1e5. One outlier across ~15 vehicles forces the coefficient of variation to ≈3.68 regardless of what the GA does. The same 1e8 also swamped the objective — every reported LBBS distance read ≈1.01×10⁸, i.e. the penalty, not the route.</p>
+<blockquote><p>&quot;the old 1e8 was a single outlier that pinned workload_imbalance at ~3.70 regardless of operators&quot;</p><cite>Optimization Methods/final_project/mdvrp/include/lbbs.hpp, 2026-07-10</cite></blockquote>
+<h2 id="why-multiplicative-and-why-3" class="h-anch"><a class="hlink" href="#why-multiplicative-and-why-3" aria-label="Link to this section">#</a>Why multiplicative, and why 3×</h2>
+<p>A flat penalty is scale-free in the wrong direction: it is enormous relative to every real distance, so it dominates both the objective and any statistic computed from the scored distances. A multiplicative penalty stays on the real-distance scale by construction — a banned 800 m leg costs 2,400 m, which is a discouragement rather than a prohibition.</p>
+<p>That single change fixed both problems at once, which is why it was preferred to the obvious alternative of keeping the flat penalty and computing the imbalance statistic from <em>unpenalised</em> distances:</p>
+<blockquote><p>&quot;Re-tuning the penalty to a proportionate 3× removes the outlier, so <strong>both</strong> the reported fitness and the imbalance fall back onto the real-distance scale — a single change serving both goals.&quot;</p><cite>Optimization Methods/final_project/output/experiments/lbbs/tuned/mod_note.md, 2026-07-10</cite></blockquote>
+<p>The ban <em>concept</em> survives intact — the longest edge is still discouraged, just proportionately instead of catastrophically.</p>
+<h2 id="result" class="h-anch"><a class="hlink" href="#result" aria-label="Link to this section">#</a>Result</h2>
+<p>On the four large instances, best-of-10: fitness moves from ≈1.013×10⁸ to real values around 1.0M, and imbalance drops from ≈3.70 to <strong>0.200–0.318</strong> — a 90–95% reduction. All 12 instances remain feasible. Numbers and the trade-off they represent are on <a class="wl" href="workload-balance-vs-distance.html">workload-balance-vs-distance</a>.</p>
+<h2 id="the-constraint-that-shaped-it" class="h-anch"><a class="hlink" href="#the-constraint-that-shaped-it" aria-label="Link to this section">#</a>The constraint that shaped it</h2>
+<p>The penalty could not simply be handed to the GA. <code>Dist</code> has no virtual <code>operator()</code> and <code>distance.hpp</code> was held fixed — a deliberate consequence of the performance design in <a class="wl" href="lazy-dijkstra-distance-cache.html">lazy-dijkstra-distance-cache</a>:</p>
+<blockquote><p>&quot;Cannot feed BannedDist into the GA (Dist has no virtual operator() and distance.hpp must not change).&quot;</p><cite>Optimization Methods/final_project/mdvrp/include/lbbs.hpp, 2026-07-10</cite></blockquote>
+<p>So in the two-phase design, phase 2 explores with real distances and the ban is applied as soft scoring only in the final decode. The decision is therefore as much about <em>where</em> the penalty could be applied as about its size.</p>
+<h2 id="why-it-is-on-the-wiki" class="h-anch"><a class="hlink" href="#why-it-is-on-the-wiki" aria-label="Link to this section">#</a>Why it is on the wiki</h2>
+<p>This is a <strong>metric artefact caught by an experiment that had no reason to catch it</strong>. The bake-off was built to rank operators; the flat line across all 32 cells was the evidence that the metric was broken. Running a factorial design and looking at the <em>variance</em> rather than only the winner is what made it visible — and the repo published the before/after rather than quietly shipping the fixed numbers, which is <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="optimization-methods.html">optimization-methods</a> · <a class="wl" href="revert-depot-mutation-rate-raise.html">revert-depot-mutation-rate-raise</a> · <a class="wl" href="multi-depot-vehicle-routing.html">multi-depot-vehicle-routing</a> · <a class="wl" href="blind-baseline-comparison.html">blind-baseline-comparison</a></p></div>
+  <div class="tags"><span class="tag">optimization</span><span class="tag">algorithms</span><span class="tag">debugging</span><span class="tag">cpp</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/mdvrp/include/lbbs.hpp</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/output/experiments/lbbs/tuned/mod_note.md</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/output/experiments/lbbs/pilot/analysis.md</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="blind-baseline-comparison.html"><span class="kind k-concept">concept</span><span class="rel-t">Blind Baseline Comparison</span><span class="rel-g">Deliberately withhold the domain heuristic from the metaheuristic so that the comparison against that heuristic measures something</span></a><a class="rel" href="lazy-dijkstra-distance-cache.html"><span class="kind k-concept">concept</span><span class="rel-t">Lazy Dijkstra Distance Cache</span><span class="rel-g">Do not build the all-pairs distance matrix</span></a><a class="rel" href="multi-depot-vehicle-routing.html"><span class="kind k-concept">concept</span><span class="rel-t">Multi-Depot Vehicle Routing</span><span class="rel-g">Serve every customer from one of several depots, at minimum total travel cost, without exceeding vehicle capacity</span></a><a class="rel" href="workload-balance-vs-distance.html"><span class="kind k-concept">concept</span><span class="rel-t">Workload Balance Vs Distance</span><span class="rel-g">Minimising total fleet distance and sharing work evenly across vehicles are different objectives, and optimising the first alone reliably produces a fleet where one…</span></a><a class="rel" href="revert-depot-mutation-rate-raise.html"><span class="kind k-decision">decision</span><span class="rel-t">Revert The Depot-Mutation-Rate Raise</span><span class="rel-g">Keep p_mut_depot = 0.05</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="optimization-methods.html"><span class="kind k-project">project</span><span class="rel-t">Optimization Methods</span><span class="rel-g">Master&#x27;s Optimization Methods course at Wrocław University of Science and Technology (FICT, lectures by M. Przewoźniczek)</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

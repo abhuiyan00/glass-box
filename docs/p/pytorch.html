@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PyTorch · Glass Box</title>
+<meta name="description" content="torch==2.11.0">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch · Glass Box">
+<meta property="og:description" content="torch==2.11.0">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["What is actually built with it","Checkpoints and a real migration problem","Dependency hygiene","No GPU story","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["IT Applications in Business and Commerce/project/code/stable/gym_torcs/rl_agent.py","IT Applications in Business and Commerce/project/code/a.bhuiyan/gym_torcs/rl_agent.py","IT Applications in Business and Commerce/project/code/stable/requirements.txt","IT Applications in Business and Commerce/project/code/a.bhuiyan/requirements.txt"],"dateModified":"2026-07-28","description":"torch==2.11.0","headline":"PyTorch","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["ml","reinforcement-learning","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">IT Applications in Business and Commerce</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>torch==2.11.0</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#what-is-actually-built-with-it">What is actually built with it</a></li><li><a href="#checkpoints-and-a-real-migration-problem">Checkpoints and a real migration problem</a></li><li><a href="#dependency-hygiene">Dependency hygiene</a></li><li><a href="#no-gpu-story">No GPU story</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="pytorch">PyTorch</h1>
+<p><code>torch==2.11.0</code>. The only machine-learning dependency in the entire source set, and it appears in exactly one repository: <code>IT Applications in Business and Commerce</code>, where it trains the PPO race driver described in <a class="wl" href="proximal-policy-optimisation.html">proximal-policy-optimisation</a> and <a class="wl" href="residual-reinforcement-learning.html">residual-reinforcement-learning</a>.</p>
+<p>Everything else in the corpus that touches numerics uses numpy, and there is no TensorFlow, JAX, scikit-learn, Stable-Baselines3 or Gymnasium anywhere. <strong>The PPO implementation is hand-written on top of raw <code>torch.nn</code></strong> — no RL library was used.</p>
+<h2 id="what-is-actually-built-with-it" class="h-anch"><a class="hlink" href="#what-is-actually-built-with-it" aria-label="Link to this section">#</a>What is actually built with it</h2>
+<p>Both agent trees define an <code>ActorCriticNet(nn.Module)</code>:</p>
+<ul><li>two 256-unit <code>Tanh</code> MLP trunks — <strong>separate</strong> <code>self.actor</code> and <code>self.critic</code>, not a shared backbone</li><li>linear <code>policy_head</code> and <code>value_head</code> on top</li><li>a learned <code>log_std</code> as an <code>nn.Parameter</code>, initialised to <code>-1.2</code>, feeding a <code>torch.distributions.Normal</code></li><li><code>policy_head</code> weights and bias zero-initialised, then the throttle bias nudged to <code>+0.5</code> so the car moves at step zero instead of learning to press the accelerator from scratch</li></ul>
+<p>That last detail is the kind of thing a library hides. Here it is three lines of <code>nn.init</code> and a <code>with torch.no_grad()</code> block, which is the argument for writing it by hand at all.</p>
+<p>The training loop uses the clipped surrogate objective, GAE advantages, an entropy bonus (<code>entropy_coef=3e-3</code>) and <strong>target-KL early stopping</strong> (<code>target_kl=0.03</code>) — the whole update is plain tensor code, no <code>torch.compile</code>, no AMP, no distributed anything.</p>
+<h2 id="checkpoints-and-a-real-migration-problem" class="h-anch"><a class="hlink" href="#checkpoints-and-a-real-migration-problem" aria-label="Link to this section">#</a>Checkpoints and a real migration problem</h2>
+<p>Six <code>.pt</code> checkpoints (~0.9 MB each) are committed. <code>rl_agent.py</code> carries a <strong>shape-tolerant loader</strong> that maps an older <code>backbone.*</code> state dict onto the current split <code>actor</code>/<code>critic</code> trunks — evidence that the architecture changed mid-project and old runs had to keep loading. It is the only piece of version-migration code in the repo.</p>
+<h2 id="dependency-hygiene" class="h-anch"><a class="hlink" href="#dependency-hygiene" aria-label="Link to this section">#</a>Dependency hygiene</h2>
+<p>Both <code>requirements.txt</code> files pin torch <strong>plus its entire transitive tree</strong> — <code>filelock</code>, <code>fsspec</code>, <code>Jinja2</code>, <code>MarkupSafe</code>, <code>mpmath</code>, <code>networkx</code>, <code>sympy</code>, <code>typing_extensions</code>, <code>numpy</code> — with identical versions and differing only in the header comment. That is the signature of <code>pip freeze</code>, not of a curated manifest. There is no <code>pyproject.toml</code>, no lockfile and no CI.</p>
+<p>⚠ The <code>a.bhuiyan/requirements.txt</code> header comments matplotlib as &quot;optional — only needed to plot the generated racing line&quot;, but <strong>matplotlib is not in the list</strong>, while <code>racing_line.py</code> imports it for that plot. See <a class="wl" href="documentation-drift.html">documentation-drift</a>.</p>
+<ul><li><strong>TODO:</strong> whether pinning <code>torch==2.11.0</code> was a reproducibility decision or an accident of the virtualenv is unrecorded and the interview did not cover it. <code>confidence: low</code> on any intent.</li></ul>
+<h2 id="no-gpu-story" class="h-anch"><a class="hlink" href="#no-gpu-story" aria-label="Link to this section">#</a>No GPU story</h2>
+<p>Nothing in the repo records a device, a CUDA version or a training wall-clock. Networks are two 256-unit MLPs, so CPU training is entirely plausible, but the repo does not say — and the throughput claims that do exist belong to the <code>parallel</code> branch, which ships no code here. See <a class="wl" href="branch-per-experiment.html">branch-per-experiment</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="proximal-policy-optimisation.html">proximal-policy-optimisation</a> · <a class="wl" href="residual-reinforcement-learning.html">residual-reinforcement-learning</a> · <a class="wl" href="reward-shaping.html">reward-shaping</a> · <a class="wl" href="torcs-scr-protocol.html">torcs-scr-protocol</a> · <a class="wl" href="it-applications-in-business-and-commerce.html">it-applications-in-business-and-commerce</a></p></div>
+  <div class="tags"><span class="tag">ml</span><span class="tag">reinforcement-learning</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/stable/gym_torcs/rl_agent.py</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/a.bhuiyan/gym_torcs/rl_agent.py</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/stable/requirements.txt</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/a.bhuiyan/requirements.txt</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="proximal-policy-optimisation.html"><span class="kind k-concept">concept</span><span class="rel-t">Proximal Policy Optimisation</span><span class="rel-g">A policy-gradient method that improves a policy by repeatedly taking small, bounded steps away from the policy that collected the data</span></a><a class="rel" href="residual-reinforcement-learning.html"><span class="kind k-concept">concept</span><span class="rel-t">Residual Reinforcement Learning</span><span class="rel-g">A deterministic controller does the driving; the learned policy only outputs a bounded correction on top of it</span></a><a class="rel" href="reward-shaping.html"><span class="kind k-concept">concept</span><span class="rel-t">Reward Shaping</span><span class="rel-g">The task in it-applications-in-business-and-commerce is &quot;drive a fast, clean lap&quot;</span></a><a class="rel" href="branch-per-experiment.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Branch per Experiment</span><span class="rel-g">A git branch holds one hypothesis, not one feature</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="it-applications-in-business-and-commerce.html"><span class="kind k-project">project</span><span class="rel-t">IT Applications in Business and Commerce</span><span class="rel-g">This repository is not business analytics</span></a><a class="rel" href="torcs-scr-protocol.html"><span class="kind k-tech">tech</span><span class="rel-t">TORCS and the SCR Protocol</span><span class="rel-g">TORCS is an open-source racing simulator</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

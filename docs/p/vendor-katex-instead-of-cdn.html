@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendor KaTeX Instead of CDN · Glass Box</title>
+<meta name="description" content="Copy katex — katex.min.js, katex.min.css, auto-render.min.js and all 20 KaTeX_*.woff2 font files — into exam_prep/vendor/katex/ and load them by relative path, rather…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vendor KaTeX Instead of CDN · Glass Box">
+<meta property="og:description" content="Copy katex — katex.min.js, katex.min.css, auto-render.min.js and all 20 KaTeX_*.woff2 font files — into exam_prep/vendor/katex/ and load them by relative path, rather…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why","Alternatives rejected","What makes it hold","Cost, stated plainly","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Physics/exam_prep/snapshot.md","Physics/exam_prep/vendor/katex/","Physics/exam_prep/index.html","Physics/exam_prep/sw.js","Physics/README.md"],"dateModified":"2026-07-28","description":"Copy katex — katex.min.js, katex.min.css, auto-render.min.js and all 20 KaTeX_*.woff2 font files — into exam_prep/vendor/katex/ and load them by relative path, rather…","headline":"Vendor KaTeX Instead of CDN","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["javascript","web-dev","architecture"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-06-27</span>
+    <span class="repos">Physics</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Copy katex — katex.min.js, katex.min.css, auto-render.min.js and all 20 KaTeX_*.woff2 font files — into exam_prep/vendor/katex/ and load them by relative path, rather…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why">Why</a></li><li><a href="#alternatives-rejected">Alternatives rejected</a></li><li><a href="#what-makes-it-hold">What makes it hold</a></li><li><a href="#cost-stated-plainly">Cost, stated plainly</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="vendor-katex-instead-of-cdn">Vendor KaTeX Instead of CDN</h1>
+<p><strong>Decision.</strong> Copy <a class="wl" href="katex.html">katex</a> — <code>katex.min.js</code>, <code>katex.min.css</code>, <code>auto-render.min.js</code> and all 20 <code>KaTeX_*.woff2</code> font files — into <code>exam_prep/vendor/katex/</code> and load them by relative path, rather than linking a CDN build.</p>
+<p><strong>Date.</strong> The vendored files carry the earliest mtimes in <a class="wl" href="physics-exam-prep.html">physics-exam-prep</a>, 2026-06-27; first committed 2026-07-10.</p>
+<h2 id="why" class="h-anch"><a class="hlink" href="#why" aria-label="Link to this section">#</a>Why</h2>
+<p>The requirement is stated as the app&#x27;s headline, not as a footnote:</p>
+<blockquote><p>&quot;No build step. No server. No internet. <strong>Open one HTML file and start revising.</strong>&quot;</p><cite>Physics/README.md, 2026-07-10</cite></blockquote>
+<p>and the vendored folder is annotated with the consequence:</p>
+<blockquote><p>&quot;        └── katex/                  # bundled KaTeX (offline math) — no CDN needed&quot;</p><cite>Physics/exam_prep/snapshot.md, 2026-06-30</cite></blockquote>
+<p>The failure a CDN would cause is specific to this deliverable: a study app is used the night before an exam, plausibly with no connection, and math that fails to render is not degraded output — it is a blank formula where the answer should be. Fonts make it worse than a normal CDN dependency, because <code>katex.min.css</code> references 20 font files, so a partially-cached CDN load renders text with the wrong glyphs rather than failing cleanly.</p>
+<h2 id="alternatives-rejected" class="h-anch"><a class="hlink" href="#alternatives-rejected" aria-label="Link to this section">#</a>Alternatives rejected</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Option</th>
+<th>Why not</th>
+</tr></thead><tbody>
+<tr><td><strong>KaTeX from a CDN</strong></td><td>needs the network at exactly the moment the app promises not to; the CSS pulls 20 fonts, so partial failure is silent and ugly</td></tr>
+<tr><td><strong>MathJax</strong> (vendored or CDN)</td><td>heavier, asynchronous, and its extra LaTeX coverage buys nothing for a physics syllabus. <strong>TODO:</strong> never actually compared in-repo — see below</td></tr>
+<tr><td><strong>Pre-render formulas to images</strong></td><td>breaks selection, scaling and dark mode; the knowledge base stores math as <code>\(…\)</code> strings and renders them at runtime</td></tr>
+<tr><td><strong>Install via npm and bundle</strong></td><td>would introduce the <code>package.json</code> and build step the whole app exists without — <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a></td></tr>
+</tbody></table></div>
+<p><strong>TODO:</strong> the KaTeX-vs-MathJax comparison above is reconstructed engineering reasoning, <strong>not a recorded rationale.</strong> No file in the repo weighs the two, and it was not asked at interview. <code>confidence: low</code> on why KaTeX specifically; <code>high</code> on the vendoring decision and its stated reason.</p>
+<h2 id="what-makes-it-hold" class="h-anch"><a class="hlink" href="#what-makes-it-hold" aria-label="Link to this section">#</a>What makes it hold</h2>
+<p>Vendoring alone would not guarantee the offline promise — the service worker still has to precache the files. All 23 KaTeX assets are listed in <code>sw.js</code>&#x27;s <code>CORE</code> array, and <code>tools/qa.mjs</code> check 8 fails if anything <code>index.html</code> loads is missing from that list. The install strategy that keeps a single missing file from aborting the whole cache is <a class="wl" href="cache-individually-not-addall.html">cache-individually-not-addall</a>.</p>
+<h2 id="cost-stated-plainly" class="h-anch"><a class="hlink" href="#cost-stated-plainly" aria-label="Link to this section">#</a>Cost, stated plainly</h2>
+<p>~304 KB of JS/CSS plus 20 font files committed permanently, with <strong>no version pin and no update path recorded anywhere</strong>. The copy is frozen at whatever was current on 2026-06-27. For a frozen coursework artefact that is the right trade; for anything maintained it is a silent staleness debt.</p>
+<p>The same instinct appears one repo over as <a class="wl" href="vendor-react-over-babel-cdn.html">vendor-react-over-babel-cdn</a>, where the CDN was not a risk but an observed failure — a blank page under <code>file://</code>. Two repos, same conclusion, reached from opposite directions: <a class="wl" href="physics-exam-prep.html">physics-exam-prep</a> vendored pre-emptively, <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> vendored after being burned.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="katex.html">katex</a> · <a class="wl" href="physics-exam-prep.html">physics-exam-prep</a> · <a class="wl" href="cache-individually-not-addall.html">cache-individually-not-addall</a> · <a class="wl" href="offline-first-static-deliverable.html">offline-first-static-deliverable</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> · <a class="wl" href="vendor-react-over-babel-cdn.html">vendor-react-over-babel-cdn</a></p></div>
+  <div class="tags"><span class="tag">javascript</span><span class="tag">web-dev</span><span class="tag">architecture</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/snapshot.md</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/vendor/katex/</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/index.html</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/sw.js</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="cache-individually-not-addall.html"><span class="kind k-decision">decision</span><span class="rel-t">Cache Individually, Not addAll</span><span class="rel-g">In the service worker&#x27;s install handler, precache each URL with its own cache.add(url).catch(() =&gt; {}) inside a Promise.all, rather than the idiomatic cache.addAll(CORE)</span></a><a class="rel" href="vendor-react-over-babel-cdn.html"><span class="kind k-decision">decision</span><span class="rel-t">Vendor React Over the Babel CDN</span><span class="rel-g">Commit React and ReactDOM&#x27;s production UMD builds into the repository and precompile sn-app.jsx to sn-app.js ahead of time, rather than loading Babel from a CDN and…</span></a><a class="rel" href="offline-first-static-deliverable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Offline-First Static Deliverable</span><span class="rel-g">The deliverable must work by double-clicking a file: no server, no install, no network</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="physics-exam-prep.html"><span class="kind k-project">project</span><span class="rel-t">Physics Exam Prep</span><span class="rel-g">Not a generated static site and not an asset dump: a hand-written, zero-dependency, offline-first single-page web app — an installable PWA — built from one Physics…</span></a><a class="rel" href="katex.html"><span class="kind k-tech">tech</span><span class="rel-t">KaTeX</span><span class="rel-g">Client-side LaTeX math renderer</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

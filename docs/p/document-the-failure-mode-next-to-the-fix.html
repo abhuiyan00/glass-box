@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Document the Failure Mode Next to the Fix · Glass Box</title>
+<meta name="description" content="Almost every note in these two repositories has the same shape: state the wrong-but-plausible alternative, name the concrete input that breaks it, then give the fix">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Document the Failure Mode Next to the Fix · Glass Box">
+<meta property="og:description" content="Almost every note in these two repositories has the same shape: state the wrong-but-plausible alternative, name the concrete input that breaks it, then give the fix">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why this form and not a comment saying what the code does","The catalogue","Where it comes from","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Python-Programming-Laboratories/src/weblog/entry.py","Python-Programming-Laboratories/labs/07_testing/README.md","Python-Programming-Laboratories/labs/11_report_pipeline/README.md","Discrete-Mathematics-Laboratories/lab5_GraphTheory/README.md"],"dateModified":"2026-07-28","description":"Almost every note in these two repositories has the same shape: state the wrong-but-plausible alternative, name the concrete input that breaks it, then give the fix","headline":"Document the Failure Mode Next to the Fix","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["documentation","debugging","testing"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-05-29</span>
+    <span class="repos">Discrete-Mathematics-Laboratories · Python-Programming-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Almost every note in these two repositories has the same shape: state the wrong-but-plausible alternative, name the concrete input that breaks it, then give the fix</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why-this-form-and-not-a-comment-saying-what-the-code-does">Why this form and not a comment saying what the code does</a></li><li><a href="#the-catalogue">The catalogue</a></li><li><a href="#where-it-comes-from">Where it comes from</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="document-the-failure-mode-next-to-the-fix">Document the Failure Mode Next to the Fix</h1>
+<p>Almost every note in these two repositories has the same shape: <strong>state the wrong-but-plausible alternative, name the concrete input that breaks it, then give the fix.</strong> Not &quot;we use a regex&quot; but &quot;<code>split()</code> shifts every field after the first quoted one, silently&quot;.</p>
+<blockquote><p>&quot;Not hypothetical -- the sample log in data/ contains an injection attempt whose referer embeds \&quot; sequences, and a naive [^\&quot;]* would terminate the field at the first inner quote and reject the whole line.&quot;</p><cite>Python-Programming-Laboratories/src/weblog/entry.py, 2026-07-25</cite></blockquote>
+<blockquote><p>&quot;<strong>An assertion has to reach the code under test.</strong> A test whose argument is an undefined name raises <code>NameError</code> while evaluating the call, before the function is entered — so <code>pytest.raises(TypeError)</code> never sees it, and the test would pass against an implementation doing no type checking at all.&quot;</p><cite>Python-Programming-Laboratories/labs/07_testing/README.md, 2026-07-25</cite></blockquote>
+<h2 id="why-this-form-and-not-a-comment-saying-what-the-code-does" class="h-anch"><a class="hlink" href="#why-this-form-and-not-a-comment-saying-what-the-code-does" aria-label="Link to this section">#</a>Why this form and not a comment saying what the code does</h2>
+<p>The failure mode is the expensive knowledge. The fix is usually one line and re-derivable from the code; <em>why the obvious thing is wrong</em> is not, and it is exactly what a reader is about to redo. A note that says &quot;parse with a regex&quot; prevents nothing. A note that names the input that defeats <code>split()</code> prevents the rewrite.</p>
+<h2 id="the-catalogue" class="h-anch"><a class="hlink" href="#the-catalogue" aria-label="Link to this section">#</a>The catalogue</h2>
+<ul><li>Quoted-field parsing and the injection-attempt referer — <a class="wl" href="common-log-format-parsing.html">common-log-format-parsing</a>.</li><li>The test that passed before entering the function; the <code>&quot;no&quot;</code>-is-truthy fixture trap — <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a>.</li><li><code>Image.ANTIALIAS</code> and <code>ImageDraw.textsize</code> removed in Pillow 10, <code>findAll(text=True)</code> removed in BeautifulSoup 4.13 — <a class="wl" href="pillow.html">pillow</a> and <a class="wl" href="beautifulsoup.html">beautifulsoup</a>.</li><li>The Babel CDN leaving a blank page on <code>file://</code> — <a class="wl" href="vendor-react-over-babel-cdn.html">vendor-react-over-babel-cdn</a>.</li><li><code>errors=&quot;replace&quot;</code> costing one skipped line rather than the run; <code>image_ratio</code> returning <code>None</code> &quot;rather than print a zero&quot;; <code>size=0</code> &quot;so that summing it never needs a guard&quot;.</li></ul>
+<h2 id="where-it-comes-from" class="h-anch"><a class="hlink" href="#where-it-comes-from" aria-label="Link to this section">#</a>Where it comes from</h2>
+<p>It is the load-bearing compensation for <a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a>. In <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> all twelve commits landed in one day with no fix commits at all — so the Pillow port, the bs4 port, the restructured faculty site and the wrong-reason test exist <strong>only</strong> as README prose. Where the git history is thin, the prose has to carry the diagnosis.</p>
+<p><a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> does both: <code>48ba16d Fix UnicodeEncodeError in the lab3 demos on Windows consoles</code> is a real corrective commit, <em>and</em> the lab-5 README writes out the CDN failure in full. This is the sibling of <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> — that pattern states what a claim does not cover, this one states what a design already survived.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> · <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a> · <a class="wl" href="common-log-format-parsing.html">common-log-format-parsing</a> · <a class="wl" href="documentation-drift.html">documentation-drift</a> · <a class="wl" href="readme-as-guided-tour.html">readme-as-guided-tour</a></p></div>
+  <div class="tags"><span class="tag">documentation</span><span class="tag">debugging</span><span class="tag">testing</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/src/weblog/entry.py</span></code></li><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/labs/07_testing/README.md</span></code></li><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/labs/11_report_pipeline/README.md</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab5_GraphTheory/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="common-log-format-parsing.html"><span class="kind k-concept">concept</span><span class="rel-t">Common Log Format Parsing</span><span class="rel-g">Apache&#x27;s Common Log Format (CLF) and its Combined extension look space-separated and are not:</span></a><a class="rel" href="tests-that-pass-for-the-wrong-reason.html"><span class="kind k-concept">concept</span><span class="rel-t">Tests That Pass for the Wrong Reason</span><span class="rel-g">A failing test tells you something is broken</span></a><a class="rel" href="vendor-react-over-babel-cdn.html"><span class="kind k-decision">decision</span><span class="rel-t">Vendor React Over the Babel CDN</span><span class="rel-g">Commit React and ReactDOM&#x27;s production UMD builds into the repository and precompile sn-app.jsx to sn-app.js ahead of time, rather than loading Babel from a CDN and…</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="import-finished-work-into-git.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Import Finished Work Into Git</span><span class="rel-g">Work is built to completion outside version control, then imported in a burst</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="readme-as-guided-tour.html"><span class="kind k-pattern">pattern</span><span class="rel-t">README as Guided Tour</span><span class="rel-g">The README is written for a reader being shown around, not for a user trying to run something</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="python-programming-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Python Programming Laboratories</span><span class="rel-g">Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…</span></a><a class="rel" href="beautifulsoup.html"><span class="kind k-tech">tech</span><span class="rel-t">BeautifulSoup</span><span class="rel-g">HTML/XML parsing library, used in labs 10 and 11 of python-programming-laboratories for scraping and for a document pipeline that extracts 41 chapters of text</span></a><a class="rel" href="pillow.html"><span class="kind k-tech">tech</span><span class="rel-t">Pillow</span><span class="rel-g">Python&#x27;s imaging library</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

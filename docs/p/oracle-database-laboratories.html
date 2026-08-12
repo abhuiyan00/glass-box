@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oracle Database Laboratories · Glass Box</title>
+<meta name="description" content="Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle Database Laboratories · Glass Box">
+<meta property="og:description" content="Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Status — a §10 contradiction, both claims recorded","Stack","The four stages","The data model","Findings","Git history","Decisions recorded","Open gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Oracle-Database-Laboratories/README.md","Oracle-Database-Laboratories/docs/schema.md","Oracle-Database-Laboratories/sql/01_schema/","Oracle-Database-Laboratories/sql/02_queries/","Oracle-Database-Laboratories/sql/03_plsql/","Oracle-Database-Laboratories/sql/04_object_relational/","Oracle-Database-Laboratories/assignments/"],"dateModified":"2026-08-05","description":"Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite","headline":"Oracle Database Laboratories","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["databases","sql","plsql","data-modelling","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-05 · in force since 2026-07-25</span>
+    <span class="repos">Oracle-Database-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#status-a-10-contradiction-both-claims-recorded">Status — a §10 contradiction, both claims recorded</a></li><li><a href="#stack">Stack</a></li><li><a href="#the-four-stages">The four stages</a></li><li><a href="#the-data-model">The data model</a></li><li><a href="#findings">Findings</a></li><li><a href="#git-history">Git history</a></li><li><a href="#decisions-recorded">Decisions recorded</a></li><li><a href="#open-gaps">Open gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="oracle-database-laboratories">Oracle Database Laboratories</h1>
+<p>Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite. <strong>One toy domain — a herd of cats organised into hunting bands — carries almost the entire Oracle feature surface.</strong> 15 SQL scripts (96,728 bytes, measured 2026-08-05), 4 issued assignment sheets as PDFs, a Mermaid-rendered ER diagram, a README and <code>docs/schema.md</code>.</p>
+<blockquote><p>&quot;Five relations are enough to reach most of what Oracle offers — a self-referencing hierarchy, a circular foreign key, cursors, packages, compound triggers, and the object-relational layer on top of all of it.&quot;</p><cite>Oracle-Database-Laboratories/README.md, 2026-07-25</cite></blockquote>
+<h2 id="status-a-10-contradiction-both-claims-recorded" class="h-anch"><a class="hlink" href="#status-a-10-contradiction-both-claims-recorded" aria-label="Link to this section">#</a>Status — a §10 contradiction, both claims recorded</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>#</th>
+<th>Claim</th>
+<th>Source</th>
+<th><code>valid_from</code></th>
+<th><code>valid_to</code></th>
+</tr></thead><tbody>
+<tr><td>1</td><td>Coursework, <strong>finished and frozen at last commit 2026-07-25</strong>, 8 commits</td><td>interview</td><td>2026-07-28</td><td>2026-08-01</td></tr>
+<tr><td>2</td><td>Frozen as coursework; a 9th commit <strong>completed the assignment briefs, 3 of 4 → 4 of 4</strong></td><td><code>git log</code>, read 2026-08-05</td><td>2026-08-01</td><td>null</td></tr>
+</tbody></table></div>
+<blockquote><p>Oracle-Database-Laboratories, git commit e233295 &quot;Add the list 4 assignment brief&quot;, 2026-08-01</p></blockquote>
+<p>The commit records checking the <em>solution</em> before assuming the repository was the incomplete side — <code>sql/04_object_relational/</code> covers REF/DEREF navigation more fully than the archive copy, which duplicates tasks 18, 23, 37 and 38. Only the brief was missing. That ordering matters: the obvious move on finding an archive file with no counterpart is to import it.</p>
+<h2 id="stack" class="h-anch"><a class="hlink" href="#stack" aria-label="Link to this section">#</a>Stack</h2>
+<p><a class="wl" href="oracle-database.html">oracle-database</a> 12c or later (XE is enough), driven as <a class="wl" href="sql-plus.html">sql-plus</a> <code>@</code> scripts, with <a class="wl" href="plsql.html">plsql</a> for everything in <code>03_</code> and <code>04_</code>. The only external build step in the repository is <code>mermaid-cli</code> rendering <code>docs/schema.md</code> into <code>assets/schema-er-diagram.png</code> — otherwise <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> holds exactly.</p>
+<h2 id="the-four-stages" class="h-anch"><a class="hlink" href="#the-four-stages" aria-label="Link to this section">#</a>The four stages</h2>
+<p>Directory numbers are a dependency edge, not a table of contents — the local instance of <a class="wl" href="numbered-stages-in-directory-names.html">numbered-stages-in-directory-names</a>. <code>04_object_relational</code> takes foreign keys against <code>01_schema</code>, so the relational schema must exist first.</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Stage</th>
+<th>Scripts</th>
+<th>Concept pages</th>
+</tr></thead><tbody>
+<tr><td><code>sql/01_schema/</code></td><td>teardown, DDL, seed</td><td><a class="wl" href="referential-integrity.html">referential-integrity</a> · <a class="wl" href="circular-foreign-key.html">circular-foreign-key</a> · <a class="wl" href="idempotent-teardown-scripts.html">idempotent-teardown-scripts</a></td></tr>
+<tr><td><code>sql/02_queries/</code></td><td>filtering, hierarchies, joins/sets, subqueries + Top-N</td><td><a class="wl" href="hierarchical-queries.html">hierarchical-queries</a> · <a class="wl" href="multiple-solutions-side-by-side.html">multiple-solutions-side-by-side</a></td></tr>
+<tr><td><code>sql/03_plsql/</code></td><td>blocks, cursors, packages, triggers</td><td><a class="wl" href="plsql-exception-handling.html">plsql-exception-handling</a> · <a class="wl" href="plsql-cursors.html">plsql-cursors</a> · <a class="wl" href="database-triggers.html">database-triggers</a></td></tr>
+<tr><td><code>sql/04_object_relational/</code></td><td>object types, typed tables, <code>REF</code> navigation</td><td><a class="wl" href="object-relational-model.html">object-relational-model</a></td></tr>
+</tbody></table></div>
+<h2 id="the-data-model" class="h-anch"><a class="hlink" href="#the-data-model" aria-label="Link to this section">#</a>The data model</h2>
+<p>Five relations. <code>FUNCTIONS</code> (role → allowed mice-ration band, doubling as a validation table), <code>ENEMIES</code>, <code>CATS</code>, <code>BANDS</code>, <code>INCIDENTS</code> (composite primary key <code>(nickname, enemy_name)</code>). Two structural properties drive every exercise built on top:</p>
+<ul><li><strong>A self-referencing hierarchy.</strong> <code>CATS.chief</code> points back at <code>CATS.nickname</code>, <code>TIGER</code> is the root, the tree is four levels deep. Every <code>CONNECT BY</code> in the repo walks it — see <a class="wl" href="hierarchical-queries.html">hierarchical-queries</a>.</li><li><strong>A circular foreign key.</strong> <code>CATS.band_no</code> → <code>BANDS.band_no</code> and <code>BANDS.band_chief</code> → <code>CATS.nickname</code>. Resolved by creating <code>CATS</code> without its band key and closing the loop with <code>ALTER TABLE</code> — see <a class="wl" href="circular-fk-via-alter-table.html">circular-fk-via-alter-table</a>.</li></ul>
+<p>The object-relational lab rebuilds the same domain as <code>cat_type</code> / <code>common_type</code> / <code>elite_type</code> / <code>account_type</code> / <code>incident_type</code>, and adds three tables (<code>COMMONS</code>, <code>ELITES</code>, <code>ACCOUNTS</code>) with no relational counterpart.</p>
+<h2 id="findings" class="h-anch"><a class="hlink" href="#findings" aria-label="Link to this section">#</a>Findings</h2>
+<ul><li><strong>The comments are the deliverable.</strong> Nearly every script leads with the trap it is avoiding — <code>ROWNUM</code> evaluated before <code>ORDER BY</code>, <code>BETWEEN</code> on a <code>DATE</code> silently dropping the last day, a PL/SQL parameter shadowing the column it is compared against, <code>RAISE_APPLICATION_ERROR</code> outside <code>-20000..-20999</code>. This is the densest instance of <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> among the coursework repos.</li><li><strong>Superseded work is kept on purpose.</strong> <code>04_triggers.sql</code> retains a three-trigger + package-state implementation <em>and</em> labels it inferior to the compound trigger beside it. That is <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> used pedagogically rather than archivally — see <a class="wl" href="compound-trigger-over-package-state.html">compound-trigger-over-package-state</a>.</li><li><strong>Essentially no documentation drift.</strong> <code>README.md</code>, <code>docs/schema.md</code> and the scripts agree on the run order, the circular key, the hierarchy depth and the reference data. Against <a class="wl" href="documentation-drift.html">documentation-drift</a> this is the cleanest repo in the source set.</li><li><strong>No polish tail.</strong> README, <code>LICENSE</code> and <code>.gitignore</code> all land in the single final commit <code>91b77f9</code>; there are no badges and no separate screenshot commit. A <strong>counter-example</strong> to <a class="wl" href="presentation-polish-tail-commits.html">presentation-polish-tail-commits</a>, while the README itself is still a <a class="wl" href="readme-as-guided-tour.html">readme-as-guided-tour</a>.</li><li><strong><code>.gitignore</code> excludes credential material</strong> (<code>*.sso</code>, <code>*.p12</code>, <code>*.jks</code>, <code>tnsnames.ora</code>, <code>wallet/</code>) alongside SQL*Plus output. Nothing sensitive is in the tree.</li><li>No <code>.gitattributes</code> and no Git LFS: the ER PNG and four assignment PDFs are committed as plain blobs.</li></ul>
+<h2 id="git-history" class="h-anch"><a class="hlink" href="#git-history" aria-label="Link to this section">#</a>Git history</h2>
+<p>The first 8 commits, <code>796e52c</code> → <code>91b77f9</code>, all land on <strong>2026-07-25 between 12:16:30 and 12:16:33 +0200</strong> — a three-second window. The messages are a clean logical build order (schema → queries → PL/SQL → OR lab → docs → assignments → diagram → README). Textbook <a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a>; per the interview these bursts were &quot;just cleaning up local folders&quot; — consolidation, not a release.</p>
+<p>The 9th, <code>e233295</code> on 2026-08-01, is the only commit outside that window and the only one answering something found later rather than staged in advance.</p>
+<h2 id="decisions-recorded" class="h-anch"><a class="hlink" href="#decisions-recorded" aria-label="Link to this section">#</a>Decisions recorded</h2>
+<p><a class="wl" href="circular-fk-via-alter-table.html">circular-fk-via-alter-table</a> · <a class="wl" href="compound-trigger-over-package-state.html">compound-trigger-over-package-state</a></p>
+<h2 id="open-gaps" class="h-anch"><a class="hlink" href="#open-gaps" aria-label="Link to this section">#</a>Open gaps</h2>
+<ul><li><strong>TODO:</strong> nothing here evidences that any script was ever run against a live Oracle instance. <code>.gitignore</code> excludes <code>*.lst</code> and <code>*.log</code>, and no output is committed. The scripts are internally consistent and would run, but &quot;it ran&quot; is not established. <code>confidence: low</code> on execution.</li><li><strong>TODO:</strong> the README lists &quot;normalisation&quot; among the skills demonstrated, yet no normal-form analysis is written anywhere in the repo, and the schema was issued with the assignment. See <span class="unpub" title="named in the source wiki; not published">database-normalisation</span>. <code>confidence: low</code> on the normalisation claim.</li><li><strong>TODO:</strong> the cat-herd domain is a standard assignment for this course; <code>assignments/</code> contains the sheets as issued. How much of each solution is original versus canonical is not recorded. Do not assert authorship of the <em>problems</em>; the commentary and the alternative formulations are clearly the author&#x27;s.</li><li><strong>TODO:</strong> the whole suite standardises on SQL*Plus <code>&amp;</code> substitution variables and <code>02_cursors.sql</code> explicitly declines a host bind, but no file says whether that was a deliberate preference or simply what the course environment provided. <code>confidence: low</code> — see <a class="wl" href="sql-plus.html">sql-plus</a>.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> · <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> · <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> · <a class="wl" href="cybersecurity-engineering-laboratories.html">cybersecurity-engineering-laboratories</a></p></div>
+  <div class="tags"><span class="tag">databases</span><span class="tag">sql</span><span class="tag">plsql</span><span class="tag">data-modelling</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/docs/schema.md</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/01_schema/</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/02_queries/</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/03_plsql/</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/04_object_relational/</span></code></li><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/assignments/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="circular-foreign-key.html"><span class="kind k-concept">concept</span><span class="rel-t">Circular Foreign Key</span><span class="rel-g">Two tables that reference each other</span></a><a class="rel" href="database-triggers.html"><span class="kind k-concept">concept</span><span class="rel-t">Database Triggers</span><span class="rel-g">Procedural code the database runs on your behalf when a table changes</span></a><a class="rel" href="hierarchical-queries.html"><span class="kind k-concept">concept</span><span class="rel-t">Hierarchical Queries</span><span class="rel-g">Walking a tree that is stored in a single self-referencing column</span></a><a class="rel" href="object-relational-model.html"><span class="kind k-concept">concept</span><span class="rel-t">Object-Relational Model</span><span class="rel-g">A relational database with user-defined types layered on top: rows are objects, columns can be pointers to other objects, types carry methods, and a join becomes a dot</span></a><a class="rel" href="plsql-cursors.html"><span class="kind k-concept">concept</span><span class="rel-t">PL/SQL Cursors</span><span class="rel-g">A cursor is a named handle over a result set that procedural code walks a row at a time</span></a><a class="rel" href="plsql-exception-handling.html"><span class="kind k-concept">concept</span><span class="rel-t">PL/SQL Exception Handling</span><span class="rel-g">PL/SQL reports failure by raising, not by returning</span></a><a class="rel" href="referential-integrity.html"><span class="kind k-concept">concept</span><span class="rel-t">Referential Integrity</span><span class="rel-g">Every foreign-key value either matches an existing primary key or is NULL</span></a><a class="rel" href="circular-fk-via-alter-table.html"><span class="kind k-decision">decision</span><span class="rel-t">Resolve the Circular Foreign Key via ALTER TABLE</span><span class="rel-g">Break the CATS ↔ BANDS cycle by creating one table without its foreign key, adding the constraint by ALTER TABLE once both tables exist, and seeding with a deliberate…</span></a><a class="rel" href="compound-trigger-over-package-state.html"><span class="kind k-decision">decision</span><span class="rel-t">Compound Trigger Over Package State</span><span class="rel-g">Implement a statement-spanning trigger rule as a single compound trigger rather than as three separate triggers sharing variables in a package — and keep the rejected…</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="idempotent-teardown-scripts.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Idempotent Teardown Scripts</span><span class="rel-g">Every script in the set can be run again, from any state, without editing it first</span></a><a class="rel" href="import-finished-work-into-git.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Import Finished Work Into Git</span><span class="rel-g">Work is built to completion outside version control, then imported in a burst</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="multiple-solutions-side-by-side.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Multiple Solutions Side by Side</span><span class="rel-g">The same problem is solved two or three ways in one deliverable, and the trade-off between them is the point</span></a><a class="rel" href="numbered-stages-in-directory-names.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Numbered Stages in Directory Names</span><span class="rel-g">Order is encoded in filenames and directory names, not in a table of contents</span></a><a class="rel" href="presentation-polish-tail-commits.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Presentation Polish Tail Commits</span><span class="rel-g">After the substance lands, a distinct tail of commits does nothing but presentation: screenshots, then a licence, then licence badges</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="readme-as-guided-tour.html"><span class="kind k-pattern">pattern</span><span class="rel-t">README as Guided Tour</span><span class="rel-g">The README is written for a reader being shown around, not for a user trying to run something</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="cybersecurity-engineering-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Cybersecurity Engineering Laboratories</span><span class="rel-g">Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026</span></a><a class="rel" href="data-warehousing-and-business-intelligence.html"><span class="kind k-project">project</span><span class="rel-t">Data Warehousing and Business Intelligence</span><span class="rel-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="python-programming-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Python Programming Laboratories</span><span class="rel-g">Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…</span></a><a class="rel" href="oracle-database.html"><span class="kind k-tech">tech</span><span class="rel-t">Oracle Database</span><span class="rel-g">Oracle&#x27;s relational database engine</span></a><a class="rel" href="plsql.html"><span class="kind k-tech">tech</span><span class="rel-t">PL/SQL</span><span class="rel-g">Oracle&#x27;s procedural extension to SQL: block-structured, statically typed against the schema, and executed inside the database rather than in a client</span></a><a class="rel" href="sql-plus.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL*Plus</span><span class="rel-g">Oracle&#x27;s command-line client, and the execution model the whole of oracle-database-laboratories is written against</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

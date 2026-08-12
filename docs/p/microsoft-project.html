@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Microsoft Project · Glass Box</title>
+<meta name="description" content="Desktop scheduling tool; the primary artefact format of computer-project-management and the only piece of proprietary tooling in the source set">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Microsoft Project · Glass Box">
+<meta property="og:description" content="Desktop scheduling tool; the primary artefact format of computer-project-management and the only piece of proprietary tooling in the source set">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["What the tool supplies to the coursework","The format is the problem","Version control fit","Recorded gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Computer Project Management/README.md","Computer Project Management/.gitattributes","Computer Project Management/lab1_WBS_Practice/wbs-practice.mpp","Computer Project Management/lab5-6_Baseline_and_Tracking/export-import-system.mpp"],"dateModified":"2026-07-28","description":"Desktop scheduling tool; the primary artefact format of computer-project-management and the only piece of proprietary tooling in the source set","headline":"Microsoft Project","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["project-management","documentation"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">Computer Project Management</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Desktop scheduling tool; the primary artefact format of computer-project-management and the only piece of proprietary tooling in the source set</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#what-the-tool-supplies-to-the-coursework">What the tool supplies to the coursework</a></li><li><a href="#the-format-is-the-problem">The format is the problem</a></li><li><a href="#version-control-fit">Version control fit</a></li><li><a href="#recorded-gaps">Recorded gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="microsoft-project">Microsoft Project</h1>
+<p>Desktop scheduling tool; the primary artefact format of <a class="wl" href="computer-project-management.html">computer-project-management</a> and the only piece of proprietary tooling in the source set. Four <code>.mpp</code> files carry the entire deliverable — one throwaway practice plan plus <code>export-import-system.mpp</code> at three maturity stages, each in its own lab folder under the same filename.</p>
+<h2 id="what-the-tool-supplies-to-the-coursework" class="h-anch"><a class="hlink" href="#what-the-tool-supplies-to-the-coursework" aria-label="Link to this section">#</a>What the tool supplies to the coursework</h2>
+<p>Every concept the labs teach is a Project feature exercised in order:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Feature</th>
+<th>Recorded as</th>
+</tr></thead><tbody>
+<tr><td>outline / indent hierarchy</td><td><a class="wl" href="work-breakdown-structure.html">work-breakdown-structure</a></td></tr>
+<tr><td>FS / SS / FF task links</td><td><a class="wl" href="work-breakdown-structure.html">work-breakdown-structure</a>, <a class="wl" href="sequence-integration-after-unit-testing.html">sequence-integration-after-unit-testing</a></td></tr>
+<tr><td>resource pool + assignment + over-allocation flags</td><td><a class="wl" href="resource-leveling.html">resource-leveling</a></td></tr>
+<tr><td>Save Baseline, then actuals against it</td><td><a class="wl" href="schedule-baseline-and-variance.html">schedule-baseline-and-variance</a></td></tr>
+<tr><td>the critical-path flag and tracking Gantt</td><td><a class="wl" href="critical-path-method.html">critical-path-method</a></td></tr>
+<tr><td>cost rollup from hourly rates</td><td><a class="wl" href="schedule-baseline-and-variance.html">schedule-baseline-and-variance</a></td></tr>
+</tbody></table></div>
+<p>The critical path is a striking case: it is never computed in the repo, only <em>read off</em> a red bar in the tracking Gantt. The tool is the algorithm.</p>
+<h2 id="the-format-is-the-problem" class="h-anch"><a class="hlink" href="#the-format-is-the-problem" aria-label="Link to this section">#</a>The format is the problem</h2>
+<p><code>.mpp</code> is a closed binary. The repo handles that in two ways, both deliberate:</p>
+<blockquote><p>&quot;# Treat the binary coursework artifacts as binary — no line-ending&quot;</p><cite>Computer Project Management/.gitattributes, 2026-07-10</cite></blockquote>
+<p>Four glob rules — <code>*.mpp</code>, <code>*.pptx</code>, <code>*.pdf</code>, <code>*.png</code> — stop git normalising or attempting to diff/merge them. And the README supplies an escape hatch for readers without a licence: ProjectLibre or GanttProject to open the files, or the PDF reports, which &quot;render the full plan — schedule, Gantt, resources and costs — with no software needed&quot;.</p>
+<p>That escape hatch is the same instinct as <a class="wl" href="offline-first-static-deliverable.html">offline-first-static-deliverable</a> pointed at a different constraint: not &quot;no network&quot; but &quot;no licence&quot;. It only half works — the PDFs are the lab 5–6 and 7–8 reports, so the earlier stages remain openable only in a scheduling tool.</p>
+<p><strong>Consequence for this wiki:</strong> the <code>.mpp</code> and <code>.pdf</code> files are unread by policy, so every quantitative claim on the Computer Project Management pages rests on hand-written README tables alone. That is the single largest verification gap in this group of repos and is why those pages carry <code>confidence: medium</code>.</p>
+<h2 id="version-control-fit" class="h-anch"><a class="hlink" href="#version-control-fit" aria-label="Link to this section">#</a>Version control fit</h2>
+<p>588 KB of binaries committed raw — <strong>no Git LFS</strong>, despite the format being exactly the case LFS exists for. Every edit to a plan stores a whole new copy. At four files and one publishing session this costs nothing; on a live plan revised weekly it would. Same posture as <a class="wl" href="optimization-methods.html">optimization-methods</a>, which commits an 11 MB PDF without LFS.</p>
+<h2 id="recorded-gaps" class="h-anch"><a class="hlink" href="#recorded-gaps" aria-label="Link to this section">#</a>Recorded gaps</h2>
+<ul><li><strong>TODO:</strong> whether Microsoft Project was mandated by the course or chosen is not recorded anywhere, and was not asked at interview. ProjectLibre and GanttProject appear only as <em>reader</em> alternatives, never as candidates. <code>confidence: low</code> on the selection.</li><li><strong>TODO:</strong> whether Git LFS was considered and rejected is unrecorded.</li><li><strong>TODO:</strong> the leveling algorithm settings the tool was driven with are never stated — see <a class="wl" href="resource-leveling.html">resource-leveling</a>.</li><li>The README&#x27;s essay on pairing Project with Microsoft Teams (plan in Project, day-to-day comms in Teams, channels organised around the WBS phases) lives inside <code>summary-report.pdf</code> and is summarised second-hand in <code>lab7-8_Summary_Report/README.md</code>. Not independently verified.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="computer-project-management.html">computer-project-management</a> · <a class="wl" href="work-breakdown-structure.html">work-breakdown-structure</a> · <a class="wl" href="critical-path-method.html">critical-path-method</a> · <a class="wl" href="resource-leveling.html">resource-leveling</a> · <a class="wl" href="schedule-baseline-and-variance.html">schedule-baseline-and-variance</a> · <a class="wl" href="sequence-integration-after-unit-testing.html">sequence-integration-after-unit-testing</a></p></div>
+  <div class="tags"><span class="tag">project-management</span><span class="tag">documentation</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Computer Project Management</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Computer Project Management</span><span class="src-p">/.gitattributes</span></code></li><li><code><span class="src-r">Computer Project Management</span><span class="src-p">/lab1_WBS_Practice/wbs-practice.mpp</span></code></li><li><code><span class="src-r">Computer Project Management</span><span class="src-p">/lab5-6_Baseline_and_Tracking/export-import-system.mpp</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="critical-path-method.html"><span class="kind k-concept">concept</span><span class="rel-t">Critical Path Method</span><span class="rel-g">The longest chain of dependent tasks through a network, and therefore the shortest possible project duration</span></a><a class="rel" href="resource-leveling.html"><span class="kind k-concept">concept</span><span class="rel-t">Resource Leveling</span><span class="rel-g">Resolving over-allocation by moving tasks in time rather than by adding capacity</span></a><a class="rel" href="schedule-baseline-and-variance.html"><span class="kind k-concept">concept</span><span class="rel-t">Schedule Baseline and Variance</span><span class="rel-g">A baseline is a frozen copy of the plan, taken before tracking starts, that later reality is measured against</span></a><a class="rel" href="work-breakdown-structure.html"><span class="kind k-concept">concept</span><span class="rel-t">Work Breakdown Structure</span><span class="rel-g">Hierarchical decomposition of a project&#x27;s total scope into progressively smaller deliverables, until the leaves are units small enough to estimate, assign and schedule</span></a><a class="rel" href="sequence-integration-after-unit-testing.html"><span class="kind k-decision">decision</span><span class="rel-t">Sequence Integration After Unit Testing</span><span class="rel-g">Re-link integration testing to start after unit testing with a Finish-to-Start dependency, instead of running the two in parallel, to clear an over-allocation of the…</span></a><a class="rel" href="offline-first-static-deliverable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Offline-First Static Deliverable</span><span class="rel-g">The deliverable must work by double-clicking a file: no server, no install, no network</span></a><a class="rel" href="computer-project-management.html"><span class="kind k-project">project</span><span class="rel-t">Computer Project Management</span><span class="rel-g">Coursework for the Computer Project Management course at Wrocław University of Science and Technology, 2026</span></a><a class="rel" href="optimization-methods.html"><span class="kind k-project">project</span><span class="rel-t">Optimization Methods</span><span class="rel-g">Master&#x27;s Optimization Methods course at Wrocław University of Science and Technology (FICT, lectures by M. Przewoźniczek)</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Self-Complementing Codes · Glass Box</title>
+<meta name="description" content="A binary code for decimal digits is self-complementing when inverting every bit of a code word yields the code word for the nine&#x27;s complement of that digit:">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Self-Complementing Codes · Glass Box">
+<meta property="og:description" content="A binary code for decimal digits is self-complementing when inverting every bit of a code word yields the code word for the nine&#x27;s complement of that digit:">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why it matters","Compute the property, do not declare it","The trade it buys, measured","The near miss","Where this appears"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["computer-arithmetic-and-number-representation/src/computer_arithmetic/codes.py","computer-arithmetic-and-number-representation/tests/test_codes.py","computer-arithmetic-and-number-representation/src/computer_arithmetic/fixed_point.py"],"dateModified":"2026-08-04","description":"A binary code for decimal digits is self-complementing when inverting every bit of a code word yields the code word for the nine's complement of that digit:","headline":"Self-Complementing Codes","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["discrete-math","algorithms","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-04 · in force since 2026-08-04</span>
+    <span class="repos">computer-arithmetic-and-number-representation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A binary code for decimal digits is self-complementing when inverting every bit of a code word yields the code word for the nine&#x27;s complement of that digit:</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why-it-matters">Why it matters</a></li><li><a href="#compute-the-property-do-not-declare-it">Compute the property, do not declare it</a></li><li><a href="#the-trade-it-buys-measured">The trade it buys, measured</a></li><li><a href="#the-near-miss">The near miss</a></li><li><a href="#where-this-appears">Where this appears</a></li></ol></nav>
+  <div class="prose"><h1 id="self-complementing-codes">Self-Complementing Codes</h1>
+<p>A binary code for decimal digits is <strong>self-complementing</strong> when inverting every bit of a code word yields the code word for the nine&#x27;s complement of that digit:</p>
+<pre><code>for every digit d:   decode( NOT encode(d) ) == 9 - d</code></pre>
+<p>That single property is what separates four codes that are otherwise usually presented as four tables to memorise.</p>
+<div class="tw"><table>
+<thead><tr>
+<th>code</th>
+<th>weights</th>
+<th>self-complementing</th>
+</tr></thead><tbody>
+<tr><td>BCD 8421</td><td>8, 4, 2, 1</td><td><strong>no</strong></td></tr>
+<tr><td>BCD 84-2-1</td><td>8, 4, −2, −1</td><td>yes</td></tr>
+<tr><td>Aiken 2421</td><td>2, 4, 2, 1</td><td>yes</td></tr>
+<tr><td>Excess-3</td><td>none — digit + 3</td><td>yes</td></tr>
+</tbody></table></div>
+<h2 id="why-it-matters" class="h-anch"><a class="hlink" href="#why-it-matters" aria-label="Link to this section">#</a>Why it matters</h2>
+<p>Decimal subtraction is usually done by adding a complement. In a self-complementing code that complement is a <strong>bitwise NOT</strong> — one gate per bit, no carry, no arithmetic. In BCD 8421 it is an arithmetic step, because inverting <code>0000</code> gives <code>1111</code>, which is not a digit at all.</p>
+<p>Excess-3 is self-complementing for a reason worth seeing rather than memorising: <code>3 + 3 = 6</code> and <code>9 + 6 = 15</code>, which is all ones. Encoding <code>d</code> as <code>d + 3</code> makes the pair <code>d</code> and <code>9 − d</code> sum to fifteen by construction, and summing to all-ones <em>is</em> being bitwise complements.</p>
+<h2 id="compute-the-property-do-not-declare-it" class="h-anch"><a class="hlink" href="#compute-the-property-do-not-declare-it" aria-label="Link to this section">#</a>Compute the property, do not declare it</h2>
+<p>The useful move is to make <code>is_self_complementing</code> a computation over the code&#x27;s own table rather than a boolean field:</p>
+<pre><code class="lang-python">@property
+def is_self_complementing(self):
+    for digit in range(10):
+        if self.decode(self.invert(self.encode(digit))) != 9 - digit:
+            return False
+    return True</code></pre>
+<p>A code added later is then classified correctly without anyone remembering to set a flag. This is the same instinct as <a class="wl" href="counted-complexity-assertions.html">counted-complexity-assertions</a>: state the property in a form that can be checked, not in a form that has to be maintained.</p>
+<h2 id="the-trade-it-buys-measured" class="h-anch"><a class="hlink" href="#the-trade-it-buys-measured" aria-label="Link to this section">#</a>The trade it buys, measured</h2>
+<p>Self-complementing is not free. Each code needs a correction when two words are added, and the count over all 100 single-digit pairs is where the real comparison lives:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>code</th>
+<th>corrections per 100 pairs</th>
+<th>character of the correction</th>
+</tr></thead><tbody>
+<tr><td>BCD 8421</td><td>45</td><td>conditional +6, fires when the sum leaves the digit set</td></tr>
+<tr><td>Aiken 2421</td><td>25</td><td>±6, and it must go <strong>both</strong> directions</td></tr>
+<tr><td>Excess-3</td><td>100</td><td>always, but unconditional — only the sign varies</td></tr>
+</tbody></table></div>
+<p>Excess-3 corrects on every pair and is still the cheapest in hardware, because an adder that always runs is simpler than one that decides. Fewest corrections does not mean least work.</p>
+<h2 id="the-near-miss" class="h-anch"><a class="hlink" href="#the-near-miss" aria-label="Link to this section">#</a>The near miss</h2>
+<p>Aiken&#x27;s assignment is not unique. Two patterns satisfy the self-complementing constraint for digits 5 to 7, and a generator that takes the first one found produces a genuinely self-complementing code that is <strong>not Aiken&#x27;s</strong> — passing every round-trip test and disagreeing with the published table.</p>
+<p>The published tie-break is: digits 0-4 take the lowest valid pattern, 5-9 the highest. That is what opens the six-pattern gap in the middle of the code, and the gap is what makes the inversion land correctly.</p>
+<p>A property test that only checks the property will not catch this, which makes it a clean instance of <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a>: the code satisfied the specification it was tested against and was still the wrong code.</p>
+<h2 id="where-this-appears" class="h-anch"><a class="hlink" href="#where-this-appears" aria-label="Link to this section">#</a>Where this appears</h2>
+<p>Implemented and tested in <a class="wl" href="computer-arithmetic-and-number-representation.html">computer-arithmetic-and-number-representation</a>. Related: the same repository&#x27;s treatment of the two complements, where the choice between end-around carry and discarding it is the arithmetic-level version of the same trade.</p></div>
+  <div class="tags"><span class="tag">discrete-math</span><span class="tag">algorithms</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">computer-arithmetic-and-number-representation</span><span class="src-p">/src/computer_arithmetic/codes.py</span></code></li><li><code><span class="src-r">computer-arithmetic-and-number-representation</span><span class="src-p">/tests/test_codes.py</span></code></li><li><code><span class="src-r">computer-arithmetic-and-number-representation</span><span class="src-p">/src/computer_arithmetic/fixed_point.py</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="counted-complexity-assertions.html"><span class="kind k-concept">concept</span><span class="rel-t">Counted Complexity Assertions</span><span class="rel-g">Turning an asymptotic claim into an ordinary unit-test assertion by counting operations instead of measuring time</span></a><a class="rel" href="tests-that-pass-for-the-wrong-reason.html"><span class="kind k-concept">concept</span><span class="rel-t">Tests That Pass for the Wrong Reason</span><span class="rel-g">A failing test tells you something is broken</span></a><a class="rel" href="computer-arithmetic-and-number-representation.html"><span class="kind k-project">project</span><span class="rel-t">Computer Arithmetic and Number Representation</span><span class="rel-g">Positional systems, the four conversion methods, the binary codes for decimal digits, sign-magnitude and both complements, arithmetic performed inside a code, and…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

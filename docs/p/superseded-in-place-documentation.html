@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Superseded-in-Place Documentation · Glass Box</title>
+<meta name="description" content="When a decision is reversed, the document is not rewritten">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Superseded-in-Place Documentation · Glass Box">
+<meta property="og:description" content="When a decision is reversed, the document is not rewritten">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["What it buys","What it costs","The line between this and drift","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["browser_game_stickfps/DESIGN_PROMPT.md","browser_game_stickfps/docs/DESIGN-BRIEF.md","browser_game_stickfps/docs/SRS.md","browser_game_stickfps/TASKS.md","browser_game_stickfps/PROGRESS.md"],"dateModified":"2026-07-28","description":"When a decision is reversed, the document is not rewritten","headline":"Superseded-in-Place Documentation","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["documentation","refactoring","architecture"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-24</span>
+    <span class="repos">browser_game_stickfps</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>When a decision is reversed, the document is not rewritten</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#what-it-buys">What it buys</a></li><li><a href="#what-it-costs">What it costs</a></li><li><a href="#the-line-between-this-and-drift">The line between this and drift</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="superseded-in-place-documentation">Superseded-in-Place Documentation</h1>
+<p>When a decision is reversed, the document is not rewritten. A <strong>dated SUPERSEDED banner</strong> is stacked on top of the original text, and the original stays underneath, readable.</p>
+<p>In <a class="wl" href="stickfps.html">stickfps</a> the clearest case is the art direction. Strict film-noir grayscale was a <em>mandatory hard constraint</em> in three separate documents — <code>DESIGN_PROMPT.md</code> §3, <code>docs/DESIGN-BRIEF.md</code> §2 and <code>docs/SRS.md</code> FR-9.3 — and was retired for full colour on 2026-07-24. All three still carry the mandate, banner-stamped rather than deleted. The SRS&#x27;s retired transport sections are handled the same way: a prose note in constraint C2 rather than an edit to §1.2, §4.3, §4.4, §6.5 or the diagrams.</p>
+<h2 id="what-it-buys" class="h-anch"><a class="hlink" href="#what-it-buys" aria-label="Link to this section">#</a>What it buys</h2>
+<p>An auditable history in the working tree. A reader can see <strong>what was once required and when it stopped being required</strong>, which a clean rewrite destroys. It is the documentation form of the same instinct as <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a>, and it is why the reversal in <a class="wl" href="websocket-tcp-over-geckos-udp.html">websocket-tcp-over-geckos-udp</a> and <a class="wl" href="render-over-fly-io.html">render-over-fly-io</a> can be reconstructed at all.</p>
+<p>It also lowers the cost of reversing a decision. Rewriting three documents to change the art direction is a task; adding three banners is not. Cheap reversals are worth something in themselves.</p>
+<h2 id="what-it-costs" class="h-anch"><a class="hlink" href="#what-it-costs" aria-label="Link to this section">#</a>What it costs</h2>
+<p><strong>Internal contradiction, permanently.</strong> The document is now two documents interleaved, and a reader who enters below the banner gets the retired answer with no warning. <code>docs/DESIGN-BRIEF.md</code> §7 still reasons from a premise its own banner retired a hundred lines earlier:</p>
+<blockquote><p>&quot;since play is grayscale&quot;</p><cite>browser_game_stickfps/docs/DESIGN-BRIEF.md, 2026-07-25</cite></blockquote>
+<p>Consumers downstream of the prose do not see the banner at all. <code>TASKS.md</code> still directs the deployment at the retired host:</p>
+<blockquote><p>&quot;Backend to Fly.io (<code>flyctl launch</code>, PORT=9090, UDP enabled)&quot;</p><cite>browser_game_stickfps/TASKS.md, 2026-07-25</cite></blockquote>
+<h2 id="the-line-between-this-and-drift" class="h-anch"><a class="hlink" href="#the-line-between-this-and-drift" aria-label="Link to this section">#</a>The line between this and drift</h2>
+<p>They are easy to confuse and the difference is whether the reversal was <strong>marked</strong>. A banner over stale text is superseded-in-place: the document knows. <code>EXPOSE 10000/udp</code> in the Dockerfile and the four <code>.tooling</code> files still naming Geckos.io have no banner and no note — nobody knows, and the loop that reads them treats them as current. That is <a class="wl" href="documentation-drift.html">documentation-drift</a>, and it is the failure this pattern is a partial defence against, not a form of it.</p>
+<p>The practice is only sound if the banner sits where the reader enters. Applied to a long document read in sections, it degrades into drift with a disclaimer at the top.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="documentation-drift.html">documentation-drift</a> · <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> · <a class="wl" href="progress-md-as-build-log.html">progress-md-as-build-log</a> · <a class="wl" href="spec-driven-development.html">spec-driven-development</a> · <a class="wl" href="stickfps.html">stickfps</a></p></div>
+  <div class="tags"><span class="tag">documentation</span><span class="tag">refactoring</span><span class="tag">architecture</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/DESIGN_PROMPT.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/docs/DESIGN-BRIEF.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/docs/SRS.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/TASKS.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/PROGRESS.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="spec-driven-development.html"><span class="kind k-concept">concept</span><span class="rel-t">Spec-Driven Development</span><span class="rel-g">Write the specification before the code, at two levels: one document for the whole system, one document per unit of work</span></a><a class="rel" href="render-over-fly-io.html"><span class="kind k-decision">decision</span><span class="rel-t">Render Over Fly.io</span><span class="rel-g">Decision (2026-07-24, round 11): host the stickfps game server on Render</span></a><a class="rel" href="websocket-tcp-over-geckos-udp.html"><span class="kind k-decision">decision</span><span class="rel-t">WebSocket Over TCP Instead of Geckos.io UDP</span><span class="rel-g">Decision (2026-07-24, round 11): replace geckos.io — UDP over WebRTC data channels — with plain WebSocket over TCP (ws), across the whole of stickfps</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="progress-md-as-build-log.html"><span class="kind k-pattern">pattern</span><span class="rel-t">PROGRESS.md as Build Log</span><span class="rel-g">An append-only narrative log of the build, kept in the repo, written per round of work</span></a><a class="rel" href="stickfps.html"><span class="kind k-project">project</span><span class="rel-t">Stickfps</span><span class="rel-g">A 5v5 round-based browser tactical FPS: Counter-Strike round/economy structure, Krunker-style movement feel, procedurally-generated low-poly stickmen</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

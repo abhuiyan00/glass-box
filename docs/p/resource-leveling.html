@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resource Leveling · Glass Box</title>
+<meta name="description" content="Resolving over-allocation by moving tasks in time rather than by adding capacity">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Resource Leveling · Glass Box">
+<meta property="og:description" content="Resolving over-allocation by moving tasks in time rather than by adding capacity">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The two-step that makes it visible","Leveling vs the alternatives","What is not recorded","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Computer Project Management/lab2_Task_Dependencies/README.md","Computer Project Management/lab3-4_Resource_Assignment/README.md","Computer Project Management/README.md"],"dateModified":"2026-07-28","description":"Resolving over-allocation by moving tasks in time rather than by adding capacity","headline":"Resource Leveling","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["project-management","optimization"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">Computer Project Management</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Resolving over-allocation by moving tasks in time rather than by adding capacity</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-two-step-that-makes-it-visible">The two-step that makes it visible</a></li><li><a href="#leveling-vs-the-alternatives">Leveling vs the alternatives</a></li><li><a href="#what-is-not-recorded">What is not recorded</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="resource-leveling">Resource Leveling</h1>
+<p>Resolving over-allocation by moving tasks in time rather than by adding capacity. A schedule built from dependencies alone assumes infinite parallelism; the moment finite people are assigned to it, tasks that used to overlap must be pushed apart. Leveling is the act of doing that, and its price is always duration.</p>
+<p>In <a class="wl" href="computer-project-management.html">computer-project-management</a> the price is stated exactly:</p>
+<blockquote><p>&quot;The extra 11 days come from <strong>resolving over-allocation</strong>: once a resource can only do one&quot;</p><cite>Computer Project Management/lab3-4_Resource_Assignment/README.md, 2026-07-10</cite></blockquote>
+<div class="tw"><table>
+<thead><tr>
+<th></th>
+<th>Lab 2 — dependencies only</th>
+<th>Lab 3–4 — resourced and leveled</th>
+</tr></thead><tbody>
+<tr><td>Tasks</td><td>38</td><td>38</td></tr>
+<tr><td>Duration</td><td>110 d</td><td><strong>121 d</strong></td></tr>
+<tr><td>Finish</td><td>5 Aug 2026</td><td><strong>20 Aug 2026</strong></td></tr>
+</tbody></table></div>
+<p>Same 38 tasks, same dependency network, +11 days. Nothing about the work changed — only the assumption that people can be in two places at once.</p>
+<h2 id="the-two-step-that-makes-it-visible" class="h-anch"><a class="hlink" href="#the-two-step-that-makes-it-visible" aria-label="Link to this section">#</a>The two-step that makes it visible</h2>
+<p>The lab structure separates <em>defining</em> resources from <em>assigning</em> them, and that separation is what makes the cost measurable. Lab 2 creates a 12-item pool — 9 work resources, 2 cost resources, 1 material resource — and assigns <strong>none</strong> of it. Lab 3–4 assigns all nine people, MS Project flags the over-allocations, and leveling clears them. Had both happened in one step, the 11 days would have been invisible inside a single number.</p>
+<p>Assignments follow role bands rather than individuals: analysis and management, build (often paired — <em>Design shipment tracking database</em> takes Backend Developer + Database Admin), quality and release, handover, and two all-hands tasks.</p>
+<h2 id="leveling-vs-the-alternatives" class="h-anch"><a class="hlink" href="#leveling-vs-the-alternatives" aria-label="Link to this section">#</a>Leveling vs the alternatives</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Response to over-allocation</th>
+<th>Effect</th>
+<th>Taken here</th>
+</tr></thead><tbody>
+<tr><td><strong>Level</strong> — delay or sequence the conflicting tasks</td><td>duration grows, cost flat</td><td>yes, +11 d</td></tr>
+<tr><td><strong>Smooth</strong> — move only tasks with float, protect the finish date</td><td>duration flat, less slack</td><td>not distinguished from leveling anywhere in the repo</td></tr>
+<tr><td><strong>Add a resource</strong></td><td>duration may shrink, cost grows</td><td>not taken — and the repo&#x27;s own seminar argues against it via Brooks&#x27; Law, see <a class="wl" href="project-environment-factors.html">project-environment-factors</a></td></tr>
+<tr><td><strong>Overtime / raise availability</strong></td><td>duration flat, cost grows</td><td>not considered in any readable file</td></tr>
+</tbody></table></div>
+<p>Leveling appears twice in this plan under two different names: once here, and again in lab 5–6 where a Backend Developer conflict is resolved by re-linking two tasks — a manual leveling action recorded as a dependency decision, <a class="wl" href="sequence-integration-after-unit-testing.html">sequence-integration-after-unit-testing</a>.</p>
+<h2 id="what-is-not-recorded" class="h-anch"><a class="hlink" href="#what-is-not-recorded" aria-label="Link to this section">#</a>What is not recorded</h2>
+<ul><li><strong>The leveling settings.</strong> Automatic or manual, the leveling order, whether splits and delays were permitted, whether the level range was project-wide — none of it is stated, only the outcome. <code>TODO:</code> unrecorded, not asked at interview. <code>confidence: low</code> on the mechanism.</li><li><strong>Which resources were over-allocated in lab 3–4.</strong> Only the aggregate effect is reported; the named conflict (Backend Developer) appears one lab later.</li><li><code>confidence: medium</code> on the numbers, which come from README tables over unread <code>.mpp</code> files.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="computer-project-management.html">computer-project-management</a> · <a class="wl" href="work-breakdown-structure.html">work-breakdown-structure</a> · <a class="wl" href="critical-path-method.html">critical-path-method</a> · <a class="wl" href="schedule-baseline-and-variance.html">schedule-baseline-and-variance</a> · <a class="wl" href="sequence-integration-after-unit-testing.html">sequence-integration-after-unit-testing</a> · <a class="wl" href="microsoft-project.html">microsoft-project</a></p></div>
+  <div class="tags"><span class="tag">project-management</span><span class="tag">optimization</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Computer Project Management</span><span class="src-p">/lab2_Task_Dependencies/README.md</span></code></li><li><code><span class="src-r">Computer Project Management</span><span class="src-p">/lab3-4_Resource_Assignment/README.md</span></code></li><li><code><span class="src-r">Computer Project Management</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="critical-path-method.html"><span class="kind k-concept">concept</span><span class="rel-t">Critical Path Method</span><span class="rel-g">The longest chain of dependent tasks through a network, and therefore the shortest possible project duration</span></a><a class="rel" href="project-environment-factors.html"><span class="kind k-concept">concept</span><span class="rel-t">Project Environment Factors</span><span class="rel-g">The forces surrounding a project that determine whether it succeeds, independent of how good the engineering is</span></a><a class="rel" href="schedule-baseline-and-variance.html"><span class="kind k-concept">concept</span><span class="rel-t">Schedule Baseline and Variance</span><span class="rel-g">A baseline is a frozen copy of the plan, taken before tracking starts, that later reality is measured against</span></a><a class="rel" href="work-breakdown-structure.html"><span class="kind k-concept">concept</span><span class="rel-t">Work Breakdown Structure</span><span class="rel-g">Hierarchical decomposition of a project&#x27;s total scope into progressively smaller deliverables, until the leaves are units small enough to estimate, assign and schedule</span></a><a class="rel" href="sequence-integration-after-unit-testing.html"><span class="kind k-decision">decision</span><span class="rel-t">Sequence Integration After Unit Testing</span><span class="rel-g">Re-link integration testing to start after unit testing with a Finish-to-Start dependency, instead of running the two in parallel, to clear an over-allocation of the…</span></a><a class="rel" href="computer-project-management.html"><span class="kind k-project">project</span><span class="rel-t">Computer Project Management</span><span class="rel-g">Coursework for the Computer Project Management course at Wrocław University of Science and Technology, 2026</span></a><a class="rel" href="microsoft-project.html"><span class="kind k-tech">tech</span><span class="rel-t">Microsoft Project</span><span class="rel-g">Desktop scheduling tool; the primary artefact format of computer-project-management and the only piece of proprietary tooling in the source set</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

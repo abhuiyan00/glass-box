@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Host on GitHub Pages · Glass Box</title>
+<meta name="description" content="Publish privacy-policy-template as a static site on GitHub Pages, served from index.html at the repository root — and name that provider inside the legal text, not only…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Host on GitHub Pages · Glass Box">
+<meta property="og:description" content="Publish privacy-policy-template as a static site on GitHub Pages, served from index.html at the repository root — and name that provider inside the legal text, not only…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why","The unusual part: the host is in the policy","Alternatives rejected","The cost, and the evidence gap","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["privacy-policy/PRIVACY_POLICY.md","privacy-policy/README.md","privacy-policy/index.html"],"dateModified":"2026-07-28","description":"Publish privacy-policy-template as a static site on GitHub Pages, served from index.html at the repository root — and name that provider inside the legal text, not only…","headline":"Host on GitHub Pages","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["privacy","web-dev","devops"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">privacy-policy</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Publish privacy-policy-template as a static site on GitHub Pages, served from index.html at the repository root — and name that provider inside the legal text, not only…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why">Why</a></li><li><a href="#the-unusual-part-the-host-is-in-the-policy">The unusual part: the host is in the policy</a></li><li><a href="#alternatives-rejected">Alternatives rejected</a></li><li><a href="#the-cost-and-the-evidence-gap">The cost, and the evidence gap</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="host-on-github-pages">Host on GitHub Pages</h1>
+<p><strong>Decision.</strong> Publish <a class="wl" href="privacy-policy-template.html">privacy-policy-template</a> as a static site on GitHub Pages, served from <code>index.html</code> at the repository root — and <strong>name that provider inside the legal text</strong>, not only in the README.</p>
+<p><strong>Date.</strong> The HTML rendering and the Pages instructions were committed together on 2026-07-10. Confirmed live at interview, 2026-07-28: &quot;A template, and Pages is live.&quot;</p>
+<h2 id="why" class="h-anch"><a class="hlink" href="#why" aria-label="Link to this section">#</a>Why</h2>
+<p>Zero build, zero cost, zero new account — the repo is already on GitHub, so publishing is a settings toggle rather than a pipeline:</p>
+<blockquote><p>&quot;1. Push this repo to GitHub (done).&quot;</p><cite>privacy-policy/README.md, 2026-07-10</cite></blockquote>
+<p>The deliverable was shaped for it: one file, no assets, no JS — <a class="wl" href="self-contained-single-file-html.html">self-contained-single-file-html</a>. Static hosting is not a compromise here, it is the exact fit.</p>
+<h2 id="the-unusual-part-the-host-is-in-the-policy" class="h-anch"><a class="hlink" href="#the-unusual-part-the-host-is-in-the-policy" aria-label="Link to this section">#</a>The unusual part: the host is in the policy</h2>
+<p>Most policies name their host, if at all, in a generic &quot;we use service providers&quot; clause. This one puts GitHub in the operative text:</p>
+<blockquote><p>&quot;This Service is hosted on <strong>GitHub Pages</strong> (GitHub, Inc.). As the host, GitHub acts as a&quot;</p><cite>privacy-policy/PRIVACY_POLICY.md, 2026-07-10</cite></blockquote>
+<p>That single sentence carries four downstream sections. §7 designates GitHub the sole processor and links its privacy statement and Pages data-collection notice — <a class="wl" href="controller-vs-processor.html">controller-vs-processor</a>. §4&#x27;s technical-data row exists <em>only</em> because a host keeps server logs. §10&#x27;s international-transfer clause and its Standard Contractual Clauses safeguard exist because that host&#x27;s infrastructure spans jurisdictions. §12 outsources security to the provider&#x27;s HTTPS and platform hardening.</p>
+<p>It also enables the no-tracking posture: a static host runs no analytics by default, so §6&#x27;s &quot;does not set its own cookies&quot; is a statement about the deployment, not just an intention.</p>
+<h2 id="alternatives-rejected" class="h-anch"><a class="hlink" href="#alternatives-rejected" aria-label="Link to this section">#</a>Alternatives rejected</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Option</th>
+<th>Why not, as far as the repo shows</th>
+</tr></thead><tbody>
+<tr><td><strong>Netlify / Vercel / Cloudflare Pages</strong></td><td>never mentioned anywhere in the repo</td></tr>
+<tr><td><strong>Own domain + CNAME</strong></td><td>no <code>CNAME</code> file exists; the default <code>github.io</code> path is used</td></tr>
+<tr><td><strong>A CI-built Pages deployment</strong></td><td>no workflow; &quot;Deploy from a branch → <code>main</code> / root&quot; is the documented route</td></tr>
+<tr><td><strong>Markdown only, no web rendering</strong></td><td>the HTML rendering is the reason there is a URL to link at all</td></tr>
+</tbody></table></div>
+<p><strong>TODO:</strong> no alternative host is discussed in any file and the question was not put at interview. <code>confidence: low</code> on the comparison; <code>high</code> on the choice and its consequences, which are written into the policy itself.</p>
+<h2 id="the-cost-and-the-evidence-gap" class="h-anch"><a class="hlink" href="#the-cost-and-the-evidence-gap" aria-label="Link to this section">#</a>The cost, and the evidence gap</h2>
+<p><strong>Cost.</strong> Naming one provider in the legal text couples the document to it. The README&#x27;s reuse checklist has to flag §7 as an edit point precisely because of this — see <a class="wl" href="one-reusable-policy-not-per-project.html">one-reusable-policy-not-per-project</a>. A template that hard-codes its host is slightly less reusable and considerably more honest, and the repo takes that trade knowingly.</p>
+<p><strong>Gap.</strong> There is <strong>no <code>CNAME</code>, no Pages workflow and no deployment artefact</strong> anywhere in the tree. The README&#x27;s &quot;(done)&quot; annotates the push, not the Pages toggle. The live-URL claim therefore rests on the interview alone — recorded as <code>confidence: high</code> because the user confirmed it, with the explicit note that the repository corroborates nothing. <strong>TODO:</strong> no repo among the 15 sources contains a footer link to the policy URL, although the README instructs exactly that.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="privacy-policy-template.html">privacy-policy-template</a> · <a class="wl" href="controller-vs-processor.html">controller-vs-processor</a> · <a class="wl" href="one-reusable-policy-not-per-project.html">one-reusable-policy-not-per-project</a> · <a class="wl" href="self-contained-single-file-html.html">self-contained-single-file-html</a> · <a class="wl" href="gdpr-legal-bases.html">gdpr-legal-bases</a> · <a class="wl" href="data-minimisation.html">data-minimisation</a></p></div>
+  <div class="tags"><span class="tag">privacy</span><span class="tag">web-dev</span><span class="tag">devops</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">privacy-policy</span><span class="src-p">/PRIVACY_POLICY.md</span></code></li><li><code><span class="src-r">privacy-policy</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">privacy-policy</span><span class="src-p">/index.html</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="controller-vs-processor.html"><span class="kind k-concept">concept</span><span class="rel-t">Controller vs Processor</span><span class="rel-g">The controller decides why and how personal data is processed</span></a><a class="rel" href="data-minimisation.html"><span class="kind k-concept">concept</span><span class="rel-t">Data Minimisation</span><span class="rel-g">GDPR Art</span></a><a class="rel" href="gdpr-legal-bases.html"><span class="kind k-concept">concept</span><span class="rel-t">GDPR Legal Bases</span><span class="rel-g">Under GDPR Art</span></a><a class="rel" href="one-reusable-policy-not-per-project.html"><span class="kind k-decision">decision</span><span class="rel-t">One Reusable Policy, Not Per-Project</span><span class="rel-g">Maintain one privacy policy in its own repository, written to be copied and edited for any project, instead of writing a bespoke policy inside each project that needs one</span></a><a class="rel" href="self-contained-single-file-html.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Self-Contained Single-File HTML</span><span class="rel-g">One .html file that renders completely with zero outbound requests — styles inline in a &lt;style&gt; block, no scripts, no images, no fonts, no CDN</span></a><a class="rel" href="privacy-policy-template.html"><span class="kind k-project">project</span><span class="rel-t">Privacy Policy Template</span><span class="rel-g">Six files, ~25 KB</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

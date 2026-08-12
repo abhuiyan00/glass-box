@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Literature Review Synthesis · Glass Box</title>
+<meta name="description" content="Narrative synthesis of an existing literature into one argued account, as opposed to producing new data">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Literature Review Synthesis · Glass Box">
+<meta property="og:description" content="Narrative synthesis of an existing literature into one argued account, as opposed to producing new data">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The design, as executed","What replaces an experiment","The failure modes, visible in this instance","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Research Methodologies/README.md","Research Methodologies/docs/01-open-set-recognition.md","Research Methodologies/docs/02-gans-and-opengan.md","Research Methodologies/NOTICE"],"dateModified":"2026-07-28","description":"Narrative synthesis of an existing literature into one argued account, as opposed to producing new data","headline":"Literature Review Synthesis","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["research-methods","documentation"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">Research Methodologies</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Narrative synthesis of an existing literature into one argued account, as opposed to producing new data</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-design-as-executed">The design, as executed</a></li><li><a href="#what-replaces-an-experiment">What replaces an experiment</a></li><li><a href="#the-failure-modes-visible-in-this-instance">The failure modes, visible in this instance</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="literature-review-synthesis">Literature Review Synthesis</h1>
+<p>Narrative synthesis of an existing literature into one argued account, as opposed to producing new data. It is a research method in its own right, with its own design decisions and its own failure modes — and it is the method <a class="wl" href="research-methodologies-open-set-recognition.html">research-methodologies-open-set-recognition</a> actually used, despite the course name suggesting the repo would be <em>about</em> methods rather than an instance of one.</p>
+<h2 id="the-design-as-executed" class="h-anch"><a class="hlink" href="#the-design-as-executed" aria-label="Link to this section">#</a>The design, as executed</h2>
+<p>A funnel with a widening at the end:</p>
+<ol><li><strong>Frame the problem</strong> — what closed-set classification assumes and where the assumption breaks.</li><li><strong>Map the field</strong> — a three-family taxonomy (traditional / statistical / deep) so every cited method has a place to sit.</li><li><strong>Deep-dive one family</strong> — the generative branch, developed from GAN fundamentals upward.</li><li><strong>Spotlight one method</strong> — OpenGAN, taken to its design details.</li><li><strong>Compare on benchmarks</strong> — a results table lifted from the spotlight paper.</li></ol>
+<p>Steps 1–2 are breadth, 3–4 are depth, 5 is the payoff. Nine references support it; two seminar decks were the raw material, reworked into one document.</p>
+<h2 id="what-replaces-an-experiment" class="h-anch"><a class="hlink" href="#what-replaces-an-experiment" aria-label="Link to this section">#</a>What replaces an experiment</h2>
+<p>There is no dataset, no code, no sampling frame and no hypothesis test anywhere in the repo. The quality-control mechanism is therefore not reproducibility but a <strong>stated provenance boundary</strong> — what is the authors&#x27; own, and what is not, marked in three separate places: a <code>NOTICE</code> ledger (<a class="wl" href="provenance-notice-file.html">provenance-notice-file</a>), an inline note under the results table, and the licence footer.</p>
+<blockquote><p>&quot;It summarises and cites third-party scholarly work, which remains the property&quot;</p><cite>Research Methodologies/NOTICE, 2026-07-11</cite></blockquote>
+<p>That substitution is the scoping decision recorded as <a class="wl" href="report-cites-benchmarks-rather-than-reproducing.html">report-cites-benchmarks-rather-than-reproducing</a>. It is honest, and it is also the method&#x27;s weakest point: nothing in the study independently checks anything it reports.</p>
+<h2 id="the-failure-modes-visible-in-this-instance" class="h-anch"><a class="hlink" href="#the-failure-modes-visible-in-this-instance" aria-label="Link to this section">#</a>The failure modes, visible in this instance</h2>
+<p>A synthesis is only as strong as its selection and attribution discipline, and this one has three recorded soft spots — all noted rather than smoothed over:</p>
+<ul><li><strong>Unjustified selection.</strong> OpenGAN is the spotlight; no selection criterion is recorded, though four rival methods are cited. A synthesis that cannot say why it zoomed in where it did has substituted a preference for a method.</li><li><strong>Name-dropping without engagement.</strong> <code>docs/01</code> §4.4 lists evidential deep learning, Bayesian neural networks, contrastive learning and vision transformers in a single bullet run, with no definitions and no per-item citations. Breadth claimed, not demonstrated.</li><li><strong>A dangling reference.</strong> Reference 9 appears in two bibliographies and is tied to no claim in either document.</li></ul>
+<p>Contrast <a class="wl" href="convergent-evidence.html">convergent-evidence</a>, where a conclusion is only accepted once independent lines agree: this study&#x27;s benchmark claims rest on <strong>one</strong> source table, self-declared as such. Single-source by design and labelled — but single-source.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="research-methodologies-open-set-recognition.html">research-methodologies-open-set-recognition</a> · <a class="wl" href="open-set-recognition.html">open-set-recognition</a> · <a class="wl" href="provenance-notice-file.html">provenance-notice-file</a> · <a class="wl" href="report-cites-benchmarks-rather-than-reproducing.html">report-cites-benchmarks-rather-than-reproducing</a> · <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> · <a class="wl" href="convergent-evidence.html">convergent-evidence</a></p></div>
+  <div class="tags"><span class="tag">research-methods</span><span class="tag">documentation</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Research Methodologies</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Research Methodologies</span><span class="src-p">/docs/01-open-set-recognition.md</span></code></li><li><code><span class="src-r">Research Methodologies</span><span class="src-p">/docs/02-gans-and-opengan.md</span></code></li><li><code><span class="src-r">Research Methodologies</span><span class="src-p">/NOTICE</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="convergent-evidence.html"><span class="kind k-concept">concept</span><span class="rel-t">Convergent Evidence</span><span class="rel-g">An argument built from several independently weak signals that point the same way, rather than from one decisive test</span></a><a class="rel" href="open-set-recognition.html"><span class="kind k-concept">concept</span><span class="rel-t">Open-Set Recognition</span><span class="rel-g">A classifier trained on K categories must, by construction, map every input onto one of them</span></a><a class="rel" href="report-cites-benchmarks-rather-than-reproducing.html"><span class="kind k-decision">decision</span><span class="rel-t">Report Cites Benchmarks Rather Than Reproducing</span><span class="rel-g">Scope research-methodologies-open-set-recognition as a written synthesis</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="provenance-notice-file.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance NOTICE File</span><span class="rel-g">A separate, plain-text NOTICE at the repository root whose only job is to draw the line between what the author made and what the author borrowed</span></a><a class="rel" href="research-methodologies-open-set-recognition.html"><span class="kind k-project">project</span><span class="rel-t">Research Methodologies — Open-Set Recognition</span><span class="rel-g">Despite the course name, this repo does not teach research methods — it applies one</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

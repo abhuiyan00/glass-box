@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Air Quality and Public Health Analysis · Glass Box</title>
+<meta name="description" content="A dependency-free Python pipeline that asks one narrow question honestly: at the area-day level, how does the linear association between air-quality exposure and newly…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Air Quality and Public Health Analysis · Glass Box">
+<meta property="og:description" content="A dependency-free Python pipeline that asks one narrow question honestly: at the area-day level, how does the linear association between air-quality exposure and newly…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["What the original notebook did wrong","The analytical contract","Reproducibility as a property, not a claim","Verification","Open gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["air-quality-public-health-analysis/README.md","air-quality-public-health-analysis/docs/METHODOLOGY.md","air-quality-public-health-analysis/docs/LIMITATIONS.md","air-quality-public-health-analysis/docs/DATA_PROVENANCE.md","air-quality-public-health-analysis/src/air_health/validation.py","air-quality-public-health-analysis/src/air_health/analysis.py","air-quality-public-health-analysis/src/air_health/pipeline.py","air-quality-public-health-analysis/reports/example-analysis.md","air-quality-public-health-analysis/assets/lag-screen.svg","air-quality-public-health-analysis/tests/test_lag_chart.py"],"dateModified":"2026-08-12","description":"A dependency-free Python pipeline that asks one narrow question honestly: at the area-day level, how does the linear association between air-quality exposure and newly…","headline":"Air Quality and Public Health Analysis","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["python","data-analysis","research-methods","testing","documentation","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-12 · in force since 2026-08-02</span>
+    <span class="repos">air-quality-public-health-analysis</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A dependency-free Python pipeline that asks one narrow question honestly: at the area-day level, how does the linear association between air-quality exposure and newly…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#what-the-original-notebook-did-wrong">What the original notebook did wrong</a></li><li><a href="#the-analytical-contract">The analytical contract</a></li><li><a href="#reproducibility-as-a-property-not-a-claim">Reproducibility as a property, not a claim</a></li><li><a href="#verification">Verification</a></li><li><a href="#open-gaps">Open gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="air-quality-and-public-health-analysis">Air Quality and Public Health Analysis</h1>
+<p>A dependency-free Python pipeline that asks one narrow question honestly: at the area-day level, how does the linear association between air-quality exposure and newly reported cases per 100,000 change across candidate lags?</p>
+<p>The answer it gives is a <strong>descriptive ecological screen</strong>. It is not an estimate of individual risk and not a causal claim, and the repository spends more effort defending that boundary than computing the number.</p>
+<h2 id="what-the-original-notebook-did-wrong" class="h-anch"><a class="hlink" href="#what-the-original-notebook-did-wrong" aria-label="Link to this section">#</a>What the original notebook did wrong</h2>
+<p>The coursework version is the more instructive artefact, because every one of its faults is the kind that produces a plausible chart:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Original</th>
+<th>Why it is wrong</th>
+<th>Rebuilt as</th>
+</tr></thead><tbody>
+<tr><td>Took the first 100 rows</td><td>A convenience sample presented as a dataset</td><td>Full validated series, or a hard failure</td></tr>
+<tr><td>Used <strong>cumulative</strong> case counts as a predictor</td><td>Any two rising series correlate; the number measures time</td><td>Differenced to daily new cases before analysis</td></tr>
+<tr><td>No city-to-county join established</td><td>The two files were never about the same places</td><td>Geographic unit explicit and identical in both inputs</td></tr>
+<tr><td>Lags as <strong>row offsets</strong></td><td>A missing day silently shifts the lag</td><td>Lags computed on calendar dates</td></tr>
+<tr><td>Raw counts across areas</td><td>Population confounds every comparison</td><td>Outcomes normalised per 100,000</td></tr>
+<tr><td>Several models fitted, none evaluated</td><td>Selection without a criterion</td><td>One reported statistic, and its limits</td></tr>
+<tr><td>Causal-sounding conclusion</td><td>Unsupported by any part of the design</td><td>No p-values, predictions or causal language</td></tr>
+</tbody></table></div>
+<p>The first two are the ones worth remembering. Cumulative-count correlation is the error that produces a strong, publishable-looking result from two variables that share nothing except a direction of travel.</p>
+<h2 id="the-analytical-contract" class="h-anch"><a class="hlink" href="#the-analytical-contract" aria-label="Link to this section">#</a>The analytical contract</h2>
+<p>Validation runs <em>before</em> analysis and fails loudly: dates are ISO, rows unique by <code>(date, area)</code>, each area a complete daily series, AQI finite and within 0–500, cumulative counts non-decreasing, deaths never exceeding cases, population positive and area-constant. Malformed, duplicate, decreasing or non-daily input is rejected rather than repaired.</p>
+<p>That strictness is the point. Geographic crosswalking, date imputation, population sourcing and revision handling are <strong>data-preparation decisions</strong>, and hiding them inside an analysis is how an assumption becomes invisible. See <a class="wl" href="verify-the-load-dont-declare-it.html">verify-the-load-dont-declare-it</a> for the same instinct applied to a warehouse load.</p>
+<p>Both pooled and within-area correlations are reported, because the gap between them is where the ecological fallacy lives.</p>
+<h2 id="reproducibility-as-a-property-not-a-claim" class="h-anch"><a class="hlink" href="#reproducibility-as-a-property-not-a-claim" aria-label="Link to this section">#</a>Reproducibility as a property, not a claim</h2>
+<p>One run writes four files: the report, the joined daily records, the lag table, and a <code>manifest.json</code> carrying SHA-256 hashes of every input, the parameters, and hashes of the three outputs. No timestamp and no machine path enters any file, so the same inputs produce <strong>byte-identical</strong> output on every platform — a committed reference report is the fixture that proves it. <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a>, <a class="wl" href="generated-artifact-with-pristine-source.html">generated-artifact-with-pristine-source</a>.</p>
+<p>The committed data is synthetic, invented with a deliberately injected lag-two signal. Recovering that signal verifies the pipeline and says nothing about the world; the README says so in the same paragraph that reports it. <code>docs/DATA_PROVENANCE.md</code> records why the two historical coursework CSVs cannot be responsibly joined as they stand, which is also why they are not here.</p>
+<h2 id="verification" class="h-anch"><a class="hlink" href="#verification" aria-label="Link to this section">#</a>Verification</h2>
+<p><code>python -m unittest discover</code> over validation, analysis, determinism and CLI regression tests, plus a CI matrix on Python 3.11–3.14 that compiles the package and rebuilds the fixture report in a temporary directory. Runtime dependencies: none — <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a>.</p>
+<p>A 2026-08-12 local audit passed all 18 tests and validated the synthetic three-area input. The repository&#x27;s existing uncommitted <code>lag-screen.svg</code> is generated from the committed report, compared byte-for-byte with its generator by the suite, and states that the lag-two signal was injected. It is evidence, not a new scientific claim, so it was preserved without alteration.</p>
+<h2 id="open-gaps" class="h-anch"><a class="hlink" href="#open-gaps" aria-label="Link to this section">#</a>Open gaps</h2>
+<ul><li><strong>TODO:</strong> the fixture is synthetic by design, so no real-world finding is produced. The backlog for replacing it is evidence-gated in <code>TASKS.md</code> and starts with the geographic crosswalk, not with the model.</li><li><strong>TODO:</strong> Pearson correlation only. No confidence intervals, no seasonality adjustment, no autocorrelation handling — all of which a real analysis needs, and each of which is named in <code>docs/LIMITATIONS.md</code> rather than silently absent.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> · <a class="wl" href="research-methodologies-open-set-recognition.html">research-methodologies-open-set-recognition</a> · <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> · <a class="wl" href="separating-computation-from-io.html">separating-computation-from-io</a> · <a class="wl" href="two-program-csv-contract.html">two-program-csv-contract</a> · <a class="wl" href="blind-baseline-comparison.html">blind-baseline-comparison</a> · <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a></p></div>
+  <div class="tags"><span class="tag">python</span><span class="tag">data-analysis</span><span class="tag">research-methods</span><span class="tag">testing</span><span class="tag">documentation</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">air-quality-public-health-analysis</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">air-quality-public-health-analysis</span><span class="src-p">/docs/METHODOLOGY.md</span></code></li><li><code><span class="src-r">air-quality-public-health-analysis</span><span class="src-p">/docs/LIMITATIONS.md</span></code></li><li><code><span class="src-r">air-quality-public-health-analysis</span><span class="src-p">/docs/DATA_PROVENANCE.md</span></code></li><li><code><span class="src-r">air-quality-public-health-analysis</span><span class="src-p">/src/air_health/validation.py</span></code></li><li><code><span class="src-r">air-quality-public-health-analysis</span><span class="src-p">/src/air_health/analysis.py</span></code></li><li><code><span class="src-r">air-quality-public-health-analysis</span><span class="src-p">/src/air_health/pipeline.py</span></code></li><li><code><span class="src-r">air-quality-public-health-analysis</span><span class="src-p">/reports/example-analysis.md</span></code></li><li><code><span class="src-r">air-quality-public-health-analysis</span><span class="src-p">/assets/lag-screen.svg</span></code></li><li><code><span class="src-r">air-quality-public-health-analysis</span><span class="src-p">/tests/test_lag_chart.py</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="blind-baseline-comparison.html"><span class="kind k-concept">concept</span><span class="rel-t">Blind Baseline Comparison</span><span class="rel-g">Deliberately withhold the domain heuristic from the metaheuristic so that the comparison against that heuristic measures something</span></a><a class="rel" href="reproducible-analysis.html"><span class="kind k-concept">concept</span><span class="rel-t">Reproducible Analysis</span><span class="rel-g">An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose</span></a><a class="rel" href="separating-computation-from-io.html"><span class="kind k-concept">concept</span><span class="rel-t">Separating Computation from I/O</span><span class="rel-g">A function that computes and prints can only be tested by capturing stdout</span></a><a class="rel" href="generated-artifact-with-pristine-source.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Artifact with a Pristine Source</span><span class="rel-g">The file the application loads is generated, carries a DO-NOT-EDIT banner naming its generator, and its input is committed beside it</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="two-program-csv-contract.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Two Programs, One CSV Contract</span><span class="rel-g">Two languages, two processes, no interop layer</span></a><a class="rel" href="verify-the-load-dont-declare-it.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Verify the Load, Don&#x27;t Declare It</span><span class="rel-g">A data pipeline ends with a query whose result can be wrong, not with a status row saying it went fine</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a><a class="rel" href="research-methodologies-open-set-recognition.html"><span class="kind k-project">project</span><span class="rel-t">Research Methodologies — Open-Set Recognition</span><span class="rel-g">Despite the course name, this repo does not teach research methods — it applies one</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

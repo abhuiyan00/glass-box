@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LangGraph · Glass Box</title>
+<meta name="description" content="A Python library for building stateful, multi-step graphs of function calls">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LangGraph · Glass Box">
+<meta property="og:description" content="A Python library for building stateful, multi-step graphs of function calls">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["What it is actually used for here","Why it earns its place","Cost"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["vs-llm-orchestrator/agent-orchestrator/backend/graph.py","vs-llm-orchestrator/agent-orchestrator/backend/requirements.txt","vs-llm-orchestrator/docs/ARCHITECTURE.md"],"dateModified":"2026-08-08","description":"A Python library for building stateful, multi-step graphs of function calls","headline":"LangGraph","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["python","architecture"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-08 · in force since 2026-08-08</span>
+    <span class="repos">vs-llm-orchestrator</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A Python library for building stateful, multi-step graphs of function calls</p></aside>
+  
+  
+  <div class="prose"><h1 id="langgraph">LangGraph</h1>
+<p>A Python library for building stateful, multi-step graphs of function calls. Nodes are plain functions over a typed state dict; edges — including conditional ones — decide what runs next. It is the whole of the backend&#x27;s control flow in <a class="wl" href="agent-orchestrator.html">agent-orchestrator</a>, and the project&#x27;s <strong>only</strong> runtime dependency (<code>langgraph&gt;=0.3</code>).</p>
+<h2 id="what-it-is-actually-used-for-here" class="h-anch"><a class="hlink" href="#what-it-is-actually-used-for-here" aria-label="Link to this section">#</a>What it is actually used for here</h2>
+<pre><code>START → recon → planner → (direct | schedule ⇄ worker) → synth → END</code></pre>
+<p>Two features carry the design, and neither is incidental:</p>
+<ul><li><strong><code>Send</code> fan-out.</strong> <code>schedule</code> returns a list of <code>Send(&quot;worker&quot;, …)</code>, one per subtask released in the current wave. That is how a plan becomes parallel work without the graph knowing in advance how many workers there will be — see <a class="wl" href="dag-scheduling-in-waves.html">dag-scheduling-in-waves</a>.</li><li><strong>Additive reducers.</strong> State fields are <code>Annotated[List, operator.add]</code>, so concurrent workers append rather than overwrite. Without this, two agents finishing at once lose one result, and the loss is silent.</li></ul>
+<p><code>schedule → worker → schedule</code> is a loop, so each wave costs two supersteps. LangGraph&#x27;s default <code>recursion_limit</code> of 25 aborted deep plans partway through; the project sets 150.</p>
+<h2 id="why-it-earns-its-place" class="h-anch"><a class="hlink" href="#why-it-earns-its-place" aria-label="Link to this section">#</a>Why it earns its place</h2>
+<p>The graph is a subprocess precisely <em>because</em> LangGraph is Python and the VS Code API is TypeScript (<a class="wl" href="drive-the-clis-not-the-apis.html">drive-the-clis-not-the-apis</a> is the other half of that story). The payoff is that the whole orchestration is runnable and testable with no editor at all — <code>python graph.py &quot;task&quot;</code> — and every pure function in it is unit-testable without touching the graph, which is what the 145 <a class="wl" href="pytest.html">pytest</a> units do.</p>
+<h2 id="cost" class="h-anch"><a class="hlink" href="#cost" aria-label="Link to this section">#</a>Cost</h2>
+<p>One import at module scope means CI must install it even though no test builds a graph. Recorded as such in the workflow rather than worked around.</p></div>
+  <div class="tags"><span class="tag">python</span><span class="tag">architecture</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/agent-orchestrator/backend/graph.py</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/agent-orchestrator/backend/requirements.txt</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/docs/ARCHITECTURE.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="dag-scheduling-in-waves.html"><span class="kind k-concept">concept</span><span class="rel-t">DAG Scheduling in Waves</span><span class="rel-g">Given a plan whose subtasks declare depends_on, release every subtask whose dependencies are already finished, all at once, as one parallel wave</span></a><a class="rel" href="drive-the-clis-not-the-apis.html"><span class="kind k-decision">decision</span><span class="rel-t">Drive the CLIs, Not the APIs</span><span class="rel-g">agent-orchestrator spawns claude and codex as subprocesses in structured streaming mode and treats their output as the authoritative answer</span></a><a class="rel" href="agent-orchestrator.html"><span class="kind k-project">project</span><span class="rel-t">Agent Orchestrator</span><span class="rel-g">A VS Code extension that turns one request into a plan and runs it across the coding CLIs the author already pays for</span></a><a class="rel" href="pytest.html"><span class="kind k-tech">tech</span><span class="rel-t">pytest</span><span class="rel-g">The test runner for python-programming-laboratories — and the only real test framework anywhere in the two lab repositories</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

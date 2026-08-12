@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenMax and Extreme Value Theory · Glass Box</title>
+<meta name="description" content="The statistical family&#x27;s answer to open-set-recognition: instead of thresholding a confidence score by eye, model the tail of the score distribution — the rare, extreme…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenMax and Extreme Value Theory · Glass Box">
+<meta property="og:description" content="The statistical family&#x27;s answer to open-set-recognition: instead of thresholding a confidence score by eye, model the tail of the score distribution — the rare, extreme…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["What OpenMax does","Why it is the baseline, not the answer","Placement in the taxonomy","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Research Methodologies/docs/01-open-set-recognition.md","Research Methodologies/README.md"],"dateModified":"2026-07-28","description":"The statistical family's answer to open-set-recognition: instead of thresholding a confidence score by eye, model the tail of the score distribution — the rare, extreme…","headline":"OpenMax and Extreme Value Theory","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["ml","research-methods","algorithms"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">Research Methodologies</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The statistical family&#x27;s answer to open-set-recognition: instead of thresholding a confidence score by eye, model the tail of the score distribution — the rare, extreme…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#what-openmax-does">What OpenMax does</a></li><li><a href="#why-it-is-the-baseline-not-the-answer">Why it is the baseline, not the answer</a></li><li><a href="#placement-in-the-taxonomy">Placement in the taxonomy</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="openmax-and-extreme-value-theory">OpenMax and Extreme Value Theory</h1>
+<p>The statistical family&#x27;s answer to <a class="wl" href="open-set-recognition.html">open-set-recognition</a>: instead of thresholding a confidence score by eye, model the <strong>tail</strong> of the score distribution — the rare, extreme region where outliers live — and use that model to say how likely a sample is to be unknown.</p>
+<p><strong>Extreme Value Theory (EVT)</strong> is the general tool. Ordinary statistics fits the bulk of a distribution; EVT fits its extremes, which is exactly the region a rejection decision depends on and the region a Gaussian fit gets worst.</p>
+<h2 id="what-openmax-does" class="h-anch"><a class="hlink" href="#what-openmax-does" aria-label="Link to this section">#</a>What OpenMax does</h2>
+<p>OpenMax (Bendale &amp; Boult, CVPR 2016) extends the softmax layer so it can express an unknown class. Three steps, as <code>docs/01</code> of <a class="wl" href="research-methodologies-open-set-recognition.html">research-methodologies-open-set-recognition</a> sets them out:</p>
+<ol><li>recalibrate the network&#x27;s penultimate <strong>activation vector</strong>,</li><li>fit a <strong>Weibull</strong> distribution — an EVT model — to the tail of the per-class activations,</li><li>use that fit to estimate the probability the sample belongs to no known class.</li></ol>
+<p>The effect on the output vector is the whole idea in one row:</p>
+<div class="tw"><table>
+<thead><tr>
+<th></th>
+<th>Class 1</th>
+<th>Class 2</th>
+<th>Class 3</th>
+<th>Unknown</th>
+</tr></thead><tbody>
+<tr><td>Softmax</td><td>0.30</td><td>0.50</td><td>0.20</td><td>0.00</td></tr>
+<tr><td>OpenMax</td><td>0.25</td><td>0.40</td><td>0.15</td><td><strong>0.20</strong></td></tr>
+</tbody></table></div>
+<p>Softmax must distribute all probability across the known classes and therefore cannot represent doubt at all. OpenMax moves part of the mass onto &quot;unknown&quot;, so rejection becomes a comparison between numbers rather than an external threshold bolted on afterwards.</p>
+<h2 id="why-it-is-the-baseline-not-the-answer" class="h-anch"><a class="hlink" href="#why-it-is-the-baseline-not-the-answer" aria-label="Link to this section">#</a>Why it is the baseline, not the answer</h2>
+<p>OpenMax is the method every later paper reports against, and in the benchmarks cited by the study it improves on plain softmax (MSP) only modestly — and on the hardest dataset, TinyImageNet, the two are effectively tied near coin-flip AUROC. The generative route (<a class="wl" href="generative-adversarial-network.html">generative-adversarial-network</a>, then OpenGAN) is where the study finds a large gap, which is why OpenMax appears here as the thing to beat. Those numbers are cited from the source paper, not reproduced — <a class="wl" href="report-cites-benchmarks-rather-than-reproducing.html">report-cites-benchmarks-rather-than-reproducing</a>.</p>
+<p>It is worth keeping the tension recorded: the Vaze et al. result quoted on <a class="wl" href="open-set-recognition.html">open-set-recognition</a> suggests a stronger closed-set classifier alone would also lift the softmax and OpenMax baselines. The study reports both and resolves neither.</p>
+<h2 id="placement-in-the-taxonomy" class="h-anch"><a class="hlink" href="#placement-in-the-taxonomy" aria-label="Link to this section">#</a>Placement in the taxonomy</h2>
+<p>Threshold and distance methods (traditional) pick a cut with no model of the score distribution. OpenMax/EVT (statistical) model the tail but leave the representation untouched. Metric learning and generative methods (deep) change the representation itself. The three families are answering the same question at three different depths.</p>
+<p><code>confidence: high</code> — read directly from two source documents that agree, with a primary citation.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="open-set-recognition.html">open-set-recognition</a> · <a class="wl" href="generative-adversarial-network.html">generative-adversarial-network</a> · <a class="wl" href="research-methodologies-open-set-recognition.html">research-methodologies-open-set-recognition</a> · <a class="wl" href="report-cites-benchmarks-rather-than-reproducing.html">report-cites-benchmarks-rather-than-reproducing</a> · <a class="wl" href="literature-review-synthesis.html">literature-review-synthesis</a></p></div>
+  <div class="tags"><span class="tag">ml</span><span class="tag">research-methods</span><span class="tag">algorithms</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Research Methodologies</span><span class="src-p">/docs/01-open-set-recognition.md</span></code></li><li><code><span class="src-r">Research Methodologies</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="generative-adversarial-network.html"><span class="kind k-concept">concept</span><span class="rel-t">Generative Adversarial Network</span><span class="rel-g">Two networks trained against each other as a two-player game</span></a><a class="rel" href="literature-review-synthesis.html"><span class="kind k-concept">concept</span><span class="rel-t">Literature Review Synthesis</span><span class="rel-g">Narrative synthesis of an existing literature into one argued account, as opposed to producing new data</span></a><a class="rel" href="open-set-recognition.html"><span class="kind k-concept">concept</span><span class="rel-t">Open-Set Recognition</span><span class="rel-g">A classifier trained on K categories must, by construction, map every input onto one of them</span></a><a class="rel" href="report-cites-benchmarks-rather-than-reproducing.html"><span class="kind k-decision">decision</span><span class="rel-t">Report Cites Benchmarks Rather Than Reproducing</span><span class="rel-g">Scope research-methodologies-open-set-recognition as a written synthesis</span></a><a class="rel" href="research-methodologies-open-set-recognition.html"><span class="kind k-project">project</span><span class="rel-t">Research Methodologies — Open-Set Recognition</span><span class="rel-g">Despite the course name, this repo does not teach research methods — it applies one</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

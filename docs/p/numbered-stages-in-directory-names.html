@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Numbered Stages in Directory Names · Glass Box</title>
+<meta name="description" content="Order is encoded in filenames and directory names, not in a table of contents">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Numbered Stages in Directory Names · Glass Box">
+<meta property="og:description" content="Order is encoded in filenames and directory names, not in a table of contents">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Numbering as run order","Numbering as chapters","Numbering as prose chapters","Where the numbering moved inside the files","Why it works here","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Oracle-Database-Laboratories/sql/","Data-Warehousing-and-Business-Intelligence/sql/","Discrete-Mathematics-Laboratories/","Python-Programming-Laboratories/labs/","Cybersecurity-Engineering-Laboratories/labs/","Information-Systems-Modelling/","Farley/docs/ocr-overlay/"],"dateModified":"2026-07-28","description":"Order is encoded in filenames and directory names, not in a table of contents","headline":"Numbered Stages in Directory Names","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["documentation","architecture"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-04-14</span>
+    <span class="repos">Cybersecurity-Engineering-Laboratories · Data-Warehousing-and-Business-Intelligence · Discrete-Mathematics-Laboratories · Farley · Information-Systems-Modelling · Oracle-Database-Laboratories · Python-Programming-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Order is encoded in filenames and directory names, not in a table of contents</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#numbering-as-run-order">Numbering as run order</a></li><li><a href="#numbering-as-chapters">Numbering as chapters</a></li><li><a href="#numbering-as-prose-chapters">Numbering as prose chapters</a></li><li><a href="#where-the-numbering-moved-inside-the-files">Where the numbering moved inside the files</a></li><li><a href="#why-it-works-here">Why it works here</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="numbered-stages-in-directory-names">Numbered Stages in Directory Names</h1>
+<p>Order is encoded in <strong>filenames and directory names</strong>, not in a table of contents. Present in seven repositories. What varies — and it is the interesting part — is whether the number means <em>run this first</em> or <em>read this first</em>.</p>
+<h2 id="numbering-as-run-order" class="h-anch"><a class="hlink" href="#numbering-as-run-order" aria-label="Link to this section">#</a>Numbering as run order</h2>
+<p><code>Oracle-Database-Laboratories</code> and <code>Data-Warehousing-and-Business-Intelligence</code> both number executables, and the number is a dependency edge:</p>
+<ul><li><code>sql/01_schema/</code> → <code>02_queries/</code> → <code>03_plsql/</code> → <code>04_object_relational/</code>, and inside each, <code>01_drop_all.sql</code> → <code>02_create_tables.sql</code> → <code>03_seed_data.sql</code></li><li><code>sql/01_analytics/</code>, <code>sql/02_star_schema/{01_create,02_load}</code>, <code>project/twtr/sql/{01_staging, 02_star_schema, 03_technical_indicators}</code></li></ul>
+<p>You cannot load before you create — see <a class="wl" href="etl-load-order.html">etl-load-order</a> — so the digits are load-bearing. The <code>Data-Warehousing</code> README makes it explicit: &quot;The mart must be created before it is loaded.&quot;</p>
+<h2 id="numbering-as-chapters" class="h-anch"><a class="hlink" href="#numbering-as-chapters" aria-label="Link to this section">#</a>Numbering as chapters</h2>
+<p><code>Discrete-Mathematics-Laboratories</code> (<code>lab1_Max_Cut</code> … <code>lab6_Neo4j</code>), <code>Python-Programming-Laboratories</code> (<code>01_first_steps</code> … <code>13_sqlite_and_gui</code>), <code>Cybersecurity-Engineering-Laboratories</code> (<code>01-02_classical_ciphers_and_entropy</code> … <code>14_web_security_injection</code>) and <code>Information-Systems-Modelling</code> (<code>lab1/</code> … <code>lab7/</code>) use the number as a reading order, with each directory carrying its own README and the root README walking them in sequence.</p>
+<p><code>Information-Systems-Modelling</code> states the chapter metaphor outright — &quot;each lab picks up exactly where the last one left off&quot; — and it is literally true: lab 3 is lab 2 plus authentication, lab 4 is lab 3 plus AOP and uploads. See <a class="wl" href="forward-copy-lab-progression.html">forward-copy-lab-progression</a>.</p>
+<h2 id="numbering-as-prose-chapters" class="h-anch"><a class="hlink" href="#numbering-as-prose-chapters" aria-label="Link to this section">#</a>Numbering as prose chapters</h2>
+<p>Only <code>Farley</code> puts the numbers on documents in a <code>docs/</code> directory: <code>01-architecture.md</code>, <code>02-roadmap.md</code>, <code>03-android-permissions-and-legal.md</code>, <code>04-accessibility-service.md</code>, plus a newest-first <code>CHANGELOG.md</code> and a README index table mapping each chapter to what it covers. See <a class="wl" href="numbered-docs-chapters.html">numbered-docs-chapters</a>.</p>
+<h2 id="where-the-numbering-moved-inside-the-files" class="h-anch"><a class="hlink" href="#where-the-numbering-moved-inside-the-files" aria-label="Link to this section">#</a>Where the numbering moved inside the files</h2>
+<p>Several repos have the instinct without the filenames. <code>Optimization Methods</code> numbers chapters 01–24 inside <code>chapters.js</code>, sections §1–§10 inside <code>ARCHITECTURE.md</code>, figures <code>fig1</code>–<code>fig11</code>, and operator combinations <code>C01</code>–<code>C32</code> — but its <code>docs/</code> filenames are unnumbered SHOUTY topics. <code>Information-Systems-Modelling/lab7</code> numbers its BPMN processes <code>p1-backup.bpmn</code> … <code>p8-eol.bpmn</code> with matching SVGs and <code>specs.js</code> constants. <code>labour-fraud-analysis</code> numbers only its notebook and its prose headings.</p>
+<h2 id="why-it-works-here" class="h-anch"><a class="hlink" href="#why-it-works-here" aria-label="Link to this section">#</a>Why it works here</h2>
+<p>These repos are read by someone arriving cold, which is the same premise as <a class="wl" href="readme-as-guided-tour.html">readme-as-guided-tour</a>. A sorted directory listing is a table of contents that cannot drift out of sync with itself — a useful property in a source set where prose does drift, per <a class="wl" href="documentation-drift.html">documentation-drift</a>. The numbering survives even when the README describing it goes stale.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="readme-as-guided-tour.html">readme-as-guided-tour</a> · <a class="wl" href="etl-load-order.html">etl-load-order</a> · <a class="wl" href="forward-copy-lab-progression.html">forward-copy-lab-progression</a> · <a class="wl" href="numbered-docs-chapters.html">numbered-docs-chapters</a> · <a class="wl" href="documentation-drift.html">documentation-drift</a> · <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a></p></div>
+  <div class="tags"><span class="tag">documentation</span><span class="tag">architecture</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Oracle-Database-Laboratories</span><span class="src-p">/sql/</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/sql/</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span></code></li><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/labs/</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/ocr-overlay/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="etl-load-order.html"><span class="kind k-concept">concept</span><span class="rel-t">ETL Load Order</span><span class="rel-g">Load order in a star-schema is not a style choice</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="forward-copy-lab-progression.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Forward-Copy Lab Progression</span><span class="rel-g">Each lab is a whole copy of the previous lab plus one new capability, committed as a new directory</span></a><a class="rel" href="numbered-docs-chapters.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Numbered Docs Chapters</span><span class="rel-g">Prose documentation is organised as a numbered book: 01-architecture.md, 02-roadmap.md, 03-android-permissions-and-legal.md, 04-accessibility-service.md, an index README…</span></a><a class="rel" href="readme-as-guided-tour.html"><span class="kind k-pattern">pattern</span><span class="rel-t">README as Guided Tour</span><span class="rel-g">The README is written for a reader being shown around, not for a user trying to run something</span></a><a class="rel" href="oracle-database-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Oracle Database Laboratories</span><span class="rel-g">Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

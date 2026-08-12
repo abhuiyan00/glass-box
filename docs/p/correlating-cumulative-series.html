@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Correlating Cumulative Series · Glass Box</title>
+<meta name="description" content="Two running totals correlate strongly with each other almost regardless of what they count">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Correlating Cumulative Series · Glass Box">
+<meta property="og:description" content="Two running totals correlate strongly with each other almost regardless of what they count">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why it happens","How it hides","The correction","What is left even when it is done right","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["air-quality-public-health-analysis/docs/METHODOLOGY.md","air-quality-public-health-analysis/src/air_health/analysis.py","air-quality-public-health-analysis/README.md"],"dateModified":"2026-08-02","description":"Two running totals correlate strongly with each other almost regardless of what they count","headline":"Correlating Cumulative Series","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["data-analysis","research-methods","debugging"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-02 · in force since 2026-08-02</span>
+    <span class="repos">air-quality-public-health-analysis</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Two running totals correlate strongly with each other almost regardless of what they count</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why-it-happens">Why it happens</a></li><li><a href="#how-it-hides">How it hides</a></li><li><a href="#the-correction">The correction</a></li><li><a href="#what-is-left-even-when-it-is-done-right">What is left even when it is done right</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="correlating-cumulative-series">Correlating Cumulative Series</h1>
+<p>Two running totals correlate strongly with each other almost regardless of what they count. The statistic is measuring <strong>time</strong>, not a relationship — and it is one of the few analytical errors that reliably produces a <em>better</em>-looking result than doing it correctly.</p>
+<h2 id="why-it-happens" class="h-anch"><a class="hlink" href="#why-it-happens" aria-label="Link to this section">#</a>Why it happens</h2>
+<p>A cumulative series is monotone non-decreasing by construction. Every pair of monotone series is therefore close to a monotone function of a common index, and Pearson&#x27;s <em>r</em> over them approaches 1 whether or not the underlying daily quantities have anything to do with each other. Cumulative national coffee sales correlate with cumulative reported cases of anything, in any country, over any period.</p>
+<p>The daily series that generated them may be uncorrelated, negatively correlated, or correlated at a lag. None of that survives the cumulation.</p>
+<h2 id="how-it-hides" class="h-anch"><a class="hlink" href="#how-it-hides" aria-label="Link to this section">#</a>How it hides</h2>
+<p>The failure has no symptom. There is no error, no warning, and no diagnostic that fires — the output is a high correlation coefficient, which is the result the analyst was hoping for. In the coursework version this concept was written from, cumulative case counts were used directly as a predictor and the notebook ended with a causal-sounding conclusion. It looked like the strongest finding in the document.</p>
+<p>The neighbouring version of the same mistake is a <strong>lag expressed in row offsets</strong>. Row <code>n-2</code> is &quot;two days ago&quot; only if the series has no gaps; one missing day silently shifts every lag in the dataset. Lags belong on calendar dates.</p>
+<h2 id="the-correction" class="h-anch"><a class="hlink" href="#the-correction" aria-label="Link to this section">#</a>The correction</h2>
+<p><strong>Difference before analysing.</strong> New cases per day, not cases to date. Then normalise by population, so that area size is not doing the work — cumulative <em>and</em> un-normalised is the combination that measures nothing but how big and how old each area is.</p>
+<p><code>validation.py</code> enforces the precondition that makes differencing meaningful: the input must be a complete daily series per area with no gaps and no decreases. A cumulative count that goes <em>down</em> is a revision, and revisions have to be handled deliberately rather than differenced into negative &quot;new cases&quot;.</p>
+<p>Report both pooled and within-area correlations. The gap between them is where the ecological fallacy lives: a pooled statistic can be dominated entirely by differences <em>between</em> areas while the within-area relationship is flat or reversed.</p>
+<h2 id="what-is-left-even-when-it-is-done-right" class="h-anch"><a class="hlink" href="#what-is-left-even-when-it-is-done-right" aria-label="Link to this section">#</a>What is left even when it is done right</h2>
+<p>An area-day correlation is still a <strong>descriptive ecological screen</strong>. It cannot support an individual-level or causal claim, because seasonality, policy, mobility, weather, testing access, reporting delay and demographics are all unmodelled and all plausible. The honest output names them. See <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a> for the other half — a result nobody can regenerate cannot be checked for this either.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="air-quality-public-health-analysis.html">air-quality-public-health-analysis</a> · <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a> · <a class="wl" href="blind-baseline-comparison.html">blind-baseline-comparison</a> · <a class="wl" href="fact-grain.html">fact-grain</a> · <a class="wl" href="measure-vs-dimension.html">measure-vs-dimension</a> · <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a></p></div>
+  <div class="tags"><span class="tag">data-analysis</span><span class="tag">research-methods</span><span class="tag">debugging</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">air-quality-public-health-analysis</span><span class="src-p">/docs/METHODOLOGY.md</span></code></li><li><code><span class="src-r">air-quality-public-health-analysis</span><span class="src-p">/src/air_health/analysis.py</span></code></li><li><code><span class="src-r">air-quality-public-health-analysis</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="blind-baseline-comparison.html"><span class="kind k-concept">concept</span><span class="rel-t">Blind Baseline Comparison</span><span class="rel-g">Deliberately withhold the domain heuristic from the metaheuristic so that the comparison against that heuristic measures something</span></a><a class="rel" href="fact-grain.html"><span class="kind k-concept">concept</span><span class="rel-t">Fact Grain</span><span class="rel-g">The grain of a fact table is the answer to &quot;what does one row mean?&quot;</span></a><a class="rel" href="measure-vs-dimension.html"><span class="kind k-concept">concept</span><span class="rel-t">Measure vs Dimension</span><span class="rel-g">In a star-schema, a measure is a number you aggregate; a dimension is a thing you aggregate by</span></a><a class="rel" href="reproducible-analysis.html"><span class="kind k-concept">concept</span><span class="rel-t">Reproducible Analysis</span><span class="rel-g">An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose</span></a><a class="rel" href="tests-that-pass-for-the-wrong-reason.html"><span class="kind k-concept">concept</span><span class="rel-t">Tests That Pass for the Wrong Reason</span><span class="rel-g">A failing test tells you something is broken</span></a><a class="rel" href="air-quality-public-health-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Air Quality and Public Health Analysis</span><span class="rel-g">A dependency-free Python pipeline that asks one narrow question honestly: at the area-day level, how does the linear association between air-quality exposure and newly…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

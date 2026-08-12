@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data-Driven Gearing over Hand-Tuned RPM Bands · Glass Box</title>
+<meta name="description" content="Choose gears from the car&#x27;s own engine data — parsed out of the TORCS car XML — rather than from tuned rpm thresholds or from a learned reward term">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Data-Driven Gearing over Hand-Tuned RPM Bands · Glass Box">
+<meta property="og:description" content="Choose gears from the car&#x27;s own engine data — parsed out of the TORCS car XML — rather than from tuned rpm thresholds or from a learned reward term">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Two alternatives were tried first, and both are recorded","What shipped instead","Why this ordering matters","Costs and gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["IT Applications in Business and Commerce/project/code/a.bhuiyan/gym_torcs/car_spec.py","IT Applications in Business and Commerce/project/docs/branch-reports/headless.md","IT Applications in Business and Commerce/project/docs/branch-reports/gear_strategy_max_jerk.md","IT Applications in Business and Commerce/project/docs/branch-reports/INDEX.md"],"dateModified":"2026-07-28","description":"Choose gears from the car's own engine data — parsed out of the TORCS car XML — rather than from tuned rpm thresholds or from a learned reward term","headline":"Data-Driven Gearing over Hand-Tuned RPM Bands","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["python","reinforcement-learning","physics"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">IT Applications in Business and Commerce</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Choose gears from the car&#x27;s own engine data — parsed out of the TORCS car XML — rather than from tuned rpm thresholds or from a learned reward term</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#two-alternatives-were-tried-first-and-both-are-recorded">Two alternatives were tried first, and both are recorded</a></li><li><a href="#what-shipped-instead">What shipped instead</a></li><li><a href="#why-this-ordering-matters">Why this ordering matters</a></li><li><a href="#costs-and-gaps">Costs and gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="data-driven-gearing-over-hand-tuned-rpm-bands">Data-Driven Gearing over Hand-Tuned RPM Bands</h1>
+<p><strong>Decision.</strong> Choose gears from the car&#x27;s <strong>own engine data</strong> — parsed out of the TORCS car XML — rather than from tuned rpm thresholds or from a learned reward term.</p>
+<p><strong>Date.</strong> Shipped in <code>car_spec.py</code>, published 2026-07-10. Third and final answer in a documented three-branch progression that began 2026-05-02.</p>
+<h2 id="two-alternatives-were-tried-first-and-both-are-recorded" class="h-anch"><a class="hlink" href="#two-alternatives-were-tried-first-and-both-are-recorded" aria-label="Link to this section">#</a>Two alternatives were tried first, and both are recorded</h2>
+<p><code>INDEX.md</code> names the lineage outright:</p>
+<blockquote><p>&quot;<strong>Gear ideas:</strong> [gear_strategy_max_jerk] (raw jerk) → [headless] (rpm band) → [a.bhuiyan] (data-driven torque/shift map).&quot;</p><cite>IT Applications in Business and Commerce/project/docs/branch-reports/INDEX.md, 2026-07-10</cite></blockquote>
+<p><strong>Attempt 1 — learn it from a jerk reward</strong> (<code>gear_strategy_max_jerk</code>, tip 2026-05-02). Gear moved into the action space and the reward paid for rising acceleration, on the theory that a good upshift produces an acceleration spike. Its own report names the flaw: the only acceleration signal available is the difference of successive <code>speedX</code> readings off the UDP sensor, so <strong>the jerk estimate is noisy</strong>, and <code>jerk_threshold = 1</code> was &quot;a coarse first guess&quot;. The branch stopped at WIP.</p>
+<p><strong>Attempt 2 — hand-tuned rpm band</strong> (<code>headless</code>). A reward paying 1.0 inside a 17k–19k rpm &quot;optimum band&quot;, tapering outside it, scaled by gear number. It worked well enough to become the branch&#x27;s headline feature, and <code>calculate_jerk_reward</code> was commented out in its favour — attempt 1 superseded in place. But the constants are guesses fitted to one car:</p>
+<blockquote><p>&quot;Compared to the data-driven engine model in <code>[[a.bhuiyan]]</code> (<code>car_spec.py</code> parses the real torque curve), headless&#x27;s rpm bands are hand-tuned constants.&quot;</p><cite>IT Applications in Business and Commerce/project/docs/branch-reports/headless.md, 2026-07-10</cite></blockquote>
+<p><em>(The <code>[[a.bhuiyan]]</code> in that line is an Obsidian wikilink in the source report, escaped here so it does not resolve inside this wiki. It refers to the branch, not to a page.)</em></p>
+<p>That is the rejected alternative stated by the repo itself, in the repo&#x27;s own words, in the report for the branch that used it.</p>
+<h2 id="what-shipped-instead" class="h-anch"><a class="hlink" href="#what-shipped-instead" aria-label="Link to this section">#</a>What shipped instead</h2>
+<blockquote><p>&quot;Data-driven car model for TORCS — every number comes from the car&#x27;s own XML. No hardcoded driveline.&quot;</p><cite>IT Applications in Business and Commerce/project/code/a.bhuiyan/gym_torcs/car_spec.py, 2026-07-10</cite></blockquote>
+<p><code>car_spec.py</code> (247 lines) resolves <code>practice.xml</code> → <code>scr_server.xml</code> → the car XML and extracts gear ratios, gear efficiencies, final drive, rear-tyre radius, the rpm→N·m torque curve and the rev limiter. <code>optimal_gear(speed)</code> then returns <strong>the gear that maximises wheel tractive force right now</strong>, shifting at <code>DEFAULT_SHIFT_FRAC = 0.93</code> of the limiter. The module&#x27;s own framing is that this behaves &quot;like a real ECU&#x27;s shift map&quot; and self-adapts to whatever car is configured.</p>
+<p>It is the same technique as <a class="wl" href="parse-track-xml-not-ttrackseg.html">parse-track-xml-not-ttrackseg</a> applied to the vehicle instead of the circuit: read the simulator&#x27;s configuration rather than guess at its runtime behaviour.</p>
+<h2 id="why-this-ordering-matters" class="h-anch"><a class="hlink" href="#why-this-ordering-matters" aria-label="Link to this section">#</a>Why this ordering matters</h2>
+<p>The gearbox stopped being something the agent had to learn. Under <a class="wl" href="residual-reinforcement-learning.html">residual-reinforcement-learning</a> the deterministic baseline handles gears from the shift map, and PPO only learns a bounded correction on top — so a whole class of <a class="wl" href="reward-shaping.html">reward-shaping</a> term (jerk bonuses, rpm-band bonuses) disappears from the objective. Fewer shaped terms is fewer ways for the policy to find a degenerate optimum.</p>
+<p><code>car_spec.py</code> also <strong>fails loud</strong> rather than substituting defaults, so a caller that cannot resolve the car XML falls back deliberately instead of silently driving on invented ratios.</p>
+<h2 id="costs-and-gaps" class="h-anch"><a class="hlink" href="#costs-and-gaps" aria-label="Link to this section">#</a>Costs and gaps</h2>
+<ul><li>Three branches spent on one subsystem. The gearing thread is named in <code>INDEX.md</code>&#x27;s &quot;recurring findings&quot; as a persistent problem across the whole team — see <a class="wl" href="branch-per-experiment.html">branch-per-experiment</a>.</li><li>Only the <code>a.bhuiyan</code> tree gets the shift map; the shipped <code>stable</code> agent keeps speed-based auto-gear. Two of the repo&#x27;s own code trees therefore disagree about gearing, and the repo does not reconcile them.</li></ul>
+<ul><li><strong>TODO:</strong> whether <code>DEFAULT_SHIFT_FRAC = 0.93</code> was derived from the torque curve or chosen by feel is unrecorded, and the interview did not cover it. <code>confidence: low</code> on that constant specifically. Every other number in the module is parsed, not chosen.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="it-applications-in-business-and-commerce.html">it-applications-in-business-and-commerce</a> · <a class="wl" href="branch-per-experiment.html">branch-per-experiment</a> · <a class="wl" href="reward-shaping.html">reward-shaping</a> · <a class="wl" href="residual-reinforcement-learning.html">residual-reinforcement-learning</a> · <a class="wl" href="parse-track-xml-not-ttrackseg.html">parse-track-xml-not-ttrackseg</a> · <a class="wl" href="torcs-scr-protocol.html">torcs-scr-protocol</a></p></div>
+  <div class="tags"><span class="tag">python</span><span class="tag">reinforcement-learning</span><span class="tag">physics</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/a.bhuiyan/gym_torcs/car_spec.py</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/docs/branch-reports/headless.md</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/docs/branch-reports/gear_strategy_max_jerk.md</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/docs/branch-reports/INDEX.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="residual-reinforcement-learning.html"><span class="kind k-concept">concept</span><span class="rel-t">Residual Reinforcement Learning</span><span class="rel-g">A deterministic controller does the driving; the learned policy only outputs a bounded correction on top of it</span></a><a class="rel" href="reward-shaping.html"><span class="kind k-concept">concept</span><span class="rel-t">Reward Shaping</span><span class="rel-g">The task in it-applications-in-business-and-commerce is &quot;drive a fast, clean lap&quot;</span></a><a class="rel" href="parse-track-xml-not-ttrackseg.html"><span class="kind k-decision">decision</span><span class="rel-t">Parse Track XML Instead of tTrackSeg</span><span class="rel-g">Reconstruct the track centreline offline, by parsing the track&#x27;s XML definition, instead of reading TORCS&#x27;s own tTrackSeg geometry at runtime</span></a><a class="rel" href="branch-per-experiment.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Branch per Experiment</span><span class="rel-g">A git branch holds one hypothesis, not one feature</span></a><a class="rel" href="it-applications-in-business-and-commerce.html"><span class="kind k-project">project</span><span class="rel-t">IT Applications in Business and Commerce</span><span class="rel-g">This repository is not business analytics</span></a><a class="rel" href="torcs-scr-protocol.html"><span class="kind k-tech">tech</span><span class="rel-t">TORCS and the SCR Protocol</span><span class="rel-g">TORCS is an open-source racing simulator</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

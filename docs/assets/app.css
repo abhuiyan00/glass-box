@@ -1,0 +1,682 @@
+/* glass-box — one stylesheet, no imports, no font requests.
+   Fonts are the system stack on purpose: a webfont is a network call, and this site is built
+   to render identically from a static host and from a folder on a disconnected laptop.
+   Both themes are authored. The OS preference decides the first paint; the toggle overrides
+   it and the choice persists. */
+
+:root {
+  --bg: #fbfbfa;
+  --surface: #ffffff;
+  --surface-2: #f4f5f3;
+  --text: #16181d;
+  --muted: #5b6472;
+  --line: #e0e3e7;
+  --line-2: #cdd2d9;
+  --accent: #0b6e80;
+  --accent-t: #ffffff;
+  --accent-soft: #e4f2f5;
+  --warn: #8a5a00;
+  --warn-soft: #fdf3e0;
+  /* One hue per page type. Only two existed while the map did not, and that was fine: a chip
+     carries its own word, so its colour is decoration. On the map colour is the only thing a
+     dot has, and three of the five types shared one grey — 179 of 232 nodes reading as a
+     single category the legend claimed were three. These are declared once and consumed by
+     the chip, the map node and the legend dot, so a sixth type needs one line, not three.
+     Colour stays a redundant channel: every node also carries a <title>, names its type in
+     the readout on hover or focus, and can be isolated from the legend. */
+  --k-project: var(--accent);
+  --k-decision: var(--warn);
+  --k-concept: #5b46ae;
+  --k-pattern: #2c6f4c;
+  --k-tech: #a03a58;
+  --radius: 10px;
+  --pad: clamp(18px, 4vw, 40px);
+  --measure: 68ch;
+  --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+          Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", monospace;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1114; --surface: #15181d; --surface-2: #1b1f26; --text: #e7eaee;
+    --muted: #98a2b0; --line: #262b33; --line-2: #333a45; --accent: #58c4dc;
+    --accent-t: #08191d; --accent-soft: #14303a; --warn: #e0b062; --warn-soft: #2a2213;
+    --k-concept: #ab9cf0; --k-pattern: #6cc492; --k-tech: #ef8ea9;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1114; --surface: #15181d; --surface-2: #1b1f26; --text: #e7eaee;
+  --muted: #98a2b0; --line: #262b33; --line-2: #333a45; --accent: #58c4dc;
+  --accent-t: #08191d; --accent-soft: #14303a; --warn: #e0b062; --warn-soft: #2a2213;
+  --k-concept: #ab9cf0; --k-pattern: #6cc492; --k-tech: #ef8ea9;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+/* A last line of defence, not the fix. Each sideways overflow found on a phone was fixed
+   where it came from; this stops the next one from taking the whole document with it, which
+   is the failure mode that makes every page on a site feel broken at once. */
+body { overflow-x: hidden; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.6 var(--sans);
+  font-synthesis-weight: none;
+}
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.22; letter-spacing: -0.015em; margin: 0; }
+p { margin: 0 0 1em; }
+code, pre, .fig, .step-n, .tile-n { font-family: var(--mono); }
+
+.vh {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+.skip {
+  position: absolute; left: -9999px; top: 0; z-index: 20;
+  background: var(--accent); color: var(--accent-t); padding: 10px 16px;
+}
+.skip:focus { left: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+/* ── header ─────────────────────────────────────────────────────────────── */
+.top {
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  padding: 14px var(--pad); border-bottom: 1px solid var(--line);
+  background: var(--surface); position: sticky; top: 0; z-index: 10;
+}
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 650; }
+.mark {
+  width: 15px; height: 15px; border: 2px solid var(--accent); border-radius: 3px;
+  background: linear-gradient(135deg, transparent 46%, var(--accent) 46%, var(--accent) 54%,
+    transparent 54%);
+}
+.nav { display: flex; gap: 4px; flex-wrap: wrap; margin-right: auto; }
+.nav a {
+  text-decoration: none; color: var(--muted); padding: 6px 10px; border-radius: 6px;
+  font-size: 0.92rem;
+}
+.nav a:hover { background: var(--surface-2); color: var(--text); }
+.nav a[aria-current="page"] { color: var(--text); background: var(--surface-2); font-weight: 600; }
+.top-r { display: flex; align-items: center; gap: 12px; }
+.who { color: var(--muted); font-size: 0.9rem; }
+.ghost {
+  background: none; border: 1px solid var(--line-2); color: var(--muted);
+  padding: 5px 11px; border-radius: 6px; font: inherit; font-size: 0.85rem; cursor: pointer;
+}
+.ghost:hover { color: var(--text); border-color: var(--muted); }
+
+/* The header search, on every page but the landing one. Deliberately small: it is a way back
+   into the corpus, not the corpus's front door, and at the landing box's weight it would
+   compete with the page a reader is actually on. It grows on focus because a query is longer
+   than the word "Search". */
+.hs { display: flex; margin: 0; }
+.hs .ask-w { width: clamp(150px, 22vw, 230px); transition: width .14s ease; }
+.hs:focus-within .ask-w { width: clamp(230px, 34vw, 380px); }
+.hs-i {
+  width: 100%; font-size: 0.9rem; padding: 7px 12px; border-width: 1px;
+  border-radius: 7px; background: var(--surface-2);
+}
+.hs-i:focus { background: var(--surface); box-shadow: 0 0 0 3px var(--accent-soft); }
+/* The dropdown is wider than the box it hangs off, and it hangs off the right-hand end of a
+   header — pinned to `left: 0` it would run past the viewport edge on a narrow window. */
+.hs .sg-box { left: auto; right: 0; width: min(420px, calc(100vw - 2 * var(--pad))); }
+@media (max-width: 860px) {
+  /* Below this the header wraps and a shrinking box is worse than no box: it lands on its own
+     row anyway, so it may as well be the full-width one. `.top-r` has to be told it may wrap
+     — it is the flex row the search actually sits in, and `order` alone would only move the
+     box along a line that never breaks. */
+  .top-r { flex-wrap: wrap; }
+  .hs { order: 4; width: 100%; }
+  .hs .ask-w, .hs:focus-within .ask-w { width: 100%; }
+  .hs .sg-box { left: 0; right: 0; width: auto; }
+}
+
+/* The theme button names the theme it switches *to*. Which word shows is decided here and
+   not in JavaScript, so it is already right at first paint — see shell.py THEME_TOGGLE.
+   Three rules per word, in this order: the light default, the OS dark preference, and the
+   explicit override, which must win over both. */
+.theme-b { display: inline-flex; align-items: center; gap: 7px; }
+.th-i {
+  width: 11px; height: 11px; border-radius: 50%; flex: none;
+  border: 1.5px solid currentColor;
+  background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+}
+.th-l { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .th-d { display: none; }
+  :root:not([data-theme="light"]) .th-l { display: inline; }
+}
+:root[data-theme="dark"] .th-d { display: none; }
+:root[data-theme="dark"] .th-l { display: inline; }
+:root[data-theme="light"] .th-d { display: inline; }
+:root[data-theme="light"] .th-l { display: none; }
+
+/* ── layout ─────────────────────────────────────────────────────────────── */
+main { display: block; }
+/* .grp belongs here and was missing, which is a bug you can only see once the list is long
+   enough to have a right-hand column worth reading. Browse's group sections sat directly on
+   <main> and spanned the whole viewport: the heading inset to 140px, the rows underneath it
+   started at 0 and ran to 1280, and the repository column was cut off by the body's
+   overflow-x backstop. Nothing exceeded clientWidth, so the overflow sweep passed it. */
+.hero, .band, .page-head, .page, .results, .grp {
+  max-width: 1080px; margin: 0 auto; padding: 0 var(--pad);
+}
+.hero { padding-top: clamp(40px, 7vw, 78px); padding-bottom: 8px; }
+.band { padding-top: 46px; padding-bottom: 6px; }
+.band > h2, .grp > h2 {
+  font-size: 1.28rem; margin-bottom: 6px;
+  padding-bottom: 10px; border-bottom: 1px solid var(--line);
+}
+.band-b { color: var(--muted); max-width: var(--measure); font-size: 0.95rem; }
+.closing { padding-bottom: 40px; }
+
+.eyebrow {
+  color: var(--muted); font-size: 0.92rem; margin-bottom: 14px;
+  max-width: var(--measure);
+}
+.hero h1 { font-size: clamp(2.1rem, 5.6vw, 3.3rem); margin-bottom: 14px; }
+.lede { font-size: 1.08rem; color: var(--muted); max-width: var(--measure); }
+.lede strong { color: var(--text); }
+
+/* ── the ask box ────────────────────────────────────────────────────────── */
+.ask { display: flex; gap: 10px; margin: 26px 0 10px; max-width: 720px; }
+.ask-i {
+  flex: 1; min-width: 0; font: inherit; font-size: 1.05rem;
+  padding: 14px 16px; border: 1.5px solid var(--line-2); border-radius: var(--radius);
+  background: var(--surface); color: var(--text);
+}
+/* No opacity. `--muted` is already the dimmest ink on the site that clears 4.5:1 — 5.78:1 on
+   the light surface — and multiplying it by 0.75 took the placeholder to 3.45:1, under the
+   threshold in both themes. It is the hint text on the site's primary control, and it read as
+   grey-on-grey to anyone who needed it most. Nothing checked it because the accessibility
+   sweep walked elements and a placeholder is a pseudo-element. */
+.ask-i::placeholder { color: var(--muted); }
+.ask-i:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+.primary {
+  font: inherit; font-weight: 600; padding: 0 22px; cursor: pointer;
+  background: var(--accent); color: var(--accent-t); border: 1.5px solid var(--accent);
+  border-radius: var(--radius);
+}
+.primary:hover { filter: brightness(1.08); }
+.ask-note { color: var(--muted); font-size: 0.88rem; max-width: var(--measure); }
+kbd {
+  font-family: var(--mono); font-size: 0.78em; border: 1px solid var(--line-2);
+  border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px; margin: 0 1px;
+  background: var(--surface-2); color: var(--muted);
+}
+
+/* ── the suggestion list ────────────────────────────────────────────────── */
+.ask-w { position: relative; flex: 1; min-width: 0; }
+.ask-w .ask-i { width: 100%; }
+.sg-box {
+  position: absolute; z-index: 12; top: calc(100% + 6px); left: 0; right: 0;
+  margin: 0; padding: 5px; list-style: none; max-height: 62vh; overflow-y: auto;
+  background: var(--surface); border: 1px solid var(--line-2);
+  border-radius: var(--radius); box-shadow: 0 12px 34px rgba(0, 0, 0, 0.16);
+}
+:root[data-theme="dark"] .sg-box { box-shadow: 0 12px 34px rgba(0, 0, 0, 0.55); }
+.sg-box[hidden] { display: none; }
+.sg {
+  display: grid; align-items: center; gap: 3px 10px; padding: 8px 10px;
+  border-radius: 7px; cursor: pointer;
+  grid-template-columns: auto 1fr;
+}
+/* Hover is not the same thing as the keyboard cursor, and only one of them may be lit at a
+   time: a mouse resting over row 4 while the arrow keys are on row 1 shows two selections
+   and Enter takes the one the user is not looking at. `mousemove` moves the real cursor
+   instead, so there is only ever one. */
+.sg.on { background: var(--accent-soft); }
+.sg-t { font-size: 0.96rem; grid-column: 2; }
+.sg-t b { color: var(--accent); font-weight: 700; }
+.sg-g {
+  grid-column: 2; color: var(--muted); font-size: 0.84rem; line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.sg-h { grid-column: 2; color: var(--accent); font-size: 0.74rem; font-family: var(--mono); }
+.sg-k {
+  font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase;
+  letter-spacing: 0.09em; color: var(--muted); border: 1px solid var(--line);
+  border-radius: 4px; padding: 3px 7px; align-self: start;
+}
+.sg-page .kind { align-self: start; }
+.seeds { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.seeds button, .chips button {
+  font: inherit; font-size: 0.86rem; cursor: pointer; color: var(--muted);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+  padding: 6px 13px;
+}
+.seeds button:hover, .chips button:hover { border-color: var(--accent); color: var(--text); }
+.chips button.on { background: var(--accent-soft); border-color: var(--accent); color: var(--text); }
+
+/* ── results and cards ──────────────────────────────────────────────────── */
+.results:empty { padding: 0; }
+.results { padding-top: 22px; }
+.res-h {
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  color: var(--muted); font-size: 0.85rem; margin-bottom: 12px;
+  padding-bottom: 8px; border-bottom: 1px solid var(--line);
+}
+.cards { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.card {
+  display: grid; gap: 6px; align-content: start; text-decoration: none;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 15px 16px; transition: border-color .12s ease, transform .12s ease;
+}
+.card:hover { border-color: var(--accent); transform: translateY(-1px); }
+.card-t { font-weight: 640; font-size: 1.02rem; }
+.card-g { color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
+.from, .hop {
+  color: var(--muted); font-size: 0.76rem; font-family: var(--mono);
+  letter-spacing: 0.01em;
+}
+.hop { color: var(--accent); }
+.kind {
+  justify-self: start; font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase;
+  letter-spacing: 0.09em; padding: 3px 8px; border-radius: 4px;
+  background: var(--surface-2); color: var(--muted); border: 1px solid var(--line);
+}
+/* The soft fill is mixed from the hue rather than authored, so the two themes cannot drift
+   apart. Where color-mix() is missing the declaration drops and .kind's own --surface-2
+   stands: the chip loses its tint, keeps its word, its border and its contrast. */
+.kind.k-project, .kind.k-decision, .kind.k-concept, .kind.k-pattern, .kind.k-tech {
+  color: var(--k); border-color: var(--k);
+  background: color-mix(in srgb, var(--k) 13%, var(--surface));
+}
+.k-project { --k: var(--k-project); }
+.k-decision { --k: var(--k-decision); }
+.k-concept { --k: var(--k-concept); }
+.k-pattern { --k: var(--k-pattern); }
+.k-tech { --k: var(--k-tech); }
+
+.refusal {
+  border: 1px solid var(--line-2); border-left: 3px solid var(--warn);
+  border-radius: var(--radius); padding: 18px 20px; background: var(--surface);
+}
+.refusal h3 { font-size: 1.05rem; margin-bottom: 8px; }
+.refusal p { color: var(--muted); max-width: var(--measure); }
+.refusal ul { margin: 12px 0 0; padding-left: 0; list-style: none; display: grid; gap: 8px; }
+/* A grid item defaults to min-width:auto, so it refuses to shrink below its content and the
+   longest page summary ran off the right edge mid-word instead of wrapping. Only reachable
+   after a query, which is why a sweep of standing pages never found it — the sweep now types
+   first. Same failure and same fix as .srcs on an article. */
+.refusal li { font-size: 0.93rem; min-width: 0; overflow-wrap: anywhere; }
+.refusal .tag {
+  font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--muted); margin-right: 8px;
+}
+
+/* ── tiles, steps, three-up ─────────────────────────────────────────────── */
+.tiles { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.tile {
+  display: grid; gap: 4px; align-content: start; text-decoration: none; padding: 16px;
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface);
+}
+.tile:hover { border-color: var(--accent); }
+.tile-n { font-size: 1.7rem; font-weight: 600; color: var(--accent); line-height: 1; }
+.tile-t { font-weight: 620; }
+.tile-b { color: var(--muted); font-size: 0.86rem; line-height: 1.45; }
+.three { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.three h3 { font-size: 1rem; margin-bottom: 6px; }
+.three p { color: var(--muted); font-size: 0.94rem; }
+
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; }
+.steps li { display: grid; grid-template-columns: 46px 1fr; gap: 14px; align-items: start; }
+.step-n { color: var(--accent); font-size: 0.95rem; padding-top: 2px; }
+.steps h3 { font-size: 1.02rem; margin-bottom: 5px; }
+.steps p { color: var(--muted); max-width: var(--measure); margin: 0; }
+.plain { color: var(--muted); max-width: var(--measure); padding-left: 20px; }
+.plain li { margin-bottom: 9px; }
+
+/* ── browse ─────────────────────────────────────────────────────────────── */
+.page-head { padding-top: clamp(30px, 5vw, 54px); }
+.page-head h1 { font-size: clamp(1.7rem, 4vw, 2.4rem); margin-bottom: 12px; }
+.filters { margin: 20px 0 6px; display: grid; gap: 12px; max-width: 720px; }
+.filter-i {
+  font: inherit; padding: 11px 14px; border: 1.5px solid var(--line-2);
+  border-radius: var(--radius); background: var(--surface); color: var(--text);
+}
+.filter-i:focus { border-color: var(--accent); outline: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.filter-count { color: var(--muted); font-size: 0.85rem; font-family: var(--mono); }
+.cnt {
+  font-family: var(--mono); font-size: 0.8rem; color: var(--muted); font-weight: 400;
+  margin-left: 6px;
+}
+.rows { list-style: none; margin: 14px 0 0; padding: 0; }
+/* Every track is minmax(0, …). A grid track sized `auto`, or an `Nfr` track holding an
+   unbreakable string, will not shrink below its content — and the widest source list here is
+   302 characters of repository names, about 2,200px of monospace on one line. That is what
+   pushed the row past its container. */
+.row {
+  display: grid; gap: 8px 20px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr) minmax(0, 20ch);
+  padding: 11px 0; border-bottom: 1px solid var(--line); align-items: baseline;
+}
+.row a { text-decoration: none; font-weight: 600; }
+.row a:hover { color: var(--accent); text-decoration: underline; }
+.row-g { color: var(--muted); font-size: 0.92rem; min-width: 0; }
+.row-m {
+  color: var(--muted); font-size: 0.76rem; font-family: var(--mono); text-align: right;
+  min-width: 0; overflow-wrap: anywhere;
+}
+.grp[hidden], .row[hidden] { display: none; }
+
+/* ── the map ────────────────────────────────────────────────────────────── */
+.map {
+  max-width: 1080px; margin: 0 auto; padding: 18px var(--pad) 10px;
+  display: grid; gap: 26px; grid-template-columns: minmax(0, 1fr) 288px;
+  align-items: start;
+}
+.map-c {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--surface); padding: 8px;
+}
+.map-svg { display: block; width: 100%; height: auto; }
+/* The rings are the claim this page makes, so they have to survive being seen at 660px with
+   232 dots sitting on them. At --line-2 they read as haze between the nodes rather than as
+   circles, which loses the one rule a reader has to learn. Muted at a third is still quiet
+   enough to stay behind the nodes and dark enough to close. */
+.ring-o {
+  fill: none; stroke: var(--muted); stroke-width: 1; opacity: 0.34;
+  stroke-dasharray: 3 7;
+}
+.ring-o.on { stroke: var(--accent); stroke-dasharray: none; stroke-width: 1.4; opacity: 1; }
+.ring-n {
+  font-family: var(--mono); font-size: 10px; fill: var(--muted);
+  text-anchor: middle; dominant-baseline: middle;
+  paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round;
+}
+/* Faint on purpose, and the reason is the argument this page is making. 1,300 links over 232
+   nodes at any readable weight is a hairball, and a hairball is what the README spends a
+   paragraph saying this is not. The rings carry the meaning; the links are texture until you
+   ask for them, and selecting a ring or a kind is how you ask. */
+.edge { stroke: var(--line-2); stroke-width: 0.5; opacity: 0.16; }
+.edge.on { stroke: var(--accent); stroke-width: 1.1; opacity: 0.9; }
+.node circle {
+  fill: var(--k, var(--line-2)); stroke: var(--surface); stroke-width: 1.2;
+  transition: r .1s ease, fill .1s ease;
+}
+.node:hover circle, .node:focus circle { r: 9; fill: var(--accent); }
+.node:focus { outline: none; }
+.node:focus circle { stroke: var(--text); stroke-width: 2; }
+/* Dimming is opacity on the group, not a fill change per node: a filter that repainted 232
+   circles on every hover of a 27-row list was the one thing on this page that felt slow. */
+.map-svg.filtered .node { opacity: 0.12; }
+.map-svg.filtered .node.hit { opacity: 1; }
+.map-svg.filtered .edge { opacity: 0.08; }
+.map-r {
+  margin: 4px 0 6px; padding: 0 8px; color: var(--muted); font-size: 0.88rem;
+  min-height: 2.6em;
+}
+.map-r strong { color: var(--text); }
+.map-r .kind { display: inline-block; margin-right: 8px; vertical-align: 1px; }
+
+.map-s { display: grid; gap: 14px; position: sticky; top: 76px; }
+.map-h {
+  display: flex; justify-content: space-between; font-family: var(--mono);
+  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--muted); padding-bottom: 8px; border-bottom: 1px solid var(--line-2);
+}
+/* No scroller. Fifteen rows fit, and a list that scrolls hides the two facts this panel
+   exists to show at once: how many repositories there are, and how unevenly they are covered.
+   It only becomes a scroller when there are enough rings that it has to. */
+.rings-l { list-style: none; margin: 0; padding: 0; max-height: 78vh; overflow-y: auto; }
+.ring-r {
+  display: grid; grid-template-columns: 26px 1fr auto; gap: 10px; align-items: baseline;
+  padding: 6px 6px; border-radius: 6px; font-size: 0.9rem;
+}
+.ring-r:hover, .ring-r.on { background: var(--surface-2); }
+.ring-r.on { box-shadow: inset 2px 0 0 var(--accent); }
+.ring-i {
+  appearance: none; font-family: var(--mono); font-size: 0.72rem; line-height: 1.5;
+  color: var(--muted); background: transparent; border: 1px solid var(--line);
+  border-radius: 4px; padding: 0 3px; cursor: pointer;
+}
+.ring-i:hover { color: var(--text); border-color: var(--muted); }
+.ring-i[aria-pressed="true"] {
+  color: var(--text); background: var(--accent-soft); border-color: var(--accent);
+}
+.ring-t a { text-decoration: none; }
+.ring-t a:hover { color: var(--accent); text-decoration: underline; }
+.ring-c { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+.lgs { display: flex; flex-wrap: wrap; gap: 6px; }
+.lg {
+  display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 0.78rem;
+  cursor: pointer; background: var(--surface); color: var(--muted);
+  border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px;
+}
+.lg:hover { color: var(--text); border-color: var(--muted); }
+.lg.on, .lg[aria-pressed="true"] {
+  background: var(--accent-soft); border-color: var(--accent); color: var(--text);
+}
+.lg-d {
+  width: 8px; height: 8px; border-radius: 50%; flex: none;
+  background: var(--k, var(--line-2));
+}
+.lg-project { --k: var(--k-project); }
+.lg-decision { --k: var(--k-decision); }
+.lg-concept { --k: var(--k-concept); }
+.lg-pattern { --k: var(--k-pattern); }
+.lg-tech { --k: var(--k-tech); }
+.lg-n { font-family: var(--mono); font-size: 0.72rem; }
+.map-n { color: var(--muted); font-size: 0.8rem; line-height: 1.5; margin: 0; }
+@media (max-width: 900px) {
+  .map { grid-template-columns: 1fr; }
+  .map-s { position: static; }
+}
+
+/* ── receipts tables ────────────────────────────────────────────────────── */
+.tw { overflow-x: auto; margin: 14px 0 26px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.94rem; }
+th, td { text-align: left; vertical-align: top; padding: 11px 14px 11px 0; }
+th {
+  border-bottom: 1px solid var(--line-2); font-size: 0.76rem; text-transform: uppercase;
+  letter-spacing: 0.07em; color: var(--muted); font-weight: 600;
+}
+td { border-bottom: 1px solid var(--line); }
+.receipts { table-layout: auto; }
+.receipts .fig {
+  font-size: 1.5rem; font-weight: 600; color: var(--accent); white-space: nowrap;
+  padding-right: 22px; width: 1%;
+}
+.receipts .how { color: var(--muted); font-size: 0.88rem; max-width: 46ch; }
+.gap-cell {
+  font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--warn); border: 1px dashed var(--warn);
+  border-radius: 4px; padding: 4px 8px; display: inline-block; white-space: nowrap;
+}
+
+/* ── article ────────────────────────────────────────────────────────────── */
+.page { max-width: 820px; padding-top: 30px; padding-bottom: 20px; }
+.crumb { color: var(--muted); font-size: 0.85rem; margin-bottom: 16px; }
+.crumb a { text-decoration: none; }
+.crumb a:hover { text-decoration: underline; }
+.meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 20px; }
+.conf, .dates, .repos {
+  font-family: var(--mono); font-size: 0.74rem; color: var(--muted);
+}
+.conf, .c-high { color: var(--muted); }
+.c-medium, .c-low { color: var(--warn); }
+.meta .c-medium, .meta .c-low {
+  border: 1px solid var(--warn); border-radius: 4px; padding: 2px 7px;
+}
+.conf-note {
+  display: grid; gap: 6px; background: var(--warn-soft);
+  border: 1px solid var(--warn); border-left-width: 3px;
+  border-radius: 0 var(--radius) var(--radius) 0; padding: 15px 18px; margin-bottom: 26px;
+  max-width: var(--measure);
+}
+.conf-note h2 {
+  font-size: 1rem; margin: 0; border: 0; padding: 0;
+}
+.conf-note p { margin: 0; color: var(--muted); font-size: 0.93rem; }
+.conf-k {
+  font-family: var(--mono); font-size: 0.66rem; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--warn);
+}
+.short {
+  display: grid; gap: 4px; background: var(--accent-soft);
+  border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 14px 18px; margin-bottom: 26px;
+}
+.short-k {
+  font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--accent);
+}
+.short p { margin: 0; font-size: 1.05rem; }
+
+.prose { max-width: var(--measure); }
+.prose h1 { font-size: 1.95rem; margin: 0 0 18px; }
+.prose h2 { font-size: 1.3rem; margin: 34px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.prose h3 { font-size: 1.06rem; margin: 24px 0 8px; }
+.prose ul, .prose ol { padding-left: 22px; }
+.prose li { margin-bottom: 7px; }
+.prose hr { border: 0; border-top: 1px solid var(--line); margin: 30px 0; }
+.prose a { color: var(--accent); }
+.prose .tw { max-width: none; }
+.prose table { font-size: 0.9rem; }
+code {
+  font-size: 0.88em; background: var(--surface-2); padding: 1px 5px; border-radius: 4px;
+  border: 1px solid var(--line);
+}
+pre {
+  background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 14px 16px; overflow-x: auto; font-size: 0.85rem; line-height: 1.5;
+}
+pre code { background: none; border: 0; padding: 0; }
+blockquote {
+  margin: 20px 0; padding: 14px 18px; background: var(--surface);
+  border: 1px solid var(--line); border-left: 3px solid var(--line-2);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+blockquote p { margin: 0; }
+blockquote cite {
+  display: block; margin-top: 8px; font-style: normal; font-family: var(--mono);
+  font-size: 0.76rem; color: var(--muted);
+}
+.gap {
+  display: grid; gap: 5px; background: var(--warn-soft); border: 1px dashed var(--warn);
+  border-radius: var(--radius); padding: 13px 16px; margin: 18px 0; font-size: 0.95rem;
+}
+.gap-k {
+  font-family: var(--mono); font-size: 0.66rem; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--warn);
+}
+.unpub {
+  color: var(--muted); border-bottom: 1px dotted var(--line-2); cursor: help;
+}
+.unpub-note { color: var(--muted); font-size: 0.8rem; margin-top: 34px; max-width: var(--measure); }
+
+.tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 26px 0 0; }
+.tag {
+  font-family: var(--mono); font-size: 0.72rem; color: var(--muted);
+  border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px;
+}
+.prov { margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--line); }
+.prov h2 { font-size: 1.05rem; margin-bottom: 6px; }
+.srcs { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 6px; }
+/* A source path is one unbroken token — `IT Applications.../lecture/exam_prep/qa_test.js` —
+   and on a 390px screen one of them pushed the whole document sideways, so every page on the
+   site scrolled horizontally. `min-width: 0` is the load-bearing half: a grid item defaults
+   to `min-width: auto`, which means "never shrink below my content", and no amount of
+   wrapping on the child fixes a track that has already been widened by it. */
+.srcs li { min-width: 0; }
+.srcs code {
+  background: none; border: 0; padding: 0; font-size: 0.83rem;
+  overflow-wrap: anywhere; word-break: break-word;
+}
+.src-r { color: var(--text); font-weight: 600; }
+.src-p { color: var(--muted); }
+.rels { display: grid; gap: 10px; margin-top: 12px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.rel {
+  display: grid; gap: 4px; align-content: start; text-decoration: none; padding: 12px 14px;
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface);
+}
+.rel:hover { border-color: var(--accent); }
+.rel-t { font-weight: 600; font-size: 0.95rem; }
+.rel-g { color: var(--muted); font-size: 0.85rem; line-height: 1.45; }
+
+/* ── section anchors and the outline ────────────────────────────────────────
+   The heading ids have been emitted since the first build and nothing revealed them, so
+   citing one section of a long page meant reading the HTML source to find the fragment. The
+   marker is invisible until the heading is hovered or the link itself is focused — the second
+   half matters, because a control only a mouse can find is not a control. */
+.h-anch { position: relative; }
+/* The colour comes from `.prose a` and is deliberately not restated here. It was, as
+   `--line-2`, and that declaration never applied: `.prose a` is two classes to this one's
+   one, so the marker has always drawn in the link colour. Repeating a value that loses is
+   worse than omitting it — it describes a rendering that does not happen. Visibility is what
+   this rule owns, and `opacity` is the whole of it. */
+.hlink {
+  position: absolute; left: -0.85em; width: 0.85em; text-align: left;
+  text-decoration: none; font-weight: 400;
+  opacity: 0; transition: opacity .1s ease;
+}
+/* `:focus`, not `:focus-visible`. The narrower rule reveals the marker for a reader tabbing
+   through the page and hides it from one whose focus arrived any other way — a script moving
+   focus, a fragment jump, a screen reader's own cursor — leaving an outline drawn around
+   something with `opacity: 0`. Focus is focus; if it can be reached it can be seen. */
+.h-anch:hover .hlink, .hlink:focus { opacity: 1; }
+.hlink:hover { text-decoration: underline; }
+@media (max-width: 720px) {
+  /* No hover to reveal it and no room in the margin to hang it in. */
+  .hlink { display: none; }
+}
+.toc {
+  margin: 22px 0 8px; padding: 14px 18px; border: 1px solid var(--line);
+  border-radius: var(--radius); background: var(--surface-2);
+}
+.toc-k {
+  font-family: var(--mono); font-size: 0.66rem; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--muted);
+}
+.toc ol {
+  margin: 8px 0 0; padding: 0; list-style: none;
+  columns: 2; column-gap: 26px;
+}
+@media (max-width: 620px) { .toc ol { columns: 1; } }
+.toc li { font-size: 0.9rem; margin-bottom: 4px; break-inside: avoid; }
+.toc a { color: var(--muted); text-decoration: none; }
+.toc a:hover { color: var(--accent); text-decoration: underline; }
+
+/* ── footer ─────────────────────────────────────────────────────────────── */
+.foot {
+  margin-top: 60px; padding: 34px var(--pad); border-top: 1px solid var(--line);
+  background: var(--surface); display: grid; gap: 20px;
+  grid-template-columns: minmax(260px, 2fr) 1fr; align-items: start;
+}
+.foot > div, .foot nav { max-width: 620px; }
+.foot p { color: var(--muted); font-size: 0.88rem; margin: 0 0 6px; }
+.foot-t { font-weight: 650; color: var(--text) !important; font-size: 0.95rem !important; }
+.foot nav { display: grid; gap: 6px; }
+.foot nav a { color: var(--muted); font-size: 0.88rem; text-decoration: none; }
+.foot nav a:hover { color: var(--accent); text-decoration: underline; }
+.built {
+  grid-column: 1 / -1; font-family: var(--mono); font-size: 0.74rem;
+  padding-top: 14px; border-top: 1px solid var(--line);
+}
+
+@media (max-width: 720px) {
+  .row { grid-template-columns: 1fr; }
+  .row-m { text-align: left; }
+  .foot { grid-template-columns: 1fr; }
+  .ask { flex-direction: column; }
+  .primary { padding: 13px 22px; }
+  .nav { order: 3; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+@media print {
+  .top, .foot, .ask, .seeds, .filters, .ghost, .hs, .hlink, .toc { display: none; }
+  body { background: #fff; color: #000; }
+  /* On paper a link's destination is gone unless the paper says it. Prose and source lists
+     only — printing the URL after every navigation link would put `browse.html` beside each
+     of forty related-page cards. */
+  .prose a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; word-break: break-all; }
+  .page, .prose { max-width: none; }
+}

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pure Domain Engine Shared Across Hosts · Glass Box</title>
+<meta name="description" content="Keep the rules of the domain in one UI-free, platform-free module, and let each host — a browser simulator, a phone, a test harness — supply only input and display">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pure Domain Engine Shared Across Hosts · Glass Box">
+<meta property="og:description" content="Keep the rules of the domain in one UI-free, platform-free module, and let each host — a browser simulator, a phone, a test harness — supply only input and display">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["What the split buys","The seam","Where the purity is imperfect","Cost paid","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Farley/apps/tester/src/app/lib/","Farley/CONTRIBUTING.md","Farley/docs/ocr-overlay/01-architecture.md","Farley/apps/android/capacitor.config.json"],"dateModified":"2026-07-28","description":"Keep the rules of the domain in one UI-free, platform-free module, and let each host — a browser simulator, a phone, a test harness — supply only input and display","headline":"Pure Domain Engine Shared Across Hosts","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["architecture","typescript","mobile"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-02</span>
+    <span class="repos">Farley</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Keep the rules of the domain in one UI-free, platform-free module, and let each host — a browser simulator, a phone, a test harness — supply only input and display</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#what-the-split-buys">What the split buys</a></li><li><a href="#the-seam">The seam</a></li><li><a href="#where-the-purity-is-imperfect">Where the purity is imperfect</a></li><li><a href="#cost-paid">Cost paid</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="pure-domain-engine-shared-across-hosts">Pure Domain Engine Shared Across Hosts</h1>
+<p>Keep the rules of the domain in one UI-free, platform-free module, and let each host — a browser simulator, a phone, a test harness — supply only <em>input</em> and <em>display</em>. The engine does not know which one it is running in.</p>
+<p>In <a class="wl" href="farely.html">farely</a> this is <code>apps/tester/src/app/lib/</code>: <code>engine</code>, <code>coordinator</code>, <code>controls</code>, <code>events</code>, <code>liveEvents</code>, <code>vision</code>, <code>diagnostics</code>, <code>diagStore</code>, <code>carLookup</code>, <code>device</code>, <code>session</code>, <code>theme</code>, <code>bridge</code>. The <strong>same built bundle</strong> is served by Vite in the browser and loaded by the <a class="wl" href="capacitor.html">capacitor</a> WebView inside the APK — <code>capacitor.config.json</code> points <code>webDir</code> straight at <code>../tester/dist</code>. The native side is described as only capturing and displaying.</p>
+<h2 id="what-the-split-buys" class="h-anch"><a class="hlink" href="#what-the-split-buys" aria-label="Link to this section">#</a>What the split buys</h2>
+<ul><li><strong>The unbuilt half stays testable.</strong> Every offer-scoring rule in <span class="unpub" title="named in the source wiki; not published">deadhead-adjusted-net-profit</span> could be exercised in a browser long before an APK existed — which, given that Farely never ran on a live shift, is the only reason any of it was exercised at all. The simulator was the product for its whole life.</li><li><strong>One implementation, not two.</strong> No native scoring path exists to drift from the JS one. Contrast the sibling product <a class="wl" href="stickfps.html">stickfps</a>, which deliberately duplicated its simulation code across hosts instead.</li><li><strong>The native boundary stays small.</strong> ~1,099 lines of Kotlin against ~12,100 lines of TypeScript. The Kotlin does capture (<a class="wl" href="accessibility-service-overlay.html">accessibility-service-overlay</a>) and drawing (<a class="wl" href="accessibility-overlay-over-system-alert-window.html">accessibility-overlay-over-system-alert-window</a>); it makes no money decisions.</li></ul>
+<h2 id="the-seam" class="h-anch"><a class="hlink" href="#the-seam" aria-label="Link to this section">#</a>The seam</h2>
+<p>A Capacitor plugin bridge in both directions: <code>FarelyBridgePlugin.emitRawOffer</code> pushes a <code>RawOffer</code> into the WebView, <code>showOverlay</code> sends the verdict back out. The data crossing is small and dumb — strings and numbers off the node tree — which is what keeps the engine platform-free. <code>offerFromRaw()</code> on the JS side does all the normalising (fuzzy Polish place resolution, estimating missing km/min, setting the <code>approx</code> flag), so the native side never has to know the domain.</p>
+<h2 id="where-the-purity-is-imperfect" class="h-anch"><a class="hlink" href="#where-the-purity-is-imperfect" aria-label="Link to this section">#</a>Where the purity is imperfect</h2>
+<p><code>vision.ts</code> reaches the network directly and switches transport by host — <code>CapacitorHttp</code> natively, a Vite dev proxy in the browser, direct <code>fetch</code> otherwise. So the &quot;pure&quot; library does contain host detection, isolated to the one module that must do I/O. <code>device.ts</code> likewise sniffs RAM to pick a LITE tier. Both are honest exceptions rather than leaks scattered through the engine.</p>
+<h2 id="cost-paid" class="h-anch"><a class="hlink" href="#cost-paid" aria-label="Link to this section">#</a>Cost paid</h2>
+<p>A duplicated mirror elsewhere: <code>apps/android/reference/</code> is a <strong>hand-maintained copy</strong> of the Kotlin files, which CONTRIBUTING asks the developer to keep in sync manually. The discipline that removed duplication from the domain layer did not reach the native layer.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="farely.html">farely</a> · <a class="wl" href="capacitor.html">capacitor</a> · <a class="wl" href="on-device-first-inference.html">on-device-first-inference</a> · <a class="wl" href="on-device-black-box-diagnostics.html">on-device-black-box-diagnostics</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a></p></div>
+  <div class="tags"><span class="tag">architecture</span><span class="tag">typescript</span><span class="tag">mobile</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Farley</span><span class="src-p">/apps/tester/src/app/lib/</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/CONTRIBUTING.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/ocr-overlay/01-architecture.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/android/capacitor.config.json</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="accessibility-service-overlay.html"><span class="kind k-concept">concept</span><span class="rel-t">Accessibility Service Overlay</span><span class="rel-g">Read another app&#x27;s live view hierarchy through the platform accessibility channel, compute something from it, then draw the answer back on top of that same app — without…</span></a><a class="rel" href="on-device-black-box-diagnostics.html"><span class="kind k-concept">concept</span><span class="rel-t">On-Device Black Box Diagnostics</span><span class="rel-g">When you cannot attach a debugger — the user is driving, the failure is a screen you have never seen, and no telemetry may leave the device — record a bounded local…</span></a><a class="rel" href="on-device-first-inference.html"><span class="kind k-concept">concept</span><span class="rel-t">On-Device-First Inference</span><span class="rel-g">Do the classification locally with cheap deterministic logic; treat a model call as an upgrade the owner may switch on, never as the default path</span></a><a class="rel" href="accessibility-overlay-over-system-alert-window.html"><span class="kind k-decision">decision</span><span class="rel-t">Accessibility Overlay Over SYSTEM_ALERT_WINDOW</span><span class="rel-g">Draw the ACCEPT / MARGINAL / DECLINE bubble as a TYPE_ACCESSIBILITY_OVERLAY window attached to the already-running accessibility service, instead of a…</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="farely.html"><span class="kind k-project">project</span><span class="rel-t">Farely</span><span class="rel-g">A personal Android rideshare/delivery driver assistant for Wrocław</span></a><a class="rel" href="stickfps.html"><span class="kind k-project">project</span><span class="rel-t">Stickfps</span><span class="rel-g">A 5v5 round-based browser tactical FPS: Counter-Strike round/economy structure, Krunker-style movement feel, procedurally-generated low-poly stickmen</span></a><a class="rel" href="capacitor.html"><span class="kind k-tech">tech</span><span class="rel-t">Capacitor</span><span class="rel-g">Native runtime that wraps a web build in a WebView and exposes native capability through plugins</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

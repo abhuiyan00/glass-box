@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Workload Balance Vs Distance · Glass Box</title>
+<meta name="description" content="Minimising total fleet distance and sharing work evenly across vehicles are different objectives, and optimising the first alone reliably produces a fleet where one…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Workload Balance Vs Distance · Glass Box">
+<meta property="og:description" content="Minimising total fleet distance and sharing work evenly across vehicles are different objectives, and optimising the first alone reliably produces a fleet where one…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["⚠ LBBS is the user's own coinage","The two levers","The trade, measured","Why the trade is worth naming","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Optimization Methods/final_project/ARCHITECTURE.md","Optimization Methods/final_project/mdvrp/include/lbbs.hpp","Optimization Methods/final_project/output/experiments/lbbs/tuned/mod_note.md","Optimization Methods/final_project/README.md"],"dateModified":"2026-07-28","description":"Minimising total fleet distance and sharing work evenly across vehicles are different objectives, and optimising the first alone reliably produces a fleet where one…","headline":"Workload Balance Vs Distance","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["optimization","algorithms","cpp"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">Optimization Methods</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Minimising total fleet distance and sharing work evenly across vehicles are different objectives, and optimising the first alone reliably produces a fleet where one…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#lbbs-is-the-users-own-coinage">⚠ LBBS is the user&#x27;s own coinage</a></li><li><a href="#the-two-levers">The two levers</a></li><li><a href="#the-trade-measured">The trade, measured</a></li><li><a href="#why-the-trade-is-worth-naming">Why the trade is worth naming</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="workload-balance-vs-distance">Workload Balance Vs Distance</h1>
+<p>Minimising total fleet distance and sharing work evenly across vehicles are <strong>different objectives</strong>, and optimising the first alone reliably produces a fleet where one vehicle does a great deal and others do very little. A distance-optimal plan has no reason to care that vehicle 3 drives 40 km and vehicle 11 drives 4 km — the sum is what is scored.</p>
+<p><a class="wl" href="multi-depot-vehicle-routing.html">multi-depot-vehicle-routing</a> in <a class="wl" href="optimization-methods.html">optimization-methods</a> takes this on directly and pays a measurable price for fairness.</p>
+<h2 id="lbbs-is-the-users-own-coinage" class="h-anch"><a class="hlink" href="#lbbs-is-the-users-own-coinage" aria-label="Link to this section">#</a>⚠ LBBS is the user&#x27;s own coinage</h2>
+<p>The method is called <strong>LBBS — Large Banned Balance Split</strong>. This name is <strong>not a literature term</strong>. It is the user&#x27;s own invented method name, confirmed in interview:</p>
+<blockquote><p>&quot;A teammate&#x27;s suggested value; LBBS is my own coinage.&quot;</p><cite>interview, 2026-07-28</cite></blockquote>
+<p>Anyone citing &quot;LBBS&quot; as an established technique is citing this repository. Recorded here explicitly so the name is never propagated as standard.</p>
+<h2 id="the-two-levers" class="h-anch"><a class="hlink" href="#the-two-levers" aria-label="Link to this section">#</a>The two levers</h2>
+<p><strong>1. Longest-edge ban.</strong> The longest used leg in a solution is put on a ban list and charged a penalty, which pushes the search away from the single long haul that creates the imbalance. Only the top <em>N</em> longest edges are banned (<code>banned_top_n = 1</code> by default) — the ban is a nudge on one leg, not a constraint set.</p>
+<p><strong>2. LPT trip→vehicle assignment.</strong> Once trips exist, they are assigned to vehicles by longest-processing-time first rather than round-robin. LPT is the classic greedy makespan heuristic and it is doing the same job here: put the big items down first so the small ones fill the gaps.</p>
+<p>Two designs of this exist side by side and both are kept: <strong>two-phase</strong> (<code>lbbs2</code> — a blind GA finds the ban, then a second GA runs with that ban fixed) and <strong>single-stage integrated</strong>, where the ban list grows adaptively inside one GA run every <code>lbbs_update_interval</code> generations. Neither is deleted in favour of the other — see <a class="wl" href="multiple-solutions-side-by-side.html">multiple-solutions-side-by-side</a> and <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a>.</p>
+<h2 id="the-trade-measured" class="h-anch"><a class="hlink" href="#the-trade-measured" aria-label="Link to this section">#</a>The trade, measured</h2>
+<p>After the penalty was made proportionate (<a class="wl" href="soft-multiplicative-ban-penalty.html">soft-multiplicative-ban-penalty</a>), per-vehicle imbalance — the coefficient of variation of vehicle workload — drops by roughly 90–95%:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>City (large)</th>
+<th>Imbalance before</th>
+<th>Imbalance after</th>
+</tr></thead><tbody>
+<tr><td>berlin</td><td>3.698</td><td><strong>0.318</strong></td></tr>
+<tr><td>budapest</td><td>3.704</td><td><strong>0.203</strong></td></tr>
+<tr><td>wroclaw</td><td>3.702</td><td><strong>0.200</strong></td></tr>
+<tr><td>zurich</td><td>3.702</td><td><strong>0.261</strong></td></tr>
+</tbody></table></div>
+<p>The distance cost is small: across the 12 instances <code>lbbs_tuned</code> sits within a few percent of the tuned blind GA, sometimes better (Zurich large 960,974 vs 971,895; Berlin small 209,231 vs 230,170), sometimes worse. Neither beats greedy on distance at scale, which is the point of <a class="wl" href="blind-baseline-comparison.html">blind-baseline-comparison</a> and not a failure of the balance objective.</p>
+<p><strong>The honest reading:</strong> the &quot;before&quot; imbalance of 3.70 was largely a scoring artefact, so the ~90% figure measures fixing a measurement bug at least as much as it measures balancing a fleet. The repo says this itself rather than reporting the improvement bare — the imbalance was &quot;pinned at ~3.70 for all 32 operator combos&quot;, which is the signature of an artefact, not of a hard problem.</p>
+<h2 id="why-the-trade-is-worth-naming" class="h-anch"><a class="hlink" href="#why-the-trade-is-worth-naming" aria-label="Link to this section">#</a>Why the trade is worth naming</h2>
+<p>Distance is the objective that is easy to write down; balance is the one a dispatcher actually complains about. Any fleet objective that is a pure sum is silently indifferent to distribution, and you only find out when the plan meets people. Recording it as a <em>trade</em> rather than as an improvement keeps both halves visible: roughly a few percent of distance bought a fleet where no vehicle carries five times its neighbour&#x27;s load.</p>
+<ul><li><strong>TODO:</strong> which of the two LBBS designs is the shipped answer is not stated — <code>ARCHITECTURE.md</code> §6 presents both, and <code>ga.hpp</code> carries a <code>use_lbbs</code> adaptive path. Whether the other is an abandoned arm or a deliberate comparison arm is unrecorded. <code>confidence: low</code> on that sub-claim.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="optimization-methods.html">optimization-methods</a> · <span class="unpub" title="named in the source wiki; not published">operator-bake-off</span> · <a class="wl" href="lazy-dijkstra-distance-cache.html">lazy-dijkstra-distance-cache</a> · <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a></p></div>
+  <div class="tags"><span class="tag">optimization</span><span class="tag">algorithms</span><span class="tag">cpp</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/ARCHITECTURE.md</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/mdvrp/include/lbbs.hpp</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/output/experiments/lbbs/tuned/mod_note.md</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="blind-baseline-comparison.html"><span class="kind k-concept">concept</span><span class="rel-t">Blind Baseline Comparison</span><span class="rel-g">Deliberately withhold the domain heuristic from the metaheuristic so that the comparison against that heuristic measures something</span></a><a class="rel" href="lazy-dijkstra-distance-cache.html"><span class="kind k-concept">concept</span><span class="rel-t">Lazy Dijkstra Distance Cache</span><span class="rel-g">Do not build the all-pairs distance matrix</span></a><a class="rel" href="multi-depot-vehicle-routing.html"><span class="kind k-concept">concept</span><span class="rel-t">Multi-Depot Vehicle Routing</span><span class="rel-g">Serve every customer from one of several depots, at minimum total travel cost, without exceeding vehicle capacity</span></a><a class="rel" href="soft-multiplicative-ban-penalty.html"><span class="kind k-decision">decision</span><span class="rel-t">Soft Multiplicative Ban Penalty</span><span class="rel-g">Charge a banned leg 3× its real length (LBBSParams::banned_mult = 3.0, applied in BannedDist) instead of adding a flat +1×10⁸ metres</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="multiple-solutions-side-by-side.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Multiple Solutions Side by Side</span><span class="rel-g">The same problem is solved two or three ways in one deliverable, and the trade-off between them is the point</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="optimization-methods.html"><span class="kind k-project">project</span><span class="rel-t">Optimization Methods</span><span class="rel-g">Master&#x27;s Optimization Methods course at Wrocław University of Science and Technology (FICT, lectures by M. Przewoźniczek)</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

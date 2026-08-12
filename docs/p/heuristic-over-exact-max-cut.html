@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heuristic Over Exact Max-Cut · Glass Box</title>
+<meta name="description" content="Solve Max-Cut with best-improvement local search plus ten random restarts, instead of searching the partition space exhaustively">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Heuristic Over Exact Max-Cut · Glass Box">
+<meta property="og:description" content="Solve Max-Cut with best-improvement local search plus ten random restarts, instead of searching the partition space exhaustively">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why","Alternatives rejected","What was given up","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Discrete-Mathematics-Laboratories/lab1_Max_Cut/"],"dateModified":"2026-07-28","description":"Solve Max-Cut with best-improvement local search plus ten random restarts, instead of searching the partition space exhaustively","headline":"Heuristic Over Exact Max-Cut","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["algorithms","optimization","discrete-math","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-03-20</span>
+    <span class="repos">Discrete-Mathematics-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Solve Max-Cut with best-improvement local search plus ten random restarts, instead of searching the partition space exhaustively</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why">Why</a></li><li><a href="#alternatives-rejected">Alternatives rejected</a></li><li><a href="#what-was-given-up">What was given up</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="heuristic-over-exact-max-cut">Heuristic Over Exact Max-Cut</h1>
+<p><strong>Decision.</strong> Solve Max-Cut with best-improvement local search plus ten random restarts, instead of searching the partition space exhaustively.</p>
+<p><strong>Date.</strong> 2026-03-20, the first lab committed to <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a>.</p>
+<h2 id="why" class="h-anch"><a class="hlink" href="#why" aria-label="Link to this section">#</a>Why</h2>
+<p>The rejected alternative is quantified in the lab itself: with 127 vertices the space of partitions is <strong><code>2^127</code></strong>. That number is not a rhetorical flourish — it is the argument, and the lab reports it rather than leaving &quot;intractable&quot; as an adjective.</p>
+<blockquote><p>&quot;The thread running through all six: take a formal object (a cut, a modulus, a set, a recursion, a graph, an information system) and make its behaviour <strong>observable</strong>.&quot;</p><cite>Discrete-Mathematics-Laboratories/README.md, 2026-07-10</cite></blockquote>
+<p>Stating the size of the space you are <em>not</em> searching is what makes the heuristic legible as a choice — see <a class="wl" href="make-the-formal-object-observable.html">make-the-formal-object-observable</a> and <a class="wl" href="max-cut-and-local-search.html">max-cut-and-local-search</a>.</p>
+<h2 id="alternatives-rejected" class="h-anch"><a class="hlink" href="#alternatives-rejected" aria-label="Link to this section">#</a>Alternatives rejected</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Option</th>
+<th>Why not</th>
+</tr></thead><tbody>
+<tr><td><strong>Exhaustive enumeration</strong></td><td><code>2^127</code> partitions</td></tr>
+<tr><td><strong>Exact solver</strong> (ILP / branch-and-bound)</td><td>a dependency and a modelling layer, for a lab about the algorithm</td></tr>
+<tr><td><strong>Goemans–Williamson SDP</strong></td><td>0.878-approximation <em>with a proof</em>, but needs an SDP solver — no dependency in this repo is heavier than matplotlib</td></tr>
+<tr><td><strong>Single-start local search</strong></td><td>one descent lands wherever its start drains to; the restarts are the whole improvement</td></tr>
+</tbody></table></div>
+<p><strong>TODO:</strong> none of these rejections is written down in the repo. Only the <code>2^127</code> figure and a commit message, <code>Add conclusion about multi-start heuristic effectiveness</code> (2026-03-20), evidence the reasoning. The table above states what the alternatives <em>are</em>; it does not claim they were considered. <code>confidence: low</code> on the deliberation, <code>confidence: medium</code> on the decision as implemented.</p>
+<h2 id="what-was-given-up" class="h-anch"><a class="hlink" href="#what-was-given-up" aria-label="Link to this section">#</a>What was given up</h2>
+<p>An approximation <strong>guarantee</strong>. Multi-start local search has no proven ratio — the result is &quot;the best of ten local optima&quot;, which could be far from optimal on an adversarial instance and there is no bound saying otherwise. The lab has no comparison against a known optimum or a published bound, so solution quality is unmeasured. <strong>TODO:</strong> <code>confidence: low</code> on any effectiveness claim.</p>
+<p>This is the same species of trade as the one on <a class="wl" href="shortest-path-algorithm-family.html">shortest-path-algorithm-family</a>, where a function named <code>tspChristofides</code> gives up the 1.5-approximation guarantee by matching greedily — with the difference that here the loss of guarantee is deliberate and there it is unremarked.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="max-cut-and-local-search.html">max-cut-and-local-search</a> · <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> · <a class="wl" href="shortest-path-algorithm-family.html">shortest-path-algorithm-family</a> · <a class="wl" href="optimization-methods.html">optimization-methods</a> · <a class="wl" href="make-the-formal-object-observable.html">make-the-formal-object-observable</a></p></div>
+  <div class="tags"><span class="tag">algorithms</span><span class="tag">optimization</span><span class="tag">discrete-math</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab1_Max_Cut/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="max-cut-and-local-search.html"><span class="kind k-concept">concept</span><span class="rel-t">Max-Cut and Local Search</span><span class="rel-g">Max-Cut: partition a graph&#x27;s vertices into two sets so that the weight of edges crossing between them is maximised</span></a><a class="rel" href="shortest-path-algorithm-family.html"><span class="kind k-concept">concept</span><span class="rel-t">The Shortest-Path Algorithm Family</span><span class="rel-g">Four algorithms, one problem, four different sets of assumptions</span></a><a class="rel" href="make-the-formal-object-observable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Make the Formal Object Observable</span><span class="rel-g">Take a mathematical definition and build something that lets you watch it behave</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="optimization-methods.html"><span class="kind k-project">project</span><span class="rel-t">Optimization Methods</span><span class="rel-g">Master&#x27;s Optimization Methods course at Wrocław University of Science and Technology (FICT, lectures by M. Przewoźniczek)</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accumulating Validation · Glass Box</title>
+<meta name="description" content="Validation that reports every failure at once, rather than throwing on the first one — and that never constructs the object while it is still deciding whether the object…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Accumulating Validation · Glass Box">
+<meta property="og:description" content="Validation that reports every failure at once, rather than throwing on the first one — and that never constructs the object while it is still deciding whether the object…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why fail-fast is the wrong default at a boundary","The part that is easy to miss","What it costs","Relation to error-as-value","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["functional-programming-scala-laboratories/src/main/scala/fplab/Domain.scala","functional-programming-scala-laboratories/docs/DESIGN_NOTES.md","functional-programming-scala-laboratories/docs/CONCEPT_MAP.md"],"dateModified":"2026-08-02","description":"Validation that reports every failure at once, rather than throwing on the first one — and that never constructs the object while it is still deciding whether the object…","headline":"Accumulating Validation","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["architecture","refactoring","testing","requirements"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-02 · in force since 2026-08-02</span>
+    <span class="repos">functional-programming-scala-laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Validation that reports every failure at once, rather than throwing on the first one — and that never constructs the object while it is still deciding whether the object…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why-fail-fast-is-the-wrong-default-at-a-boundary">Why fail-fast is the wrong default at a boundary</a></li><li><a href="#the-part-that-is-easy-to-miss">The part that is easy to miss</a></li><li><a href="#what-it-costs">What it costs</a></li><li><a href="#relation-to-error-as-value">Relation to error-as-value</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="accumulating-validation">Accumulating Validation</h1>
+<p>Validation that reports <strong>every</strong> failure at once, rather than throwing on the first one — and that never constructs the object while it is still deciding whether the object should exist.</p>
+<p>Two properties, and the second is the one that gets missed.</p>
+<h2 id="why-fail-fast-is-the-wrong-default-at-a-boundary" class="h-anch"><a class="hlink" href="#why-fail-fast-is-the-wrong-default-at-a-boundary" aria-label="Link to this section">#</a>Why fail-fast is the wrong default at a boundary</h2>
+<p>Throwing on the first bad field is correct for an invariant violated inside a system. It is wrong at an input boundary, where the caller is a person or another service:</p>
+<ul><li>A form that reveals one error per submission takes five round trips to fill in five fields wrong, and each round trip is a chance to break a field that was previously fine.</li><li>An API that returns one error per request cannot be driven by a client that wants to correct its payload, so the client guesses.</li><li>A batch import that stops at the first bad row makes the operator discover the file&#x27;s problems one deploy at a time.</li></ul>
+<p>The shape of the answer follows from the shape of the question: &quot;is this valid?&quot; has one answer, but &quot;what is wrong with this?&quot; has a list.</p>
+<h2 id="the-part-that-is-easy-to-miss" class="h-anch"><a class="hlink" href="#the-part-that-is-easy-to-miss" aria-label="Link to this section">#</a>The part that is easy to miss</h2>
+<p>Exception-based validation usually runs <em>after</em> construction. The object is built, then checked, then thrown away — which means a half-valid instance existed, was reachable, and in a mutable design may have been stored, logged or passed to a listener before anyone decided it was invalid.</p>
+<p>Accumulating validation inverts that: gather the failures, and <strong>construct only on the empty-failure branch</strong>. The type then carries a real guarantee — if you are holding one, it passed. There is no state in which an invalid instance exists, so no code downstream needs a defensive re-check, and no test needs to cover &quot;what if a partially valid object gets through&quot;.</p>
+<pre><code>validate(raw) -&gt; Either[List[Error], TeamMember]</code></pre>
+<p>Errors are a list because there may be several; success is the constructed value because there is nothing else to say.</p>
+<h2 id="what-it-costs" class="h-anch"><a class="hlink" href="#what-it-costs" aria-label="Link to this section">#</a>What it costs</h2>
+<p>The validators must be <strong>independent</strong>, since all of them run. Dependent checks — &quot;this field is required <em>when</em> that one is set&quot; — either become one combined check or need ordering, and pretending otherwise produces a cascade of confusing messages derived from a single root cause. A missing file reported as five errors is worse than one.</p>
+<p>The other cost is discipline about the error type. A list of strings is enough to display and not enough to act on; a list of structured failures with a field reference is what lets a client attach each message to its input. Compare the <code>details</code> object in <a class="wl" href="distributed-systems-protocol-labs.html">distributed-systems-protocol-labs</a>, which exists for the same reason.</p>
+<h2 id="relation-to-error-as-value" class="h-anch"><a class="hlink" href="#relation-to-error-as-value" aria-label="Link to this section">#</a>Relation to error-as-value</h2>
+<p>This is the boundary case of returning failures as values rather than raising them. The same rebuild applies it throughout: <code>Either</code> and validated result types instead of <code>null</code>, unchecked casts, or sentinel numbers — each of which is a failure the type system was offering to catch for free. See <a class="wl" href="functional-programming-scala-laboratories.html">functional-programming-scala-laboratories</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="functional-programming-scala-laboratories.html">functional-programming-scala-laboratories</a> · <a class="wl" href="contract-first-api-design.html">contract-first-api-design</a> · <a class="wl" href="distributed-systems-protocol-labs.html">distributed-systems-protocol-labs</a> · <a class="wl" href="authorization-in-the-query-predicate.html">authorization-in-the-query-predicate</a> · <a class="wl" href="health-awareness-support-platform.html">health-awareness-support-platform</a></p></div>
+  <div class="tags"><span class="tag">architecture</span><span class="tag">refactoring</span><span class="tag">testing</span><span class="tag">requirements</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">functional-programming-scala-laboratories</span><span class="src-p">/src/main/scala/fplab/Domain.scala</span></code></li><li><code><span class="src-r">functional-programming-scala-laboratories</span><span class="src-p">/docs/DESIGN_NOTES.md</span></code></li><li><code><span class="src-r">functional-programming-scala-laboratories</span><span class="src-p">/docs/CONCEPT_MAP.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="authorization-in-the-query-predicate.html"><span class="kind k-concept">concept</span><span class="rel-t">Authorisation in the Query Predicate</span><span class="rel-g">Authorisation is a domain decision: the system determines whether an authenticated actor may operate on a loaded resource, then performs the requested operation</span></a><a class="rel" href="contract-first-api-design.html"><span class="kind k-concept">concept</span><span class="rel-t">Contract-First API Design</span><span class="rel-g">Write the API specification first; generate the code from it</span></a><a class="rel" href="distributed-systems-protocol-labs.html"><span class="kind k-project">project</span><span class="rel-t">Distributed Systems Protocol Labs</span><span class="rel-g">One service contract, executed over two real transports — length-prefixed TCP JSON and HTTP/1.1 JSON — with a third, gRPC, expressed as a schema and deliberately left…</span></a><a class="rel" href="functional-programming-scala-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Functional Programming Scala Laboratories</span><span class="rel-g">A fragmented set of Scala exercises rebuilt as one coherent laboratory</span></a><a class="rel" href="health-awareness-support-platform.html"><span class="kind k-project">project</span><span class="rel-t">Health Awareness Support Platform</span><span class="rel-g">Clearpath — a Django health-education product rebuilt from a bachelor capstone by the same author</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

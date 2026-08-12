@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unsigned Time Arithmetic and Rollover · Glass Box</title>
+<meta name="description" content="A millisecond counter in a fixed-width unsigned type wraps to zero">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unsigned Time Arithmetic and Rollover · Glass Box">
+<meta property="og:description" content="A millisecond counter in a fixed-width unsigned type wraps to zero">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why the subtraction form survives","Why it is almost never caught","The related trap: blocking instead of scheduling","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["embedded-systems-iot-laboratories/docs/ARCHITECTURE.md","embedded-systems-iot-laboratories/src/iot_labs/debounced_button.cpp","embedded-systems-iot-laboratories/src/iot_labs/uart_led_controller.cpp","embedded-systems-iot-laboratories/README.md"],"dateModified":"2026-08-02","description":"A millisecond counter in a fixed-width unsigned type wraps to zero","headline":"Unsigned Time Arithmetic and Rollover","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["cpp","debugging","performance","architecture"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-02 · in force since 2026-08-02</span>
+    <span class="repos">embedded-systems-iot-laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A millisecond counter in a fixed-width unsigned type wraps to zero</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why-the-subtraction-form-survives">Why the subtraction form survives</a></li><li><a href="#why-it-is-almost-never-caught">Why it is almost never caught</a></li><li><a href="#the-related-trap-blocking-instead-of-scheduling">The related trap: blocking instead of scheduling</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="unsigned-time-arithmetic-and-rollover">Unsigned Time Arithmetic and Rollover</h1>
+<p>A millisecond counter in a fixed-width unsigned type wraps to zero. On a 32-bit <code>millis()</code> that happens after <strong>49.7 days</strong>. Whether the wrap is harmless or fatal is decided by one line of arithmetic.</p>
+<pre><code class="lang-cpp">if (now - then &gt;= interval)          // correct through the rollover
+if (now &gt; then + interval)           // fails at the rollover</code></pre>
+<h2 id="why-the-subtraction-form-survives" class="h-anch"><a class="hlink" href="#why-the-subtraction-form-survives" aria-label="Link to this section">#</a>Why the subtraction form survives</h2>
+<p>Unsigned arithmetic in C and C++ is defined to wrap modulo 2ⁿ. So when <code>now</code> has wrapped and <code>then</code> has not, <code>now - then</code> <em>also</em> wraps — and comes out as the true elapsed interval, not as an enormous number. The overflow in the subtraction cancels the overflow in the clock.</p>
+<p>The addition form has no such symmetry. <code>then + interval</code> overflows to a small number, the comparison <code>now &gt; small</code> becomes true immediately or stays false for weeks depending on where the wrap fell, and the scheduler either fires continuously or never fires again.</p>
+<p>The rule is worth stating positively, because it generalises past clocks: <strong>compare differences, not sums.</strong> Any monotonically increasing counter in a bounded type — sequence numbers, tick counters, byte offsets — behaves the same way.</p>
+<h2 id="why-it-is-almost-never-caught" class="h-anch"><a class="hlink" href="#why-it-is-almost-never-caught" aria-label="Link to this section">#</a>Why it is almost never caught</h2>
+<p>The reproduction time is 49.7 days of continuous uptime. No test suite waits for it, no lab demonstration reaches it, and no code review notices it, because the wrong form is the one that reads more naturally in English: <em>&quot;if now is past then-plus-the-interval&quot;</em>.</p>
+<p>It is therefore a defect discovered exclusively in deployed systems, months after the person who wrote it moved on. That profile — invisible to every check that exists, correct in every observation anyone makes — is the same one that makes <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a> worth its own page.</p>
+<p>The fix in a test suite is not to wait. It is to make the clock a parameter, so a test can hand the state machine a timestamp near the wrap boundary and assert the transition. That is available only if the logic was lifted out of <code>loop()</code> first — see <a class="wl" href="separating-computation-from-io.html">separating-computation-from-io</a>.</p>
+<h2 id="the-related-trap-blocking-instead-of-scheduling" class="h-anch"><a class="hlink" href="#the-related-trap-blocking-instead-of-scheduling" aria-label="Link to this section">#</a>The related trap: blocking instead of scheduling</h2>
+<p><code>delay()</code> is not a timing primitive; it is a promise that nothing else happens. A &quot;blink&quot; implemented with <code>delay()</code> drops serial input and freezes display refreshes for its duration, on a controller with no other thread to pick up the slack. Timestamp-driven scheduling — record <code>then</code>, return, and check the difference on the next pass — is what makes several timed behaviours coexist in one loop.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="embedded-systems-iot-laboratories.html">embedded-systems-iot-laboratories</a> · <a class="wl" href="separating-computation-from-io.html">separating-computation-from-io</a> · <a class="wl" href="tests-that-pass-for-the-wrong-reason.html">tests-that-pass-for-the-wrong-reason</a> · <a class="wl" href="fixed-timestep-simulation.html">fixed-timestep-simulation</a> · <a class="wl" href="pure-domain-engine-shared-across-hosts.html">pure-domain-engine-shared-across-hosts</a></p></div>
+  <div class="tags"><span class="tag">cpp</span><span class="tag">debugging</span><span class="tag">performance</span><span class="tag">architecture</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">embedded-systems-iot-laboratories</span><span class="src-p">/docs/ARCHITECTURE.md</span></code></li><li><code><span class="src-r">embedded-systems-iot-laboratories</span><span class="src-p">/src/iot_labs/debounced_button.cpp</span></code></li><li><code><span class="src-r">embedded-systems-iot-laboratories</span><span class="src-p">/src/iot_labs/uart_led_controller.cpp</span></code></li><li><code><span class="src-r">embedded-systems-iot-laboratories</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="fixed-timestep-simulation.html"><span class="kind k-concept">concept</span><span class="rel-t">Fixed Timestep Simulation</span><span class="rel-g">Advance the simulation in constant-size steps regardless of how long a frame took</span></a><a class="rel" href="pure-domain-engine-shared-across-hosts.html"><span class="kind k-concept">concept</span><span class="rel-t">Pure Domain Engine Shared Across Hosts</span><span class="rel-g">Keep the rules of the domain in one UI-free, platform-free module, and let each host — a browser simulator, a phone, a test harness — supply only input and display</span></a><a class="rel" href="separating-computation-from-io.html"><span class="kind k-concept">concept</span><span class="rel-t">Separating Computation from I/O</span><span class="rel-g">A function that computes and prints can only be tested by capturing stdout</span></a><a class="rel" href="tests-that-pass-for-the-wrong-reason.html"><span class="kind k-concept">concept</span><span class="rel-t">Tests That Pass for the Wrong Reason</span><span class="rel-g">A failing test tells you something is broken</span></a><a class="rel" href="embedded-systems-iot-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Embedded Systems and IoT Laboratories</span><span class="rel-g">Four Arduino exercises rebuilt as one testable C++17 project</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

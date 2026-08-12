@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Opt-In Cloud Fallback · Glass Box</title>
+<meta name="description" content="A remote model call that is structurally optional: absent a key it does not exist, present a key it fires only for inputs a cheap local gate has already judged novel,…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Opt-In Cloud Fallback · Glass Box">
+<meta property="og:description" content="A remote model call that is structurally optional: absent a key it does not exist, present a key it fires only for inputs a cheap local gate has already judged novel,…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The four gates, in order","Failure semantics","The residual risk, stated","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Farley/apps/tester/src/app/lib/vision.ts","Farley/apps/tester/src/app/lib/session.ts","Farley/docs/VISION.md","Farley/apps/android/android/app/src/main/java/com/farely/app/FarelyAccessibilityService.kt"],"dateModified":"2026-07-28","description":"A remote model call that is structurally optional: absent a key it does not exist, present a key it fires only for inputs a cheap local gate has already judged novel,…","headline":"Opt-In Cloud Fallback","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["privacy","architecture","ml"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-13</span>
+    <span class="repos">Farley</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A remote model call that is structurally optional: absent a key it does not exist, present a key it fires only for inputs a cheap local gate has already judged novel,…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-four-gates-in-order">The four gates, in order</a></li><li><a href="#failure-semantics">Failure semantics</a></li><li><a href="#the-residual-risk-stated">The residual risk, stated</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="opt-in-cloud-fallback">Opt-In Cloud Fallback</h1>
+<p>A remote model call that is <strong>structurally optional</strong>: absent a key it does not exist, present a key it fires only for inputs a cheap local gate has already judged novel, and on any failure it degrades to the local answer rather than to an error. The counterpart of <a class="wl" href="on-device-first-inference.html">on-device-first-inference</a>.</p>
+<p>The distinguishing test is what happens with the network unplugged and no credentials. If the feature disappears and the product still works, the fallback is genuinely opt-in. In <a class="wl" href="farely.html">farely</a> it is:</p>
+<blockquote><p>&quot;This is a deliberate, documented departure from \&quot;nothing leaves the phone\&quot;: a screen capture leaves the device <strong>only</strong> for this classifier, and only for screens that pass a cheap on-device novelty gate.&quot;</p><cite>Farley/docs/VISION.md, 2026-07-13</cite></blockquote>
+<h2 id="the-four-gates-in-order" class="h-anch"><a class="hlink" href="#the-four-gates-in-order" aria-label="Link to this section">#</a>The four gates, in order</h2>
+<ol><li><strong>No key ⇒ no call.</strong> <code>classifyScreen(capture, apiKey)</code> returns <code>heuristicClassify()</code> immediately. The key comes from Settings and lives in <code>localStorage</code> only — never committed, never bundled.</li><li><strong>Event-type gate.</strong> Only <code>WINDOW_STATE_CHANGED</code> is eligible; content churn inside a screen is not.</li><li><strong>Novelty gate.</strong> A PL/EN keyword list (<code>NOVELTY_HINTS</code>: update / aktualiz / wersj / regulamin / …) must match. It <strong>deliberately omits every verification term</strong>:</li></ol>
+<p>&gt; &quot;Deliberately excludes verification/selfie terms: identity checks are detected on-device by the &gt; coordinator and NEVER routed to cloud vision.&quot; &gt; — Farley/apps/android/.../FarelyAccessibilityService.kt, 2026-07-13</p>
+<ol><li><strong>Throttle and freeze.</strong> At most one call per platform per 5 minutes, and <code>if (MultiAppCoordinator.frozen) return</code> runs before any of it.</li></ol>
+<h2 id="failure-semantics" class="h-anch"><a class="hlink" href="#failure-semantics" aria-label="Link to this section">#</a>Failure semantics</h2>
+<p>Failure is <em>silence plus a diagnostics row</em>, not a dialog. A refused, timed-out or malformed response falls back to <code>heuristicClassify()</code>, and the result carries <code>VisionResult.method: &quot;cloud&quot; | &quot;on-device&quot;</code> so downstream code and the driver can both tell which answer they are looking at — the <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> habit applied to inference. Every call is logged as a <code>vision</code> event in <a class="wl" href="on-device-black-box-diagnostics.html">on-device-black-box-diagnostics</a>.</p>
+<h2 id="the-residual-risk-stated" class="h-anch"><a class="hlink" href="#the-residual-risk-stated" aria-label="Link to this section">#</a>The residual risk, stated</h2>
+<p>The exclusion of identity screens is enforced by a <strong>keyword list</strong>, not by the type system or the platform. A verification screen whose text happens to contain a novelty word the list misses could still be captured and sent. Farely documents the intent in four places but cannot structurally guarantee it; the honest claim is &quot;heuristic, biased towards false-positive freezing&quot;, and that is what belongs on the record.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="anthropic-messages-api.html">anthropic-messages-api</a> — the concrete API, model and transport · <a class="wl" href="on-device-first-inference.html">on-device-first-inference</a> · <a class="wl" href="farely.html">farely</a> · <a class="wl" href="accessibility-service-overlay.html">accessibility-service-overlay</a> · <a class="wl" href="privacy-documented-beside-the-feature.html">privacy-documented-beside-the-feature</a></p></div>
+  <div class="tags"><span class="tag">privacy</span><span class="tag">architecture</span><span class="tag">ml</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Farley</span><span class="src-p">/apps/tester/src/app/lib/vision.ts</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/tester/src/app/lib/session.ts</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/VISION.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/android/android/app/src/main/java/com/farely/app/FarelyAccessibilityService.kt</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="accessibility-service-overlay.html"><span class="kind k-concept">concept</span><span class="rel-t">Accessibility Service Overlay</span><span class="rel-g">Read another app&#x27;s live view hierarchy through the platform accessibility channel, compute something from it, then draw the answer back on top of that same app — without…</span></a><a class="rel" href="on-device-black-box-diagnostics.html"><span class="kind k-concept">concept</span><span class="rel-t">On-Device Black Box Diagnostics</span><span class="rel-g">When you cannot attach a debugger — the user is driving, the failure is a screen you have never seen, and no telemetry may leave the device — record a bounded local…</span></a><a class="rel" href="on-device-first-inference.html"><span class="kind k-concept">concept</span><span class="rel-t">On-Device-First Inference</span><span class="rel-g">Do the classification locally with cheap deterministic logic; treat a model call as an upgrade the owner may switch on, never as the default path</span></a><a class="rel" href="privacy-documented-beside-the-feature.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Privacy Documented Beside The Feature</span><span class="rel-g">The privacy argument is not filed in one policy document — it is restated at every site where the sensitive thing happens: in the vision doc, in the legal chapter, in…</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="farely.html"><span class="kind k-project">project</span><span class="rel-t">Farely</span><span class="rel-g">A personal Android rideshare/delivery driver assistant for Wrocław</span></a><a class="rel" href="anthropic-messages-api.html"><span class="kind k-tech">tech</span><span class="rel-t">Anthropic Messages API</span><span class="rel-g">The only path in farely by which content leaves the phone</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

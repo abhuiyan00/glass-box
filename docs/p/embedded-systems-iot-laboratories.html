@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Embedded Systems and IoT Laboratories · Glass Box</title>
+<meta name="description" content="Four Arduino exercises rebuilt as one testable C++17 project">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Embedded Systems and IoT Laboratories · Glass Box">
+<meta property="og:description" content="Four Arduino exercises rebuilt as one testable C++17 project">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The move that makes it possible","The four labs and the failure each one prevents","Three rules that generalise","Verification","Open gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["embedded-systems-iot-laboratories/README.md","embedded-systems-iot-laboratories/docs/ARCHITECTURE.md","embedded-systems-iot-laboratories/docs/HARDWARE.md","embedded-systems-iot-laboratories/src/iot_labs/debounced_button.cpp","embedded-systems-iot-laboratories/src/iot_labs/stopwatch.cpp","embedded-systems-iot-laboratories/src/iot_labs/voltage_sampler.cpp","embedded-systems-iot-laboratories/src/iot_labs/uart_led_controller.cpp","embedded-systems-iot-laboratories/assets/lab-state-machine-guide.svg","embedded-systems-iot-laboratories/NOTICE"],"dateModified":"2026-08-12","description":"Four Arduino exercises rebuilt as one testable C++17 project","headline":"Embedded Systems and IoT Laboratories","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["cpp","architecture","testing","debugging","coursework","performance"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-12 · in force since 2026-08-02</span>
+    <span class="repos">embedded-systems-iot-laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Four Arduino exercises rebuilt as one testable C++17 project</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-move-that-makes-it-possible">The move that makes it possible</a></li><li><a href="#the-four-labs-and-the-failure-each-one-prevents">The four labs and the failure each one prevents</a></li><li><a href="#three-rules-that-generalise">Three rules that generalise</a></li><li><a href="#verification">Verification</a></li><li><a href="#open-gaps">Open gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="embedded-systems-and-iot-laboratories">Embedded Systems and IoT Laboratories</h1>
+<p>Four Arduino exercises rebuilt as one testable C++17 project. The logic — button edges, stopwatch transitions, ADC filtering, UART command parsing — lives in a hardware-independent core; the sketches contain pin numbers and I/O and nothing else.</p>
+<p><strong>20 tests pass on a laptop before a wire is connected.</strong></p>
+<h2 id="the-move-that-makes-it-possible" class="h-anch"><a class="hlink" href="#the-move-that-makes-it-possible" aria-label="Link to this section">#</a>The move that makes it possible</h2>
+<p>Embedded coursework is usually untestable for one structural reason: the logic is written inside <code>loop()</code>, where it can only be reached by a board. Lifting it out is the whole design — <a class="wl" href="separating-computation-from-io.html">separating-computation-from-io</a> and <a class="wl" href="pure-domain-engine-shared-across-hosts.html">pure-domain-engine-shared-across-hosts</a> applied to a microcontroller, with the sketch as one host and the native test binary as the other.</p>
+<p>The core has no Arduino dependency, no heap allocation, no exceptions and no blocking calls. That list is not minimalism for its own sake; each entry is a constraint that an 8-bit target imposes and that a desktop compiler will happily let you violate.</p>
+<h2 id="the-four-labs-and-the-failure-each-one-prevents" class="h-anch"><a class="hlink" href="#the-four-labs-and-the-failure-each-one-prevents" aria-label="Link to this section">#</a>The four labs and the failure each one prevents</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Lab</th>
+<th>State machine</th>
+<th>Failure prevented</th>
+</tr></thead><tbody>
+<tr><td>01 · Button counter</td><td>independent debouncers + bounded counter</td><td>bounce-driven double counts, and <code>while</code>-loop lockups waiting for release</td></tr>
+<tr><td>02 · Stopwatch</td><td>reset → running → paused</td><td>elapsed time lost across pause/resume</td></tr>
+<tr><td>03 · Voltage monitor</td><td>moving average + sample scheduler</td><td>single-sample noise, and the 1024-vs-1023 conversion error</td></tr>
+<tr><td>04 · UART LED</td><td>strict parser + non-blocking blinker</td><td>prefix commands accepted, invalid intervals, blocking <code>delay()</code></td></tr>
+</tbody></table></div>
+<p>The 1024-vs-1023 one is the classic. A 10-bit ADC returns 0–1023, so full scale is code <code>1023</code>, not <code>1024</code>; dividing by the wrong constant produces a reading that is plausible, consistently slightly wrong, and never noticed on a lab bench.</p>
+<h2 id="three-rules-that-generalise" class="h-anch"><a class="hlink" href="#three-rules-that-generalise" aria-label="Link to this section">#</a>Three rules that generalise</h2>
+<p><strong>Events, not sleeps.</strong> Debouncing and blinking are timestamp-driven. <code>delay()</code> is not a timing primitive, it is a promise that nothing else happens — which on a single-threaded controller means serial input dropped and a display not refreshed while an LED is &quot;blinking&quot;.</p>
+<p><strong>One clock rule: always <code>now - then</code>.</strong> Every scheduler compares elapsed time using unsigned subtraction. The natural-looking <code>now &gt; then + interval</code> overflows and fails around the 49.7-day <code>millis()</code> rollover, and unsigned wraparound makes the subtraction form correct <em>through</em> the rollover rather than in spite of it. This is a bug with a 49.7-day reproduction time, which is to say a bug that is never reproduced.</p>
+<p><strong>Reject, do not guess.</strong> The UART parser accepts exactly <code>LED ON</code>, <code>LED OFF</code>, <code>LED STATUS</code> and <code>LED BLINK &lt;20..60000&gt;</code>. Extra suffixes, partial numbers, empty intervals and overlong lines are refused. A parser that accepts a prefix is a parser that will one day act on a truncated transmission.</p>
+<h2 id="verification" class="h-anch"><a class="hlink" href="#verification" aria-label="Link to this section">#</a>Verification</h2>
+<p><code>scripts/test.ps1</code> or <code>scripts/test.sh</code>, needing only a C++17 <code>g++</code>; build products go to the OS temporary directory rather than the repository. Expected output is literally <code>20 tests passed</code>.</p>
+<p><code>tools/</code> generates a deterministic state trace for all four labs — the headless counterpart to the SVG guide in <code>assets/</code>, and the thing to read when no board or LCD is available. Compare <a class="wl" href="make-the-formal-object-observable.html">make-the-formal-object-observable</a>: a state machine you can print is a state machine you can argue about.</p>
+<p>A 2026-08-12 local audit passed the warning-as-error C++17 build and all 20 native tests. The headless trace then exercised the documented button, stopwatch, voltage-monitor, and UART states. The run used an external temporary root because the sandbox cannot use the owner&#x27;s Temp directory; that is a test-host restriction, not evidence of board validation.</p>
+<h2 id="open-gaps" class="h-anch"><a class="hlink" href="#open-gaps" aria-label="Link to this section">#</a>Open gaps</h2>
+<ul><li><strong>TODO, and it is the honest headline:</strong> the native suite proves deterministic logic, <strong>not electrical correctness</strong>. Board voltage, ADC reference tolerance, switch wiring, LCD address (<code>0x27</code> by default) and serial signal quality all still require hardware validation, and <strong>no physical-board result is claimed anywhere in the repository.</strong></li><li><strong>TODO:</strong> Lab 02 needs a third-party <code>LiquidCrystal_I2C</code> library, which is not vendored and not tested here.</li><li><strong>TODO:</strong> Uno-class targets assumed. The timing rules hold generally; the pin configuration does not.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="optimization-methods.html">optimization-methods</a> · <a class="wl" href="extract-the-shared-core.html">extract-the-shared-core</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> · <a class="wl" href="dual-implementation-as-cross-check.html">dual-implementation-as-cross-check</a> · <a class="wl" href="fixed-timestep-simulation.html">fixed-timestep-simulation</a> · <a class="wl" href="provenance-notice-file.html">provenance-notice-file</a> · <a class="wl" href="document-the-failure-mode-next-to-the-fix.html">document-the-failure-mode-next-to-the-fix</a></p></div>
+  <div class="tags"><span class="tag">cpp</span><span class="tag">architecture</span><span class="tag">testing</span><span class="tag">debugging</span><span class="tag">coursework</span><span class="tag">performance</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">embedded-systems-iot-laboratories</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">embedded-systems-iot-laboratories</span><span class="src-p">/docs/ARCHITECTURE.md</span></code></li><li><code><span class="src-r">embedded-systems-iot-laboratories</span><span class="src-p">/docs/HARDWARE.md</span></code></li><li><code><span class="src-r">embedded-systems-iot-laboratories</span><span class="src-p">/src/iot_labs/debounced_button.cpp</span></code></li><li><code><span class="src-r">embedded-systems-iot-laboratories</span><span class="src-p">/src/iot_labs/stopwatch.cpp</span></code></li><li><code><span class="src-r">embedded-systems-iot-laboratories</span><span class="src-p">/src/iot_labs/voltage_sampler.cpp</span></code></li><li><code><span class="src-r">embedded-systems-iot-laboratories</span><span class="src-p">/src/iot_labs/uart_led_controller.cpp</span></code></li><li><code><span class="src-r">embedded-systems-iot-laboratories</span><span class="src-p">/assets/lab-state-machine-guide.svg</span></code></li><li><code><span class="src-r">embedded-systems-iot-laboratories</span><span class="src-p">/NOTICE</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="fixed-timestep-simulation.html"><span class="kind k-concept">concept</span><span class="rel-t">Fixed Timestep Simulation</span><span class="rel-g">Advance the simulation in constant-size steps regardless of how long a frame took</span></a><a class="rel" href="pure-domain-engine-shared-across-hosts.html"><span class="kind k-concept">concept</span><span class="rel-t">Pure Domain Engine Shared Across Hosts</span><span class="rel-g">Keep the rules of the domain in one UI-free, platform-free module, and let each host — a browser simulator, a phone, a test harness — supply only input and display</span></a><a class="rel" href="separating-computation-from-io.html"><span class="kind k-concept">concept</span><span class="rel-t">Separating Computation from I/O</span><span class="rel-g">A function that computes and prints can only be tested by capturing stdout</span></a><a class="rel" href="document-the-failure-mode-next-to-the-fix.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Document the Failure Mode Next to the Fix</span><span class="rel-g">Almost every note in these two repositories has the same shape: state the wrong-but-plausible alternative, name the concrete input that breaks it, then give the fix</span></a><a class="rel" href="dual-implementation-as-cross-check.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Dual Implementation as Cross-Check</span><span class="rel-g">Build the same thing twice, in two different stacks, and keep both</span></a><a class="rel" href="extract-the-shared-core.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Extract the Shared Core</span><span class="rel-g">When several deliverables consume the same input, make the shared part a real package with tests and reduce each deliverable to a thin script over it — instead of twelve…</span></a><a class="rel" href="make-the-formal-object-observable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Make the Formal Object Observable</span><span class="rel-g">Take a mathematical definition and build something that lets you watch it behave</span></a><a class="rel" href="provenance-notice-file.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance NOTICE File</span><span class="rel-g">A separate, plain-text NOTICE at the repository root whose only job is to draw the line between what the author made and what the author borrowed</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="optimization-methods.html"><span class="kind k-project">project</span><span class="rel-t">Optimization Methods</span><span class="rel-g">Master&#x27;s Optimization Methods course at Wrocław University of Science and Technology (FICT, lectures by M. Przewoźniczek)</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RSI as Measure, Not Dimension · Glass Box</title>
+<meta name="description" content="Store the 14-day relative strength index as a nullable numeric column on the fact table dw.FACT_QUOTES, and push the overbought/oversold interpretation into a view">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RSI as Measure, Not Dimension · Glass Box">
+<meta property="og:description" content="Store the 14-day relative strength index as a nullable numeric column on the fact table dw.FACT_QUOTES, and push the overbought/oversold interpretation into a view">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why","The cost, stated","Alternatives rejected","The rejected design is still in the tree","Generalisation","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Data-Warehousing-and-Business-Intelligence/docs/star-schema.md","Data-Warehousing-and-Business-Intelligence/project/twtr/sql/02_star_schema.sql","Data-Warehousing-and-Business-Intelligence/project/twtr/sql/03_technical_indicators.sql","Data-Warehousing-and-Business-Intelligence/project/twtr/ssas/"],"dateModified":"2026-07-28","description":"Store the 14-day relative strength index as a nullable numeric column on the fact table dw.FACT_QUOTES, and push the overbought/oversold interpretation into a view","headline":"RSI as Measure, Not Dimension","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["data-modelling","databases","sql","data-analysis"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#decision">Decision</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-decision">decision</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Data-Warehousing-and-Business-Intelligence</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Store the 14-day relative strength index as a nullable numeric column on the fact table dw.FACT_QUOTES, and push the overbought/oversold interpretation into a view</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#why">Why</a></li><li><a href="#the-cost-stated">The cost, stated</a></li><li><a href="#alternatives-rejected">Alternatives rejected</a></li><li><a href="#the-rejected-design-is-still-in-the-tree">The rejected design is still in the tree</a></li><li><a href="#generalisation">Generalisation</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="rsi-as-measure-not-dimension">RSI as Measure, Not Dimension</h1>
+<p><strong>Decision.</strong> Store the 14-day relative strength index as a nullable numeric <strong>column on the fact table</strong> <code>dw.FACT_QUOTES</code>, and push the overbought/oversold interpretation into a view. Do not give the indicator its own dimension table.</p>
+<p><strong>Date.</strong> 2026-07-25, <a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a>.</p>
+<h2 id="why" class="h-anch"><a class="hlink" href="#why" aria-label="Link to this section">#</a>Why</h2>
+<blockquote><p>&quot;It is tempting to give an indicator its own dimension table, with the value and a pair of overbought/oversold flags. That inverts the star&quot;</p><cite>Data-Warehousing-and-Business-Intelligence/docs/star-schema.md, 2026-07-25</cite></blockquote>
+<p>Two arguments, both about what a dimension is <em>for</em>. A dimension holds the attributes you slice <strong>by</strong>; a measure is the thing being sliced. <code>RSI14</code> is numeric, continuous, and changes every day — &quot;nobody slices by a continuous float&quot;. See <a class="wl" href="measure-vs-dimension.html">measure-vs-dimension</a> and <a class="wl" href="relative-strength-index.html">relative-strength-index</a>.</p>
+<p>The second argument is the more portable one, and it is about <strong>thresholds</strong>:</p>
+<blockquote><p>&quot;Storing them freezes one analyst&#x27;s convention — 70 and 30 — into the warehouse, so moving the threshold would mean rewriting history.&quot;</p><cite>Data-Warehousing-and-Business-Intelligence/docs/star-schema.md, 2026-07-25</cite></blockquote>
+<p>Overbought and oversold are not properties of a trading day. They are a reading applied to a number, and the number is what the warehouse stores. Materialising the flags would push an analyst&#x27;s convention into the persistence layer, where changing it means a rewrite rather than a redefinition. <code>dw.vw_QuoteSignals</code> derives both flags in a view, so the convention is one <code>CREATE OR ALTER</code> away from being different.</p>
+<h2 id="the-cost-stated" class="h-anch"><a class="hlink" href="#the-cost-stated" aria-label="Link to this section">#</a>The cost, stated</h2>
+<blockquote><p>&quot;Reached through a dimension keyed by its own surrogate, a day&#x27;s RSI takes two joins to retrieve a value that could simply have been a column.&quot;</p><cite>Data-Warehousing-and-Business-Intelligence/docs/star-schema.md, 2026-07-25</cite></blockquote>
+<p><a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> — the repo states what the rejected design costs rather than just asserting it is wrong.</p>
+<h2 id="alternatives-rejected" class="h-anch"><a class="hlink" href="#alternatives-rejected" aria-label="Link to this section">#</a>Alternatives rejected</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Option</th>
+<th>Why not</th>
+</tr></thead><tbody>
+<tr><td><strong><code>DimRSI</code> keyed by its own surrogate, carrying value + flags</strong></td><td>inverts the star; a continuous measure becomes something you slice by; two joins to read one number</td></tr>
+<tr><td><strong>Materialise <code>IsOverbought</code> / <code>IsOversold</code> as fact columns</strong></td><td>freezes 70/30 into stored history; a threshold change becomes a backfill</td></tr>
+<tr><td><strong>Compute the indicator at query time from close prices</strong></td><td>not named in the repo. <strong>TODO:</strong> whether this was considered is unrecorded — the backfill approach may simply have been the assignment&#x27;s shape</td></tr>
+</tbody></table></div>
+<h2 id="the-rejected-design-is-still-in-the-tree" class="h-anch"><a class="hlink" href="#the-rejected-design-is-still-in-the-tree" aria-label="Link to this section">#</a>The rejected design is still in the tree</h2>
+<p><code>project/twtr/ssas/Dim RSI.dim</code> exists, with <code>RSIKey</code>, <code>IsOverbought</code>, <code>IsOversold</code> and <code>DateKey</code> attributes, feeding a second cube (<code>Twitter_rsi.cube</code>) whose only measure is a row count. It is <strong>exactly</strong> the modelling this decision rejects, committed alongside the argument against it. See <a class="wl" href="ssas.html">ssas</a> and <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a>.</p>
+<p>Neither <code>DimRSI</code> nor <code>FactRSI</code> is created by any committed DDL, so the cube and the schema do not describe the same database — <a class="wl" href="documentation-drift.html">documentation-drift</a>.</p>
+<p><strong>TODO:</strong> whether the cube was built first and the argument written afterwards, or the artefact kept deliberately as a worked counter-example, is unrecorded. <code>confidence: low</code> on the ordering. The decision itself is <code>confidence: high</code> — argued in the design doc, implemented as a fact column in the DDL, and carried through by the view and the backfill script, three independent artefacts agreeing.</p>
+<h2 id="generalisation" class="h-anch"><a class="hlink" href="#generalisation" aria-label="Link to this section">#</a>Generalisation</h2>
+<p>The rule this instance teaches is not about indicators. It is: <strong>a derived number is a measure; the convention used to read it is not data at all.</strong> Anything defined by a cut-off — churn risk bands, SLA breaches, &quot;large&quot; orders — belongs in a view or a semantic layer, not in stored columns, for exactly the reason above. See <a class="wl" href="star-schema.html">star-schema</a> and <a class="wl" href="fact-grain.html">fact-grain</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="measure-vs-dimension.html">measure-vs-dimension</a> · <a class="wl" href="relative-strength-index.html">relative-strength-index</a> · <a class="wl" href="star-schema.html">star-schema</a> · <a class="wl" href="ssas.html">ssas</a> · <a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a> · <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> · <a class="wl" href="window-function-frames.html">window-function-frames</a></p></div>
+  <div class="tags"><span class="tag">data-modelling</span><span class="tag">databases</span><span class="tag">sql</span><span class="tag">data-analysis</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/docs/star-schema.md</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/sql/02_star_schema.sql</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/sql/03_technical_indicators.sql</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/ssas/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="fact-grain.html"><span class="kind k-concept">concept</span><span class="rel-t">Fact Grain</span><span class="rel-g">The grain of a fact table is the answer to &quot;what does one row mean?&quot;</span></a><a class="rel" href="measure-vs-dimension.html"><span class="kind k-concept">concept</span><span class="rel-t">Measure vs Dimension</span><span class="rel-g">In a star-schema, a measure is a number you aggregate; a dimension is a thing you aggregate by</span></a><a class="rel" href="relative-strength-index.html"><span class="kind k-concept">concept</span><span class="rel-t">Relative Strength Index</span><span class="rel-g">A bounded momentum indicator over a price series</span></a><a class="rel" href="star-schema.html"><span class="kind k-concept">concept</span><span class="rel-t">Star Schema</span><span class="rel-g">One fact table of measurements surrounded by denormalised dimension tables that describe them</span></a><a class="rel" href="window-function-frames.html"><span class="kind k-concept">concept</span><span class="rel-t">Window Function Frames</span><span class="rel-g">GROUP BY collapses rows</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="data-warehousing-and-business-intelligence.html"><span class="kind k-project">project</span><span class="rel-t">Data Warehousing and Business Intelligence</span><span class="rel-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span></a><a class="rel" href="ssas.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server Analysis Services</span><span class="rel-g">Microsoft&#x27;s OLAP layer</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

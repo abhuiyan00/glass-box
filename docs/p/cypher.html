@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cypher · Glass Box</title>
+<meta name="description" content="neo4j&#x27;s declarative query language">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cypher · Glass Box">
+<meta property="og:description" content="neo4j&#x27;s declarative query language">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["What lab 6 uses it for","Read beside its analogue","Note","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Discrete-Mathematics-Laboratories/lab6_Neo4j/"],"dateModified":"2026-07-28","description":"neo4j's declarative query language","headline":"Cypher","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["cypher","databases","data-modelling"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">Discrete-Mathematics-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>neo4j&#x27;s declarative query language</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#what-lab-6-uses-it-for">What lab 6 uses it for</a></li><li><a href="#read-beside-its-analogue">Read beside its analogue</a></li><li><a href="#note">Note</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="cypher">Cypher</h1>
+<p><a class="wl" href="neo4j.html">neo4j</a>&#x27;s declarative query language. Patterns are written as ASCII-art graphs — <code>(a)-[:REL]-&gt;(b)</code> — which makes a traversal query look like the thing it traverses.</p>
+<h2 id="what-lab-6-uses-it-for" class="h-anch"><a class="hlink" href="#what-lab-6-uses-it-for" aria-label="Link to this section">#</a>What lab 6 uses it for</h2>
+<p>Two <code>.cypher</code> scripts in <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> carrying the whole deliverable:</p>
+<p><strong>Constraints first.</strong> Node-key uniqueness constraints created before any data lands, so <code>MERGE</code> is index-backed rather than a full scan.</p>
+<p><strong><code>LOAD CSV</code> + <code>MERGE</code> import.</strong> <code>LOAD CSV WITH HEADERS</code> streams the source file from the Desktop import folder; <code>MERGE</code> matches-or-creates so re-running the script is a no-op rather than a duplication. One <code>:Object</code> per row, 39 objects and 975 <code>HAS_VALUE</code> relationships. This is the graph half of <a class="wl" href="idempotent-loading.html">idempotent-loading</a>.</p>
+<p>The distinction that matters and is easy to get wrong: <strong><code>CREATE</code> always creates, <code>MERGE</code> matches the whole pattern or creates the whole pattern.</strong> <code>MERGE</code> on a pattern with an unmatched middle node creates the entire path, so the safe idiom is to <code>MERGE</code> nodes separately, then <code>MERGE</code> the relationship between them — which is what the script does.</p>
+<p><strong>Q0–Q6 report queries</strong> reading the <a class="wl" href="pawlak-information-system.html">pawlak-information-system</a> back out: counts, per-attribute value distributions, and the grade/class grouping traversals.</p>
+<h2 id="read-beside-its-analogue" class="h-anch"><a class="hlink" href="#read-beside-its-analogue" aria-label="Link to this section">#</a>Read beside its analogue</h2>
+<p><code>lab6_Neo4j/viewer/pawlak.js</code> reimplements each of these queries in plain JavaScript and renders the result <strong>next to the Cypher that produces it</strong>. Reading a graph query beside the imperative loop it replaces is the most direct way to see what the declarative form is buying — see <a class="wl" href="dual-implementation-as-cross-check.html">dual-implementation-as-cross-check</a>.</p>
+<h2 id="note" class="h-anch"><a class="hlink" href="#note" aria-label="Link to this section">#</a>Note</h2>
+<p><code>guide.txt</code> explicitly steers away from Neo4j&#x27;s GUI import tool toward scripts — <a class="wl" href="cypher-scripts-over-neo4j-import-tool.html">cypher-scripts-over-neo4j-import-tool</a> — which is what makes the import reproducible at all.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="neo4j.html">neo4j</a> · <a class="wl" href="pawlak-information-system.html">pawlak-information-system</a> · <a class="wl" href="idempotent-loading.html">idempotent-loading</a> · <a class="wl" href="cypher-scripts-over-neo4j-import-tool.html">cypher-scripts-over-neo4j-import-tool</a> · <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a></p></div>
+  <div class="tags"><span class="tag">cypher</span><span class="tag">databases</span><span class="tag">data-modelling</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab6_Neo4j/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="idempotent-loading.html"><span class="kind k-concept">concept</span><span class="rel-t">Idempotent Loading</span><span class="rel-g">A load script is idempotent when running it twice leaves the store exactly as running it once did</span></a><a class="rel" href="pawlak-information-system.html"><span class="kind k-concept">concept</span><span class="rel-t">Pawlak Information System</span><span class="rel-g">A Pawlak information system is the pair S = (U, A): a universe U of objects, a set A of attributes, and for each attribute a ∈ A a function a: U → V_a assigning every…</span></a><a class="rel" href="cypher-scripts-over-neo4j-import-tool.html"><span class="kind k-decision">decision</span><span class="rel-t">Cypher Scripts Over the Neo4j Import Tool</span><span class="rel-g">Import the dataset with LOAD CSV + MERGE Cypher scripts run from the Query editor, not with Neo4j Desktop&#x27;s graphical Import tool</span></a><a class="rel" href="dual-implementation-as-cross-check.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Dual Implementation as Cross-Check</span><span class="rel-g">Build the same thing twice, in two different stacks, and keep both</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="neo4j.html"><span class="kind k-tech">tech</span><span class="rel-t">Neo4j</span><span class="rel-g">Native property-graph database</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

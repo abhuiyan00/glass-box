@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Multi-Depot Vehicle Routing · Glass Box</title>
+<meta name="description" content="Serve every customer from one of several depots, at minimum total travel cost, without exceeding vehicle capacity">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Multi-Depot Vehicle Routing · Glass Box">
+<meta property="og:description" content="Serve every customer from one of several depots, at minimum total travel cost, without exceeding vehicle capacity">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The three departures from the textbook","Instance scale","The geography does not reproduce, and that is documented","Related","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Optimization Methods/final_project/ARCHITECTURE.md","Optimization Methods/final_project/README.md","Optimization Methods/final_project/mdvrp/include/instance.hpp","Optimization Methods/final_project/docs/DATA_VERIFICATION.md"],"dateModified":"2026-07-28","description":"Serve every customer from one of several depots, at minimum total travel cost, without exceeding vehicle capacity","headline":"Multi-Depot Vehicle Routing","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["optimization","algorithms","cpp"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">Optimization Methods</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Serve every customer from one of several depots, at minimum total travel cost, without exceeding vehicle capacity</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-three-departures-from-the-textbook">The three departures from the textbook</a></li><li><a href="#instance-scale">Instance scale</a></li><li><a href="#the-geography-does-not-reproduce-and-that-is-documented">The geography does not reproduce, and that is documented</a></li><li><a href="#related">Related</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="multi-depot-vehicle-routing">Multi-Depot Vehicle Routing</h1>
+<p>Serve every customer from one of several depots, at minimum total travel cost, without exceeding vehicle capacity. The multi-depot variant (MDVRP) adds a second, harder sub-problem on top of ordinary routing: <strong>which depot owns which customer</strong>. Route order is a permutation problem; the depot partition is an assignment problem, and they interact.</p>
+<p>The instance of it built in <a class="wl" href="optimization-methods.html">optimization-methods</a> makes three choices that move it away from the textbook version and toward something that behaves like a real fleet.</p>
+<h2 id="the-three-departures-from-the-textbook" class="h-anch"><a class="hlink" href="#the-three-departures-from-the-textbook" aria-label="Link to this section">#</a>The three departures from the textbook</h2>
+<p><strong>1. Cost is directed road distance, not Euclidean.</strong> Instances are built from real OpenStreetMap drive networks via <a class="wl" href="osmnx.html">osmnx</a>, one-way streets respected, so <code>dist(a,b) ≠ dist(b,a)</code> in general. The graph is truncated to its largest <strong>strongly</strong>-connected component so a shortest-path query never meets an unreachable pair. Distances are resolved by <a class="wl" href="lazy-dijkstra-distance-cache.html">lazy-dijkstra-distance-cache</a> rather than a precomputed matrix.</p>
+<p><strong>2. Capacity is enforced per trip, and vehicles are multi-trip.</strong> A vehicle serves, returns to its depot, reloads, and goes out again. Total demand is engineered to be roughly 2–6× a single fleet round, so the multi-trip behaviour is forced rather than incidental. Capacity is drawn per instance from Uniform[40, 70] and is always greater than the maximum demand, so every customer fits in one trip — that keeps infeasibility a property of the <em>plan</em>, not of the <em>instance</em>.</p>
+<p><strong>3. The chromosome carries the partition explicitly.</strong> Two aligned rows: a <code>sequence</code> permutation of all customer ids, and a <code>depot_of</code> row assigning each customer a depot. Decoding groups by depot, then greedily splits into capacity-feasible trips, then round-robins trips across that depot&#x27;s vehicles. Fitness is road distance plus <code>1e6 ×</code> overload units — infeasibility is priced, not forbidden.</p>
+<p>The depot row is the load-bearing gene, and the repo learned that the hard way. It ships an anti-regression assert because an earlier version silently destroyed the search:</p>
+<blockquote><p>&quot;A prior implementation shipped a sorted depot row, which silently collapses the assignment search; an anti-regression assert at population initialisation fails loudly if the depot gene ever comes out monotonic.&quot;</p><cite>Optimization Methods/final_project/ARCHITECTURE.md, 2026-07-10</cite></blockquote>
+<p>The <span class="unpub" title="named in the source wiki; not published">operator-bake-off</span> later confirmed the same thing quantitatively: only <em>Random</em> depot mutation can re-partition, <em>Swap</em> merely permutes existing assignments, and every combination using Random beat every combination using Swap.</p>
+<h2 id="instance-scale" class="h-anch"><a class="hlink" href="#instance-scale" aria-label="Link to this section">#</a>Instance scale</h2>
+<p>4 cities (<code>wroclaw berlin zurich budapest</code>) × 3 levels = 12 instances, 5000 m network radius, per-city generation seeds 42–45.</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Level</th>
+<th>Customers</th>
+<th>Depots</th>
+<th>Vehicles/depot</th>
+</tr></thead><tbody>
+<tr><td>small</td><td>50</td><td>2</td><td>1</td></tr>
+<tr><td>medium</td><td>100</td><td>3</td><td>2</td></tr>
+<tr><td>large</td><td>200</td><td>5</td><td>3</td></tr>
+</tbody></table></div>
+<p>Demand per customer ~ Uniform[1, 20], drawn before capacity so that changing the capacity rule does not resample the demands — a small determinism detail that makes instances comparable across reruns.</p>
+<h2 id="the-geography-does-not-reproduce-and-that-is-documented" class="h-anch"><a class="hlink" href="#the-geography-does-not-reproduce-and-that-is-documented" aria-label="Link to this section">#</a>The geography does not reproduce, and that is documented</h2>
+<p>Everything numeric is seeded and reproducible except the map itself:</p>
+<blockquote><p>&quot;Re-running the deterministic <code>greedy</code> on a freshly downloaded Wrocław graph gave 178,207 / 322,318 / 458,921 m vs the paper&#x27;s 177,555 / 299,944 / 481,089 m — same demands and capacity, but a different sampled road graph (OSM has drifted; today&#x27;s largest SCC = 3,893 nodes).&quot;</p><cite>Optimization Methods/final_project/docs/DATA_VERIFICATION.md, 2026-07-09</cite></blockquote>
+<p>The frozen paper artefacts (committed reports and chromosomes) are therefore the reference, not the regenerated CSVs — which is why the instance and graph CSVs are gitignored and the reports are not. See <a class="wl" href="osmnx.html">osmnx</a> for the drift mechanism and <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a> for how the check is published.</p>
+<h2 id="related" class="h-anch"><a class="hlink" href="#related" aria-label="Link to this section">#</a>Related</h2>
+<p>Two solvers on the same problem, deliberately kept side by side rather than merged: <a class="wl" href="blind-baseline-comparison.html">blind-baseline-comparison</a> (distance only) and <a class="wl" href="workload-balance-vs-distance.html">workload-balance-vs-distance</a> (LBBS, distance traded for fleet fairness). Both compared against a deterministic nearest-neighbour greedy — <a class="wl" href="multiple-solutions-side-by-side.html">multiple-solutions-side-by-side</a>.</p>
+<p>Python and C++ meet only at CSV files here: <a class="wl" href="two-program-csv-contract.html">two-program-csv-contract</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="shortest-path-algorithm-family.html">shortest-path-algorithm-family</a> · <span class="unpub" title="named in the source wiki; not published">permutation-flow-shop-scheduling</span> · <a class="wl" href="leaflet.html">leaflet</a></p></div>
+  <div class="tags"><span class="tag">optimization</span><span class="tag">algorithms</span><span class="tag">cpp</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/ARCHITECTURE.md</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/README.md</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/mdvrp/include/instance.hpp</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/final_project/docs/DATA_VERIFICATION.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="blind-baseline-comparison.html"><span class="kind k-concept">concept</span><span class="rel-t">Blind Baseline Comparison</span><span class="rel-g">Deliberately withhold the domain heuristic from the metaheuristic so that the comparison against that heuristic measures something</span></a><a class="rel" href="lazy-dijkstra-distance-cache.html"><span class="kind k-concept">concept</span><span class="rel-t">Lazy Dijkstra Distance Cache</span><span class="rel-g">Do not build the all-pairs distance matrix</span></a><a class="rel" href="shortest-path-algorithm-family.html"><span class="kind k-concept">concept</span><span class="rel-t">The Shortest-Path Algorithm Family</span><span class="rel-g">Four algorithms, one problem, four different sets of assumptions</span></a><a class="rel" href="workload-balance-vs-distance.html"><span class="kind k-concept">concept</span><span class="rel-t">Workload Balance Vs Distance</span><span class="rel-g">Minimising total fleet distance and sharing work evenly across vehicles are different objectives, and optimising the first alone reliably produces a fleet where one…</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="multiple-solutions-side-by-side.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Multiple Solutions Side by Side</span><span class="rel-g">The same problem is solved two or three ways in one deliverable, and the trade-off between them is the point</span></a><a class="rel" href="two-program-csv-contract.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Two Programs, One CSV Contract</span><span class="rel-g">Two languages, two processes, no interop layer</span></a><a class="rel" href="optimization-methods.html"><span class="kind k-project">project</span><span class="rel-t">Optimization Methods</span><span class="rel-g">Master&#x27;s Optimization Methods course at Wrocław University of Science and Technology (FICT, lectures by M. Przewoźniczek)</span></a><a class="rel" href="leaflet.html"><span class="kind k-tech">tech</span><span class="rel-t">Leaflet</span><span class="rel-g">Small open-source JavaScript map library — tile layers, markers, polylines, layer toggles, and very little else</span></a><a class="rel" href="osmnx.html"><span class="kind k-tech">tech</span><span class="rel-t">OSMnx</span><span class="rel-g">Python library that downloads street networks from OpenStreetMap and hands them back as networkx graphs, with the routing-relevant cleanup already done</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

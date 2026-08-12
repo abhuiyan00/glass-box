@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Codex CLI · Glass Box</title>
+<meta name="description" content="OpenAI&#x27;s terminal coding agent, and the second executor in agent-orchestrator">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Codex CLI · Glass Box">
+<meta property="og:description" content="OpenAI&#x27;s terminal coding agent, and the second executor in agent-orchestrator">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Where it differs, and why that matters","Effort","Observed failure mode"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["vs-llm-orchestrator/agent-orchestrator/backend/graph.py","vs-llm-orchestrator/agent-orchestrator/README.md","vs-llm-orchestrator/docs/SRS.md"],"dateModified":"2026-08-08","description":"OpenAI's terminal coding agent, and the second executor in agent-orchestrator","headline":"Codex CLI","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["architecture","bash"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-08 · in force since 2026-08-08</span>
+    <span class="repos">vs-llm-orchestrator</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>OpenAI&#x27;s terminal coding agent, and the second executor in agent-orchestrator</p></aside>
+  
+  
+  <div class="prose"><h1 id="codex-cli">Codex CLI</h1>
+<p>OpenAI&#x27;s terminal coding agent, and the second executor in <a class="wl" href="agent-orchestrator.html">agent-orchestrator</a>. Driven as <code>codex exec --json</code> with <code>-C &lt;workspace&gt;</code>, so the answer comes from a structured stream rather than from parsed prose — the same contract as <a class="wl" href="claude-code-cli.html">claude-code-cli</a>, reached through different flags.</p>
+<h2 id="where-it-differs-and-why-that-matters" class="h-anch"><a class="hlink" href="#where-it-differs-and-why-that-matters" aria-label="Link to this section">#</a>Where it differs, and why that matters</h2>
+<ul><li><strong>Sandboxing is configuration, not a mode flag</strong>: <code>-c sandbox_mode=read-only | workspace-write | danger-full-access</code>, passed identically on a fresh invocation and a resumed one. A resume that quietly dropped the sandbox setting would be the worst kind of bug — invisible and privileged.</li><li><strong>Text only.</strong> It cannot open an image or extract a PDF, so <a class="wl" href="read-capability-routing.html">read-capability-routing</a> moves any subtask that declares those reads to Claude, whatever the planner asked for.</li><li><strong>No plugin mechanism.</strong> Skills reach it as files it is allowed to open plus a prompt section naming the index, rather than as a loaded plugin. The prompt is therefore built per <em>attempt</em>, not once — a prompt written for the planner&#x27;s chosen agent describes the wrong mechanism after a fallback (<a class="wl" href="agent-skills-checked-into-the-repo.html">agent-skills-checked-into-the-repo</a>).</li></ul>
+<h2 id="effort" class="h-anch"><a class="hlink" href="#effort" aria-label="Link to this section">#</a>Effort</h2>
+<p>Codex exposes a reasoning ladder with a per-model ceiling. The orchestrator clamps a request above that ceiling instead of sending it and hoping — <a class="wl" href="reasoning-effort-as-a-portable-label.html">reasoning-effort-as-a-portable-label</a>.</p>
+<h2 id="observed-failure-mode" class="h-anch"><a class="hlink" href="#observed-failure-mode" aria-label="Link to this section">#</a>Observed failure mode</h2>
+<p>A spent subscription is the routine one, and it arrives as prose on stderr:</p>
+<blockquote><p>&quot;You&#x27;ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Aug 8th, 2026 9:36 AM.&quot;</p><cite>vs-llm-orchestrator/agent-orchestrator/extension/harness/fixtures/multi-fallback.jsonl, 2026-08-07</cite></blockquote>
+<p>The orchestrator quotes that verbatim rather than paraphrasing it, because the reset time is the only part a reader can act on, and remembers the agent as exhausted for the rest of the run instead of paying for the same refusal again.</p></div>
+  <div class="tags"><span class="tag">architecture</span><span class="tag">bash</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/agent-orchestrator/backend/graph.py</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/agent-orchestrator/README.md</span></code></li><li><code><span class="src-r">vs-llm-orchestrator</span><span class="src-p">/docs/SRS.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="read-capability-routing.html"><span class="kind k-concept">concept</span><span class="rel-t">Read-Capability Routing</span><span class="rel-g">The planner picks an executor because it thinks one is better suited</span></a><a class="rel" href="reasoning-effort-as-a-portable-label.html"><span class="kind k-concept">concept</span><span class="rel-t">Reasoning Effort as a Portable Label</span><span class="rel-g">Every vendor exposes &quot;think harder&quot; differently: a token on a ladder, a numeric budget, a flag that does not exist</span></a><a class="rel" href="agent-skills-checked-into-the-repo.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Agent Skills Checked Into the Repo</span><span class="rel-g">The tooling that builds the product is committed alongside the product, versioned with it and reviewed like it</span></a><a class="rel" href="agent-orchestrator.html"><span class="kind k-project">project</span><span class="rel-t">Agent Orchestrator</span><span class="rel-g">A VS Code extension that turns one request into a plan and runs it across the coding CLIs the author already pays for</span></a><a class="rel" href="claude-code-cli.html"><span class="kind k-tech">tech</span><span class="rel-t">Claude Code CLI</span><span class="rel-g">Anthropic&#x27;s terminal coding agent</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

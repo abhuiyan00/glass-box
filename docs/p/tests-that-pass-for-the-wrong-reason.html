@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tests That Pass for the Wrong Reason · Glass Box</title>
+<meta name="description" content="A failing test tells you something is broken">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tests That Pass for the Wrong Reason · Glass Box">
+<meta property="og:description" content="A failing test tells you something is broken">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Instance 1 — the assertion never reached the code","Instance 2 — `\"no\"` is truthy","How the labs make the tests capable of failing","The wider point","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Python-Programming-Laboratories/labs/07_testing/README.md","Python-Programming-Laboratories/labs/09_dataset_reports/"],"dateModified":"2026-07-28","description":"A failing test tells you something is broken","headline":"Tests That Pass for the Wrong Reason","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["testing","debugging","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Python-Programming-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A failing test tells you something is broken</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#instance-1-the-assertion-never-reached-the-code">Instance 1 — the assertion never reached the code</a></li><li><a href="#instance-2-no-is-truthy">Instance 2 — `&quot;no&quot;` is truthy</a></li><li><a href="#how-the-labs-make-the-tests-capable-of-failing">How the labs make the tests capable of failing</a></li><li><a href="#the-wider-point">The wider point</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="tests-that-pass-for-the-wrong-reason">Tests That Pass for the Wrong Reason</h1>
+<p>A failing test tells you something is broken. A <strong>passing</strong> test tells you nothing at all unless you know it could have failed. <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> documents two concrete instances, both of which pass against an implementation that does nothing.</p>
+<h2 id="instance-1-the-assertion-never-reached-the-code" class="h-anch"><a class="hlink" href="#instance-1-the-assertion-never-reached-the-code" aria-label="Link to this section">#</a>Instance 1 — the assertion never reached the code</h2>
+<blockquote><p>&quot;<strong>An assertion has to reach the code under test.</strong> A test whose argument is an undefined name raises <code>NameError</code> while evaluating the call, before the function is entered — so <code>pytest.raises(TypeError)</code> never sees it, and the test would pass against an implementation doing no type checking at all.&quot;</p><cite>Python-Programming-Laboratories/labs/07_testing/README.md, 2026-07-25</cite></blockquote>
+<p>The mechanics: <code>pytest.raises(TypeError)</code> is a context manager, and <code>NameError</code> is not <code>TypeError</code> — but the argument expression is evaluated <em>before</em> the call, and in this case raised inside the <code>raises</code> block. The test is green, the function was never invoked, and deleting the entire type check from the implementation changes nothing.</p>
+<p>The general failure: <strong>an exception raised while building the call is indistinguishable from one raised by the call</strong> unless you check which. Assert on the exception&#x27;s message or type precisely, and be suspicious of any <code>raises</code> block containing more than the single call under test.</p>
+<h2 id="instance-2-no-is-truthy" class="h-anch"><a class="hlink" href="#instance-2-no-is-truthy" aria-label="Link to this section">#</a>Instance 2 — <code>&quot;no&quot;</code> is truthy</h2>
+<p>Lab 09 generates fixtures with <a class="wl" href="factory-boy-and-faker.html">factory-boy-and-faker</a>, and the trap is in the data rather than the control flow: a CSV field containing the string <code>&quot;no&quot;</code> is truthy in Python. A test that populates every field with plausible values and asserts on a filter can pass because <em>everything</em> passed the filter, not because the filter worked.</p>
+<p>The discipline the lab adopts is the fix: <strong>factories fill the irrelevant fields; each test sets the field under test explicitly.</strong> A fixture that decides the value under test has moved the assertion into the fixture, where nobody reads it.</p>
+<h2 id="how-the-labs-make-the-tests-capable-of-failing" class="h-anch"><a class="hlink" href="#how-the-labs-make-the-tests-capable-of-failing" aria-label="Link to this section">#</a>How the labs make the tests capable of failing</h2>
+<ul><li><strong>Validation order is pinned by tests</strong>, not just validation outcome — so a refactor that checks arguments in a different sequence fails loudly.</li><li><strong><code>parametrize</code> across methods and versions</strong>, so a test that only passes for <code>GET</code> and <code>HTTP/1.1</code> is exposed.</li><li>Round-trip properties (parse → format → parse) rather than fixed expected strings — see <a class="wl" href="common-log-format-parsing.html">common-log-format-parsing</a>.</li></ul>
+<h2 id="the-wider-point" class="h-anch"><a class="hlink" href="#the-wider-point" aria-label="Link to this section">#</a>The wider point</h2>
+<p>This is the reason <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> lists &quot;knowing when a test passes for the wrong reason&quot; as a skill rather than &quot;writing tests&quot;. A suite&#x27;s value is its <strong>discriminating power</strong>, and that is not measured by count. The repo&#x27;s own &quot;89 tests&quot; headline is exactly the kind of number this concept warns about — see <a class="wl" href="pytest.html">pytest</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="pytest.html">pytest</a> · <a class="wl" href="factory-boy-and-faker.html">factory-boy-and-faker</a> · <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> · <a class="wl" href="document-the-failure-mode-next-to-the-fix.html">document-the-failure-mode-next-to-the-fix</a></p></div>
+  <div class="tags"><span class="tag">testing</span><span class="tag">debugging</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/labs/07_testing/README.md</span></code></li><li><code><span class="src-r">Python-Programming-Laboratories</span><span class="src-p">/labs/09_dataset_reports/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="common-log-format-parsing.html"><span class="kind k-concept">concept</span><span class="rel-t">Common Log Format Parsing</span><span class="rel-g">Apache&#x27;s Common Log Format (CLF) and its Combined extension look space-separated and are not:</span></a><a class="rel" href="document-the-failure-mode-next-to-the-fix.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Document the Failure Mode Next to the Fix</span><span class="rel-g">Almost every note in these two repositories has the same shape: state the wrong-but-plausible alternative, name the concrete input that breaks it, then give the fix</span></a><a class="rel" href="python-programming-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Python Programming Laboratories</span><span class="rel-g">Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…</span></a><a class="rel" href="factory-boy-and-faker.html"><span class="kind k-tech">tech</span><span class="rel-t">factory_boy and Faker</span><span class="rel-g">Faker generates plausible fake values — names, dates, text</span></a><a class="rel" href="pytest.html"><span class="kind k-tech">tech</span><span class="rel-t">pytest</span><span class="rel-g">The test runner for python-programming-laboratories — and the only real test framework anywhere in the two lab repositories</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

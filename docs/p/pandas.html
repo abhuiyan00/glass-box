@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pandas · Glass Box</title>
+<meta name="description" content="Python&#x27;s in-memory dataframe library">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pandas · Glass Box">
+<meta property="og:description" content="Python&#x27;s in-memory dataframe library">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The boundary: pandas at the surface, stdlib `csv` in the pipeline","The two idioms that carry everything","In the dashboard","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["labour-fraud-analysis-a-forensic-data-investigation/src/app.py","labour-fraud-analysis-a-forensic-data-investigation/notebooks/01_investigation_analysis.ipynb","labour-fraud-analysis-a-forensic-data-investigation/src/build_docs.py","labour-fraud-analysis-a-forensic-data-investigation/src/tests/test_dataset.py","labour-fraud-analysis-a-forensic-data-investigation/requirements.txt"],"dateModified":"2026-07-28","description":"Python's in-memory dataframe library","headline":"pandas","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["python","data-analysis","data-engineering"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-11</span>
+    <span class="repos">labour-fraud-analysis-a-forensic-data-investigation</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Python&#x27;s in-memory dataframe library</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-boundary-pandas-at-the-surface-stdlib-csv-in-the-pipeline">The boundary: pandas at the surface, stdlib `csv` in the pipeline</a></li><li><a href="#the-two-idioms-that-carry-everything">The two idioms that carry everything</a></li><li><a href="#in-the-dashboard">In the dashboard</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="pandas">pandas</h1>
+<p>Python&#x27;s in-memory dataframe library. In <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> it carries the entire analytical argument — and, notably, <strong>nothing else</strong>.</p>
+<h2 id="the-boundary-pandas-at-the-surface-stdlib-csv-in-the-pipeline" class="h-anch"><a class="hlink" href="#the-boundary-pandas-at-the-surface-stdlib-csv-in-the-pipeline" aria-label="Link to this section">#</a>The boundary: pandas at the surface, stdlib <code>csv</code> in the pipeline</h2>
+<p>Verified from the import graph across all eight <code>src/</code> modules plus the notebook and the test suite:</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Uses pandas</th>
+<th>Uses the standard-library <code>csv</code> module</th>
+</tr></thead><tbody>
+<tr><td><code>src/app.py</code> — the <a class="wl" href="streamlit.html">streamlit</a> dashboard</td><td><code>anonymize.py</code>, <code>build_db.py</code>, <code>build_docs.py</code>, <code>build_viewer.py</code>, <code>port_report.py</code>, <code>validate_anonymization.py</code></td></tr>
+<tr><td><code>notebooks/01_investigation_analysis.ipynb</code></td><td><code>src/tests/test_dataset.py</code></td></tr>
+</tbody></table></div>
+<p>The anonymisation pipeline, the SQLite build, the generated docs, the <a class="wl" href="disclosure-gate.html">disclosure-gate</a> and the whole test suite are written against <code>csv.DictReader</code> and <code>collections.Counter</code>. That is a real and defensible split rather than an inconsistency: the pipeline&#x27;s job is faithful row-by-row transformation of untrusted text where a dataframe&#x27;s type inference is a liability, and the analysis surface&#x27;s job is fast grouped aggregation where it is the point. The test suite staying on stdlib also means the integrity checks do not depend on the library whose behaviour they would otherwise be testing through.</p>
+<h2 id="the-two-idioms-that-carry-everything" class="h-anch"><a class="hlink" href="#the-two-idioms-that-carry-everything" aria-label="Link to this section">#</a>The two idioms that carry everything</h2>
+<p><strong>Read everything as text, coerce per analysis.</strong></p>
+<pre><code class="lang-python">pd.read_csv(path, dtype=str).fillna(&quot;&quot;)           # every table, every column
+pd.to_numeric(df[&quot;value&quot;], errors=&quot;coerce&quot;)       # only where a number is needed</code></pre>
+<p>Nothing is inferred at load time. A permit number that looks like an integer stays a string; a contract value becomes numeric only inside the one analysis that needs it, with unparseable rows becoming <code>NaN</code> rather than raising. For a forensic dataset that deliberately retains data-quality artefacts — OCR-mangled dates are kept, not cleaned — this is the correct default: type inference would quietly &quot;fix&quot; exactly the damage the dataset exists to exhibit.</p>
+<p><strong>Group, count, sort.</strong> Every one of the four named signals is one of:</p>
+<ul><li><code>groupby([date, employer]).size()</code> — bulk sponsorship batches</li><li><code>value_counts()</code> on a contact column — <a class="wl" href="shared-identifier-clustering.html">shared-identifier-clustering</a></li><li>a 30-bin histogram of a coerced numeric column — declared-wage uniformity</li><li><code>groupby([year, employer]).size()</code> — entity succession</li></ul>
+<p>No statistical model, no significance test, no outlier score. The method is aggregation plus <a class="wl" href="convergent-evidence.html">convergent-evidence</a>; pandas is exactly sized for it.</p>
+<h2 id="in-the-dashboard" class="h-anch"><a class="hlink" href="#in-the-dashboard" aria-label="Link to this section">#</a>In the dashboard</h2>
+<p>The whole <code>data/csv</code> directory is loaded into a <code>dict[str, DataFrame]</code> behind <code>@st.cache_data</code>, so twenty tables are parsed once per session. Frames feed plotly figures directly and the graph analysis via <a class="wl" href="networkx.html">networkx</a>; the notebook plots the same frames through <a class="wl" href="matplotlib.html">matplotlib</a> instead. Both recompute from the CSVs on every run — nothing is hard-coded, see <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> · <a class="wl" href="streamlit.html">streamlit</a> · <a class="wl" href="networkx.html">networkx</a> · <a class="wl" href="matplotlib.html">matplotlib</a> · <a class="wl" href="sqlite.html">sqlite</a> · <a class="wl" href="shared-identifier-clustering.html">shared-identifier-clustering</a> · <a class="wl" href="reproducible-analysis.html">reproducible-analysis</a></p></div>
+  <div class="tags"><span class="tag">python</span><span class="tag">data-analysis</span><span class="tag">data-engineering</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/app.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/notebooks/01_investigation_analysis.ipynb</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/build_docs.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/src/tests/test_dataset.py</span></code></li><li><code><span class="src-r">labour-fraud-analysis-a-forensic-data-investigation</span><span class="src-p">/requirements.txt</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="convergent-evidence.html"><span class="kind k-concept">concept</span><span class="rel-t">Convergent Evidence</span><span class="rel-g">An argument built from several independently weak signals that point the same way, rather than from one decisive test</span></a><a class="rel" href="disclosure-gate.html"><span class="kind k-concept">concept</span><span class="rel-t">Disclosure Gate</span><span class="rel-g">A build step that must pass before anything derived from sensitive input may be published</span></a><a class="rel" href="reproducible-analysis.html"><span class="kind k-concept">concept</span><span class="rel-t">Reproducible Analysis</span><span class="rel-g">An analysis is reproducible when every number a reader can see was produced by a command they can re-run, and nothing was typed by hand into prose</span></a><a class="rel" href="shared-identifier-clustering.html"><span class="kind k-concept">concept</span><span class="rel-t">Shared-Identifier Clustering</span><span class="rel-g">When records that are supposed to be independent share a contact point — one inbox, one phone, one address, one bank account — the sharing is a claim about control</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a><a class="rel" href="matplotlib.html"><span class="kind k-tech">tech</span><span class="rel-t">matplotlib</span><span class="rel-g">Python&#x27;s plotting library</span></a><a class="rel" href="networkx.html"><span class="kind k-tech">tech</span><span class="rel-t">NetworkX</span><span class="rel-g">Pure-Python graph library</span></a><a class="rel" href="sqlite.html"><span class="kind k-tech">tech</span><span class="rel-t">SQLite</span><span class="rel-g">An embedded SQL database: one file, no server, no configuration, and a driver in Python&#x27;s standard library as sqlite3</span></a><a class="rel" href="streamlit.html"><span class="kind k-tech">tech</span><span class="rel-t">Streamlit</span><span class="rel-g">A Python framework that renders a script top-to-bottom as a web app, re-running the whole script on every interaction</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

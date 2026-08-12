@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cybersecurity Engineering Laboratories · Glass Box</title>
+<meta name="description" content="Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cybersecurity Engineering Laboratories · Glass Box">
+<meta property="og:description" content="Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The arc","Stack","Findings","Redaction note — this repo is handled differently","Git history","Decisions recorded","Open gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Cybersecurity-Engineering-Laboratories/README.md","Cybersecurity-Engineering-Laboratories/.gitignore","Cybersecurity-Engineering-Laboratories/assets/README.md","Cybersecurity-Engineering-Laboratories/labs/","Cybersecurity-Engineering-Laboratories/labs/04_asymmetric_ciphers/generate_test_files.py"],"dateModified":"2026-07-28","description":"Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026","headline":"Cybersecurity Engineering Laboratories","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["security","cryptography","networking","coursework","abandoned"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Cybersecurity-Engineering-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, carried out in 2022 and imported into git in 2026</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-arc">The arc</a></li><li><a href="#stack">Stack</a></li><li><a href="#findings">Findings</a></li><li><a href="#redaction-note-this-repo-is-handled-differently">Redaction note — this repo is handled differently</a></li><li><a href="#git-history">Git history</a></li><li><a href="#decisions-recorded">Decisions recorded</a></li><li><a href="#open-gaps">Open gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="cybersecurity-engineering-laboratories">Cybersecurity Engineering Laboratories</h1>
+<p>Fourteen laboratories from the Cybersecurity Engineering course at Wrocław University of Science and Technology, <strong>carried out in 2022</strong> and imported into git in 2026. The deliverable is written reports: 14 PDFs totalling exactly 182 pages, plus ~20 small input fixtures, 6 rendered screenshot pages and one 50-line stdlib-only Python helper.</p>
+<blockquote><p>&quot;The course builds in one direction: understand a primitive, break it, then use what survives to defend a system.&quot;</p><cite>Cybersecurity-Engineering-Laboratories/README.md, 2026-07-25</cite></blockquote>
+<p><strong>Status: coursework, finished and frozen at last commit 2026-07-25.</strong> The course is done and nothing is maintained (&quot;All finished and frozen&quot; — interview, 2026-07-28). The <code>abandoned</code> tag on this page refers to the individual exercises the reports themselves record as unfinished (below), not to the repository.</p>
+<h2 id="the-arc" class="h-anch"><a class="hlink" href="#the-arc" aria-label="Link to this section">#</a>The arc</h2>
+<p><code>labs/NN_topic/</code> numbered directories, 01 through 14, with the first two merged — the reading-order variant of <a class="wl" href="numbered-stages-in-directory-names.html">numbered-stages-in-directory-names</a>.</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Labs</th>
+<th>Topic</th>
+<th>Concept pages</th>
+</tr></thead><tbody>
+<tr><td>01–02</td><td>Environment build; classical ciphers, entropy across six languages</td><td><a class="wl" href="cryptanalysis-by-measurement.html">cryptanalysis-by-measurement</a></td></tr>
+<tr><td>03</td><td>Symmetric ciphers, stream and block, modes of operation</td><td><a class="wl" href="block-cipher-modes.html">block-cipher-modes</a></td></tr>
+<tr><td>04–05</td><td>RSA across key lengths; attacks on modern ciphers</td><td><a class="wl" href="symmetric-vs-asymmetric-cryptography.html">symmetric-vs-asymmetric-cryptography</a> · <a class="wl" href="rsa-and-integer-factorization.html">rsa-and-integer-factorization</a></td></tr>
+<tr><td>06–07</td><td>Hashes, DSS, Diffie–Hellman; OpenSSL/PGP/PKI, CA build</td><td><a class="wl" href="digital-signatures.html">digital-signatures</a> · <a class="wl" href="public-key-infrastructure.html">public-key-infrastructure</a></td></tr>
+<tr><td>08</td><td>Network security — ARP poisoning and DNS spoofing</td><td><a class="wl" href="man-in-the-middle-attack.html">man-in-the-middle-attack</a></td></tr>
+<tr><td>09</td><td>Secure communication — SSH, VPN, TLS, and their cost</td><td><a class="wl" href="cia-triad.html">cia-triad</a></td></tr>
+<tr><td>10–11</td><td>Passive OSINT, then active enumeration</td><td><a class="wl" href="network-reconnaissance.html">network-reconnaissance</a></td></tr>
+<tr><td>12</td><td>Exploitation and reverse shells</td><td><a class="wl" href="metasploit.html">metasploit</a> · <a class="wl" href="nmap.html">nmap</a></td></tr>
+<tr><td>13–14</td><td>Web security tooling, then injection classes</td><td><a class="wl" href="web-application-injection.html">web-application-injection</a> · <a class="wl" href="owasp-zap.html">owasp-zap</a></td></tr>
+</tbody></table></div>
+<h2 id="stack" class="h-anch"><a class="hlink" href="#stack" aria-label="Link to this section">#</a>Stack</h2>
+<p><a class="wl" href="cryptool.html">cryptool</a> 1 carries labs 01–06. <a class="wl" href="openssl.html">openssl</a> with GnuPG and Easy-RSA carries the applied-crypto lab. <a class="wl" href="wireshark.html">wireshark</a> captures in labs 08–09, with OpenVPN, SSH and netcat providing the transports. <a class="wl" href="nmap.html">nmap</a> and <a class="wl" href="metasploit.html">metasploit</a> carry recon and exploitation; <a class="wl" href="owasp-zap.html">owasp-zap</a> and Burp Suite carry the web labs against OWASP Juice Shop. Everything runs on VirtualBox VMs — <a class="wl" href="kali-linux.html">kali-linux</a> as the attack host, Ubuntu Server, Metasploitable 2/3 and pfSense as targets.</p>
+<p><strong>Balance: predominantly offensive.</strong> Labs 02–06 are cryptanalysis and measurement; 08 and 10–14 are attack. The defensive core is exactly two labs — 07 (PKI, CA, trust) and 09 (VPN/TLS/SSH plus capture analysis).</p>
+<h2 id="findings" class="h-anch"><a class="hlink" href="#findings" aria-label="Link to this section">#</a>Findings</h2>
+<ul><li><strong>The reports are substantially more incomplete than the README implies.</strong> The README calls the 182 pages a record of &quot;what was attempted, what the tools returned, and what the result means&quot;; the reports themselves record repeated failures: the lab-06 Diffie–Hellman exchange over OpenSSL (&quot;did not work&quot;, &quot;not resolved&quot;), the lab-12 exploitation chain ending in an empty directory, ZAP fuzzing in lab 13 (&quot;it did not fuzz&quot;), tooling install errors in labs 10 and 11, and two lab-02 tasks marked &quot;Did not do.&quot; Lab 01&#x27;s report is effectively screenshots — roughly 400 characters of extractable text across 5 pages, and lab 12 is nearly the same. Two of the fourteen reports carry almost no prose at all. This is a clear instance of <a class="wl" href="documentation-drift.html">documentation-drift</a>: the polished README overstates the completeness of what it indexes. <code>confidence: high</code> — read from the PDFs directly. That the failures are <em>recorded in place at all</em>, rather than quietly dropped, is the habit written up as <a class="wl" href="lab-report-with-working-shown.html">lab-report-with-working-shown</a> — the drift is in the summary, not in the reports.</li><li><strong>Some theory answers are visibly filler.</strong> Several question blocks are generic, one defers to what a &quot;simple google search shows&quot; (lab 09), and one openly credits an outside video (lab 08). The measured work (entropy tables, timing matrices, histogram comparison) is the strong part; the essay answers are not evidence of understanding and no concept page here cites them as such.</li><li><strong>Key-material discipline is real and documented.</strong> <code>.gitignore</code> excludes <code>*.p12</code>, <code>*.pem</code>, <code>*.key</code>, <code>*.jks</code> and <code>id_rsa*</code>; the README names the private-key screenshot it deliberately did not use; the fixtures are generated rather than committed. See <a class="wl" href="omit-rsa-private-key-screenshot.html">omit-rsa-private-key-screenshot</a> and <a class="wl" href="generate-fixtures-not-commit.html">generate-fixtures-not-commit</a>. The strongest instance of <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> in the source set after the Oracle repo.</li><li><strong>Scope is stated in the repo, not inferred by the wiki.</strong></li></ul>
+<p>&gt; &quot;This is coursework, carried out in 2022 against lab environments and deliberately vulnerable &gt; targets provided for the purpose. ... Nothing here was run against a system without &gt; authorisation, and none of it is written as an operational guide.&quot; &gt; — Cybersecurity-Engineering-Laboratories/README.md, 2026-07-25</p>
+<ul><li><strong>No polish tail.</strong> README, <code>LICENSE</code> and <code>.gitignore</code> land together in the final commit <code>df046dc</code>; no badges, no separate license commit. Another <strong>counter-example</strong> to <a class="wl" href="presentation-polish-tail-commits.html">presentation-polish-tail-commits</a>, while the README remains a <a class="wl" href="readme-as-guided-tour.html">readme-as-guided-tour</a>.</li><li>No <code>.gitattributes</code> and no Git LFS: 14 PDFs and 6 PNGs are committed as plain blobs.</li></ul>
+<h2 id="redaction-note-this-repo-is-handled-differently" class="h-anch"><a class="hlink" href="#redaction-note-this-repo-is-handled-differently" aria-label="Link to this section">#</a>Redaction note — this repo is handled differently</h2>
+<p>The raw reports contain credentials captured in the MitM lab, ciphertext blocks, an identifier-derived factorisation input, exploit-chain steps and injection payload strings. <strong>None of it is reproduced anywhere in this wiki.</strong> Every concept page derived from this repo describes the technique class, what it demonstrates and what defence it motivates — and stops there.</p>
+<p><strong>The blanket <code>publish: false</code> was lifted on 2026-07-30; the redaction was not.</strong> The two were doing different jobs and the blanket was the weaker of them. Redaction is enforced by what the pages <em>contain</em> — re-read on 2026-07-30 against payload strings, credentials, hashes, CVE identifiers, target addresses and person-like values, and <code>audit-secrets</code> re-checks the published subset on every build. The blanket was enforced by a flag, and its stated reason — keeping §9&#x27;s &quot;a public page may not link a private one&quot; from forcing a self-contained rewrite that would tempt detail back in — was answered better elsewhere: the renderer emits an unpublished target as plain text, so no page has ever needed rewriting to avoid a dead link.</p>
+<p>What that leaves is the real line, and it is a line about content rather than about a cluster: <strong>a page here may name a technique class, a tool&#x27;s behaviour and the defence it motivates. It may not carry a payload, a captured credential, a target identifier or a working step of an exploit chain.</strong> Lab 12&#x27;s chain is recorded as attempted and partly failed, with no step reproduced. That rule holds whatever the publish flag says.</p>
+<h2 id="git-history" class="h-anch"><a class="hlink" href="#git-history" aria-label="Link to this section">#</a>Git history</h2>
+<p>5 commits, <code>45ed8a9</code> → <code>df046dc</code>, all on <strong>2026-07-25 between 12:18:09 and 12:18:12 +0200</strong>, grouping the labs by theme. 2022 work landing in a three-second window: <a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a>, and per the interview a folder cleanup rather than a release.</p>
+<h2 id="decisions-recorded" class="h-anch"><a class="hlink" href="#decisions-recorded" aria-label="Link to this section">#</a>Decisions recorded</h2>
+<p><a class="wl" href="omit-rsa-private-key-screenshot.html">omit-rsa-private-key-screenshot</a> · <a class="wl" href="generate-fixtures-not-commit.html">generate-fixtures-not-commit</a></p>
+<h2 id="open-gaps" class="h-anch"><a class="hlink" href="#open-gaps" aria-label="Link to this section">#</a>Open gaps</h2>
+<ul><li><strong>TODO:</strong> whether the failed exercises (lab 06 DH, lab 12 privilege escalation, lab 13 fuzzing) were completed later off-repo or permanently abandoned is unrecorded, as is which were tooling failures versus conceptual gaps. <code>confidence: low</code> on any completion narrative.</li><li><strong>TODO:</strong> why <a class="wl" href="cryptool.html">cryptool</a> <strong>1</strong> rather than CrypTool 2 or JCrypTool, and why lab 03 pushed key material through an online encryption tool for the OFB/CFB modes CrypTool 1 lacks, is not recorded. Do not invent a rationale.</li><li><strong>TODO:</strong> lab 03 keeps two short fixture variants beside their full-length namesakes, and labs 03 and 04 share fixture filenames. That looks like retained older copies rather than a deliberate <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> decision — unconfirmed either way.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a> · <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> · <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> · <a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> · <a class="wl" href="lab-report-with-working-shown.html">lab-report-with-working-shown</a></p></div>
+  <div class="tags"><span class="tag">security</span><span class="tag">cryptography</span><span class="tag">networking</span><span class="tag">coursework</span><span class="tag">abandoned</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/.gitignore</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/assets/README.md</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/</span></code></li><li><code><span class="src-r">Cybersecurity-Engineering-Laboratories</span><span class="src-p">/labs/04_asymmetric_ciphers/generate_test_files.py</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="block-cipher-modes.html"><span class="kind k-concept">concept</span><span class="rel-t">Block Cipher Modes</span><span class="rel-g">A block cipher encrypts one fixed-size block</span></a><a class="rel" href="cia-triad.html"><span class="kind k-concept">concept</span><span class="rel-t">CIA Triad</span><span class="rel-g">Confidentiality, Integrity, Availability — the three properties any security control is ultimately defending</span></a><a class="rel" href="cryptanalysis-by-measurement.html"><span class="kind k-concept">concept</span><span class="rel-t">Cryptanalysis by Measurement</span><span class="rel-g">Identifying and attacking a cipher by measuring statistical properties of its output rather than by reasoning about its construction</span></a><a class="rel" href="digital-signatures.html"><span class="kind k-concept">concept</span><span class="rel-t">Digital Signatures</span><span class="rel-g">Sign with the private key, verify with the public one — the reverse of encryption&#x27;s key usage, and the source of three properties encryption alone does not provide</span></a><a class="rel" href="man-in-the-middle-attack.html"><span class="kind k-concept">concept</span><span class="rel-t">Man-in-the-Middle Attack</span><span class="rel-g">A class of attack in which the attacker sits between two communicating parties, relaying traffic while both believe they are talking directly to each other</span></a><a class="rel" href="network-reconnaissance.html"><span class="kind k-concept">concept</span><span class="rel-t">Network Reconnaissance</span><span class="rel-g">The information-gathering phase that precedes any assessment</span></a><a class="rel" href="public-key-infrastructure.html"><span class="kind k-concept">concept</span><span class="rel-t">Public Key Infrastructure</span><span class="rel-g">The answer to the question asymmetric cryptography leaves open: you hold a public key, but whose is it? PKI is the set of roles, policies and formats that binds a public…</span></a><a class="rel" href="rsa-and-integer-factorization.html"><span class="kind k-concept">concept</span><span class="rel-t">RSA and Integer Factorization</span><span class="rel-g">RSA&#x27;s security rests on one asymmetry: multiplying two large primes is cheap, recovering them from the product is not</span></a><a class="rel" href="symmetric-vs-asymmetric-cryptography.html"><span class="kind k-concept">concept</span><span class="rel-t">Symmetric vs Asymmetric Cryptography</span><span class="rel-g">Two families with different guarantees and wildly different costs</span></a><a class="rel" href="web-application-injection.html"><span class="kind k-concept">concept</span><span class="rel-t">Web Application Injection</span><span class="rel-g">One root cause, many names</span></a><a class="rel" href="generate-fixtures-not-commit.html"><span class="kind k-decision">decision</span><span class="rel-t">Generate Fixtures Rather Than Commit Them</span><span class="rel-g">Ship a four-line generator for the 1 MB / 5 MB / 10 MB inputs used to time RSA, and .gitignore the outputs — rather than committing 16 MB of filler</span></a><a class="rel" href="omit-rsa-private-key-screenshot.html"><span class="kind k-decision">decision</span><span class="rel-t">Omit the RSA Private-Key Screenshot</span><span class="rel-g">Do not use the natural illustration for the applied-cryptography lab, because that page prints a private key</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="import-finished-work-into-git.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Import Finished Work Into Git</span><span class="rel-g">Work is built to completion outside version control, then imported in a burst</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="lab-report-with-working-shown.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Lab Report With Working Shown</span><span class="rel-g">A fixed report skeleton, repeated across fourteen deliverables, in which the answer is written directly under the task it answers — including when there is no answer</span></a><a class="rel" href="numbered-stages-in-directory-names.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Numbered Stages in Directory Names</span><span class="rel-g">Order is encoded in filenames and directory names, not in a table of contents</span></a><a class="rel" href="presentation-polish-tail-commits.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Presentation Polish Tail Commits</span><span class="rel-g">After the substance lands, a distinct tail of commits does nothing but presentation: screenshots, then a licence, then licence badges</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="readme-as-guided-tour.html"><span class="kind k-pattern">pattern</span><span class="rel-t">README as Guided Tour</span><span class="rel-g">The README is written for a reader being shown around, not for a user trying to run something</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a><a class="rel" href="oracle-database-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Oracle Database Laboratories</span><span class="rel-g">Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite</span></a><a class="rel" href="python-programming-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Python Programming Laboratories</span><span class="rel-g">Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…</span></a><a class="rel" href="cryptool.html"><span class="kind k-tech">tech</span><span class="rel-t">CrypTool</span><span class="rel-g">A free cryptography teaching application developed by German universities, built to make cryptographic mechanisms visible rather than merely available</span></a><a class="rel" href="kali-linux.html"><span class="kind k-tech">tech</span><span class="rel-t">Kali Linux</span><span class="rel-g">A Debian-derived distribution that ships several hundred security tools preinstalled and preconfigured</span></a><a class="rel" href="metasploit.html"><span class="kind k-tech">tech</span><span class="rel-t">Metasploit Framework</span><span class="rel-g">An exploitation framework: a catalogued library of exploit modules, payloads, encoders and auxiliary tools behind a common console (msfconsole)</span></a><a class="rel" href="nmap.html"><span class="kind k-tech">tech</span><span class="rel-t">Nmap</span><span class="rel-g">The network mapper: send crafted packets to a target and characterise it from the responses</span></a><a class="rel" href="openssl.html"><span class="kind k-tech">tech</span><span class="rel-t">OpenSSL</span><span class="rel-g">The general-purpose cryptography toolkit — a library that most of the internet links against, plus a command-line front end that is the standard way to do PKI work by…</span></a><a class="rel" href="owasp-zap.html"><span class="kind k-tech">tech</span><span class="rel-t">OWASP ZAP</span><span class="rel-g">The Zed Attack Proxy — an open-source web application security scanner maintained by OWASP volunteers, usable both as an automated scanner and as a manual testing proxy</span></a><a class="rel" href="wireshark.html"><span class="kind k-tech">tech</span><span class="rel-t">Wireshark</span><span class="rel-g">A packet capture and protocol analyser: read frames off an interface, dissect them by protocol, and inspect any layer of any packet</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

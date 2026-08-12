@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Schedule Baseline and Variance · Glass Box</title>
+<meta name="description" content="A baseline is a frozen copy of the plan, taken before tracking starts, that later reality is measured against">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Schedule Baseline and Variance · Glass Box">
+<meta property="og:description" content="A baseline is a frozen copy of the plan, taken before tracking starts, that later reality is measured against">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The frozen copy and the delta","Progress reported three ways, deliberately","What is measured, and what is not","Attribution of the variance","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Computer Project Management/lab5-6_Baseline_and_Tracking/README.md","Computer Project Management/README.md","Computer Project Management/lab7-8_Summary_Report/README.md"],"dateModified":"2026-07-28","description":"A baseline is a frozen copy of the plan, taken before tracking starts, that later reality is measured against","headline":"Schedule Baseline and Variance","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["project-management","data-analysis"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-10</span>
+    <span class="repos">Computer Project Management</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A baseline is a frozen copy of the plan, taken before tracking starts, that later reality is measured against</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-frozen-copy-and-the-delta">The frozen copy and the delta</a></li><li><a href="#progress-reported-three-ways-deliberately">Progress reported three ways, deliberately</a></li><li><a href="#what-is-measured-and-what-is-not">What is measured, and what is not</a></li><li><a href="#attribution-of-the-variance">Attribution of the variance</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="schedule-baseline-and-variance">Schedule Baseline and Variance</h1>
+<p>A <strong>baseline</strong> is a frozen copy of the plan, taken before tracking starts, that later reality is measured against. Without it a schedule has no memory: the current plan always looks correct, because it has silently absorbed every change. Variance is the difference between the frozen copy and the live one, and it only exists because the copy was kept.</p>
+<p>This is the same discipline as <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a>, applied to a schedule rather than to source files — the superseded version is what makes the delta legible.</p>
+<h2 id="the-frozen-copy-and-the-delta" class="h-anch"><a class="hlink" href="#the-frozen-copy-and-the-delta" aria-label="Link to this section">#</a>The frozen copy and the delta</h2>
+<p><a class="wl" href="computer-project-management.html">computer-project-management</a> captures the baseline at lab 5–6 and then reports against it:</p>
+<div class="tw"><table>
+<thead><tr>
+<th></th>
+<th>Baseline</th>
+<th>Current</th>
+<th>Variance</th>
+</tr></thead><tbody>
+<tr><td>Duration</td><td>123 d</td><td>134 d</td><td><strong>+11 d</strong></td></tr>
+<tr><td>Work</td><td>2 640 h</td><td>2 888 h</td><td>+248 h</td></tr>
+<tr><td>Cost</td><td>176 080 zł</td><td>190 960 zł</td><td><strong>+14 880 zł</strong></td></tr>
+</tbody></table></div>
+<p>Finish moves 24 Aug → 8 Sep 2026. The cost variance is not an overspend decision — it is +248 hours at the same hourly rates, because the budget in this plan is 100 % labour. Duration, work and cost are one number expressed three ways.</p>
+<h2 id="progress-reported-three-ways-deliberately" class="h-anch"><a class="hlink" href="#progress-reported-three-ways-deliberately" aria-label="Link to this section">#</a>Progress reported three ways, deliberately</h2>
+<p>At the June reporting date: <strong>37 %</strong> complete by duration, <strong>31 %</strong> by work (908 of 2 888 h), <strong>30.7 %</strong> of cost incurred. Three different denominators giving three different answers is the point — duration is ahead of work because the completed phases were the short, thinly-staffed ones. A single &quot;percent complete&quot; would hide that.</p>
+<p>The seven zero-day milestones from the <a class="wl" href="work-breakdown-structure.html">work-breakdown-structure</a> carry the per-phase status (<em>Preparatory</em> ✓, <em>Database</em> ✓, <em>Platform</em> late, four pending), so the aggregate percentages are attributable rather than free-floating.</p>
+<h2 id="what-is-measured-and-what-is-not" class="h-anch"><a class="hlink" href="#what-is-measured-and-what-is-not" aria-label="Link to this section">#</a>What is measured, and what is not</h2>
+<p>The repo reports <strong>raw deltas only</strong>. There is no earned-value analysis anywhere in the readable files — no CPI, no SPI, no EAC, no cost or schedule performance index. That is a real limitation rather than an oversight to fill in: with 30.7 % of cost spent against 37 % of duration elapsed, CPI/SPI would say something the raw deltas do not, and nothing in the repo says it.</p>
+<p>Nor is there a risk register or any probabilistic estimate — see <a class="wl" href="critical-path-method.html">critical-path-method</a> on the absence of PERT.</p>
+<h2 id="attribution-of-the-variance" class="h-anch"><a class="hlink" href="#attribution-of-the-variance" aria-label="Link to this section">#</a>Attribution of the variance</h2>
+<p>The +11 days are traced to a named cause rather than left as a number: four tasks extended, most importantly unit testing at +16 days, plus the resequencing recorded as <a class="wl" href="sequence-integration-after-unit-testing.html">sequence-integration-after-unit-testing</a>. Sixteen days of extension yielding eleven days of slip is float being consumed — see <a class="wl" href="critical-path-method.html">critical-path-method</a>.</p>
+<p><code>confidence: medium</code>: every figure here is a hand-written README table over <code>.mpp</code> and <code>.pdf</code> files that are unread by policy. <code>TODO:</code> nothing independently confirms the READMEs match the tool output.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="computer-project-management.html">computer-project-management</a> · <a class="wl" href="critical-path-method.html">critical-path-method</a> · <a class="wl" href="work-breakdown-structure.html">work-breakdown-structure</a> · <a class="wl" href="resource-leveling.html">resource-leveling</a> · <a class="wl" href="microsoft-project.html">microsoft-project</a> · <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a></p></div>
+  <div class="tags"><span class="tag">project-management</span><span class="tag">data-analysis</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Computer Project Management</span><span class="src-p">/lab5-6_Baseline_and_Tracking/README.md</span></code></li><li><code><span class="src-r">Computer Project Management</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Computer Project Management</span><span class="src-p">/lab7-8_Summary_Report/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="critical-path-method.html"><span class="kind k-concept">concept</span><span class="rel-t">Critical Path Method</span><span class="rel-g">The longest chain of dependent tasks through a network, and therefore the shortest possible project duration</span></a><a class="rel" href="resource-leveling.html"><span class="kind k-concept">concept</span><span class="rel-t">Resource Leveling</span><span class="rel-g">Resolving over-allocation by moving tasks in time rather than by adding capacity</span></a><a class="rel" href="work-breakdown-structure.html"><span class="kind k-concept">concept</span><span class="rel-t">Work Breakdown Structure</span><span class="rel-g">Hierarchical decomposition of a project&#x27;s total scope into progressively smaller deliverables, until the leaves are units small enough to estimate, assign and schedule</span></a><a class="rel" href="sequence-integration-after-unit-testing.html"><span class="kind k-decision">decision</span><span class="rel-t">Sequence Integration After Unit Testing</span><span class="rel-g">Re-link integration testing to start after unit testing with a Finish-to-Start dependency, instead of running the two in parallel, to clear an over-allocation of the…</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="computer-project-management.html"><span class="kind k-project">project</span><span class="rel-t">Computer Project Management</span><span class="rel-g">Coursework for the Computer Project Management course at Wrocław University of Science and Technology, 2026</span></a><a class="rel" href="microsoft-project.html"><span class="kind k-tech">tech</span><span class="rel-t">Microsoft Project</span><span class="rel-g">Desktop scheduling tool; the primary artefact format of computer-project-management and the only piece of proprietary tooling in the source set</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

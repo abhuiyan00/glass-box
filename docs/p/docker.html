@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docker · Glass Box</title>
+<meta name="description" content="Container packaging for the stickfps game server">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker · Glass Box">
+<meta property="og:description" content="Container packaging for the stickfps game server">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The image","It was actually run","But it is not on the deployed path","A drift marker","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["browser_game_stickfps/server/Dockerfile","browser_game_stickfps/server/fly.toml","browser_game_stickfps/docs/DEPLOYMENT.md","browser_game_stickfps/PROGRESS.md"],"dateModified":"2026-07-28","description":"Container packaging for the stickfps game server","headline":"Docker","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["devops","typescript","architecture"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-14</span>
+    <span class="repos">browser_game_stickfps</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Container packaging for the stickfps game server</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-image">The image</a></li><li><a href="#it-was-actually-run">It was actually run</a></li><li><a href="#but-it-is-not-on-the-deployed-path">But it is not on the deployed path</a></li><li><a href="#a-drift-marker">A drift marker</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="docker">Docker</h1>
+<p>Container packaging for the <a class="wl" href="stickfps.html">stickfps</a> game server. The only containerised service in the source set.</p>
+<h2 id="the-image" class="h-anch"><a class="hlink" href="#the-image" aria-label="Link to this section">#</a>The image</h2>
+<p>Two-stage build on <code>node:22-slim</code>: a build stage that compiles TypeScript, then a runtime stage that installs with <code>npm ci --omit=dev</code> and copies the compiled output. <code>EXPOSE 9090</code>.</p>
+<p>Two-stage matters more than it looks for this service: the runtime image carries no TypeScript compiler and no dev dependencies, which is most of the weight of a Node build. <code>npm ci</code> rather than <code>npm install</code> pins to the lockfile, so the image is reproducible from the same commit.</p>
+<h2 id="it-was-actually-run" class="h-anch"><a class="hlink" href="#it-was-actually-run" aria-label="Link to this section">#</a>It was actually run</h2>
+<p>Unlike the deployment itself, the container was <strong>built and executed locally</strong> and verified through a real <code>/healthz</code> request. That makes it one of the few pieces of <a class="wl" href="stickfps.html">stickfps</a>&#x27;s infrastructure story backed by an executed command rather than a written runbook — the wider limits are on <a class="wl" href="render-hosting.html">render-hosting</a> and <a class="wl" href="stickfps.html">stickfps</a>.</p>
+<h2 id="but-it-is-not-on-the-deployed-path" class="h-anch"><a class="hlink" href="#but-it-is-not-on-the-deployed-path" aria-label="Link to this section">#</a>But it is not on the deployed path</h2>
+<p>The image belongs to the <strong>Fly.io</strong> route, which was the original target while the transport still needed UDP. <a class="wl" href="render-over-fly-io.html">render-over-fly-io</a> moved the documented deployment to a dashboard-configured build (<code>npm install &amp;&amp; npm run build</code>, <code>npm start</code>) that does not use this Dockerfile at all. <code>fly.toml</code> survives in the tree with its UDP service removed.</p>
+<p>So the repo carries a working container for a host it no longer targets. That is not obviously wrong — it keeps the service portable to any container host and it is the only fully self-describing deployment artefact present — but it should not be read as <em>how the thing is deployed</em>.</p>
+<h2 id="a-drift-marker" class="h-anch"><a class="hlink" href="#a-drift-marker" aria-label="Link to this section">#</a>A drift marker</h2>
+<p>The Dockerfile still declares a UDP port after UDP was removed:</p>
+<p><code>EXPOSE 10000/udp</code></p>
+<p>A leftover from geckos.io, retired in <a class="wl" href="websocket-tcp-over-geckos-udp.html">websocket-tcp-over-geckos-udp</a>. Harmless — <code>EXPOSE</code> is documentation, not a firewall rule — and precisely because it is harmless nothing forced it to be updated. Catalogued with the rest in <a class="wl" href="documentation-drift.html">documentation-drift</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="render-hosting.html">render-hosting</a> · <a class="wl" href="render-over-fly-io.html">render-over-fly-io</a> · <a class="wl" href="websocket-tcp-over-geckos-udp.html">websocket-tcp-over-geckos-udp</a> · <a class="wl" href="split-frontend-backend-hosting.html">split-frontend-backend-hosting</a> · <a class="wl" href="stickfps.html">stickfps</a></p></div>
+  <div class="tags"><span class="tag">devops</span><span class="tag">typescript</span><span class="tag">architecture</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/server/Dockerfile</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/server/fly.toml</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/docs/DEPLOYMENT.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/PROGRESS.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="render-over-fly-io.html"><span class="kind k-decision">decision</span><span class="rel-t">Render Over Fly.io</span><span class="rel-g">Decision (2026-07-24, round 11): host the stickfps game server on Render</span></a><a class="rel" href="split-frontend-backend-hosting.html"><span class="kind k-decision">decision</span><span class="rel-t">Split Frontend and Backend Hosting</span><span class="rel-g">Decision: deploy the stickfps client as a static bundle on one host and the game server as a long-lived process on another, rather than shipping one application</span></a><a class="rel" href="websocket-tcp-over-geckos-udp.html"><span class="kind k-decision">decision</span><span class="rel-t">WebSocket Over TCP Instead of Geckos.io UDP</span><span class="rel-g">Decision (2026-07-24, round 11): replace geckos.io — UDP over WebRTC data channels — with plain WebSocket over TCP (ws), across the whole of stickfps</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="stickfps.html"><span class="kind k-project">project</span><span class="rel-t">Stickfps</span><span class="rel-g">A 5v5 round-based browser tactical FPS: Counter-Strike round/economy structure, Krunker-style movement feel, procedurally-generated low-poly stickmen</span></a><a class="rel" href="render-hosting.html"><span class="kind k-tech">tech</span><span class="rel-t">Render</span><span class="rel-g">Managed application hosting with a free tier that does not require a credit card</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

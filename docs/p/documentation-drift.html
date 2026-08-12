@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Documentation Drift · Glass Box</title>
+<meta name="description" content="Docs describe the intended system; code implements a subset; the docs are never walked back">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Documentation Drift · Glass Box">
+<meta property="og:description" content="Docs describe the intended system; code implements a subset; the docs are never walked back">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The sharpest instances","The counter-habit that bounds it","Where drift is absent","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["browser_game_stickfps/server/Dockerfile","Farley/README.md","Physics/exam_prep/sw.js","Information-Systems-Modelling/lab6/README.md","IT Applications in Business and Commerce/project/code/a.bhuiyan/guide.txt","Optimization Methods/first_project/README.md","Discrete-Mathematics-Laboratories/lab6_Neo4j/guide.txt","Data-Warehousing-and-Business-Intelligence/project/twtr/ssas/"],"dateModified":"2026-07-28","description":"Docs describe the intended system; code implements a subset; the docs are never walked back","headline":"Documentation Drift","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["documentation","debugging"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-06-09</span>
+    <span class="repos">Data-Warehousing-and-Business-Intelligence · Discrete-Mathematics-Laboratories · Farley · IT Applications in Business and Commerce · Information-Systems-Modelling · Optimization Methods · Physics · browser_game_stickfps</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Docs describe the intended system; code implements a subset; the docs are never walked back</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-sharpest-instances">The sharpest instances</a></li><li><a href="#the-counter-habit-that-bounds-it">The counter-habit that bounds it</a></li><li><a href="#where-drift-is-absent">Where drift is absent</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="documentation-drift">Documentation Drift</h1>
+<p>Docs describe the <strong>intended</strong> system; code implements a subset; the docs are never walked back. Found in 12 of 15 repositories, with 11 distinct instances in two of them. This is the characteristic failure mode of the source set, and the direct cost of <a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a> — nothing forces a doc to be re-read when the work lands in one commit.</p>
+<h2 id="the-sharpest-instances" class="h-anch"><a class="hlink" href="#the-sharpest-instances" aria-label="Link to this section">#</a>The sharpest instances</h2>
+<p><strong>A test suite that does not exist.</strong> <code>Farley/README.md</code> line 174: &quot;Tested with <strong>Vitest</strong> and <strong>Playwright</strong>.&quot; There is no vitest, no playwright, and zero test files; <code>CONTRIBUTING.md</code> says the opposite outright. Resolved at interview:</p>
+<blockquote><p>&quot;Aspirational — tests were planned.&quot;</p><cite>interview, 2026-07-28</cite></blockquote>
+<p><strong>A shipped feature that is a stub.</strong> <code>Farley</code>&#x27;s README and four docs describe Android ML Kit OCR as the on-device engine. ML Kit is in no <code>build.gradle</code> and <code>OcrReader.readNow()</code> returns <code>null</code>. The working reader is the accessibility node-tree parser — see <a class="wl" href="node-tree-read-before-ocr.html">node-tree-read-before-ocr</a>.</p>
+<p><strong>A deleted transport still in the build.</strong> <code>browser_game_stickfps/server/Dockerfile</code> keeps <code>EXPOSE 10000/udp</code> after UDP was removed, and all four <code>.tooling</code> agent files still instruct agents to use &quot;Geckos.io&quot; and &quot;Fly.io&quot; — see <a class="wl" href="websocket-tcp-over-geckos-udp.html">websocket-tcp-over-geckos-udp</a>.</p>
+<p><strong>Undocumented cache generations.</strong> <code>Physics/exam_prep/sw.js</code> declares <code>physprep-v4</code>; <code>snapshot.md</code> says <code>v3</code>; the README says <code>v2</code>. At least two offline-cache changes were never recorded. <code>TODO:</code> what broke between them is unresolved — &quot;Don&#x27;t remember the cache history&quot; (interview, 2026-07-28), so no narrative is asserted here.</p>
+<p><strong>A documented file that was never committed.</strong> <code>Information-Systems-Modelling/lab6/README.md</code> lists <code>snapshot.md</code> in its file tree. It does not exist, on disk or in history.</p>
+<p><strong>A guide predating its own code.</strong> <code>IT Applications in Business and Commerce/.../guide.txt</code> is stamped &quot;Updated 2026-05-13&quot;, describes the <em>pre-rewrite</em> baseline as &quot;What exists today&quot;, is banner-stamped for one track while its body targets another, depends on a <code>recon_lap.py</code> that does not exist, and hardcodes a machine-local <code>D:\...</code> path.</p>
+<p><strong>Counts that disagree with themselves.</strong> <code>Physics</code> alone: <code>sims.js</code> documented as 9 simulators in one section and 13 in another; <code>qa.mjs</code> as 32 checks vs 34; the bank as 62 questions vs a generated audit reporting 75.</p>
+<p><strong>A licence claim three months stale.</strong> <code>Optimization Methods/first_project/README.md</code> still says &quot;No license file is currently included in this repository&quot; long after MIT was added at the root.</p>
+<p><strong>The rejected design shipped in a sibling format.</strong> <code>Data-Warehousing-and-Business-Intelligence</code> argues at length against modelling RSI as a dimension, then ships <code>Dim RSI.dim</code> doing exactly that — which is also an instance of <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> and is covered on <a class="wl" href="rsi-as-measure-not-dimension.html">rsi-as-measure-not-dimension</a>.</p>
+<h2 id="the-counter-habit-that-bounds-it" class="h-anch"><a class="hlink" href="#the-counter-habit-that-bounds-it" aria-label="Link to this section">#</a>The counter-habit that bounds it</h2>
+<p><code>browser_game_stickfps</code> never rewrites a retired decision — it stacks a dated <strong>SUPERSEDED banner</strong> on top of the original text. <code>docs/SRS.md</code> FR-9.3, <code>DESIGN_PROMPT.md</code> §3 and <code>docs/DESIGN-BRIEF.md</code> §2 all still carry the grayscale mandate under such a banner. This trades internal consistency for an auditable history; see <a class="wl" href="superseded-in-place-documentation.html">superseded-in-place-documentation</a>.</p>
+<h2 id="where-drift-is-absent" class="h-anch"><a class="hlink" href="#where-drift-is-absent" aria-label="Link to this section">#</a>Where drift is absent</h2>
+<p><code>Oracle-Database-Laboratories</code> — docs match code closely, essentially no drift. It is also the repo whose prose is written <em>as inline SQL comments</em> rather than as a separate document, which removes the gap where drift lives.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a> · <a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a> · <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a> · <a class="wl" href="superseded-in-place-documentation.html">superseded-in-place-documentation</a> · <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a> · <a class="wl" href="farely.html">farely</a></p></div>
+  <div class="tags"><span class="tag">documentation</span><span class="tag">debugging</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/server/Dockerfile</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/sw.js</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab6/README.md</span></code></li><li><code><span class="src-r">IT Applications in Business and Commerce</span><span class="src-p">/project/code/a.bhuiyan/guide.txt</span></code></li><li><code><span class="src-r">Optimization Methods</span><span class="src-p">/first_project/README.md</span></code></li><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab6_Neo4j/guide.txt</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/ssas/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="node-tree-read-before-ocr.html"><span class="kind k-decision">decision</span><span class="rel-t">Node-Tree Read Before OCR</span><span class="rel-g">Read a ride offer&#x27;s fare, distance and duration from the accessibility node tree</span></a><a class="rel" href="rsi-as-measure-not-dimension.html"><span class="kind k-decision">decision</span><span class="rel-t">RSI as Measure, Not Dimension</span><span class="rel-g">Store the 14-day relative strength index as a nullable numeric column on the fact table dw.FACT_QUOTES, and push the overbought/oversold interpretation into a view</span></a><a class="rel" href="websocket-tcp-over-geckos-udp.html"><span class="kind k-decision">decision</span><span class="rel-t">WebSocket Over TCP Instead of Geckos.io UDP</span><span class="rel-g">Decision (2026-07-24, round 11): replace geckos.io — UDP over WebRTC data channels — with plain WebSocket over TCP (ws), across the whole of stickfps</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="import-finished-work-into-git.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Import Finished Work Into Git</span><span class="rel-g">Work is built to completion outside version control, then imported in a burst</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="superseded-in-place-documentation.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Superseded-in-Place Documentation</span><span class="rel-g">When a decision is reversed, the document is not rewritten</span></a><a class="rel" href="farely.html"><span class="kind k-project">project</span><span class="rel-t">Farely</span><span class="rel-g">A personal Android rideshare/delivery driver assistant for Wrocław</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

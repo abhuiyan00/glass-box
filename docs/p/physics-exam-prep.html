@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Physics Exam Prep · Glass Box</title>
+<meta name="description" content="Not a generated static site and not an asset dump: a hand-written, zero-dependency, offline-first single-page web app — an installable PWA — built from one Physics…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Physics Exam Prep · Glass Box">
+<meta property="og:description" content="Not a generated static site and not an asset dump: a hand-written, zero-dependency, offline-first single-page web app — an installable PWA — built from one Physics…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["What it contains","There is no build system, and that is the point","The tooling is real, and it audits itself","Findings","Open gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Physics/README.md","Physics/exam_prep/README.md","Physics/exam_prep/snapshot.md","Physics/exam_prep/index.html","Physics/exam_prep/sw.js","Physics/exam_prep/js/app.js","Physics/exam_prep/tools/build_sets.mjs","Physics/exam_prep/tools/qa.mjs","Physics/exam_prep/tools/AUDIT.md","Physics/exam_prep/vendor/katex/"],"dateModified":"2026-07-28","description":"Not a generated static site and not an asset dump: a hand-written, zero-dependency, offline-first single-page web app — an installable PWA — built from one Physics…","headline":"Physics Exam Prep","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["physics","web-dev","javascript","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-06-27</span>
+    <span class="repos">Physics</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Not a generated static site and not an asset dump: a hand-written, zero-dependency, offline-first single-page web app — an installable PWA — built from one Physics…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#what-it-contains">What it contains</a></li><li><a href="#there-is-no-build-system-and-that-is-the-point">There is no build system, and that is the point</a></li><li><a href="#the-tooling-is-real-and-it-audits-itself">The tooling is real, and it audits itself</a></li><li><a href="#findings">Findings</a></li><li><a href="#open-gaps">Open gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="physics-exam-prep">Physics Exam Prep</h1>
+<p>Not a generated static site and not an asset dump: a <strong>hand-written, zero-dependency, offline-first single-page web app</strong> — an installable PWA — built from one Physics course&#x27;s own 106-slide deck (F. Peña-Benítez, <code>04ITE0-25S301O01903W</code>) and enriched with OpenStax <em>University Physics Vol 3</em>. One of four instances of <a class="wl" href="course-as-runnable-study-tool.html">course-as-runnable-study-tool</a>.</p>
+<p><strong>Status: coursework, finished and frozen at last commit 2026-07-10.</strong> &quot;All finished and frozen&quot; (interview, 2026-07-28).</p>
+<h2 id="what-it-contains" class="h-anch"><a class="hlink" href="#what-it-contains" aria-label="Link to this section">#</a>What it contains</h2>
+<p>29 topics across 4 modules · 13 canvas simulators · 82 Leitner flashcards (<a class="wl" href="spaced-repetition-leitner-boxes.html">spaced-repetition-leitner-boxes</a>) · a 75-question quiz bank · 3 generated study sets (<a class="wl" href="jaccard-similarity-set-selection.html">jaccard-similarity-set-selection</a>) · the 30-question scanned exam transcribed with worked step-by-step solutions · a progress dashboard · a 6/7-hour study plan · a printable cheat sheet.</p>
+<h2 id="there-is-no-build-system-and-that-is-the-point" class="h-anch"><a class="hlink" href="#there-is-no-build-system-and-that-is-the-point" aria-label="Link to this section">#</a>There is no build system, and that is the point</h2>
+<p>No <code>package.json</code> anywhere in the repo. No SSG config, no bundler, no CI workflow, no output directory. <code>exam_prep/index.html</code> is a hand-authored 5.6 KB shell with five <code>&lt;script&gt;</code> tags; routing is hash-based vanilla JS in <code>js/app.js</code>; <code>sw.js</code> is hand-written. See <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a> and <a class="wl" href="offline-first-static-deliverable.html">offline-first-static-deliverable</a>.</p>
+<p>The <strong>only</strong> vendored dependency is <a class="wl" href="katex.html">katex</a> — CSS, JS and 20 <code>.woff2</code> files copied locally so no CDN is ever contacted. That is a deliberate choice with a rejected alternative: <a class="wl" href="vendor-katex-instead-of-cdn.html">vendor-katex-instead-of-cdn</a>. The bulk of the repo&#x27;s bytes are therefore <em>content</em> (36 lecture and textbook diagrams, 5 animations) plus math fonts — not build residue.</p>
+<div class="tw"><table>
+<thead><tr>
+<th>File</th>
+<th>Size</th>
+<th>Is</th>
+</tr></thead><tbody>
+<tr><td><code>js/data.js</code></td><td>101 KB</td><td>the knowledge base — topics, formulas, flashcards, quiz bank, plan</td></tr>
+<tr><td><code>js/app.js</code></td><td>47 KB</td><td>the SPA — routing, flashcards, quiz, dashboard, timer, search</td></tr>
+<tr><td><code>js/teach.js</code></td><td>47 KB</td><td>the &quot;Feynman layer&quot; — intuition, analogies, 40 self-checks, 13 predict-first prompts</td></tr>
+<tr><td><code>js/sims.js</code></td><td>39 KB</td><td>the canvas simulators</td></tr>
+<tr><td><code>js/quizsets.js</code></td><td>23 KB</td><td><strong>generated</strong> by <code>tools/build_sets.mjs</code></td></tr>
+<tr><td><code>tools/build_sets.mjs</code></td><td>31 KB</td><td>Jaccard set builder + auditor, Node-only</td></tr>
+<tr><td><code>tools/qa.mjs</code></td><td>14.9 KB</td><td>hand-rolled static-check harness, Node-only</td></tr>
+</tbody></table></div>
+<p>Both <code>.mjs</code> tools load the browser&#x27;s <code>data.js</code> by executing it into a fake window (<code>new Function(&quot;window&quot;, code)(win)</code>) instead of converting it to an ES module — the global-script shape is preserved on purpose so the browser needs no module system. <code>tools/</code> is never shipped.</p>
+<p><code>localStorage</code> progress is keyed <code>physprep.v1</code> — the same invalidation idea as the <code>STORAGE_VERSION</code> counter used by the sibling apps in <a class="wl" href="course-as-runnable-study-tool.html">course-as-runnable-study-tool</a>, expressed as a versioned key rather than an integer.</p>
+<h2 id="the-tooling-is-real-and-it-audits-itself" class="h-anch"><a class="hlink" href="#the-tooling-is-real-and-it-audits-itself" aria-label="Link to this section">#</a>The tooling is real, and it audits itself</h2>
+<p><code>tools/build_sets.mjs</code> emits both <code>js/quizsets.js</code> and a committed <code>tools/AUDIT.md</code> sanity report — <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a>. <code>tools/qa.mjs</code> runs static integrity checks including check 8, &quot;Service worker precache vs index.html&quot;, which fails if any asset <code>index.html</code> loads is missing from the service worker&#x27;s <code>CORE</code> list. That check exists because it caught a real offline bug; the fix is recorded as <a class="wl" href="cache-individually-not-addall.html">cache-individually-not-addall</a>.</p>
+<p>What none of it checks is <strong>subject-matter correctness</strong>: the README claims the Bohr simulator reproduces the Balmer lines at 656 / 486 / 434 / 410 nm, but <code>qa.mjs</code> validates ids, asset paths, KaTeX parsing and precache coverage — never numerical output. See <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>.</p>
+<h2 id="findings" class="h-anch"><a class="hlink" href="#findings" aria-label="Link to this section">#</a>Findings</h2>
+<ul><li><strong>The app was built outside version control.</strong> File mtimes run 2026-06-27 (<code>vendor/katex</code>) to 2026-06-30 (<code>js/*</code>), ten days before the first commit on 2026-07-10 — seven commits in two clusters, the second being the licence/badge pair shared with <a class="wl" href="computer-project-management.html">computer-project-management</a> and <a class="wl" href="privacy-policy-template.html">privacy-policy-template</a>. <a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a> with mtime proof.</li><li><strong>These are also the earliest in-repo timestamps of the whole exam-prep family.</strong> The interview names <a class="wl" href="it-applications-in-business-and-commerce.html">it-applications-in-business-and-commerce</a> as the origin of the lineage and that answer is authoritative; the mtime tension is argued out once on <a class="wl" href="course-as-runnable-study-tool.html">course-as-runnable-study-tool</a> and is not re-litigated here.</li><li><strong><a class="wl" href="documentation-drift.html">documentation-drift</a>, four independent instances</strong> — the densest concentration in the source set, all of them the docs falling behind the code: | Claim | <code>README.md</code> | <code>snapshot.md</code> | The code / generated output | |---|---|---|---| | service-worker cache version | <code>physprep-v2</code> | <code>physprep-v3</code> | <code>physprep-v4</code> in <code>sw.js</code> | | simulators in <code>sims.js</code> | 9 (structure block) / 13 (feature table) | 13 | — | | <code>qa.mjs</code> static checks | 32 | 34 | — | | quiz bank size | — | 75 | <code>build_sets.mjs</code> header says 62; <code>AUDIT.md</code> reports 75 |</li><li><strong>A claimed test harness that is not in the tree.</strong> <code>exam_prep/README.md</code> states &quot;A headless DOM smoke test additionally renders all 40 routes without a runtime error&quot;. <code>tools/</code> contains only <code>build_sets.mjs</code> and <code>qa.mjs</code>. <code>confidence: high</code> on the absence.</li></ul>
+<h2 id="open-gaps" class="h-anch"><a class="hlink" href="#open-gaps" aria-label="Link to this section">#</a>Open gaps</h2>
+<ul><li><strong>TODO: the cache-version history is undocumented drift.</strong> <code>physprep-v2 → v3 → v4</code> implies <strong>at least two unrecorded offline-cache changes</strong> after the README was written. Asked at interview and answered &quot;Don&#x27;t remember the cache history&quot; — so what broke, and what each bump fixed, is unrecoverable. <code>confidence: low</code> on any narrative about the cache; nothing is invented here.</li><li>The tool <strong>was used for the exam</strong> — <code>confidence: medium</code>, implied by the interview answer&#x27;s own framing rather than stated outright.</li><li><strong>TODO:</strong> &quot;two answer-key errors in the provided exam set were caught and corrected&quot; rests solely on the author&#x27;s own <code>AUDIT.md</code>; never confirmed with the lecturer. The two READMEs even disagree on <em>which</em> questions they were. <code>confidence: low</code>.</li><li><strong>TODO:</strong> the &quot;Feynman layer&quot; is the app&#x27;s signature idea and is never defined as a method, only exemplified across 29 topics. No rule distinguishes a good &quot;Feynman&#x27;s take&quot; from a summary.</li><li><strong>TODO:</strong> whether it was ever served over HTTP (the service worker is dormant under <code>file://</code>) or only ever double-clicked is unrecorded. There is no Pages config and no CI.</li><li><strong>TODO:</strong> no reason is recorded anywhere for vanilla JS + hash routing over a framework, beyond the repeated &quot;no build step&quot;. Whether a framework was tried first is unknown. <code>confidence: low</code>.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="katex.html">katex</a> · <a class="wl" href="jaccard-similarity-set-selection.html">jaccard-similarity-set-selection</a> · <a class="wl" href="spaced-repetition-leitner-boxes.html">spaced-repetition-leitner-boxes</a> · <a class="wl" href="vendor-katex-instead-of-cdn.html">vendor-katex-instead-of-cdn</a> · <a class="wl" href="cache-individually-not-addall.html">cache-individually-not-addall</a> · <a class="wl" href="course-as-runnable-study-tool.html">course-as-runnable-study-tool</a> · <a class="wl" href="offline-first-static-deliverable.html">offline-first-static-deliverable</a> · <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a> · <a class="wl" href="optimization-methods.html">optimization-methods</a> · <a class="wl" href="information-systems-modelling.html">information-systems-modelling</a></p></div>
+  <div class="tags"><span class="tag">physics</span><span class="tag">web-dev</span><span class="tag">javascript</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Physics</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/README.md</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/snapshot.md</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/index.html</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/sw.js</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/js/app.js</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/tools/build_sets.mjs</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/tools/qa.mjs</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/tools/AUDIT.md</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/vendor/katex/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="jaccard-similarity-set-selection.html"><span class="kind k-concept">concept</span><span class="rel-t">Jaccard Similarity Set Selection</span><span class="rel-g">Using a set-overlap score not to rank items but to partition a corpus into what you have already seen and what you have not</span></a><a class="rel" href="spaced-repetition-leitner-boxes.html"><span class="kind k-concept">concept</span><span class="rel-t">Spaced Repetition with Leitner Boxes</span><span class="rel-g">The cheapest possible spaced-repetition scheduler: every card sits in one of five numbered boxes, each box has a fixed review interval, a correct answer promotes the…</span></a><a class="rel" href="cache-individually-not-addall.html"><span class="kind k-decision">decision</span><span class="rel-t">Cache Individually, Not addAll</span><span class="rel-g">In the service worker&#x27;s install handler, precache each URL with its own cache.add(url).catch(() =&gt; {}) inside a Promise.all, rather than the idiomatic cache.addAll(CORE)</span></a><a class="rel" href="vendor-katex-instead-of-cdn.html"><span class="kind k-decision">decision</span><span class="rel-t">Vendor KaTeX Instead of CDN</span><span class="rel-g">Copy katex — katex.min.js, katex.min.css, auto-render.min.js and all 20 KaTeX_*.woff2 font files — into exam_prep/vendor/katex/ and load them by relative path, rather…</span></a><a class="rel" href="course-as-runnable-study-tool.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Course as Runnable Study Tool</span><span class="rel-g">Four separate courses were revised by building the syllabus into a program rather than by reading notes</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="import-finished-work-into-git.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Import Finished Work Into Git</span><span class="rel-g">Work is built to completion outside version control, then imported in a burst</span></a><a class="rel" href="offline-first-static-deliverable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Offline-First Static Deliverable</span><span class="rel-g">The deliverable must work by double-clicking a file: no server, no install, no network</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="computer-project-management.html"><span class="kind k-project">project</span><span class="rel-t">Computer Project Management</span><span class="rel-g">Coursework for the Computer Project Management course at Wrocław University of Science and Technology, 2026</span></a><a class="rel" href="information-systems-modelling.html"><span class="kind k-project">project</span><span class="rel-t">Information Systems Modelling</span><span class="rel-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span></a><a class="rel" href="it-applications-in-business-and-commerce.html"><span class="kind k-project">project</span><span class="rel-t">IT Applications in Business and Commerce</span><span class="rel-g">This repository is not business analytics</span></a><a class="rel" href="optimization-methods.html"><span class="kind k-project">project</span><span class="rel-t">Optimization Methods</span><span class="rel-g">Master&#x27;s Optimization Methods course at Wrocław University of Science and Technology (FICT, lectures by M. Przewoźniczek)</span></a><a class="rel" href="privacy-policy-template.html"><span class="kind k-project">project</span><span class="rel-t">Privacy Policy Template</span><span class="rel-g">Six files, ~25 KB</span></a><a class="rel" href="katex.html"><span class="kind k-tech">tech</span><span class="rel-t">KaTeX</span><span class="rel-g">Client-side LaTeX math renderer</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

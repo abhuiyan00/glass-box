@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Playwright · Glass Box</title>
+<meta name="description" content="Browser automation, @playwright/test ^1.61.1">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Playwright · Glass Box">
+<meta property="og:description" content="Browser automation, @playwright/test ^1.61.1">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["What is checked in, and what is not","Three harness quirks, named as harness quirks","As a screenshot harness","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["browser_game_stickfps/client/package.json","browser_game_stickfps/client/e2e/","browser_game_stickfps/docs/TESTING.md","browser_game_stickfps/assets/README.md","browser_game_stickfps/PROGRESS.md"],"dateModified":"2026-07-28","description":"Browser automation, @playwright/test ^1.61.1","headline":"Playwright","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["testing","web-dev","typescript","documentation"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-14</span>
+    <span class="repos">browser_game_stickfps</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Browser automation, @playwright/test ^1.61.1</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#what-is-checked-in-and-what-is-not">What is checked in, and what is not</a></li><li><a href="#three-harness-quirks-named-as-harness-quirks">Three harness quirks, named as harness quirks</a></li><li><a href="#as-a-screenshot-harness">As a screenshot harness</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="playwright">Playwright</h1>
+<p>Browser automation, <code>@playwright/test ^1.61.1</code>. Used in <a class="wl" href="stickfps.html">stickfps</a> for two distinct jobs: end-to-end testing across two real browser contexts, and generating the screenshots in the README.</p>
+<p>Also present as a claim in <a class="wl" href="farely.html">farely</a>&#x27;s README, where no test runner exists at all — see <a class="wl" href="documentation-drift.html">documentation-drift</a>.</p>
+<h2 id="what-is-checked-in-and-what-is-not" class="h-anch"><a class="hlink" href="#what-is-checked-in-and-what-is-not" aria-label="Link to this section">#</a>What is checked in, and what is not</h2>
+<p><strong>Checked in: two specs, covering the lobby only</strong> — create room, join room, roster, host start, bad code. That is the multiplayer <em>setup</em> path, verified with two browser contexts talking to one server.</p>
+<p><strong>Not checked in: the combat loops.</strong> Full two-browser playtests covering payouts, kill feed and round advance were run twice from scratchpad scripts in rounds 8–9 and never committed. There is no committed spec for combat, movement or the round timer.</p>
+<p>This gap is stated in the repo rather than hidden (<a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>), and it is the honest reading of the test story: the 108 server + 52 client unit tests carry the authority surface, while the browser-level evidence for the game actually playing end to end is a transcript, not an artefact. <code>confidence: medium</code> on all test counts — they rest on <code>PROGRESS.md</code>&#x27;s own reporting, with no CI and no coverage output. <code>TODO:</code> whether the suite still passes at head, and whether the round 8–9 scratchpad scripts survive anywhere, is unknown.</p>
+<h2 id="three-harness-quirks-named-as-harness-quirks" class="h-anch"><a class="hlink" href="#three-harness-quirks-named-as-harness-quirks" aria-label="Link to this section">#</a>Three harness quirks, named as harness quirks</h2>
+<p>The repo separates environment artefacts from product bugs by name, which is the practice worth copying:</p>
+<ul><li>Chromium injects a <strong>stray look delta on pointer-lock grant</strong> under CDP — the camera moves once, by itself, in automation only.</li><li><code>page.mouse.click</code> <strong>implicitly moves the pointer</strong>, which rotates a pointer-locked camera. Aiming in a test is not the same action as aiming by hand.</li><li>Headless software GL runs the simulation at <strong>~40% of wall time</strong>, because the client&#x27;s step accumulator is capped — see <a class="wl" href="fixed-timestep-simulation.html">fixed-timestep-simulation</a>. Any assertion comparing in-game seconds to real seconds is wrong for reasons unrelated to the code under test.</li></ul>
+<h2 id="as-a-screenshot-harness" class="h-anch"><a class="hlink" href="#as-a-screenshot-harness" aria-label="Link to this section">#</a>As a screenshot harness</h2>
+<p>The README&#x27;s images are genuine captures of a live bot match at 1600×900, and <code>assets/README.md</code> documents the capture settings — downscale to 1440 px, progressive JPEG q90, chosen over PNG to avoid banding. Using the E2E driver to produce documentation images means the screenshots show the real running product and can be regenerated, which is what makes <a class="wl" href="readme-as-guided-tour.html">readme-as-guided-tour</a> hold up here.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="vite.html">vite</a> · <a class="wl" href="react-three-fiber.html">react-three-fiber</a> · <a class="wl" href="fixed-timestep-simulation.html">fixed-timestep-simulation</a> · <a class="wl" href="stickfps.html">stickfps</a> · <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a></p></div>
+  <div class="tags"><span class="tag">testing</span><span class="tag">web-dev</span><span class="tag">typescript</span><span class="tag">documentation</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/client/package.json</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/client/e2e/</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/docs/TESTING.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/assets/README.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/PROGRESS.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="fixed-timestep-simulation.html"><span class="kind k-concept">concept</span><span class="rel-t">Fixed Timestep Simulation</span><span class="rel-g">Advance the simulation in constant-size steps regardless of how long a frame took</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="readme-as-guided-tour.html"><span class="kind k-pattern">pattern</span><span class="rel-t">README as Guided Tour</span><span class="rel-g">The README is written for a reader being shown around, not for a user trying to run something</span></a><a class="rel" href="farely.html"><span class="kind k-project">project</span><span class="rel-t">Farely</span><span class="rel-g">A personal Android rideshare/delivery driver assistant for Wrocław</span></a><a class="rel" href="stickfps.html"><span class="kind k-project">project</span><span class="rel-t">Stickfps</span><span class="rel-g">A 5v5 round-based browser tactical FPS: Counter-Strike round/economy structure, Krunker-style movement feel, procedurally-generated low-poly stickmen</span></a><a class="rel" href="react-three-fiber.html"><span class="kind k-tech">tech</span><span class="rel-t">React Three Fiber</span><span class="rel-g">A React renderer for three-js: the scene graph is expressed as JSX components and reconciled like a DOM tree</span></a><a class="rel" href="vite.html"><span class="kind k-tech">tech</span><span class="rel-t">Vite</span><span class="rel-g">Build tool and dev server for the stickfps client — vite ^8.1.1 with @vitejs/plugin-react ^6.0.3, producing the static bundle that is deployed separately from the game…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contract-First API Design · Glass Box</title>
+<meta name="description" content="Write the API specification first; generate the code from it">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Contract-First API Design · Glass Box">
+<meta property="og:description" content="Write the API specification first; generate the code from it">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["As implemented in lab 2","Where it sits in the SDLC arc","Limits observed","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Information-Systems-Modelling/lab2/StudentService/","Information-Systems-Modelling/lab2/StudentService/pom.xml","Information-Systems-Modelling/README.md"],"dateModified":"2026-07-28","description":"Write the API specification first; generate the code from it","headline":"Contract-First API Design","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["architecture","requirements","java","documentation"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-04-14</span>
+    <span class="repos">Information-Systems-Modelling</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Write the API specification first; generate the code from it</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#as-implemented-in-lab-2">As implemented in lab 2</a></li><li><a href="#where-it-sits-in-the-sdlc-arc">Where it sits in the SDLC arc</a></li><li><a href="#limits-observed">Limits observed</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="contract-first-api-design">Contract-First API Design</h1>
+<p><strong>Write the API specification first; generate the code from it.</strong> The inverse — annotate the controllers and let a tool emit a spec afterwards — produces a document that describes whatever the code happens to do, which cannot be a contract because it can never disagree with the implementation.</p>
+<p>Contract-first makes the spec the artefact that other parties agree to, and makes drift a <em>compile error</em> rather than a documentation problem: if the handwritten class stops matching the generated interface, the build fails.</p>
+<h2 id="as-implemented-in-lab-2" class="h-anch"><a class="hlink" href="#as-implemented-in-lab-2" aria-label="Link to this section">#</a>As implemented in lab 2</h2>
+<p><code>lab2/StudentService/</code> in <a class="wl" href="information-systems-modelling.html">information-systems-modelling</a> is the whole point of the lab:</p>
+<ul><li>An OpenAPI YAML document is the source. <code>openapi-generator-maven-plugin</code> 7.20.0 runs it at build time into <code>target/generated-sources/openapi</code>, wired onto the compile path by <code>build-helper-maven-plugin</code> — see <a class="wl" href="maven.html">maven</a>.</li><li><strong><code>interfaceOnly</code> + <code>delegatePattern</code>.</strong> The generator emits only interfaces and a delegate seam; no controller body is generated, so regeneration never overwrites hand-written logic. This is the configuration that makes the pattern survive contact with a real codebase — the naive full-generation mode makes the generated tree unmergeable and the pattern gets abandoned.</li><li><code>springdoc-openapi-starter-webmvc-ui</code> serves Swagger UI over the running app, so the contract is browsable rather than a file someone has to find.</li><li>Persistence via <a class="wl" href="sqlite.html">sqlite</a> behind a <a class="wl" href="layered-architecture.html">layered-architecture</a> split, on <a class="wl" href="spring-boot.html">spring-boot</a>.</li></ul>
+<p>Four OpenAPI <code>.yaml</code> documents exist across the repo — the contract is carried forward with the rest of each lab under <a class="wl" href="forward-copy-lab-progression.html">forward-copy-lab-progression</a>.</p>
+<h2 id="where-it-sits-in-the-sdlc-arc" class="h-anch"><a class="hlink" href="#where-it-sits-in-the-sdlc-arc" aria-label="Link to this section">#</a>Where it sits in the SDLC arc</h2>
+<p>The repo runs one invented domain through requirements → contract → implementation → ontology → publishing → process models. Contract-first is the hinge between the prose requirements of lab 1 and the executable artefacts after it: the SRS says what the system must do, the OpenAPI document says exactly what the wire looks like, and only then is any Java written.</p>
+<p>The same instinct — hold the definition once, derive everything else — reappears as <a class="wl" href="single-source-of-truth-generators.html">single-source-of-truth-generators</a> in labs 6 and 7, and as <a class="wl" href="generate-markup-instead-of-hand-writing-it.html">generate-markup-instead-of-hand-writing-it</a>. This repo applies it to APIs, to RDF markup and to BPMN diagrams, in three different technologies.</p>
+<h2 id="limits-observed" class="h-anch"><a class="hlink" href="#limits-observed" aria-label="Link to this section">#</a>Limits observed</h2>
+<ul><li><strong>TODO:</strong> no requirement identifier from the lab 1 SRS is cited by any endpoint, schema or process model. The link from requirements to contract is narrative only — there is no traceability matrix in any format. <code>confidence: low</code> on any claim that the contract demonstrably satisfies the SRS.</li><li>The generated tree lives in <code>target/</code>, which inflated a naive source-file count of this repo from 134 to 231. Generated code being indistinguishable from source at a glance is a real cost of the pattern.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="layered-architecture.html">layered-architecture</a> · <a class="wl" href="spring-boot.html">spring-boot</a> · <a class="wl" href="maven.html">maven</a> · <a class="wl" href="single-source-of-truth-generators.html">single-source-of-truth-generators</a> · <a class="wl" href="information-systems-modelling.html">information-systems-modelling</a> · <a class="wl" href="spec-driven-development.html">spec-driven-development</a></p></div>
+  <div class="tags"><span class="tag">architecture</span><span class="tag">requirements</span><span class="tag">java</span><span class="tag">documentation</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab2/StudentService/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab2/StudentService/pom.xml</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="layered-architecture.html"><span class="kind k-concept">concept</span><span class="rel-t">Layered Architecture</span><span class="rel-g">Split the application into horizontal tiers where each layer may only call the one below it: api/ handles HTTP and nothing else, service/ holds the domain rules and…</span></a><a class="rel" href="spec-driven-development.html"><span class="kind k-concept">concept</span><span class="rel-t">Spec-Driven Development</span><span class="rel-g">Write the specification before the code, at two levels: one document for the whole system, one document per unit of work</span></a><a class="rel" href="generate-markup-instead-of-hand-writing-it.html"><span class="kind k-decision">decision</span><span class="rel-t">Generate Markup Instead of Hand-Writing It</span><span class="rel-g">Delete six hand-written HTML pages carrying RDFa and JSON-LD, and generate both syntaxes from a single JSON dataset instead</span></a><a class="rel" href="forward-copy-lab-progression.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Forward-Copy Lab Progression</span><span class="rel-g">Each lab is a whole copy of the previous lab plus one new capability, committed as a new directory</span></a><a class="rel" href="single-source-of-truth-generators.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Single-Source-of-Truth Generators</span><span class="rel-g">Hold the facts once, in a plain data structure, and emit every deliverable from it — including deliverables in different formats and for different audiences</span></a><a class="rel" href="information-systems-modelling.html"><span class="kind k-project">project</span><span class="rel-t">Information Systems Modelling</span><span class="rel-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span></a><a class="rel" href="maven.html"><span class="kind k-tech">tech</span><span class="rel-t">Maven</span><span class="rel-g">Four pom.xml files, all in Information-Systems-Modelling — labs 2, 3, 4 and 5</span></a><a class="rel" href="spring-boot.html"><span class="kind k-tech">tech</span><span class="rel-t">Spring Boot</span><span class="rel-g">3.5.6 on Java 21, via spring-boot-starter-parent</span></a><a class="rel" href="sqlite.html"><span class="kind k-tech">tech</span><span class="rel-t">SQLite</span><span class="rel-g">An embedded SQL database: one file, no server, no configuration, and a driver in Python&#x27;s standard library as sqlite3</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

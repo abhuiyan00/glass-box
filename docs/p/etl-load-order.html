@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ETL Load Order · Glass Box</title>
+<meta name="description" content="Load order in a star-schema is not a style choice">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ETL Load Order · Glass Box">
+<meta property="og:description" content="Load order in a star-schema is not a style choice">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The dependency chain, as built","The counter-case that makes the rule concrete","Truncate-and-rebuild, not incremental","Staging as a separate stage","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Data-Warehousing-and-Business-Intelligence/sql/02_star_schema/02_load_star_schema.sql","Data-Warehousing-and-Business-Intelligence/project/twtr/sql/02_star_schema.sql","Data-Warehousing-and-Business-Intelligence/etl/ssis/Package.dtsx"],"dateModified":"2026-07-28","description":"Load order in a star-schema is not a style choice","headline":"ETL Load Order","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["data-engineering","data-modelling","sql"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-25</span>
+    <span class="repos">Data-Warehousing-and-Business-Intelligence</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Load order in a star-schema is not a style choice</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-dependency-chain-as-built">The dependency chain, as built</a></li><li><a href="#the-counter-case-that-makes-the-rule-concrete">The counter-case that makes the rule concrete</a></li><li><a href="#truncate-and-rebuild-not-incremental">Truncate-and-rebuild, not incremental</a></li><li><a href="#staging-as-a-separate-stage">Staging as a separate stage</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="etl-load-order">ETL Load Order</h1>
+<p>Load order in a <a class="wl" href="star-schema.html">star-schema</a> is not a style choice. Declared foreign keys make it a hard dependency graph: every dimension a fact references must be populated before the fact is inserted, or the insert fails. The interesting part is what you populate the <em>dimension</em> from.</p>
+<h2 id="the-dependency-chain-as-built" class="h-anch"><a class="hlink" href="#the-dependency-chain-as-built" aria-label="Link to this section">#</a>The dependency chain, as built</h2>
+<p>In <a class="wl" href="data-warehousing-and-business-intelligence.html">data-warehousing-and-business-intelligence</a>, the retail load runs in six stages:</p>
+<ol><li><code>DIM_TIME</code> — from the source order-header table</li><li><code>DIM_CUSTOMER</code> — a <code>LEFT JOIN</code> chain plus an <code>OUTER APPLY</code> for the primary address</li><li><code>DIM_PRODUCT</code> — independent of 2</li><li><code>DIM_SALESPERSON</code> — independent of 2 and 3</li><li><code>FACT_SALES</code> — joins the source header to its detail rows</li><li><strong>verification</strong> — a <code>UNION ALL</code> row-count roll-call across all five tables, then two anti-join referential-integrity checks</li></ol>
+<p>Stages 2–4 are mutually independent and could run in any order or in parallel; only the dimension→fact edge is real. Stage 6 is the subject of <a class="wl" href="verify-the-load-dont-declare-it.html">verify-the-load-dont-declare-it</a>.</p>
+<h2 id="the-counter-case-that-makes-the-rule-concrete" class="h-anch"><a class="hlink" href="#the-counter-case-that-makes-the-rule-concrete" aria-label="Link to this section">#</a>The counter-case that makes the rule concrete</h2>
+<p>The obvious way to build a calendar dimension is to select the distinct dates <em>out of the fact table</em> — it is the smaller, more relevant set. The source comment writes out why that deadlocks: the dimension would be built from an empty fact, the fact load would then find no matching parent rows for its foreign keys, and the warehouse &quot;would build cleanly and contain nothing&quot;. Building <code>DIM_TIME</code> from the <strong>source</strong> header instead — a <code>UNION</code> of order dates and ship dates, because <a class="wl" href="star-schema.html">the calendar is role-played twice</a> — breaks the cycle.</p>
+<p>This is the transferable form of the rule: <strong>a dimension must be sourced from upstream of the fact, never from the fact it serves.</strong> A build that succeeds and produces nothing is the failure mode to design against, because it does not raise an error.</p>
+<h2 id="truncate-and-rebuild-not-incremental" class="h-anch"><a class="hlink" href="#truncate-and-rebuild-not-incremental" aria-label="Link to this section">#</a>Truncate-and-rebuild, not incremental</h2>
+<p>Every load here is full rebuild — the DDL opens with <code>DROP TABLE IF EXISTS</code>. There is no change-data-capture, no watermark column, no merge, and no slowly-changing-dimension handling anywhere in the repository. That simplifies ordering enormously: with no history to preserve, the only constraint is the FK graph. It also makes <a class="wl" href="surrogate-vs-natural-keys.html">natural keys</a> sufficient.</p>
+<h2 id="staging-as-a-separate-stage" class="h-anch"><a class="hlink" href="#staging-as-a-separate-stage" aria-label="Link to this section">#</a>Staging as a separate stage</h2>
+<p>The price mart adds a landing step first: <a class="wl" href="ssis.html">ssis</a> moves a flat file into a <code>staging.quotes</code> table that carries <code>CHECK</code> constraints at the door (high ≥ low with open and close bounded by both; non-negative volume), so malformed rows are rejected before any modelling happens. Then the star loads, then a separate script backfills the derived indicator — see <a class="wl" href="window-function-frames.html">window-function-frames</a>. Rejecting bad input at the boundary rather than downstream is the same discipline as <a class="wl" href="separating-computation-from-io.html">separating-computation-from-io</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="star-schema.html">star-schema</a> · <a class="wl" href="fact-grain.html">fact-grain</a> · <a class="wl" href="verify-the-load-dont-declare-it.html">verify-the-load-dont-declare-it</a> · <a class="wl" href="ssis.html">ssis</a> · <a class="wl" href="sql-server.html">sql-server</a> · <a class="wl" href="numbered-stages-in-directory-names.html">numbered-stages-in-directory-names</a></p></div>
+  <div class="tags"><span class="tag">data-engineering</span><span class="tag">data-modelling</span><span class="tag">sql</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/sql/02_star_schema/02_load_star_schema.sql</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/sql/02_star_schema.sql</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/etl/ssis/Package.dtsx</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="fact-grain.html"><span class="kind k-concept">concept</span><span class="rel-t">Fact Grain</span><span class="rel-g">The grain of a fact table is the answer to &quot;what does one row mean?&quot;</span></a><a class="rel" href="separating-computation-from-io.html"><span class="kind k-concept">concept</span><span class="rel-t">Separating Computation from I/O</span><span class="rel-g">A function that computes and prints can only be tested by capturing stdout</span></a><a class="rel" href="star-schema.html"><span class="kind k-concept">concept</span><span class="rel-t">Star Schema</span><span class="rel-g">One fact table of measurements surrounded by denormalised dimension tables that describe them</span></a><a class="rel" href="surrogate-vs-natural-keys.html"><span class="kind k-concept">concept</span><span class="rel-t">Surrogate vs Natural Keys</span><span class="rel-g">A natural key is the identifier the source system already uses — a product id, a customer id, an order-line id</span></a><a class="rel" href="window-function-frames.html"><span class="kind k-concept">concept</span><span class="rel-t">Window Function Frames</span><span class="rel-g">GROUP BY collapses rows</span></a><a class="rel" href="numbered-stages-in-directory-names.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Numbered Stages in Directory Names</span><span class="rel-g">Order is encoded in filenames and directory names, not in a table of contents</span></a><a class="rel" href="verify-the-load-dont-declare-it.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Verify the Load, Don&#x27;t Declare It</span><span class="rel-g">A data pipeline ends with a query whose result can be wrong, not with a status row saying it went fine</span></a><a class="rel" href="data-warehousing-and-business-intelligence.html"><span class="kind k-project">project</span><span class="rel-t">Data Warehousing and Business Intelligence</span><span class="rel-g">Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</span></a><a class="rel" href="sql-server.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server</span><span class="rel-g">Microsoft&#x27;s relational engine, driven here as T-SQL on SQL Server 2019 across seven annotated scripts in data-warehousing-and-business-intelligence — two analytics labs,…</span></a><a class="rel" href="ssis.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server Integration Services</span><span class="rel-g">Microsoft&#x27;s ETL tool: packages authored as .dtsx in Visual Studio / SSDT, built from a control flow of tasks and, inside a Data Flow Task, a data flow of typed sources,…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

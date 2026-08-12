@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Warehousing and Business Intelligence · Glass Box</title>
+<meta name="description" content="Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Data Warehousing and Business Intelligence · Glass Box">
+<meta property="og:description" content="Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Status — a §10 contradiction, both claims recorded","Stack","The two marts","ETL","Findings","Decisions recorded","Open gaps","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Data-Warehousing-and-Business-Intelligence/README.md","Data-Warehousing-and-Business-Intelligence/sql/01_analytics/","Data-Warehousing-and-Business-Intelligence/sql/02_star_schema/","Data-Warehousing-and-Business-Intelligence/etl/ssis/Package.dtsx","Data-Warehousing-and-Business-Intelligence/olap/ssas/","Data-Warehousing-and-Business-Intelligence/project/twtr/","Data-Warehousing-and-Business-Intelligence/docs/star-schema.md","Data-Warehousing-and-Business-Intelligence/assignments/"],"dateModified":"2026-08-05","description":"Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology","headline":"Data Warehousing and Business Intelligence","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["data-engineering","databases","data-modelling","sql","python","coursework"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#project">Project</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-project">project</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-05 · in force since 2026-07-25</span>
+    <span class="repos">Data-Warehousing-and-Business-Intelligence</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#status-a-10-contradiction-both-claims-recorded">Status — a §10 contradiction, both claims recorded</a></li><li><a href="#stack">Stack</a></li><li><a href="#the-two-marts">The two marts</a></li><li><a href="#etl">ETL</a></li><li><a href="#findings">Findings</a></li><li><a href="#decisions-recorded">Decisions recorded</a></li><li><a href="#open-gaps">Open gaps</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="data-warehousing-and-business-intelligence">Data Warehousing and Business Intelligence</h1>
+<p>Coursework plus a course project for the Data Warehousing and Business Intelligence module at Wrocław University of Science and Technology. 73 tracked files (measured 2026-08-05): seven annotated <code>.sql</code> scripts, three SSIS packages (<code>.dtsx</code>), three SSAS multidimensional projects (<code>.dwproj</code>) holding four cubes, six assignment PDFs, and one Python reference script. The repo builds <strong>two independent Kimball stars</strong> — see <a class="wl" href="star-schema.html">star-schema</a>.</p>
+<p>An earlier version of this line read <em>&quot;57 tracked files … two SSIS packages, three SSAS multidimensional projects&quot;</em>. Two of those three numbers have since changed and the third was wrong when written: there were two <code>.dwproj</code> projects and three cubes, and the sentence counted cubes while saying projects. Both units are now named, because &quot;three SSAS things&quot; is not a fact.</p>
+<h2 id="status-a-10-contradiction-both-claims-recorded" class="h-anch"><a class="hlink" href="#status-a-10-contradiction-both-claims-recorded" aria-label="Link to this section">#</a>Status — a §10 contradiction, both claims recorded</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>#</th>
+<th>Claim</th>
+<th>Source</th>
+<th><code>valid_from</code></th>
+<th><code>valid_to</code></th>
+</tr></thead><tbody>
+<tr><td>1</td><td>Coursework, <strong>finished and frozen at last commit 2026-07-25</strong>, 7 commits</td><td>interview</td><td>2026-07-28</td><td>2026-08-01</td></tr>
+<tr><td>2</td><td>Frozen as coursework; an 8th commit <strong>imported the lab 5 SSIS packages and SSAS cube</strong></td><td><code>git log</code>, read 2026-08-05</td><td>2026-08-01</td><td>null</td></tr>
+</tbody></table></div>
+<p>Lab 5 was present as SQL only, and the SQL was the half that carried no information — <code>list_5.sql</code> is <code>list_4.sql</code> with the schema renamed. The packages are where the labs differ:</p>
+<blockquote><p>lab 4 loads the mart with twelve Execute SQL tasks and no data flow; lab 5 uses ten data flow tasks over OLE DB source/destination pairs</p><cite>Data-Warehousing-and-Business-Intelligence, git commit 80971dc, 2026-08-01</cite></blockquote>
+<p>Two ways to load the same mart is the point of the pair, and only one was in the repository. Imported source-only: <code>.vs/</code>, <code>bin/</code>, <code>obj/</code>, <code>.suo</code>, <code>.user</code> and the compiled <code>.ispac</code> were left behind, and the developer machine name in the connection managers is rewritten to <code>localhost</code> as lab 4 already did — see <a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a> and <a class="wl" href="format-preserving-invalid-identifiers.html">format-preserving-invalid-identifiers</a>.</p>
+<h2 id="stack" class="h-anch"><a class="hlink" href="#stack" aria-label="Link to this section">#</a>Stack</h2>
+<p>T-SQL on SQL Server 2019 (<a class="wl" href="sql-server.html">sql-server</a>) · <a class="wl" href="ssis.html">ssis</a> for flat-file landing · <a class="wl" href="ssas.html">ssas</a> multidimensional for the cubes · Visual Studio 17.5 / SSDT · one Python-over-<a class="wl" href="sqlite.html">sqlite</a> reference implementation.</p>
+<h2 id="the-two-marts" class="h-anch"><a class="hlink" href="#the-two-marts" aria-label="Link to this section">#</a>The two marts</h2>
+<div class="tw"><table>
+<thead><tr>
+<th></th>
+<th>Mart A — <code>mart</code> schema, AdventureWorks2019</th>
+<th>Mart B — <code>dw</code> schema, <code>twtr_dw</code></th>
+</tr></thead><tbody>
+<tr><td>Fact</td><td><code>FACT_SALES</code>, PK <code>SalesOrderDetailID</code></td><td><code>FACT_QUOTES</code>, PK <code>(TickerKey, DateKey)</code></td></tr>
+<tr><td>Grain</td><td>one row per sales order line</td><td>one row per ticker per trading day</td></tr>
+<tr><td>Dims</td><td><code>DIM_TIME</code> (role-played twice), <code>DIM_PRODUCT</code>, <code>DIM_CUSTOMER</code>, <code>DIM_SALESPERSON</code></td><td><code>DIM_DATE</code>, <code>DIM_TICKER</code></td></tr>
+<tr><td>Keys</td><td>all natural/source keys</td><td><code>DIM_TICKER.TickerKey</code> is <code>IDENTITY</code> — the repo&#x27;s only surrogate</td></tr>
+</tbody></table></div>
+<p>Both marts state their grain in prose <strong>and</strong> enforce it with the primary key — <a class="wl" href="fact-grain.html">fact-grain</a>. The surrogate/natural contrast between the two is the whole of <a class="wl" href="surrogate-vs-natural-keys.html">surrogate-vs-natural-keys</a>. <code>DIM_PRODUCT</code> collapses the source <code>Product → Subcategory → Category</code> snowflake into one denormalised dimension, the opposite move from <a class="wl" href="third-normal-form.html">third-normal-form</a>.</p>
+<h2 id="etl" class="h-anch"><a class="hlink" href="#etl" aria-label="Link to this section">#</a>ETL</h2>
+<p>Mart A loads dimensions before the fact, and builds <code>DIM_TIME</code> <strong>from the source header table rather than from the fact</strong> — the header comment writes out the deadlock the alternative causes. That reasoning is <a class="wl" href="etl-load-order.html">etl-load-order</a>. The load ends with a row-count roll-call and two anti-join referential-integrity checks: <a class="wl" href="verify-the-load-dont-declare-it.html">verify-the-load-dont-declare-it</a>.</p>
+<p>Mart B lands a CSV through an <a class="wl" href="ssis.html">ssis</a> flat-file→OLE DB data flow into a <code>staging.quotes</code> table carrying two <code>CHECK</code> constraints at the door, then loads the star, then backfills <a class="wl" href="relative-strength-index.html">relative-strength-index</a> with a four-CTE <code>UPDATE ... FROM</code> built on <a class="wl" href="window-function-frames.html">window-function-frames</a>. <code>project/twtr/rsi_reference.py</code> re-expresses the same indicator in Python over <a class="wl" href="sqlite.html">sqlite</a> — <span class="unpub" title="named in the source wiki; not published">reference-implementation-as-specification</span>.</p>
+<h2 id="findings" class="h-anch"><a class="hlink" href="#findings" aria-label="Link to this section">#</a>Findings</h2>
+<ul><li><strong>The rejected design is still shipped.</strong> <code>docs/star-schema.md</code> argues at length that an indicator must be a measure, not a dimension — and <code>project/twtr/ssas/Dim RSI.dim</code> implements RSI <em>as a dimension</em>, with <code>RSIKey</code>, <code>IsOverbought</code>, <code>IsOversold</code>. The SQL side ships the winner; the SSAS side ships the loser. See <a class="wl" href="rsi-as-measure-not-dimension.html">rsi-as-measure-not-dimension</a>, <a class="wl" href="measure-vs-dimension.html">measure-vs-dimension</a> and <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a>.</li><li><strong>There is no slowly-changing-dimension handling anywhere.</strong> No <code>EffectiveFrom</code>/<code>EffectiveTo</code>, no <code>IsCurrent</code>, no Type-2 rows. Every load is truncate-and-rebuild, with <code>DROP TABLE IF EXISTS</code> at the top of the DDL. <code>DIM_TICKER.ListedOn</code>/<code>DelistedOn</code> is the closest thing present and is a single hard-coded row. Stated as an absence, not implied as a feature.</li><li><strong>Nothing here was executed and committed.</strong> Every row count and RI check is a query needing a live SQL Server with AdventureWorks2019 and AdventureWorksDW2019 attached. No output, log, or expected-count file is in the tree; &quot;0 orphans&quot; is a query, not a recorded result. Only <code>rsi_reference.py</code> runs standalone. No test suite, no CI, no Makefile.</li><li><strong>Documentation drift, four instances.</strong> The two TWTR data source views bind <code>FactTwitterData</code>, <code>DimDate</code>, <code>FactRSI</code> and <code>DimRSI</code> — <strong>none created by any committed DDL</strong>, which builds <code>dw.FACT_QUOTES</code>/<code>DIM_DATE</code>/<code>DIM_TICKER</code>. The SSIS <code>list_four</code> schema disagrees with <code>mart</code> on column set and defaults. <code>olap/ssas/DIM TIME.dim</code> exposes only DateKey/Day/Month/Year while the DDL defines Quarter, MonthName and IsWeekend too. See <a class="wl" href="documentation-drift.html">documentation-drift</a>.</li><li><strong>The as-submitted coursework is kept beside the corrected version.</strong> <code>docs/lab-1-notes.txt</code> and <code>lab-2-notes.txt</code> hold the original SQL, bugs included; <code>sql/01_analytics/</code> rewrites each query with a comment naming what was wrong — <a class="wl" href="keep-the-superseded-version-in-tree.html">keep-the-superseded-version-in-tree</a>.</li><li>Numbering marks <strong>run order</strong>, not chapters: <code>sql/01_analytics/</code>, <code>sql/02_star_schema/</code>, <code>01_create…</code>/<code>02_load…</code>, <code>01_staging</code>/<code>02_star_schema</code>/<code>03_technical_indicators</code>. See <a class="wl" href="numbered-stages-in-directory-names.html">numbered-stages-in-directory-names</a>.</li><li>Every modelling choice states its cost in comments — &quot;a day&#x27;s RSI takes two joins&quot;, Wilder&#x27;s exponential smoothing named as the variant <em>not</em> implemented, the cubes flagged as &quot;Visual Studio project files rather than deployed databases&quot;. <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>.</li><li>The first 7 commits, all on 2026-07-25 inside a <strong>four-second span</strong>, ordered as a curated build-up with the README, LICENSE and assets last. <a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a> · <a class="wl" href="presentation-polish-tail-commits.html">presentation-polish-tail-commits</a> · <a class="wl" href="readme-as-guided-tour.html">readme-as-guided-tour</a>. Per the interview these bursts were &quot;just cleaning up local folders&quot; — consolidation, not a release. The 8th, on 2026-08-01, is the only one that adds material rather than arranging it.</li><li>No <code>.gitattributes</code> and no Git LFS: two PNGs, six PDFs and the SSAS <code>.dim</code>/<code>.cube</code>/<code>.partitions</code> files are committed as plain unmanaged blobs.</li></ul>
+<h2 id="decisions-recorded" class="h-anch"><a class="hlink" href="#decisions-recorded" aria-label="Link to this section">#</a>Decisions recorded</h2>
+<p><a class="wl" href="rsi-as-measure-not-dimension.html">rsi-as-measure-not-dimension</a> · <a class="wl" href="nullable-salesperson-key.html">nullable-salesperson-key</a></p>
+<h2 id="open-gaps" class="h-anch"><a class="hlink" href="#open-gaps" aria-label="Link to this section">#</a>Open gaps</h2>
+<ul><li><strong>TODO:</strong> the README calls the mart &quot;conformed dimensions&quot;, but nothing in the repo defines <em>conformed</em> and no dimension is shared across two fact tables. <code>confidence: low</code> on the claim — see <a class="wl" href="star-schema.html">star-schema</a>.</li><li><strong>TODO:</strong> the README says <code>rsi_reference.py</code> &quot;makes it a regression check on the T-SQL as well as a specification of it&quot;. The script only <strong>prints</strong> — there is no assertion and no comparison against T-SQL output. Whether the two-implementation diff was ever run is unrecorded. <code>confidence: low</code>, see <span class="unpub" title="named in the source wiki; not published">reference-implementation-as-specification</span>.</li><li><strong>TODO:</strong> &quot;about 60 % of AdventureWorks orders are internet sales with no salesperson&quot; appears in three places, but all three are the same uncomputed assertion. Likewise &quot;AdventureWorks has 110&quot; products with <code>ListPrice = 0</code>. Measured or recalled is unknown — see <a class="wl" href="nullable-salesperson-key.html">nullable-salesperson-key</a>.</li><li><strong>TODO:</strong> why SSAS <strong>multidimensional</strong> rather than tabular is recorded nowhere. Whether it was prescribed by the lab-3 assignment or chosen is unknown.</li><li><strong>TODO:</strong> whether the cubes were ever processed and browsed, or only ever opened in SSDT, is unrecorded.</li><li><strong>TODO:</strong> whether the absent SCD handling is course scope or a conscious omission is unrecorded. Do not read the absence as a considered decision.</li><li><strong>TODO:</strong> <code>.gitignore</code> excludes <code>*.csv</code> with the comment &quot;The TWTR extract is market data, not source.&quot; Why the extract is withheld while the package that consumes it is committed — licensing, size, or a rule — is unrecorded.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="labour-fraud-analysis.html">labour-fraud-analysis</a> · <a class="wl" href="oracle-database-laboratories.html">oracle-database-laboratories</a> · <a class="wl" href="python-programming-laboratories.html">python-programming-laboratories</a> · <a class="wl" href="information-systems-modelling.html">information-systems-modelling</a></p></div>
+  <div class="tags"><span class="tag">data-engineering</span><span class="tag">databases</span><span class="tag">data-modelling</span><span class="tag">sql</span><span class="tag">python</span><span class="tag">coursework</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/README.md</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/sql/01_analytics/</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/sql/02_star_schema/</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/etl/ssis/Package.dtsx</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/olap/ssas/</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/project/twtr/</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/docs/star-schema.md</span></code></li><li><code><span class="src-r">Data-Warehousing-and-Business-Intelligence</span><span class="src-p">/assignments/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="etl-load-order.html"><span class="kind k-concept">concept</span><span class="rel-t">ETL Load Order</span><span class="rel-g">Load order in a star-schema is not a style choice</span></a><a class="rel" href="fact-grain.html"><span class="kind k-concept">concept</span><span class="rel-t">Fact Grain</span><span class="rel-g">The grain of a fact table is the answer to &quot;what does one row mean?&quot;</span></a><a class="rel" href="format-preserving-invalid-identifiers.html"><span class="kind k-concept">concept</span><span class="rel-t">Format-Preserving Invalid Identifiers</span><span class="rel-g">A replacement identifier has two jobs that pull against each other</span></a><a class="rel" href="measure-vs-dimension.html"><span class="kind k-concept">concept</span><span class="rel-t">Measure vs Dimension</span><span class="rel-g">In a star-schema, a measure is a number you aggregate; a dimension is a thing you aggregate by</span></a><a class="rel" href="relative-strength-index.html"><span class="kind k-concept">concept</span><span class="rel-t">Relative Strength Index</span><span class="rel-g">A bounded momentum indicator over a price series</span></a><a class="rel" href="star-schema.html"><span class="kind k-concept">concept</span><span class="rel-t">Star Schema</span><span class="rel-g">One fact table of measurements surrounded by denormalised dimension tables that describe them</span></a><a class="rel" href="surrogate-vs-natural-keys.html"><span class="kind k-concept">concept</span><span class="rel-t">Surrogate vs Natural Keys</span><span class="rel-g">A natural key is the identifier the source system already uses — a product id, a customer id, an order-line id</span></a><a class="rel" href="third-normal-form.html"><span class="kind k-concept">concept</span><span class="rel-t">Third Normal Form</span><span class="rel-g">A relation is in 3NF when every non-key attribute depends on the key, the whole key, and nothing but the key</span></a><a class="rel" href="window-function-frames.html"><span class="kind k-concept">concept</span><span class="rel-t">Window Function Frames</span><span class="rel-g">GROUP BY collapses rows</span></a><a class="rel" href="nullable-salesperson-key.html"><span class="kind k-decision">decision</span><span class="rel-t">Nullable Salesperson Key</span><span class="rel-g">Declare mart.FACT_SALES.SalesPersonID as INT NULL with a foreign key to mart.DIM_SALESPERSON, and load every order line regardless of whether a salesperson exists</span></a><a class="rel" href="rsi-as-measure-not-dimension.html"><span class="kind k-decision">decision</span><span class="rel-t">RSI as Measure, Not Dimension</span><span class="rel-g">Store the 14-day relative strength index as a nullable numeric column on the fact table dw.FACT_QUOTES, and push the overbought/oversold interpretation into a view</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="import-finished-work-into-git.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Import Finished Work Into Git</span><span class="rel-g">Work is built to completion outside version control, then imported in a burst</span></a><a class="rel" href="keep-the-superseded-version-in-tree.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Keep the Superseded Version in Tree</span><span class="rel-g">When something is replaced, the replaced thing is not deleted</span></a><a class="rel" href="numbered-stages-in-directory-names.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Numbered Stages in Directory Names</span><span class="rel-g">Order is encoded in filenames and directory names, not in a table of contents</span></a><a class="rel" href="presentation-polish-tail-commits.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Presentation Polish Tail Commits</span><span class="rel-g">After the substance lands, a distinct tail of commits does nothing but presentation: screenshots, then a licence, then licence badges</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="readme-as-guided-tour.html"><span class="kind k-pattern">pattern</span><span class="rel-t">README as Guided Tour</span><span class="rel-g">The README is written for a reader being shown around, not for a user trying to run something</span></a><a class="rel" href="verify-the-load-dont-declare-it.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Verify the Load, Don&#x27;t Declare It</span><span class="rel-g">A data pipeline ends with a query whose result can be wrong, not with a status row saying it went fine</span></a><a class="rel" href="information-systems-modelling.html"><span class="kind k-project">project</span><span class="rel-t">Information Systems Modelling</span><span class="rel-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span></a><a class="rel" href="labour-fraud-analysis.html"><span class="kind k-project">project</span><span class="rel-t">Labour Fraud Analysis</span><span class="rel-g">A portfolio case file</span></a><a class="rel" href="oracle-database-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Oracle Database Laboratories</span><span class="rel-g">Database Systems coursework from Wrocław University of Science and Technology, republished as a curated SQL suite</span></a><a class="rel" href="python-programming-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Python Programming Laboratories</span><span class="rel-g">Twelve laboratories from the Script Languages course at Wrocław University of Science and Technology, deliberately refactored into one installable project instead of…</span></a><a class="rel" href="sql-server.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server</span><span class="rel-g">Microsoft&#x27;s relational engine, driven here as T-SQL on SQL Server 2019 across seven annotated scripts in data-warehousing-and-business-intelligence — two analytics labs,…</span></a><a class="rel" href="sqlite.html"><span class="kind k-tech">tech</span><span class="rel-t">SQLite</span><span class="rel-g">An embedded SQL database: one file, no server, no configuration, and a driver in Python&#x27;s standard library as sqlite3</span></a><a class="rel" href="ssas.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server Analysis Services</span><span class="rel-g">Microsoft&#x27;s OLAP layer</span></a><a class="rel" href="ssis.html"><span class="kind k-tech">tech</span><span class="rel-t">SQL Server Integration Services</span><span class="rel-g">Microsoft&#x27;s ETL tool: packages authored as .dtsx in Visual Studio / SSDT, built from a control flow of tasks and, inside a Data Flow Task, a data flow of typed sources,…</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

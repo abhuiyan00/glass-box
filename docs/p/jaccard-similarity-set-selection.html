@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jaccard Similarity Set Selection · Glass Box</title>
+<meta name="description" content="Using a set-overlap score not to rank items but to partition a corpus into what you have already seen and what you have not">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jaccard Similarity Set Selection · Glass Box">
+<meta property="og:description" content="Using a set-overlap score not to rank items but to partition a corpus into what you have already seen and what you have not">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The construction","The inversion that makes it interesting","Cosine is a cross-check, not a second opinion","The pedagogical leap, and the one check that supports it","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Physics/exam_prep/tools/build_sets.mjs","Physics/exam_prep/tools/AUDIT.md","Physics/exam_prep/README.md"],"dateModified":"2026-07-28","description":"Using a set-overlap score not to rank items but to partition a corpus into what you have already seen and what you have not","headline":"Jaccard Similarity Set Selection","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["algorithms","data-analysis","javascript"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-06-30</span>
+    <span class="repos">Physics</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Using a set-overlap score not to rank items but to partition a corpus into what you have already seen and what you have not</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-construction">The construction</a></li><li><a href="#the-inversion-that-makes-it-interesting">The inversion that makes it interesting</a></li><li><a href="#cosine-is-a-cross-check-not-a-second-opinion">Cosine is a cross-check, not a second opinion</a></li><li><a href="#the-pedagogical-leap-and-the-one-check-that-supports-it">The pedagogical leap, and the one check that supports it</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="jaccard-similarity-set-selection">Jaccard Similarity Set Selection</h1>
+<p>Using a set-overlap score not to <em>rank</em> items but to <strong>partition a corpus into what you have already seen and what you have not</strong>. <a class="wl" href="set-similarity-metrics.html">set-similarity-metrics</a> covers Jaccard, Dice and cosine as metrics; this page is about the specific job they are put to in <a class="wl" href="physics-exam-prep.html">physics-exam-prep</a> — picking a maximally *dis*similar study set.</p>
+<h2 id="the-construction" class="h-anch"><a class="hlink" href="#the-construction" aria-label="Link to this section">#</a>The construction</h2>
+<p><code>tools/build_sets.mjs</code> has one input pair and one question:</p>
+<ul><li><strong>Set 1</strong> — the 30 questions from the real scanned exam, transcribed.</li><li><strong>The bank</strong> — 75 questions written for the app.</li></ul>
+<blockquote><p>&quot;     Jaccard(A,B) = |A∩B| / |A∪B| over normalized token sets&quot;</p><cite>Physics/exam_prep/tools/build_sets.mjs, 2026-07-10</cite></blockquote>
+<p>Each question becomes a token set: stem plus all choices, lowercased, split on non-alphanumerics, with a 100-word hand-written stopword list removed. For every Set-1 question the script finds its <strong>nearest neighbour</strong> in the bank, then:</p>
+<ul><li><strong>Set 2 — &quot;similar&quot;</strong>: every bank question that is some exam question&#x27;s nearest neighbour with score ≥ <code>TH</code>. 16 questions.</li><li><strong>Set 3 — &quot;coverage gaps&quot;</strong>: the complement — every bank question that is not. 59 questions.</li></ul>
+<pre><code>const TH = 0.10;                      // nearest-neighbour threshold for &quot;similar&quot;</code></pre>
+<p>Set 2 ∪ Set 3 = 75 and Set 2 ∩ Set 3 = ∅ by construction, and the generated audit asserts both.</p>
+<h2 id="the-inversion-that-makes-it-interesting" class="h-anch"><a class="hlink" href="#the-inversion-that-makes-it-interesting" aria-label="Link to this section">#</a>The inversion that makes it interesting</h2>
+<p>Similarity search normally returns the <em>most</em> similar items. Here the useful output is the <strong>residue</strong>: the questions with no close match are the ones the exam does not touch, so Set 3 is the study list. The metric is run forwards and the answer is read backwards.</p>
+<h2 id="cosine-is-a-cross-check-not-a-second-opinion" class="h-anch"><a class="hlink" href="#cosine-is-a-cross-check-not-a-second-opinion" aria-label="Link to this section">#</a>Cosine is a cross-check, not a second opinion</h2>
+<blockquote><p>&quot;/<em> binary cosine over the same token sets — reported as a cross-check on Jaccard </em>/&quot;</p><cite>Physics/exam_prep/tools/build_sets.mjs, 2026-07-10</cite></blockquote>
+<p>Cosine is computed over the identical token sets and reported (mean nearest-neighbour 0.292 against Jaccard&#x27;s 0.175) but <strong>never used for selection</strong>. That is the right call and a real distinction: on sets, Jaccard and Dice are monotone transforms of each other and rank identically, while cosine divides by <code>√(|A|·|B|)</code> and can reorder pairs when the two sets differ sharply in size — so it is a genuinely independent read on whether the overlap structure is an artefact of question length. Running it and not acting on it is the discipline.</p>
+<h2 id="the-pedagogical-leap-and-the-one-check-that-supports-it" class="h-anch"><a class="hlink" href="#the-pedagogical-leap-and-the-one-check-that-supports-it" aria-label="Link to this section">#</a>The pedagogical leap, and the one check that supports it</h2>
+<p>The design assumes <strong>low lexical similarity ⇒ topic coverage gap</strong>, which does not follow in general: two questions can share almost no vocabulary and test the same idea. Nothing in the script argues the equivalence.</p>
+<p>But the generated audit happens to test it from the other side, using topic ids assigned by hand rather than by the metric: Set 1 touches 15 of 29 topics, Set 2 touches 14, and <strong>Set 3 touches all 29</strong> — so the union covers every topic and the 14 topics the exam misses are exactly the ones the audit lists. The lexical proxy and the hand labels agree here. That is one corroboration on one corpus, not a validation of the assumption. <code>TODO:</code> the equivalence is never argued in the repo; <code>confidence: low</code> on the assumption, <code>high</code> on the implementation and the audit numbers, which were read directly from the source and its output.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="set-similarity-metrics.html">set-similarity-metrics</a> · <a class="wl" href="physics-exam-prep.html">physics-exam-prep</a> · <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a> · <a class="wl" href="course-as-runnable-study-tool.html">course-as-runnable-study-tool</a> · <a class="wl" href="spaced-repetition-leitner-boxes.html">spaced-repetition-leitner-boxes</a></p></div>
+  <div class="tags"><span class="tag">algorithms</span><span class="tag">data-analysis</span><span class="tag">javascript</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/tools/build_sets.mjs</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/tools/AUDIT.md</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="set-similarity-metrics.html"><span class="kind k-concept">concept</span><span class="rel-t">Set Similarity Metrics</span><span class="rel-g">Three ways to turn &quot;how alike are these two sets?&quot; into a number between 0 and 1</span></a><a class="rel" href="spaced-repetition-leitner-boxes.html"><span class="kind k-concept">concept</span><span class="rel-t">Spaced Repetition with Leitner Boxes</span><span class="rel-g">The cheapest possible spaced-repetition scheduler: every card sits in one of five numbered boxes, each box has a fixed review interval, a correct answer promotes the…</span></a><a class="rel" href="course-as-runnable-study-tool.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Course as Runnable Study Tool</span><span class="rel-g">Four separate courses were revised by building the syllabus into a program rather than by reading notes</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="physics-exam-prep.html"><span class="kind k-project">project</span><span class="rel-t">Physics Exam Prep</span><span class="rel-g">Not a generated static site and not an asset dump: a hand-written, zero-dependency, offline-first single-page web app — an installable PWA — built from one Physics…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

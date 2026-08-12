@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ticketmaster Discovery API · Glass Box</title>
+<meta name="description" content="Public events feed, used by farely to know when Wrocław venues will empty">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ticketmaster Discovery API · Glass Box">
+<meta property="og:description" content="Public events feed, used by farely to know when Wrocław venues will empty">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The request","The mapping work","Why this API and not a scrape","Unverified end to end","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Farley/apps/tester/src/app/lib/liveEvents.ts","Farley/apps/tester/src/app/lib/events.ts","Farley/docs/SRS.md","Farley/README.md"],"dateModified":"2026-07-28","description":"Public events feed, used by farely to know when Wrocław venues will empty","headline":"Ticketmaster Discovery API","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["networking","typescript","product"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#tech">Tech</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-tech">tech</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-13</span>
+    <span class="repos">Farley</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Public events feed, used by farely to know when Wrocław venues will empty</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-request">The request</a></li><li><a href="#the-mapping-work">The mapping work</a></li><li><a href="#why-this-api-and-not-a-scrape">Why this API and not a scrape</a></li><li><a href="#unverified-end-to-end">Unverified end to end</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="ticketmaster-discovery-api">Ticketmaster Discovery API</h1>
+<p>Public events feed, used by <a class="wl" href="farely.html">farely</a> to know when Wrocław venues will empty. It is the <strong>live</strong> tier of <span class="unpub" title="named in the source wiki; not published">event-driven-demand-positioning</span> — inbound only, key-gated, and fail-soft.</p>
+<h2 id="the-request" class="h-anch"><a class="hlink" href="#the-request" aria-label="Link to this section">#</a>The request</h2>
+<p><code>liveEvents.ts</code> issues a single <code>GET /events.json</code> with <code>city=Wroclaw</code>, <code>countryCode=PL</code>, <code>locale=*</code>, <code>size=100</code>, <code>sort=date,asc</code>, over a window from one hour ago to 21 days out. The driver supplies the API key in Settings; it lives in <code>localStorage</code> alongside the Anthropic one — same storage, same unstated plaintext caveat noted on <a class="wl" href="anthropic-messages-api.html">anthropic-messages-api</a>.</p>
+<p><strong>With no key the module is a silent no-op.</strong> No error, no prompt, no degraded banner: the seeded venue calendar simply remains the only source. That is what keeps an external dependency compatible with <a class="wl" href="on-device-first-inference.html">on-device-first-inference</a> — the network is an upgrade tier, not a precondition.</p>
+<h2 id="the-mapping-work" class="h-anch"><a class="hlink" href="#the-mapping-work" aria-label="Link to this section">#</a>The mapping work</h2>
+<p>The interesting part is not the fetch, it is the normalisation into the app&#x27;s own <code>VenueEvent</code> model:</p>
+<ul><li>Ticketmaster <strong>segment → <code>kind</code></strong>, so a concert and a football match are priced as different demand shapes.</li><li>Venue matched against <strong>seven seeded Wrocław venues</strong>, or synthesised from the response&#x27;s own geo-coordinates when unrecognised.</li><li>Synthesised venues are snapped to the <strong>nearest known zone</strong>, so <code>zoneEph</code> stays valid and a live event can never introduce a zone the rest of the demand model has never heard of.</li><li>Crowd size inferred from venue name and segment.</li></ul>
+<p>Provenance is preserved: <code>upcomingEvents</code> merges tiers <strong>live &gt; listing &gt; typical</strong>, and each event keeps its <code>source</code> — <a class="wl" href="provenance-and-limits-stated-inline.html">provenance-and-limits-stated-inline</a>.</p>
+<h2 id="why-this-api-and-not-a-scrape" class="h-anch"><a class="hlink" href="#why-this-api-and-not-a-scrape" aria-label="Link to this section">#</a>Why this API and not a scrape</h2>
+<p>It is the only one of Farely&#x27;s four network dependencies that is genuinely a <em>data</em> source rather than infrastructure. The others — the <a class="wl" href="anthropic-messages-api.html">anthropic-messages-api</a> classifier, fueleconomy.gov car specs, and OpenFreeMap tiles via <a class="wl" href="maplibre-gl.html">maplibre-gl</a> — are respectively outbound, reference lookup, and rendering.</p>
+<ul><li><code>TODO:</code> no rationale is recorded for choosing Ticketmaster over any other events source, and no coverage check exists for how much of Wrocław&#x27;s venue calendar it actually contains. Never exercised against a live shift.</li></ul>
+<h2 id="unverified-end-to-end" class="h-anch"><a class="hlink" href="#unverified-end-to-end" aria-label="Link to this section">#</a>Unverified end to end</h2>
+<p>Like everything else in <a class="wl" href="farely.html">farely</a>, this ran only in the browser simulator. Whether the mapping holds against a full 100-event Wrocław response in practice is untested — there is no test runner in the repo at all.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="farely.html">farely</a> · <span class="unpub" title="named in the source wiki; not published">event-driven-demand-positioning</span> · <a class="wl" href="anthropic-messages-api.html">anthropic-messages-api</a> · <a class="wl" href="maplibre-gl.html">maplibre-gl</a> · <a class="wl" href="on-device-first-inference.html">on-device-first-inference</a></p></div>
+  <div class="tags"><span class="tag">networking</span><span class="tag">typescript</span><span class="tag">product</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Farley</span><span class="src-p">/apps/tester/src/app/lib/liveEvents.ts</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/apps/tester/src/app/lib/events.ts</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/docs/SRS.md</span></code></li><li><code><span class="src-r">Farley</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="on-device-first-inference.html"><span class="kind k-concept">concept</span><span class="rel-t">On-Device-First Inference</span><span class="rel-g">Do the classification locally with cheap deterministic logic; treat a model call as an upgrade the owner may switch on, never as the default path</span></a><a class="rel" href="provenance-and-limits-stated-inline.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Provenance and Limits Stated Inline</span><span class="rel-g">The boundary of a claim is written next to the claim, not in a footnote or an appendix</span></a><a class="rel" href="farely.html"><span class="kind k-project">project</span><span class="rel-t">Farely</span><span class="rel-g">A personal Android rideshare/delivery driver assistant for Wrocław</span></a><a class="rel" href="anthropic-messages-api.html"><span class="kind k-tech">tech</span><span class="rel-t">Anthropic Messages API</span><span class="rel-g">The only path in farely by which content leaves the phone</span></a><a class="rel" href="maplibre-gl.html"><span class="kind k-tech">tech</span><span class="rel-t">MapLibre GL</span><span class="rel-g">Open-source WebGL vector map renderer, the community fork of Mapbox GL JS from before its licence change</span></a></div>
+</section>
+  <p class="unpub-note">Words in <span class="unpub">this style</span> name a page that exists privately and was not published. They are shown as text, never as a link that goes nowhere.</p>
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

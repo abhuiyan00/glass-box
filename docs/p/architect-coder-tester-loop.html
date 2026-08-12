@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Architect / Coder / Tester Loop · Glass Box</title>
+<meta name="description" content="Three roles, one task at a time: architect writes the spec, coder implements it, tester verifies it independently">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Architect / Coder / Tester Loop · Glass Box">
+<meta property="og:description" content="Three roles, one task at a time: architect writes the spec, coder implements it, tester verifies it independently">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Separation by capability, not by instruction","The orchestration loop","Where it was not followed","Confidence","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["browser_game_stickfps/.tooling/agents/architect.md","browser_game_stickfps/.tooling/agents/coder.md","browser_game_stickfps/.tooling/agents/tester.md","browser_game_stickfps/.tooling/commands/game-loop.md","browser_game_stickfps/docs/specs/","browser_game_stickfps/PROGRESS.md"],"dateModified":"2026-07-28","description":"Three roles, one task at a time: architect writes the spec, coder implements it, tester verifies it independently","headline":"Architect / Coder / Tester Loop","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["architecture","testing","documentation","project-management"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#pattern">Pattern</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-pattern">pattern</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-07-14</span>
+    <span class="repos">browser_game_stickfps</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Three roles, one task at a time: architect writes the spec, coder implements it, tester verifies it independently</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#separation-by-capability-not-by-instruction">Separation by capability, not by instruction</a></li><li><a href="#the-orchestration-loop">The orchestration loop</a></li><li><a href="#where-it-was-not-followed">Where it was not followed</a></li><li><a href="#confidence">Confidence</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="architect-coder-tester-loop">Architect / Coder / Tester Loop</h1>
+<p>Three roles, one task at a time: <strong>architect</strong> writes the spec, <strong>coder</strong> implements it, <strong>tester</strong> verifies it independently. The roles are not a naming convention — they are enforced by what each one is permitted to touch.</p>
+<h2 id="separation-by-capability-not-by-instruction" class="h-anch"><a class="hlink" href="#separation-by-capability-not-by-instruction" aria-label="Link to this section">#</a>Separation by capability, not by instruction</h2>
+<p>Each subagent definition in <a class="wl" href="stickfps.html">stickfps</a> carries an explicit tool grant, and the grants are the mechanism:</p>
+<ul><li><strong>architect</strong> — Read, Grep, Glob, Write, Edit, but <strong>barred from <code>/src</code></strong>. It can write specs and cannot write code.</li><li><strong>coder</strong> — the same plus Bash. It can build and run.</li><li><strong>tester</strong> — <strong>no Write and no Edit at all</strong>, deliberately.</li></ul>
+<blockquote><p>&quot;Never let the tester subagent edit files, and never let the architect subagent touch application source — that separation is what keeps this loop honest.&quot;</p><cite>browser_game_stickfps/.tooling/commands/game-loop.md, 2026-07-25</cite></blockquote>
+<p>The reasoning generalises past agents entirely. A verifier that can edit will, under pressure, make the failure go away rather than report it — the same reason a test author who can change the assertion tends to. Removing the capability removes the temptation, and it is enforceable, which an instruction is not.</p>
+<h2 id="the-orchestration-loop" class="h-anch"><a class="hlink" href="#the-orchestration-loop" aria-label="Link to this section">#</a>The orchestration loop</h2>
+<p><code>/game-loop</code> runs: spec → implement → verify, with four rules worth extracting.</p>
+<ol><li><strong>Max 3 fix attempts</strong> per task, then stop. A three-strike rule converts &quot;keep trying&quot; into an explicit hand-back to a human, which is the point at which someone re-reads the spec instead of the code.</li><li><strong>Stop and ask on any &quot;Open Questions&quot; in the spec.</strong> Uncertainty halts the loop rather than getting resolved by guess — see <a class="wl" href="spec-driven-development.html">spec-driven-development</a>.</li><li><strong>On PASS</strong>: tick the <code>TASKS.md</code> box, log to <code>PROGRESS.md</code>, commit.</li><li><strong>Every third task, rewrite the state summary</strong> &quot;in under 300 tokens&quot; so the working state survives a context compaction. This is the interesting one: it treats context as a resource with a budget and schedules maintenance of it, rather than discovering it is gone.</li></ol>
+<h2 id="where-it-was-not-followed" class="h-anch"><a class="hlink" href="#where-it-was-not-followed" aria-label="Link to this section">#</a>Where it was not followed</h2>
+<p>Step 3&#x27;s commit instruction was not obeyed — <a class="wl" href="stickfps.html">stickfps</a> has 9 commits for 11 rounds of work, made in one 7-hour import session, and <code>PROGRESS.md</code> twice records &quot;No commit made (user hasn&#x27;t asked)&quot;. The logging half of step 3 <em>was</em> followed rigorously, which is why <a class="wl" href="progress-md-as-build-log.html">progress-md-as-build-log</a> exists at all and why the git history is not the working record. See <a class="wl" href="import-finished-work-into-git.html">import-finished-work-into-git</a>.</p>
+<p>The four <code>.tooling</code> files also still name the retired transport and host — <a class="wl" href="documentation-drift.html">documentation-drift</a>.</p>
+<h2 id="confidence" class="h-anch"><a class="hlink" href="#confidence" aria-label="Link to this section">#</a>Confidence</h2>
+<p><code>confidence: medium</code>. The definitions and the loop are directly evidenced and the outputs (9 specs, 11 logged rounds) are consistent with them, but the pattern is observed in <strong>one repository</strong>, so it is not yet established as a recurring habit.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="agent-skills-checked-into-the-repo.html">agent-skills-checked-into-the-repo</a> · <a class="wl" href="spec-driven-development.html">spec-driven-development</a> · <a class="wl" href="progress-md-as-build-log.html">progress-md-as-build-log</a> · <a class="wl" href="stickfps.html">stickfps</a> · <a class="wl" href="generated-audit-artifact.html">generated-audit-artifact</a></p></div>
+  <div class="tags"><span class="tag">architecture</span><span class="tag">testing</span><span class="tag">documentation</span><span class="tag">project-management</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/.tooling/agents/architect.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/.tooling/agents/coder.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/.tooling/agents/tester.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/.tooling/commands/game-loop.md</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/docs/specs/</span></code></li><li><code><span class="src-r">browser_game_stickfps</span><span class="src-p">/PROGRESS.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="spec-driven-development.html"><span class="kind k-concept">concept</span><span class="rel-t">Spec-Driven Development</span><span class="rel-g">Write the specification before the code, at two levels: one document for the whole system, one document per unit of work</span></a><a class="rel" href="agent-skills-checked-into-the-repo.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Agent Skills Checked Into the Repo</span><span class="rel-g">The tooling that builds the product is committed alongside the product, versioned with it and reviewed like it</span></a><a class="rel" href="documentation-drift.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Documentation Drift</span><span class="rel-g">Docs describe the intended system; code implements a subset; the docs are never walked back</span></a><a class="rel" href="generated-audit-artifact.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Generated Audit Artifact</span><span class="rel-g">A script emits a report; the report is committed next to its output; the claim then points at the report rather than at prose</span></a><a class="rel" href="import-finished-work-into-git.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Import Finished Work Into Git</span><span class="rel-g">Work is built to completion outside version control, then imported in a burst</span></a><a class="rel" href="progress-md-as-build-log.html"><span class="kind k-pattern">pattern</span><span class="rel-t">PROGRESS.md as Build Log</span><span class="rel-g">An append-only narrative log of the build, kept in the repo, written per round of work</span></a><a class="rel" href="stickfps.html"><span class="kind k-project">project</span><span class="rel-t">Stickfps</span><span class="rel-g">A 5v5 round-based browser tactical FPS: Counter-Strike round/economy structure, Krunker-style movement feel, procedurally-generated low-poly stickmen</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Characteristic Functions · Glass Box</title>
+<meta name="description" content="The characteristic function χ_A(x) of a set A over a universe U returns 1 when x ∈ A and 0 otherwise">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Characteristic Functions · Glass Box">
+<meta property="og:description" content="The characteristic function χ_A(x) of a set A over a universe U returns 1 when x ∈ A and 0 otherwise">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["What the lab builds around it","The only automated check in the repo","Note","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Discrete-Mathematics-Laboratories/lab3_Sets/mandatory_tasks/"],"dateModified":"2026-07-28","description":"The characteristic function χ_A(x) of a set A over a universe U returns 1 when x ∈ A and 0 otherwise","headline":"Characteristic Functions","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["discrete-math","algorithms","python"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-medium" title="Supported by the repository, but not confirmed directly.">confidence medium</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-04-21</span>
+    <span class="repos">Discrete-Mathematics-Laboratories</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The characteristic function χ_A(x) of a set A over a universe U returns 1 when x ∈ A and 0 otherwise</p></aside>
+  <aside class="conf-note c-medium"><span class="conf-k">confidence medium</span><h2>Read this one with the caveat it carries</h2><p>Everything here is drawn from files in the repository, and the repository is the only witness. Nothing on this page was confirmed by the author in an interview, and no second independent source agrees with it. Where the code and the documents disagreed, that disagreement is recorded rather than resolved. Treat the mechanics as reliable and the intent behind them as inferred.</p></aside>
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#what-the-lab-builds-around-it">What the lab builds around it</a></li><li><a href="#the-only-automated-check-in-the-repo">The only automated check in the repo</a></li><li><a href="#note">Note</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="characteristic-functions">Characteristic Functions</h1>
+<p>The <strong>characteristic function</strong> <code>χ_A(x)</code> of a set <code>A</code> over a universe <code>U</code> returns 1 when <code>x ∈ A</code> and 0 otherwise. It is the bridge between set algebra and ordinary arithmetic: every set operation becomes a pointwise numeric operation on 0/1 vectors.</p>
+<p>The four identities lab 3 of <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> implements and checks:</p>
+<pre><code>χ_(A∩B)(x) = min(χ_A(x), χ_B(x))
+χ_(A∪B)(x) = max(χ_A(x), χ_B(x))
+χ_(A′)(x)  = 1 − χ_A(x)
+|A|        = Σ_{x∈U} χ_A(x)</code></pre>
+<p>The last one is the payoff: <strong>cardinality is a sum</strong>. Once a set is a vector of indicators, counting, intersecting and complementing are all arithmetic, which is why bitsets, Bloom filters and columnar database predicates all work the way they do.</p>
+<h2 id="what-the-lab-builds-around-it" class="h-anch"><a class="hlink" href="#what-the-lab-builds-around-it" aria-label="Link to this section">#</a>What the lab builds around it</h2>
+<ul><li><code>Set</code>, <code>MultiSet</code> and <code>EmptySet</code> implemented <strong>from scratch over native lists</strong>, not Python&#x27;s builtin <code>set</code> — the exercise is owning the operations, not calling them.</li><li><strong>Power set</strong> and <strong>Cartesian product</strong> constructors.</li><li><strong>Inclusion–exclusion</strong>: <code>|A∪B| = |A| + |B| − |A∩B|</code>, verifiable against the χ-sum definition above, which is the cleanest way to see why the correction term exists.</li><li>A <strong>propositional parser</strong> producing truth tables — the logical twin of the same machinery, since a truth table <em>is</em> a characteristic function over assignments.</li></ul>
+<h2 id="the-only-automated-check-in-the-repo" class="h-anch"><a class="hlink" href="#the-only-automated-check-in-the-repo" aria-label="Link to this section">#</a>The only automated check in the repo</h2>
+<p><code>lab3_Sets/mandatory_tasks/test_suite.py</code> is a hand-rolled <code>TestRunner</code>: boolean assertions, ✓/✗ output, a pass/fail summary returning a bool. Not <a class="wl" href="pytest.html">pytest</a> — this repo has no test framework and no CI. It is nevertheless the only place in <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> where a claim is machine-checked rather than screenshotted.</p>
+<p>A related commit records what running it on Windows cost: <code>48ba16d Fix UnicodeEncodeError in the lab3 demos on Windows consoles</code> — the <code>∈ ∪ χ Σ</code> glyphs printed in the demos are not safe on a cp1252 console. See <a class="wl" href="document-the-failure-mode-next-to-the-fix.html">document-the-failure-mode-next-to-the-fix</a>.</p>
+<h2 id="note" class="h-anch"><a class="hlink" href="#note" aria-label="Link to this section">#</a>Note</h2>
+<p>The sibling optional task in the same lab uses the <strong>builtin</strong> <code>set</code> instead of this hand-built one — see <a class="wl" href="set-similarity-metrics.html">set-similarity-metrics</a>.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="set-similarity-metrics.html">set-similarity-metrics</a> · <a class="wl" href="discrete-mathematics-laboratories.html">discrete-mathematics-laboratories</a> · <a class="wl" href="make-the-formal-object-observable.html">make-the-formal-object-observable</a> · <a class="wl" href="pawlak-information-system.html">pawlak-information-system</a></p></div>
+  <div class="tags"><span class="tag">discrete-math</span><span class="tag">algorithms</span><span class="tag">python</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Discrete-Mathematics-Laboratories</span><span class="src-p">/lab3_Sets/mandatory_tasks/</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="pawlak-information-system.html"><span class="kind k-concept">concept</span><span class="rel-t">Pawlak Information System</span><span class="rel-g">A Pawlak information system is the pair S = (U, A): a universe U of objects, a set A of attributes, and for each attribute a ∈ A a function a: U → V_a assigning every…</span></a><a class="rel" href="set-similarity-metrics.html"><span class="kind k-concept">concept</span><span class="rel-t">Set Similarity Metrics</span><span class="rel-g">Three ways to turn &quot;how alike are these two sets?&quot; into a number between 0 and 1</span></a><a class="rel" href="document-the-failure-mode-next-to-the-fix.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Document the Failure Mode Next to the Fix</span><span class="rel-g">Almost every note in these two repositories has the same shape: state the wrong-but-plausible alternative, name the concrete input that breaks it, then give the fix</span></a><a class="rel" href="make-the-formal-object-observable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Make the Formal Object Observable</span><span class="rel-g">Take a mathematical definition and build something that lets you watch it behave</span></a><a class="rel" href="discrete-mathematics-laboratories.html"><span class="kind k-project">project</span><span class="rel-t">Discrete Mathematics Laboratories</span><span class="rel-g">Six discrete-maths lab deliverables for a Master&#x27;s course at Wrocław University of Science and Technology, each turned into a runnable artifact rather than a write-up</span></a><a class="rel" href="pytest.html"><span class="kind k-tech">tech</span><span class="rel-t">pytest</span><span class="rel-g">The test runner for python-programming-laboratories — and the only real test framework anywhere in the two lab repositories</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spaced Repetition with Leitner Boxes · Glass Box</title>
+<meta name="description" content="The cheapest possible spaced-repetition scheduler: every card sits in one of five numbered boxes, each box has a fixed review interval, a correct answer promotes the…">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spaced Repetition with Leitner Boxes · Glass Box">
+<meta property="og:description" content="The cheapest possible spaced-repetition scheduler: every card sits in one of five numbered boxes, each box has a fixed review interval, a correct answer promotes the…">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The implementation in [[physics-exam-prep]]","Why this shape fits the constraint","Placement","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Physics/exam_prep/js/app.js","Physics/exam_prep/README.md","Physics/README.md"],"dateModified":"2026-07-28","description":"The cheapest possible spaced-repetition scheduler: every card sits in one of five numbered boxes, each box has a fixed review interval, a correct answer promotes the…","headline":"Spaced Repetition with Leitner Boxes","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["algorithms","javascript"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-06-30</span>
+    <span class="repos">Physics</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>The cheapest possible spaced-repetition scheduler: every card sits in one of five numbered boxes, each box has a fixed review interval, a correct answer promotes the…</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-implementation-in-physics-exam-prep">The implementation in [[physics-exam-prep]]</a></li><li><a href="#why-this-shape-fits-the-constraint">Why this shape fits the constraint</a></li><li><a href="#placement">Placement</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="spaced-repetition-with-leitner-boxes">Spaced Repetition with Leitner Boxes</h1>
+<p>The cheapest possible spaced-repetition scheduler: every card sits in one of five numbered boxes, each box has a fixed review interval, a correct answer promotes the card one box, and a wrong answer sends it <strong>straight back to box 1</strong>. No difficulty rating, no ease factor, no per-card history — the box number <em>is</em> the memory.</p>
+<h2 id="the-implementation-in-physics-exam-prep" class="h-anch"><a class="hlink" href="#the-implementation-in-physics-exam-prep" aria-label="Link to this section">#</a>The implementation in <a class="wl" href="physics-exam-prep.html">physics-exam-prep</a></h2>
+<p><code>js/app.js</code> is 82 flashcards and about ten lines of scheduler:</p>
+<pre><code>const SR_INTERVALS=[0, 0, 8*60, 24*3600, 3*24*3600, 7*24*3600]; // sec, index by box 1..5
+...
+box = good ? Math.min(5,box+1) : 1;
+const due = Date.now() + SR_INTERVALS[box]*1000;</code></pre>
+<div class="tw"><table>
+<thead><tr>
+<th>Box</th>
+<th>Next review</th>
+<th>Meaning</th>
+</tr></thead><tbody>
+<tr><td>1</td><td>immediately</td><td>missed, or never seen</td></tr>
+<tr><td>2</td><td>8 minutes</td><td>same-session re-check</td></tr>
+<tr><td>3</td><td>1 day</td><td>overnight consolidation</td></tr>
+<tr><td>4</td><td>3 days</td><td>—</td></tr>
+<tr><td>5</td><td>7 days</td><td>&quot;mastered&quot;; the dashboard counts box-5 cards as the mastery number</td></tr>
+</tbody></table></div>
+<p>Per-card state is <code>{box, due}</code> in <code>localStorage</code> under <code>physprep.v1</code>. The deck is ordered due-first, then by box, so the weakest material is always on top. The dashboard renders the box distribution as five pills plus a due count, which turns the scheduler into the progress metric — there is no separate notion of &quot;cards learned&quot;.</p>
+<h2 id="why-this-shape-fits-the-constraint" class="h-anch"><a class="hlink" href="#why-this-shape-fits-the-constraint" aria-label="Link to this section">#</a>Why this shape fits the constraint</h2>
+<p>Leitner is the algorithm you choose when the deliverable must run with no network, no server and no account — <a class="wl" href="offline-first-static-deliverable.html">offline-first-static-deliverable</a>. SM-2 and its descendants need a per-card ease factor and a review log to converge; Leitner needs one integer. It survives a cleared <code>localStorage</code> by resetting to box 1 for everything, which is the correct failure mode for a study tool and needs no recovery code.</p>
+<p>The interval ladder here is also tuned to the actual use: 8 minutes for box 2 is not a memory interval, it is a <em>same-sitting</em> re-check. Combined with the app&#x27;s own honest estimate of ≈35–45 hours of study over 2–3 weeks, the 7-day top interval means a card can reach &quot;mastered&quot; roughly twice inside the study window — the ladder is sized to the exam, not to long-term retention.</p>
+<h2 id="placement" class="h-anch"><a class="hlink" href="#placement" aria-label="Link to this section">#</a>Placement</h2>
+<p>One of the recurring components of <a class="wl" href="course-as-runnable-study-tool.html">course-as-runnable-study-tool</a>, alongside <code>localStorage</code> progress, hash routing and a generated question bank. Only the Physics instance implements Leitner boxes; the sibling apps track progress without a repetition schedule.</p>
+<p><code>confidence: high</code> — the intervals, promotion rule and dashboard behaviour were read directly from <code>js/app.js</code>, and the 82-card count agrees across both READMEs.</p>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="physics-exam-prep.html">physics-exam-prep</a> · <a class="wl" href="course-as-runnable-study-tool.html">course-as-runnable-study-tool</a> · <a class="wl" href="jaccard-similarity-set-selection.html">jaccard-similarity-set-selection</a> · <a class="wl" href="offline-first-static-deliverable.html">offline-first-static-deliverable</a> · <a class="wl" href="zero-dependency-no-build-step.html">zero-dependency-no-build-step</a></p></div>
+  <div class="tags"><span class="tag">algorithms</span><span class="tag">javascript</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/js/app.js</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/exam_prep/README.md</span></code></li><li><code><span class="src-r">Physics</span><span class="src-p">/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="jaccard-similarity-set-selection.html"><span class="kind k-concept">concept</span><span class="rel-t">Jaccard Similarity Set Selection</span><span class="rel-g">Using a set-overlap score not to rank items but to partition a corpus into what you have already seen and what you have not</span></a><a class="rel" href="course-as-runnable-study-tool.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Course as Runnable Study Tool</span><span class="rel-g">Four separate courses were revised by building the syllabus into a program rather than by reading notes</span></a><a class="rel" href="offline-first-static-deliverable.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Offline-First Static Deliverable</span><span class="rel-g">The deliverable must work by double-clicking a file: no server, no install, no network</span></a><a class="rel" href="zero-dependency-no-build-step.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Zero Dependency, No Build Step</span><span class="rel-g">Wherever a dependency can be replaced by code, it is</span></a><a class="rel" href="physics-exam-prep.html"><span class="kind k-project">project</span><span class="rel-t">Physics Exam Prep</span><span class="rel-g">Not a generated static site and not an asset dump: a hand-written, zero-dependency, offline-first single-page web app — an installable PWA — built from one Physics…</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

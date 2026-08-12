@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aspect Oriented Programming · Glass Box</title>
+<meta name="description" content="A cross-cutting concern — logging, timing, auditing, usage counting — is one that would otherwise be copy-pasted into every method that needs it">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Aspect Oriented Programming · Glass Box">
+<meta property="og:description" content="A cross-cutting concern — logging, timing, auditing, usage counting — is one that would otherwise be copy-pasted into every method that needs it">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["The four aspects and what each demonstrates","The rationale is recorded in the source","Where it sits in the stack","What is not verified","See also"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["Information-Systems-Modelling/lab4/StudentService/src/main/java/pl/edu/pwr/tkubik/ism/aspect/","Information-Systems-Modelling/lab4/StudentService/src/main/java/pl/edu/pwr/tkubik/ism/statistics/StatisticsAspect.java","Information-Systems-Modelling/lab4/StudentService/pom.xml","Information-Systems-Modelling/lab4/README.md"],"dateModified":"2026-07-28","description":"A cross-cutting concern — logging, timing, auditing, usage counting — is one that would otherwise be copy-pasted into every method that needs it","headline":"Aspect Oriented Programming","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["architecture","java","performance"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-07-28 · in force since 2026-05-28</span>
+    <span class="repos">Information-Systems-Modelling</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>A cross-cutting concern — logging, timing, auditing, usage counting — is one that would otherwise be copy-pasted into every method that needs it</p></aside>
+  
+  <nav class="toc" aria-label="On this page"><span class="toc-k">On this page</span><ol><li><a href="#the-four-aspects-and-what-each-demonstrates">The four aspects and what each demonstrates</a></li><li><a href="#the-rationale-is-recorded-in-the-source">The rationale is recorded in the source</a></li><li><a href="#where-it-sits-in-the-stack">Where it sits in the stack</a></li><li><a href="#what-is-not-verified">What is not verified</a></li><li><a href="#see-also">See also</a></li></ol></nav>
+  <div class="prose"><h1 id="aspect-oriented-programming">Aspect Oriented Programming</h1>
+<p>A cross-cutting concern — logging, timing, auditing, usage counting — is one that would otherwise be copy-pasted into every method that needs it. AOP moves it out of the methods and into an <strong>aspect</strong>: a declaration of <em>where</em> (a pointcut) and <em>when</em> (an advice type) the extra behaviour runs. The business code never mentions it.</p>
+<p>Realised in <code>Information-Systems-Modelling</code> lab 4 on top of <code>spring-boot-starter-aop</code>. Four aspects ship, and between them they exercise every advice type Spring AOP offers.</p>
+<h2 id="the-four-aspects-and-what-each-demonstrates" class="h-anch"><a class="hlink" href="#the-four-aspects-and-what-each-demonstrates" aria-label="Link to this section">#</a>The four aspects and what each demonstrates</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Aspect</th>
+<th>Advice types</th>
+<th>Pointcut</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr><td><code>LoggingAspect</code></td><td><code>@Before</code>, <code>@AfterReturning</code>, <code>@AfterThrowing</code></td><td><code>execution(public * …service.*Impl.*(..))</code></td><td>service-layer entry/exit/exception log</td></tr>
+<tr><td><code>PerformanceAspect</code></td><td><code>@Around</code></td><td><code>@annotation(…Timed)</code></td><td>warn above a 500 ms threshold</td></tr>
+<tr><td><code>SecurityAuditAspect</code></td><td><code>@AfterReturning</code>, <code>@After</code></td><td>one controller method, plus all admin calls</td><td>login-success/failure audit trail</td></tr>
+<tr><td><code>StatisticsAspect</code></td><td><code>@AfterReturning</code></td><td>all controller methods <strong>minus three</strong></td><td>endpoint call counting</td></tr>
+</tbody></table></div>
+<p>Two design details are worth more than the list:</p>
+<p><strong>Pointcuts are written to exclude, not just to include.</strong> <code>StatisticsAspect</code> targets every public method in the <code>api</code> package and then subtracts <code>StatisticsController</code>, <code>AnalyticsController</code> and <code>SystemController</code> with <code>!within(...)</code> — otherwise reading the statistics would increment them. <code>LoggingAspect</code> targets only <code>*Impl</code> classes, which keeps analytics and controllers out of scope. Both are the same instinct: an aspect that fires on itself is the classic AOP failure mode.</p>
+<p><strong><code>@Timed</code> is opt-in, not blanket.</strong> Rather than time everything, a custom annotation marks the two heavy JDBC aggregation methods (<code>AnalyticsService.dashboard()</code> and <code>.ai()</code>), and <code>PerformanceAspect</code> binds its <code>@Around</code> advice to the annotation. Blanket timing would drown the signal.</p>
+<h2 id="the-rationale-is-recorded-in-the-source" class="h-anch"><a class="hlink" href="#the-rationale-is-recorded-in-the-source" aria-label="Link to this section">#</a>The rationale is recorded in the source</h2>
+<p>Unusually for this corpus, the <em>why</em> is written down rather than inferred:</p>
+<blockquote><p>&quot;Why AOP here instead of code in the controller: Controllers implement generated OpenAPI interfaces; adding audit calls inside them couples business logic to observability.&quot;</p><cite>Information-Systems-Modelling/lab4/.../aspect/SecurityAuditAspect.java, 2026-05-28</cite></blockquote>
+<p>That reason is specific to this codebase and follows directly from <a class="wl" href="contract-first-api-design.html">contract-first-api-design</a>: the controllers are implementations of <em>generated</em> interfaces, so anything hand-added to them is at risk every time the generator runs. AOP puts the observability somewhere the generator cannot reach.</p>
+<h2 id="where-it-sits-in-the-stack" class="h-anch"><a class="hlink" href="#where-it-sits-in-the-stack" aria-label="Link to this section">#</a>Where it sits in the stack</h2>
+<p>The aspects wrap the <code>api → service → repository → entity</code> split described in <a class="wl" href="layered-architecture.html">layered-architecture</a>, which is what makes the pointcut expressions short: the package names <em>are</em> the layers. Lab 4 is the only lab that uses AOP — labs 2 and 3 are its ancestors under <a class="wl" href="forward-copy-lab-progression.html">forward-copy-lab-progression</a> and carry no <code>spring-boot-starter-aop</code> dependency.</p>
+<h2 id="what-is-not-verified" class="h-anch"><a class="hlink" href="#what-is-not-verified" aria-label="Link to this section">#</a>What is not verified</h2>
+<p><strong>Zero tests cover any of the four aspects.</strong> Lab 4&#x27;s entire Java test suite is one <code>contextLoads()</code> and one <code>BuildsControllerIntegrationTest</code> with a single <code>@Test</code>. A pointcut that silently stops matching — a renamed package, a controller that no longer ends in <code>Impl</code> — would fail open and nothing would catch it.</p>
+<ul><li><strong>TODO:</strong> whether AOP was chosen for the lab brief, for the observability, or as a teaching exercise is not recorded anywhere in the repo, and the interview did not cover it. The <em>why AOP over controller code</em> quote above answers a narrower question than <em>why AOP at all</em>. <code>confidence: low</code> on any repo-level motivation. Do not assert one.</li></ul>
+<h2 id="see-also" class="h-anch"><a class="hlink" href="#see-also" aria-label="Link to this section">#</a>See also</h2>
+<p><a class="wl" href="spring-boot.html">spring-boot</a> · <a class="wl" href="layered-architecture.html">layered-architecture</a> · <a class="wl" href="information-systems-modelling.html">information-systems-modelling</a> · <a class="wl" href="contract-first-api-design.html">contract-first-api-design</a> · <a class="wl" href="forward-copy-lab-progression.html">forward-copy-lab-progression</a></p></div>
+  <div class="tags"><span class="tag">architecture</span><span class="tag">java</span><span class="tag">performance</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab4/StudentService/src/main/java/pl/edu/pwr/tkubik/ism/aspect/</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab4/StudentService/src/main/java/pl/edu/pwr/tkubik/ism/statistics/StatisticsAspect.java</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab4/StudentService/pom.xml</span></code></li><li><code><span class="src-r">Information-Systems-Modelling</span><span class="src-p">/lab4/README.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="contract-first-api-design.html"><span class="kind k-concept">concept</span><span class="rel-t">Contract-First API Design</span><span class="rel-g">Write the API specification first; generate the code from it</span></a><a class="rel" href="layered-architecture.html"><span class="kind k-concept">concept</span><span class="rel-t">Layered Architecture</span><span class="rel-g">Split the application into horizontal tiers where each layer may only call the one below it: api/ handles HTTP and nothing else, service/ holds the domain rules and…</span></a><a class="rel" href="forward-copy-lab-progression.html"><span class="kind k-pattern">pattern</span><span class="rel-t">Forward-Copy Lab Progression</span><span class="rel-g">Each lab is a whole copy of the previous lab plus one new capability, committed as a new directory</span></a><a class="rel" href="information-systems-modelling.html"><span class="kind k-project">project</span><span class="rel-t">Information Systems Modelling</span><span class="rel-g">Seven-lab coursework repo (Wrocław University of Science and Technology, course led by T. Kubik) carrying one invented domain through the whole SDLC</span></a><a class="rel" href="spring-boot.html"><span class="kind k-tech">tech</span><span class="rel-t">Spring Boot</span><span class="rel-g">3.5.6 on Java 21, via spring-boot-starter-parent</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Equisatisfiable Not Equivalent · Glass Box</title>
+<meta name="description" content="Two formulas are equivalent when they take the same value under every valuation">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Equisatisfiable Not Equivalent · Glass Box">
+<meta property="og:description" content="Two formulas are equivalent when they take the same value under every valuation">
+<meta property="og:site_name" content="Glass Box">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Crect%20width='16'%20height='16'%20rx='3'%20fill='%230b6e80'/%3E%3Crect%20x='4.5'%20y='4.5'%20width='7'%20height='7'%20rx='1'%20fill='none'%20stroke='white'%20stroke-width='1.5'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","articleSection":["Why anyone would settle for less","The same trade one level up","Why the distinction has to be stated"],"author":{"@type":"Person","name":"Alimuzzaman Bhuiyan"},"citation":["logic-for-computer-scientists/logickit/normal.py","logic-for-computer-scientists/logickit/predicate.py","logic-for-computer-scientists/tests/test_truth_and_normal_forms.py","logic-for-computer-scientists/docs/architecture.md"],"dateModified":"2026-08-02","description":"Two formulas are equivalent when they take the same value under every valuation","headline":"Equisatisfiable Not Equivalent","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Glass Box"},"keywords":["discrete-math","algorithms","optimization"]}</script>
+<script>/* Restore the saved theme before the first paint. In app.js this ran at the end of
+the body, which is after the browser has already painted the other theme — a white flash on
+every navigation for anyone whose choice disagrees with their OS. Inline and in the head is
+the only place this can go. No network call: it is four statements. */
+try{var t=localStorage.getItem('gb-theme');
+if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand-t">Glass Box</span>
+  </a>
+  <nav class="nav" aria-label="Sections"><a href="../index.html">Ask</a><a href="../browse.html">Browse</a><a href="../map.html">Map</a><a href="../receipts.html">Receipts</a><a href="../gaps.html">Gaps</a><a href="../how.html">How it works</a></nav>
+  <div class="top-r">
+    <form class="hs" role="search" method="get" action="../index.html">
+      <label class="vh" for="q">Search this knowledge base</label>
+      <div class="ask-w">
+        <input id="q" class="ask-i hs-i" name="q" type="search" autocomplete="off"
+          spellcheck="false" data-ask role="combobox" aria-expanded="false"
+          aria-controls="sg" aria-autocomplete="list" placeholder="Search…">
+        <ul class="sg-box" id="sg" role="listbox" aria-label="Suggestions"
+          data-suggest hidden></ul>
+      </div>
+      <button class="vh" type="submit">Search</button>
+    </form>
+    <span class="who">Alimuzzaman Bhuiyan</span>
+    <button class="ghost theme-b" type="button" data-theme-toggle>
+      <span class="vh">Switch to </span>
+      <span class="th-i" aria-hidden="true"></span>
+      <span class="th-d">Dark</span><span class="th-l">Light</span>
+    </button>
+  </div>
+</header>
+<main id="main">
+<article class="page">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="../index.html">Ask</a> <span aria-hidden="true">/</span>
+    <a href="../browse.html#concept">Concept</a>
+  </nav>
+  <div class="meta">
+    <span class="kind k-concept">concept</span>
+    <span class="conf c-high" title="Confirmed by the author, or agreed by two or more independent sources.">confidence high</span>
+    <span class="dates">updated 2026-08-02 · in force since 2026-08-02</span>
+    <span class="repos">logic-for-computer-scientists</span>
+  </div>
+  <aside class="short"><span class="short-k">In short</span><p>Two formulas are equivalent when they take the same value under every valuation</p></aside>
+  
+  
+  <div class="prose"><h1 id="equisatisfiable-not-equivalent">Equisatisfiable Not Equivalent</h1>
+<p>Two formulas are <strong>equivalent</strong> when they take the same value under every valuation. They are <strong>equisatisfiable</strong> when one is satisfiable exactly if the other is. The second is strictly weaker, and buying it instead of the first is what makes several standard constructions affordable.</p>
+<h2 id="why-anyone-would-settle-for-less" class="h-anch"><a class="hlink" href="#why-anyone-would-settle-for-less" aria-label="Link to this section">#</a>Why anyone would settle for less</h2>
+<p>Converting a formula to conjunctive normal form by distributing <code>|</code> over <code>&amp;</code> produces an equivalent formula and can be exponentially larger. The witness is exact rather than hypothetical: <code>(a₁ &amp; b₁) | … | (aₙ &amp; bₙ)</code> has precisely <code>2ⁿ</code> clauses, one per way of choosing a side from each disjunct.</p>
+<p>The <strong>Tseitin encoding</strong> gives up equivalence to escape that. Name every compound subformula with a fresh variable, add clauses forcing the variable to equal the subformula, and assert the top one. The result cannot be equivalent — it contains variables the original did not — but it is satisfiable exactly when the original is, and any model of it restricted to the original variables is a model of the original. Its size is <strong>linear</strong> in the input: under sixty clauses where distribution gives 256.</p>
+<p>That is why a SAT solver&#x27;s input is never the user&#x27;s formula.</p>
+<h2 id="the-same-trade-one-level-up" class="h-anch"><a class="hlink" href="#the-same-trade-one-level-up" aria-label="Link to this section">#</a>The same trade one level up</h2>
+<p><strong>Skolemisation</strong> does it for quantifiers. Replacing <code>∃y</code> by a fresh function symbol applied to the universally quantified variables in scope removes the existentials, and the result asserts that a <em>specific</em> witness exists rather than that some witness does. The signature changed, so equivalence is off the table; satisfiability is preserved, and refutation only ever needed that. Every first-order resolution prover begins here.</p>
+<h2 id="why-the-distinction-has-to-be-stated" class="h-anch"><a class="hlink" href="#why-the-distinction-has-to-be-stated" aria-label="Link to this section">#</a>Why the distinction has to be stated</h2>
+<p>Both constructions are usually introduced as &quot;converting to CNF&quot; and &quot;removing existentials&quot;, phrasings that imply equivalence. A comment claiming equivalence where the construction gives equisatisfiability is a bug in the documentation, and it is the kind that survives review because the code is correct. In <a class="wl" href="logic-for-computer-scientists.html">logic-for-computer-scientists</a> the two properties are tested differently on purpose: the CNF conversion is checked for equivalence by enumeration, and the Tseitin encoding is checked only for preserved satisfiability plus the restriction property — which is all it claims.</p>
+<p>The general habit is <a class="wl" href="counted-complexity-assertions.html">counted-complexity-assertions</a> applied to a semantic property rather than a cost: state the weaker claim, and test exactly the weaker claim.</p></div>
+  <div class="tags"><span class="tag">discrete-math</span><span class="tag">algorithms</span><span class="tag">optimization</span></div>
+  <section class="prov">
+  <h2>Written from</h2>
+  <p class="band-b">The files this page was compiled from. Quotations in the text above are
+    verbatim from these.</p>
+  <ul class="srcs"><li><code><span class="src-r">logic-for-computer-scientists</span><span class="src-p">/logickit/normal.py</span></code></li><li><code><span class="src-r">logic-for-computer-scientists</span><span class="src-p">/logickit/predicate.py</span></code></li><li><code><span class="src-r">logic-for-computer-scientists</span><span class="src-p">/tests/test_truth_and_normal_forms.py</span></code></li><li><code><span class="src-r">logic-for-computer-scientists</span><span class="src-p">/docs/architecture.md</span></code></li></ul>
+</section>
+  <section class="prov">
+  <h2>Related pages</h2>
+  <p class="band-b">Linked by the author, not inferred. These are the edges the search
+    follows when it looks one step beyond a direct match.</p>
+  <div class="rels"><a class="rel" href="counted-complexity-assertions.html"><span class="kind k-concept">concept</span><span class="rel-t">Counted Complexity Assertions</span><span class="rel-g">Turning an asymptotic claim into an ordinary unit-test assertion by counting operations instead of measuring time</span></a><a class="rel" href="logic-for-computer-scientists.html"><span class="kind k-project">project</span><span class="rel-t">Logic for Computer Scientists</span><span class="rel-g">Four machines decide the same question — does this follow from that — and the test suite makes them agree</span></a></div>
+</section>
+  
+</article>
+</main>
+<footer class="foot">
+  <div>
+    <p class="foot-t">Glass Box</p>
+    <p>Rendered from a private wiki of 306 pages;
+      281 of them are public. Every figure on this site was
+      computed at build time from the same source as the pages.</p>
+  </div>
+  <nav aria-label="Footer">
+    <a href="../browse.html">Browse everything</a>
+    <a href="../receipts.html">The numbers, and how each is counted</a>
+    <a href="../gaps.html">What it does not know</a>
+    <a href="../how.html">How it works</a>
+    <a href="https://github.com/abhuiyan00" rel="noopener">GitHub</a>
+  </nav>
+  <p class="built">Built 2026-08-12 · no trackers, no cookies,
+    no network calls</p>
+</footer>
+<script src="../assets/search-index.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>
