@@ -40,14 +40,15 @@ if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
   </div>
 </header>
 <main id="main">
-<section class="hero">
-  <p class="eyebrow">A working knowledge base over verified projects — and the reasons behind them.</p>
-  <h1>Ask it something.</h1>
-  <p class="lede"><strong>Alimuzzaman Bhuiyan</strong> — 28 repositories, read once and written up as
-    281 pages that each answer one question. Type below and it returns the pages that
+<section class="hero hero-home">
+  <p class="eyebrow" data-reveal>A working knowledge base over verified projects — and the reasons behind them.</p>
+  <h1 data-reveal>Ask it something.</h1>
+  <p class="lede" data-reveal><strong>Alimuzzaman Bhuiyan</strong> — 28 verified source repositories, meaning sources named by
+    published pages, written up as 281 pages that each answer one question. Type below
+    and it returns the pages that
     answer yours — or tells you plainly that nothing here does.</p>
 
-  <form class="ask" role="search" method="get" action="index.html">
+  <form class="ask" data-reveal role="search" method="get" action="index.html">
     <label class="vh" for="q">Ask the knowledge base</label>
     <div class="ask-w">
       <input id="q" class="ask-i" name="q" type="search" data-ask autocomplete="off"
@@ -62,7 +63,7 @@ if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
     completions, then questions this has been measured answering. Everything runs in your
     browser — nothing is sent anywhere, and there is no model in the loop.
     <kbd>/</kbd> focuses the box, <kbd>↑</kbd><kbd>↓</kbd> move, <kbd>Esc</kbd> clears.</p>
-  <div class="seeds"><button type="button" data-seed="walk me through a project you built end to end">walk me through a project you built end to end</button><button type="button" data-seed="what is a technical decision you made and why">what is a technical decision you made and why</button><button type="button" data-seed="tell me about a decision you later reversed">tell me about a decision you later reversed</button><button type="button" data-seed="how do you decide what to test">how do you decide what to test</button><button type="button" data-seed="how do you handle secrets and credentials">how do you handle secrets and credentials</button><button type="button" data-seed="why not just load it from a cdn">why not just load it from a cdn</button></div>
+  <div class="seeds" data-reveal><button type="button" data-seed="walk me through a project you built end to end">walk me through a project you built end to end</button><button type="button" data-seed="what is a technical decision you made and why">what is a technical decision you made and why</button><button type="button" data-seed="tell me about a decision you later reversed">tell me about a decision you later reversed</button><button type="button" data-seed="how do you decide what to test">how do you decide what to test</button><button type="button" data-seed="how do you handle secrets and credentials">how do you handle secrets and credentials</button><button type="button" data-seed="why not just load it from a cdn">why not just load it from a cdn</button></div>
 </section>
 
 <section class="results" data-results aria-live="polite"></section>
@@ -89,9 +90,8 @@ if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 
 <section class="band">
   <h2>The projects</h2>
-  <p class="band-b">28 of the 28 repositories have a public page here.
-    Each says what the thing is, what it runs on, and what state it is honestly in — the
-    rest stayed private. Every page names the files it was written from.</p>
+  <p class="band-b">Every verified source repository has a public project page here. Each says what the thing is, what it runs on, and what
+    state it is honestly in. Every page names the files it was written from.</p>
   <div class="cards"><a class="card" href="p/agent-orchestrator.html">
   <span class="kind k-project">project</span>
   <span class="card-t">Agent Orchestrator</span>
