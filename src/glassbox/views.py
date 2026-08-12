@@ -105,12 +105,18 @@ def landing(bundle, cfg):
     # stated where it belongs rather than one of them standing in for the others.
     n_repos = corpus.get("repos") or len(bundle.by_repo())
     n_pages = corpus.get("published_now") or len(bundle.pages)
+    if len(projects) == n_repos:
+        project_summary = "Every verified source repository has a public project page here."
+    else:
+        project_summary = (f"{len(projects)} of the {n_repos} verified source repositories have "
+                           "a public project page here. The rest stayed private.")
     body = f"""
 <section class="hero">
   <p class="eyebrow">{esc(cfg["site"]["subtitle"])}</p>
   <h1>Ask it something.</h1>
-  <p class="lede">{who}{n_repos} repositories, read once and written up as
-    {n_pages} pages that each answer one question. Type below and it returns the pages that
+  <p class="lede">{who}{n_repos} verified source repositories, meaning sources named by
+    published pages, written up as {n_pages} pages that each answer one question. Type below
+    and it returns the pages that
     answer yours — or tells you plainly that nothing here does.</p>
 
   <form class="ask" role="search" method="get" action="index.html">
@@ -140,9 +146,8 @@ def landing(bundle, cfg):
 
 <section class="band">
   <h2>The projects</h2>
-  <p class="band-b">{len(projects)} of the {n_repos} repositories have a public page here.
-    Each says what the thing is, what it runs on, and what state it is honestly in — the
-    rest stayed private. Every page names the files it was written from.</p>
+  <p class="band-b">{project_summary} Each says what the thing is, what it runs on, and what
+    state it is honestly in. Every page names the files it was written from.</p>
   <div class="cards">{"".join(card(p) for p in projects)}</div>
 </section>
 

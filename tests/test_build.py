@@ -443,6 +443,26 @@ def test_landing_leads_with_the_question_box(bundle, cfg):
     assert 'class="fig"' not in above, "a statistic appears above the question box"
 
 
+def test_landing_qualifies_sources_and_links_to_receipts(bundle, built):
+    """The landing count is published-source evidence, not a workspace inventory."""
+    text = (built / "index.html").read_text(encoding="utf-8")
+    sources = bundle.stats["corpus"]["repos"]
+
+    assert f"{sources} verified source repositories" in text
+    assert 'href="receipts.html"' in text
+    assert re.search(r"sources named by\s+published pages", text)
+    assert "repositories, read once" not in text
+
+
+def test_landing_does_not_invent_private_remainder_when_projects_cover_sources(bundle, built):
+    """A complete public project set must say it is complete, not imply hidden sources."""
+    text = (built / "index.html").read_text(encoding="utf-8")
+
+    assert len(bundle.of_type("project")) == len(bundle.by_repo())
+    assert "Every verified source repository has a public project page here." in text
+    assert "the rest stayed private" not in text
+
+
 # -- what the page tells a machine, and what it lets one do ---------------------------
 
 def test_every_json_ld_block_parses(built):
