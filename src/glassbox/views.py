@@ -101,17 +101,20 @@ def landing(bundle, cfg):
     placeholder = (bundle.questions[0] if bundle.questions
                    else "ask about a project, a decision or a tool")
     # Three different counts live near each other here and it would be easy to blur them:
-    # repositories read, pages published, and project pages published. Each is derived and
-    # stated where it belongs rather than one of them standing in for the others.
+    # measured sources, pages published, and source repositories with project pages. Each is
+    # derived and stated where it belongs rather than one standing in for the others.
+    source_repos = set(bundle.by_repo())
+    project_repos = {repo for project in projects for repo in project.get("repos") or []}
+    public_project_repos = source_repos & project_repos
     n_repos = corpus.get("repos")
     if n_repos is None:
-        n_repos = len(bundle.by_repo())
+        n_repos = len(source_repos)
     n_pages = corpus.get("published_now") or len(bundle.pages)
-    if len(projects) == n_repos:
+    if source_repos <= project_repos:
         project_summary = "Every verified source repository has a public project page here."
     else:
-        project_summary = (f"{len(projects)} of the {n_repos} verified source repositories have "
-                           "a public project page here. The rest stayed private.")
+        project_summary = (f"{len(public_project_repos)} of {len(source_repos)} verified source "
+                           "repositories have a public project page here. The rest stayed private.")
     body = f"""
 <section class="hero hero-home">
   <p class="eyebrow" data-reveal>{esc(cfg["site"]["subtitle"])}</p>

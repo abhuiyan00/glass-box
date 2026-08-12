@@ -508,6 +508,35 @@ def test_landing_falls_back_when_source_total_is_absent(bundle, cfg, monkeypatch
     assert f"{len(bundle.by_repo())} verified source repositories" in html
 
 
+def test_landing_falls_back_when_source_total_is_none(bundle, cfg, monkeypatch):
+    """A null exported total is absent evidence, so published sources supply the count."""
+    monkeypatch.setitem(bundle.stats["corpus"], "repos", None)
+
+    html = views.landing(bundle, cfg)
+
+    assert f"{len(bundle.by_repo())} verified source repositories" in html
+
+
+def test_landing_counts_distinct_project_source_repositories(bundle, cfg, monkeypatch):
+    """Duplicate project sources must not disguise one uncovered repository as full coverage."""
+    projects = bundle.of_type("project")
+    source_repos = set(bundle.by_repo())
+    replaced = next(p for p in projects if len(p.get("repos") or []) == 1
+                    and sum(p["repos"][0] in (q.get("repos") or [])
+                            for q in projects) == 1
+                    and any(p["repos"][0] in (q.get("repos") or [])
+                            for q in bundle.pages if q["type"] != "project"))
+    replacement = next(p for p in projects if p is not replaced and p.get("repos"))
+    monkeypatch.setitem(replaced, "repos", replacement["repos"])
+
+    assert set(bundle.by_repo()) == source_repos
+    html = views.landing(bundle, cfg)
+
+    assert (f"{len(source_repos) - 1} of {len(source_repos)} verified source repositories "
+            "have a public project page here.") in html
+    assert "Every verified source repository has a public project page here." not in html
+
+
 def test_landing_does_not_invent_private_remainder_when_projects_cover_sources(bundle, built):
     """A complete public project set must say it is complete, not imply hidden sources."""
     text = (built / "index.html").read_text(encoding="utf-8")
