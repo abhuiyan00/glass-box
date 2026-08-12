@@ -454,6 +454,15 @@ def test_landing_qualifies_sources_and_links_to_receipts(bundle, built):
     assert "repositories, read once" not in text
 
 
+def test_landing_preserves_an_explicit_zero_source_total(bundle, cfg, monkeypatch):
+    """A measured zero is evidence; it is not an invitation to infer a replacement count."""
+    monkeypatch.setitem(bundle.stats["corpus"], "repos", 0)
+
+    html = views.landing(bundle, cfg)
+
+    assert "0 verified source repositories" in html
+
+
 def test_landing_does_not_invent_private_remainder_when_projects_cover_sources(bundle, built):
     """A complete public project set must say it is complete, not imply hidden sources."""
     text = (built / "index.html").read_text(encoding="utf-8")

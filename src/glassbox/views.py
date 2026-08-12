@@ -103,7 +103,9 @@ def landing(bundle, cfg):
     # Three different counts live near each other here and it would be easy to blur them:
     # repositories read, pages published, and project pages published. Each is derived and
     # stated where it belongs rather than one of them standing in for the others.
-    n_repos = corpus.get("repos") or len(bundle.by_repo())
+    n_repos = corpus.get("repos")
+    if n_repos is None:
+        n_repos = len(bundle.by_repo())
     n_pages = corpus.get("published_now") or len(bundle.pages)
     if len(projects) == n_repos:
         project_summary = "Every verified source repository has a public project page here."
