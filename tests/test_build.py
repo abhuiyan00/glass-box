@@ -21,6 +21,10 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+# `build.py` lives at the root, not in src/. `python -m pytest` puts the working directory
+# on the path and finds it anyway; bare `pytest` does not, which is what CI runs — so the
+# two tests that import the builder failed on every run the workflow has ever made.
+sys.path.insert(0, str(ROOT))
 
 from glassbox import receipts, search, views       # noqa: E402
 from glassbox.content import Bundle, BundleError   # noqa: E402
