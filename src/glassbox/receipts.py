@@ -134,6 +134,11 @@ def gaps(bundle, cfg):
     e = bundle.stats.get("evals") or {}
     held = e.get("hit_at_5_heldout")
     miss = round((1 - held) * 100) if isinstance(held, (int, float)) else None
+    # Both figures below used to be prose — "one session record", "Two hundred" — on the one
+    # page that promises nothing on it is written by hand. They were true at one export and
+    # silently false at the next, so they are counted now like every other row here.
+    sessions = (c.get("by_type") or {}).get("session") or 0
+    clean_pages = (c.get("published_now") or 0) - (c.get("dangling_pages") or 0)
 
     rows = [
         (miss, "percent of unseen phrasings that return nothing at all",
@@ -155,8 +160,10 @@ def gaps(bundle, cfg):
          "fact in the shape of one."),
         ((c.get("pages_knowledge") or 0) - (c.get("published_now") or 0) or None,
          "pages that exist privately and are not here",
-         "The low-confidence set above, plus one session record, which is categorically "
-         "unpublishable. Everything else the wiki holds is on this site."),
+         f"The low-confidence set above, plus {sessions} session "
+         f"record{'' if sessions == 1 else 's'}, which "
+         f"{'is' if sessions == 1 else 'are'} categorically unpublishable. Everything else "
+         f"the wiki holds is on this site."),
         # The published-scoped figure, not the wiki-wide one. This row used to print the
         # latter — a count over all 240 private pages under a heading that describes the
         # search box on this site, so eight of the pages it counted were ones no visitor can
@@ -174,8 +181,8 @@ def gaps(bundle, cfg):
          "renders as plain text, never as a dead link: the private wiki is one connected "
          "web, and publishing a slice of it necessarily cuts edges."),
         (c.get("dangling_pages"), "public pages carrying at least one of those",
-         "The row above spread over pages. Two hundred of the pages here name no private "
-         "page at all, which is the fact that count on its own hides."),
+         f"The row above spread over pages. {clean_pages} of the pages here name no private "
+         f"page at all, which is the fact that count on its own hides."),
     ]
 
     body = f"""

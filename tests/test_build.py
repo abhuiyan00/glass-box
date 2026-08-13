@@ -537,6 +537,34 @@ def test_landing_counts_distinct_project_source_repositories(bundle, cfg, monkey
     assert "Every verified source repository has a public project page here." not in html
 
 
+def test_gaps_writes_no_figure_by_hand(bundle, cfg, monkeypatch):
+    """Every number on the page must move when the source does — prose included.
+
+    Two sentences here were once typed: "plus one session record" and "Two hundred of the
+    pages". Both were true at one export and silently false at the next, on the one page
+    that promises nothing on it is written by hand. Pinning the wording would not have
+    caught them; moving the source and demanding every digit follow does.
+    """
+    def figures(html):
+        body = html[html.index('<section class="page-head">'):html.index("<footer")]
+        return set(re.findall(r"\d+", re.sub(r"<[^>]+>", " ", body)))
+
+    before = figures(receipts.gaps(bundle, cfg))
+    shifted = json.loads(json.dumps(bundle.stats))
+    # Scaled, not offset: two rows are differences between counts, and a uniform offset
+    # cancels in a subtraction — which would let a typed figure pass as a computed one.
+    shifted["corpus"] = {k: v * 3 if isinstance(v, int) else v
+                         for k, v in shifted["corpus"].items()}
+    shifted["corpus"]["by_type"] = {k: v * 3 for k, v
+                                    in shifted["corpus"]["by_type"].items()}
+    shifted["corpus"]["published_by_confidence"] = {
+        k: v * 3 for k, v in shifted["corpus"]["published_by_confidence"].items()}
+    shifted["evals"]["hit_at_5_heldout"] = 0.123
+    monkeypatch.setattr(bundle, "stats", shifted)
+
+    assert before and not before & figures(receipts.gaps(bundle, cfg))
+
+
 def test_landing_does_not_invent_private_remainder_when_projects_cover_sources(bundle, built):
     """A complete public project set must say it is complete, not imply hidden sources."""
     text = (built / "index.html").read_text(encoding="utf-8")
