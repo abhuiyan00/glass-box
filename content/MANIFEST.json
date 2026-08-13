@@ -283,9 +283,9 @@
     "pages/ws-websocket-server.md": "da5013f7bf920f3486afaacf957e02d7647cabcb9d32bd4b639a8393c87fad64",
     "pages/zero-dependency-no-build-step.md": "669ff14a558cefd3bafa70e2ce3cae59e35ccc6fb6e85d0dd1e59cf5bd8d6398",
     "scorer.json": "53044b0233465653ac2df5c137e5cb490eb430595afc07259bed9a6bb7907c9d",
-    "stats.json": "a1b0bc1a424f01df2f5a95a59fd8aa1d5e5daf3daaf6e7bf7012d7318def2e7e"
+    "stats.json": "b90874027c114f56ac133443940b02416b2148dccca35bb659cd9dbc19b477f9"
   },
-  "generated": "2026-08-12",
+  "generated": "2026-08-13",
   "generator": "second-brain: python brain.py export",
   "pages": 281,
   "placeholders": [

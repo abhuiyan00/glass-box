@@ -10,7 +10,7 @@
       "decision": 45,
       "pattern": 41,
       "project": 28,
-      "session": 18,
+      "session": 5,
       "tech": 63
     },
     "claims_superseded": 11,
@@ -21,10 +21,10 @@
     "decisions_with_reject": 36,
     "eligible_now": 281,
     "low_confidence": 7,
-    "pages_knowledge": 306,
+    "pages_knowledge": 293,
     "pages_publishable": 288,
-    "pages_total": 310,
-    "pages_without_aliases": 170,
+    "pages_total": 297,
+    "pages_without_aliases": 157,
     "published_by_confidence": {
       "high": 237,
       "medium": 44
@@ -53,7 +53,7 @@
     "dangling_from_published": 41,
     "dangling_pages": 34,
     "low_confidence": 7,
-    "pages_without_aliases": 170,
+    "pages_without_aliases": 157,
     "published_without_aliases": 146,
     "todo_count": 238
   },
@@ -61,7 +61,7 @@
     "violations": 0,
     "warnings": 64
   },
-  "generated": "2026-08-12",
+  "generated": "2026-08-13",
   "repos": [
     {
       "pages": 2,
